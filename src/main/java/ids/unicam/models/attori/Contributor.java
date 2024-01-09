@@ -4,7 +4,7 @@ import ids.unicam.controller.ContenutoController;
 import ids.unicam.models.*;
 
 public class Contributor extends TuristaLoggato {
-    private final ContenutoController controller=new ContenutoController();//TODO
+    protected final ContenutoController controller=new ContenutoController();//TODO
 
     public void addPuntoInteresse(PuntoInteresse puntoInteresse){
         controller.addPunto(puntoInteresse);
