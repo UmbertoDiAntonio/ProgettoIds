@@ -1,23 +1,32 @@
 package ids.unicam.models.contenuti;
 
-public abstract class Materiale {
-    private PuntoInteresse owner;
-    private String author;
-    private boolean pending;
+import ids.unicam.models.attori.Contributor;
+
+public class Materiale {
+    private final PuntoInteresse owner;
+    private final Contributor author;
+    private boolean approved;
 
     public PuntoInteresse getOwner() {
         return owner;
     }
 
-    public String getAuthor() {
+    public Contributor getAuthor() {
         return author;
     }
 
-    public boolean isPending() {
-        return pending;
+    public boolean isApproved() {
+        return approved;
     }
 
-    public void setPending(boolean pending) {
-        this.pending = pending;
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
+
+    public Materiale(boolean approved, PuntoInteresse owner, Contributor author) {
+        this.approved = approved;
+        this.author=author;
+        this.owner=owner;
+        owner.getMaterialeList().add(this);
     }
 }

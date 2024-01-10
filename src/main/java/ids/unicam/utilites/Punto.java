@@ -2,24 +2,32 @@ package ids.unicam.utilites;
 
 public class Punto {
 
-    private double x;
-    private double y;
+    private double latitudine;
+    private double longitudine;
 
-    public Punto(double x, double y) {
-        this.x = x;
-        this.y = y;
+    public Punto(double latitudine, double longitudine) {
+        this.latitudine = latitudine;
+        this.longitudine = longitudine;
     }
 
-    public double getX() {
-        return x;
+    public double getLatitudine() {
+        return latitudine;
     }
 
-    public double getY() {
-        return y;
+    public double getLongitudine() {
+        return longitudine;
     }
 
     public double getDistance(){
         //TODO
         return 0;
+    }
+
+    @Override
+    public String toString() {
+        return "Punto{" +
+                "latitudine=" + latitudine +
+                ", longitudine=" + longitudine +
+                '}';
     }
 }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PuntoInteresse extends Contenuto {
+    private String nome;
     private Punto pt;
 
     public Punto getPt() {
@@ -24,8 +25,13 @@ public class PuntoInteresse extends Contenuto {
         materialeList.add(materiale);
     }
 
-    public PuntoInteresse(Punto pt, Tempo scadenza) {
+    public String getNome() {
+        return nome;
+    }
+
+    public PuntoInteresse(String nome, Punto pt) {
+        super(false);
+        this.nome=nome;
         this.pt = pt;
-        this.scadenza = scadenza;
     }
 }

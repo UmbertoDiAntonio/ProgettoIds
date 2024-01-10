@@ -18,20 +18,16 @@ public class Curatore extends ContributorTrusted {
     }
     public void approva(Materiale materiale){
         controller.getWaitingMaterials().remove(materiale);
-        materiale.setPending(false);
+        materiale.setApproved(true);
         materiale.getOwner().addMateriale(materiale);
 
     }
-    public void approva(Itinerario itinerario){
-        controller.getWaitingItinerario().remove(itinerario);
-        comune.getContenuti().add(itinerario);
-        itinerario.setApproved(true);
+    public void approva(Contenuto contenuto) {
+        contenuto.setApproved(true);
+        controller.getWaiting().remove(contenuto);
     }
-    public void approva(PuntoInteresse puntoInteresse){
-        controller.getWaitingPoints().remove(puntoInteresse);
-        comune.getContenuti().add(puntoInteresse);
-        puntoInteresse.setApproved(true);
-    }
+
+
     public void delete(Contenuto contenuto){
         controller.deleteContenuto(contenuto);
     }

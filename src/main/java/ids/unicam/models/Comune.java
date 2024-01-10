@@ -8,25 +8,19 @@ import ids.unicam.models.attori.GestorePiattaforma;
 import ids.unicam.models.contenuti.Contenuto;
 import ids.unicam.utilites.Punto;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Comune {
     private String nome;
     private Punto posizione;
-    private Set<Contenuto> contenuti =new HashSet<>();
 
-    public Set<Contenuto> getContenuti() {
-        return contenuti;
-    }
 //TODO mettodi per aggiungere e gestire contenuti
 
-    private Set<Curatore> curatori = new HashSet<>();
+    private final Set<Curatore> curatori = new HashSet<>();
     private GestorePiattaforma gestorePiattaforma ;
-    private Set<Contributor> contributors = Collections.emptySet();
-    private Set<Animatore> animatori = Collections.emptySet();
-    private ContenutoController contenutoController;
+    private final Set<Contributor> contributors = new HashSet<>();
+    private final Set<Animatore> animatori = new HashSet<>();
+    private ContenutoController contenutoController=ContenutoController.getInstance();
 
     public GestorePiattaforma getGestorePiattaforma() {
         return gestorePiattaforma;
@@ -52,7 +46,7 @@ public class Comune {
         return nome;
     }
 
-    public Comune(String nome, Punto posizione, GestorePiattaforma gestorePiattaforma, ContenutoController contenutoController) {
+    public Comune(String nome, Punto posizione, GestorePiattaforma gestorePiattaforma) {
         if(posizione==null){
             //TODO
             return;
@@ -61,7 +55,6 @@ public class Comune {
             //TODO
             return;
         }
-        this.contenutoController=contenutoController;
         this.gestorePiattaforma = gestorePiattaforma;
         this.posizione = posizione;
         this.nome=nome;

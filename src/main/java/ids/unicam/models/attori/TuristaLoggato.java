@@ -1,5 +1,6 @@
 package ids.unicam.models.attori;
 
+import ids.unicam.controller.TuristaController;
 import ids.unicam.models.*;
 import ids.unicam.models.contenuti.Contenuto;
 import ids.unicam.models.contenuti.Contest;
@@ -13,7 +14,15 @@ public class TuristaLoggato extends Turista {
     private final List<Contenuto> favourites = new ArrayList<>();
     private final List<Invito> invitiRicevuti = new ArrayList<>();
 
-    private final long id=0;//TODO
+    private long id=0;
+
+    public long getId() {
+        return id;
+    }
+
+    public TuristaLoggato() {
+        this.id= TuristaController.generateID();
+    }
 
     public List<Contenuto> getFavourites() {
         return favourites;

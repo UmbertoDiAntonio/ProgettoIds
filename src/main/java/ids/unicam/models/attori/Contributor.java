@@ -11,7 +11,7 @@ public class Contributor extends TuristaLoggato {
     protected final ContenutoController controller;//TODO
 
     public void addPuntoInteresse(PuntoInteresse puntoInteresse){
-        controller.addPunto(puntoInteresse,false);
+        controller.addPunto(puntoInteresse);
     }
     public void addMateriale(PuntoInteresse puntoInteresse, Materiale materiale){
         controller.addMaterialeTo(puntoInteresse,materiale);

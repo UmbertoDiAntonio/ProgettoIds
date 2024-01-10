@@ -1,8 +1,8 @@
 package ids.unicam.models.contenuti;
 
 import ids.unicam.controller.ContestController;
+import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaLoggato;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,13 +10,21 @@ import java.util.List;
 import java.util.Set;
 
 public class Contest extends Contenuto{
-    boolean open;
-    ContestController controller;
+    private boolean open;
+    private final ContestController controller;
+    private final String obiettivo;
+    private final Animatore author;
 
-    public Contest(boolean open, ContestController controller, String obiettivo) {
+    public Animatore getAuthor() {
+        return author;
+    }
+
+    public Contest(boolean open, ContestController controller, String obiettivo, Animatore author) {
+        super(true);
         this.open = open;
         this.controller = controller;
         this.obiettivo = obiettivo;
+        this.author = author;
     }
 
     public void setOpen(boolean open) {
@@ -24,12 +32,18 @@ public class Contest extends Contenuto{
     }
 
 
-    private final @Nullable List<TuristaLoggato> invitati=new ArrayList<>();
+    private final List<TuristaLoggato> invitati=new ArrayList<>();
 
-    String obiettivo;
+    public String getObiettivo() {
+        return obiettivo;
+    }
 
     //Multimap<String,String> map = ArrayListMultimap.create();
-    HashMap<TuristaLoggato, Set<Materiale>> materialiContest = new HashMap<>();
+    private final HashMap<TuristaLoggato, Set<Materiale>> materialiContest = new HashMap<>();
+
+    public HashMap<TuristaLoggato, Set<Materiale>> getMaterialiContest() {
+        return materialiContest;
+    }
 
     public void invita(TuristaLoggato turistaLoggato){
         controller.invita(this,turistaLoggato);

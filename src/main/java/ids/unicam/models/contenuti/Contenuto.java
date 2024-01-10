@@ -1,5 +1,6 @@
 package ids.unicam.models.contenuti;
 
+import ids.unicam.controller.ContenutoController;
 import ids.unicam.models.Tempo;
 
 import java.util.HashSet;
@@ -7,7 +8,7 @@ import java.util.Set;
 
 public abstract class Contenuto {
 
-    Tempo scadenza;
+    private Tempo scadenza;
 
     public void setScadenza(Tempo scadenza) {
         this.scadenza = scadenza;
@@ -18,9 +19,9 @@ public abstract class Contenuto {
     }
 
     private long id;
-    private boolean approved;
+    private boolean approved = false;
 
-    private Set<String> tags=new HashSet<>();
+    private final Set<String> tags=new HashSet<>();
 
     private boolean isContest;
     public long getId() {
@@ -37,5 +38,10 @@ public abstract class Contenuto {
 
     public void setApproved(boolean approved) {
         this.approved = approved;
+    }
+
+    public Contenuto(boolean approved) {
+        this.approved = approved;
+        this.id = ContenutoController.generateID();
     }
 }
