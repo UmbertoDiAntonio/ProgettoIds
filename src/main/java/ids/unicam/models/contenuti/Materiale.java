@@ -1,4 +1,4 @@
-package ids.unicam.models;
+package ids.unicam.models.contenuti;
 
 public abstract class Materiale {
     private PuntoInteresse owner;

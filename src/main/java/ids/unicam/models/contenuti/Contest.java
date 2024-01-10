@@ -1,4 +1,4 @@
-package ids.unicam.models;
+package ids.unicam.models.contenuti;
 
 import ids.unicam.controller.ContestController;
 import ids.unicam.models.attori.TuristaLoggato;

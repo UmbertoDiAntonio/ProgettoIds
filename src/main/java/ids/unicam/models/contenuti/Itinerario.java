@@ -1,9 +1,9 @@
-package ids.unicam.models;
+package ids.unicam.models.contenuti;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Itinerario extends Contenuto{
+public class Itinerario extends Contenuto {
     private List<Contenuto> percorso = new ArrayList<>();
 
     public void addTappa(PuntoInteresse puntoInteresse){

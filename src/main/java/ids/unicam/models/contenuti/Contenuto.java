@@ -1,4 +1,6 @@
-package ids.unicam.models;
+package ids.unicam.models.contenuti;
+
+import ids.unicam.models.Tempo;
 
 import java.util.HashSet;
 import java.util.Set;

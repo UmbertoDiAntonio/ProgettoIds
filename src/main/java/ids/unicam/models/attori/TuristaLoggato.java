@@ -1,6 +1,10 @@
 package ids.unicam.models.attori;
 
 import ids.unicam.models.*;
+import ids.unicam.models.contenuti.Contenuto;
+import ids.unicam.models.contenuti.Contest;
+import ids.unicam.models.contenuti.Foto;
+import ids.unicam.models.contenuti.PuntoInteresse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +12,8 @@ import java.util.List;
 public class TuristaLoggato extends Turista {
     private final List<Contenuto> favourites = new ArrayList<>();
     private final List<Invito> invitiRicevuti = new ArrayList<>();
+
+    private final long id=0;//TODO
 
     public List<Contenuto> getFavourites() {
         return favourites;
@@ -35,4 +41,8 @@ public class TuristaLoggato extends Turista {
         }
     }
 
+    public boolean logOut(){
+        //TODO
+        return true;
+    }
 }

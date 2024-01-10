@@ -1,6 +1,6 @@
 package ids.unicam.models.attori;
 
-import ids.unicam.models.Contenuto;
+import ids.unicam.models.contenuti.Contenuto;
 
 import java.util.Date;
 

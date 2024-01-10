@@ -18,10 +18,10 @@ public class TuristaController {
 
 
     public void registraTurista() {
-
+        //TODO
     }
 
     public void registraContributor() {
-
+        //TODO
     }
 }

@@ -1,21 +1,29 @@
 package ids.unicam.controller;
 
-import ids.unicam.models.Contenuto;
-import ids.unicam.models.Itinerario;
-import ids.unicam.models.Materiale;
-import ids.unicam.models.PuntoInteresse;
+import ids.unicam.models.Comune;
+import ids.unicam.models.attori.Curatore;
+import ids.unicam.models.contenuti.Contenuto;
+import ids.unicam.models.contenuti.Itinerario;
+import ids.unicam.models.contenuti.Materiale;
+import ids.unicam.models.contenuti.PuntoInteresse;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ContenutoController {
-    public void deleteContenuto(Contenuto contenuto){
+    public void deleteContenuto(Contenuto contenuto) {
         //TODO
     }
 
-    private List<PuntoInteresse> waitingPoints =new ArrayList<>();
-    private List<Itinerario> waitingItinerario=new ArrayList<>();
-    private List<Materiale> waitingMaterials =new ArrayList<>();
+    Comune comune;
+
+    public ContenutoController(Comune comune) {
+        this.comune = comune;
+    }
+
+    private List<PuntoInteresse> waitingPoints = new ArrayList<>();
+    private List<Itinerario> waitingItinerario = new ArrayList<>();
+    private List<Materiale> waitingMaterials = new ArrayList<>();
 
     public List<Itinerario> getWaitingItinerario() {
         return waitingItinerario;
@@ -29,8 +37,12 @@ public class ContenutoController {
         return waitingPoints;
     }
 
-    public void addPunto(PuntoInteresse puntoInteresse) {
-        //TOOD
+    public void addPunto(PuntoInteresse puntoInteresse, boolean approved) {
+        if (approved)
+            comune.getContenuti().add(puntoInteresse);
+        else
+            comune.getContenutoController().waitingPoints.add(puntoInteresse);
+
     }
 
     public void addMaterialeTo(PuntoInteresse puntoInteresse, Materiale materiale) {
