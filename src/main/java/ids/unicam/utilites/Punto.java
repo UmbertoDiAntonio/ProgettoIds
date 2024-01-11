@@ -1,33 +1,51 @@
 package ids.unicam.utilites;
 
+import org.jetbrains.annotations.NotNull;
+
 public class Punto {
 
-    private double latitudine;
-    private double longitudine;
+    private double x;
+    private double y;
 
-    public Punto(double latitudine, double longitudine) {
-        this.latitudine = latitudine;
-        this.longitudine = longitudine;
+    public Punto(double x, double y) {
+        this.x = x;
+        this.y = y;
     }
 
-    public double getLatitudine() {
-        return latitudine;
+    public double getX() {
+        return x;
     }
 
-    public double getLongitudine() {
-        return longitudine;
+    public double getY() {
+        return y;
     }
 
-    public double getDistance(){
-        //TODO
-        return 0;
+    public void normalize() {
+        double length = Math.sqrt(x * x + y * y);
+        if (length != 0) {
+            x /= length;
+            y /= length;
+        } else {
+            x = 0;
+            y = 0;
+        }
     }
+
+
+
+
+    public double getDistance(@NotNull Punto pt) {
+        return Math.sqrt(getDistanceSquared(pt));
+    }
+
+    public double getDistanceSquared(@NotNull Punto pt) {
+        return Math.pow(pt.getX() - x, 2) + Math.pow(pt.getY() - y, 2);
+    }
+
 
     @Override
     public String toString() {
-        return "Punto{" +
-                "latitudine=" + latitudine +
-                ", longitudine=" + longitudine +
-                '}';
+        return "(" + x + "," + y + ")";
     }
+
 }

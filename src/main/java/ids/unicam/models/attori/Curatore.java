@@ -7,7 +7,6 @@ import ids.unicam.models.contenuti.Materiale;
 import ids.unicam.models.contenuti.PuntoInteresse;
 
 public class Curatore extends ContributorTrusted {
-    private Comune comune;
 
     public Curatore(Comune comune) {
         super(comune);
@@ -17,19 +16,19 @@ public class Curatore extends ContributorTrusted {
         //TODO
     }
     public void approva(Materiale materiale){
-        controller.getWaitingMaterials().remove(materiale);
+        comune.getContenutoController().getWaitingMaterials().remove(materiale);
         materiale.setApproved(true);
         materiale.getOwner().addMateriale(materiale);
 
     }
     public void approva(Contenuto contenuto) {
         contenuto.setApproved(true);
-        controller.getWaiting().remove(contenuto);
+        comune.getContenutoController().getWaiting().remove(contenuto);
     }
 
 
     public void delete(Contenuto contenuto){
-        controller.deleteContenuto(contenuto);
+        comune.getContenutoController().deleteContenuto(contenuto);
     }
 
     @Override

@@ -8,20 +8,35 @@ import ids.unicam.models.contenuti.Foto;
 import ids.unicam.models.contenuti.PuntoInteresse;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TuristaLoggato extends Turista {
     private final List<Contenuto> favourites = new ArrayList<>();
     private final List<Invito> invitiRicevuti = new ArrayList<>();
+    private String name;
+    private String surname;
+    private Date dateBirthday;
+    private String password; //TODO
+    private String username;
+    private String id;
 
-    private long id=0;
-
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public TuristaLoggato() {
-        this.id= TuristaController.generateID();
+    public TuristaLoggato(String name, String surname, Date dateBirthday, String password, String username) {
+        this.name = name;
+        this.surname = surname;
+        this.dateBirthday = dateBirthday;
+        this.password = password;
+        this.username = username;
+        this.id = TuristaController.generateID();
+        save();
+    }
+
+    private void save(){
+        //TODO
     }
 
     public List<Contenuto> getFavourites() {
@@ -33,24 +48,24 @@ public class TuristaLoggato extends Turista {
     }
 
     public void addPhoto(PuntoInteresse puntoInteresse, Foto foto) {
-
+        //TODO
     }
 
     public void joinContest(Invito invito) { //invocato dall'interfaccia
         for (Invito inv : invitiRicevuti) {
-            if (inv.equals(invito)){
-                Contest contest= invito.getContest();
-                if(contest.isOpen()){
+            if (inv.equals(invito)) {
+                Contest contest = invito.getContest();
+                if (contest.isOpen()) {
                     //TODO
                     return;
                 }
                 assert contest.getInvitati() != null;
                 contest.getInvitati().add(this);
-            } ;
+            }
         }
     }
 
-    public boolean logOut(){
+    public boolean logOut() {
         //TODO
         return true;
     }

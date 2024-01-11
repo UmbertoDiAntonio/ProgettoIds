@@ -9,6 +9,8 @@ import ids.unicam.models.contenuti.Contenuto;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Punto;
 
+import java.util.Date;
+
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
@@ -19,16 +21,15 @@ public class Main {
 
         GestorePiattaforma gestore = new GestorePiattaforma();
         Comune comune=new Comune("jesi",
-                new Punto(0,0),
-                gestore);
+                new Punto(0,0),gestore);
 
         System.out.println("pos comune"+comune.getPosizione());
         Turista turista = new Turista();
         turista.search();
 
-        TuristaLoggato turistaLoggato = new TuristaLoggato();
+        TuristaLoggato turistaLoggato = new TuristaLoggato("mario","rossi",new Date(),"1234","aa");
         System.out.println("id "+turistaLoggato.getId());
-        TuristaLoggato turistaLoggato2 = new TuristaLoggato();
+        TuristaLoggato turistaLoggato2 = new TuristaLoggato("giovanni","bianchi",new Date(),"9876","bb");
         System.out.println("id "+turistaLoggato2.getId());
         Contributor contributor = new Contributor(comune);
 
@@ -52,7 +53,7 @@ public class Main {
 
         System.out.println("punto "+puntoInteresse2.getNome()+" "+puntoInteresse2.getPt()+" "+puntoInteresse2.isApproved());
 
-        Animatore animatore = new Animatore(comune,new ContestController());
+        Animatore animatore = new Animatore(comune);
         System.out.println("D "+contenutoController.getContenuti().size());
         animatore.creaContest(true,"foto migliore del mese");
         System.out.println("E "+contenutoController.getContenuti().size());

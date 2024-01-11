@@ -9,6 +9,15 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public class ContestController {
+    private static ContestController instance = null;
+
+    public static ContestController getInstance() {
+        if(instance==null)
+            instance=new ContestController();
+        return instance;
+    }
+
+    private ContestController() {    }
     private final List<Materiale> waitingMaterials = new ArrayList<>();
     private static final Set<Contest> contests = new HashSet<>();
 
@@ -16,14 +25,14 @@ public class ContestController {
         Set<Contest> result = new HashSet<>();
         contests.stream().filter(contest -> contest.
                 getInvitati().
-                stream().anyMatch(turistaLoggato -> turistaLoggato.getId() == idTurista)
+                stream().anyMatch(turistaLoggato -> Long.parseLong(turistaLoggato.getId()) == idTurista)
         ).forEach(result::add);
         return result;
     }
 
     public static @NotNull Set<Contest> getContestByAuthor(long idAutore) {
         Set<Contest> result = new HashSet<>();
-        contests.stream().filter(contest1 -> contest1.getAuthor().getId() == idAutore).forEach(result::add);
+        contests.stream().filter(contest1 -> Long.parseLong(contest1.getAuthor().getId()) == idAutore).forEach(result::add);
         return result;
     }
 
