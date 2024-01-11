@@ -8,27 +8,27 @@ import ids.unicam.models.contenuti.PuntoInteresse;
 
 public class Curatore extends ContributorTrusted {
 
-    public Curatore(Comune comune) {
-        super(comune);
+    public Curatore(Comune comune,Contributor contributor) {
+        super(comune,contributor);
     }
 
     public void share(Contenuto contenuto){
         //TODO
     }
     public void approva(Materiale materiale){
-        comune.getContenutoController().getWaitingMaterials().remove(materiale);
+        getComune().getContenutoController().getWaitingMaterials().remove(materiale);
         materiale.setApproved(true);
         materiale.getOwner().addMateriale(materiale);
 
     }
     public void approva(Contenuto contenuto) {
         contenuto.setApproved(true);
-        comune.getContenutoController().getWaiting().remove(contenuto);
+        getComune().getContenutoController().getWaiting().remove(contenuto);
     }
 
 
     public void delete(Contenuto contenuto){
-        comune.getContenutoController().deleteContenuto(contenuto);
+        getComune().getContenutoController().deleteContenuto(contenuto);
     }
 
     @Override

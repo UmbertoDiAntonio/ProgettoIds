@@ -1,15 +1,18 @@
 package ids.unicam.boundary;
 
-import ids.unicam.controller.TuristaController;
+import ids.unicam.controller.UtentiController;
+import ids.unicam.models.Comune;
+
+import java.util.Date;
 
 public class MenuTurista {
-    TuristaController controller;
+    UtentiController controller;
 
-    public MenuTurista(TuristaController controller) {
+    public MenuTurista(UtentiController controller) {
         this.controller = controller;
     }
 
-    public void registra(int tipo){
-        controller.registra(tipo);
+    public void registra(Comune comune, int tipo, String nome, String cognome, Date birthday, String password, String username){
+        controller.registra(comune,tipo,nome,cognome,birthday,password,username);
     }
 }

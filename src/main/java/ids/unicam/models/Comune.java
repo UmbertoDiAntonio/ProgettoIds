@@ -2,16 +2,16 @@ package ids.unicam.models;
 
 import ids.unicam.controller.ContenutoController;
 import ids.unicam.controller.ContestController;
-import ids.unicam.models.attori.Animatore;
-import ids.unicam.models.attori.Contributor;
-import ids.unicam.models.attori.Curatore;
-import ids.unicam.models.attori.GestorePiattaforma;
-import ids.unicam.models.contenuti.Contenuto;
+import ids.unicam.controller.UtentiController;
+import ids.unicam.models.attori.*;
 import ids.unicam.utilites.Punto;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Comune {
+
     private String nome;
     private Punto posizione;
 
@@ -19,11 +19,17 @@ public class Comune {
 
     private final Set<Curatore> curatori = new HashSet<>();
     private GestorePiattaforma gestorePiattaforma ;
-    private final Set<Contributor> contributors = new HashSet<>();
+    private final ArrayList<Contributor> contributors = new ArrayList<>();
     private final Set<Animatore> animatori = new HashSet<>();
+    private final ArrayList<TuristaLoggato> turisti = new ArrayList<>();
     private ContenutoController contenutoController;
     private ContestController contestController;
+    private UtentiController utentiController;
 
+
+    public ArrayList<TuristaLoggato> getTuristi() {
+        return turisti;
+    }
     public GestorePiattaforma getGestorePiattaforma() {
         return gestorePiattaforma;
     }
@@ -36,7 +42,7 @@ public class Comune {
         return posizione;
     }
 
-    public Set<Contributor> getContributors() {
+    public ArrayList<Contributor> getContributors() {
         return contributors;
     }
 
@@ -48,7 +54,7 @@ public class Comune {
         return nome;
     }
 
-    public Comune(String nome, Punto posizione, GestorePiattaforma gestorePiattaforma, ContenutoController contenutoController,ContestController contestController) {
+    public Comune(String nome, Punto posizione, GestorePiattaforma gestorePiattaforma, ContenutoController contenutoController,ContestController contestController, UtentiController utentiController) {
         if(posizione==null){
             //TODO
             return;
@@ -62,9 +68,10 @@ public class Comune {
         this.nome=nome;
         this.contenutoController=contenutoController;
         this.contestController=contestController;
+        this.utentiController = utentiController;
     }
-    public  Comune(String nome, Punto posizione, GestorePiattaforma gestorePiattaforma){
-        new Comune(nome,posizione,gestorePiattaforma,ContenutoController.getInstance(),ContestController.getInstance());
+    public Comune(String nome, Punto posizione, GestorePiattaforma gestorePiattaforma){
+        new Comune(nome,posizione,gestorePiattaforma,new ContenutoController(), new ContestController(),new UtentiController());
     }
 
     public ContenutoController getContenutoController() {
@@ -74,4 +81,6 @@ public class Comune {
     public ContestController getContestController() {
         return contestController;
     }
+    public UtentiController getUtentiController(){return utentiController;}
+
 }

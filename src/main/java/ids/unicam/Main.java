@@ -16,48 +16,6 @@ import java.util.Date;
 public class Main {
     public static void main(String[] args) {
 
-        ContenutoController contenutoController=ContenutoController.getInstance();
-        System.out.println(contenutoController.getContenuti().size());
-
-        GestorePiattaforma gestore = new GestorePiattaforma();
-        Comune comune=new Comune("jesi",
-                new Punto(0,0),gestore);
-
-        System.out.println("pos comune"+comune.getPosizione());
-        Turista turista = new Turista();
-        turista.search();
-
-        TuristaLoggato turistaLoggato = new TuristaLoggato("mario","rossi",new Date(),"1234","aa");
-        System.out.println("id "+turistaLoggato.getId());
-        TuristaLoggato turistaLoggato2 = new TuristaLoggato("giovanni","bianchi",new Date(),"9876","bb");
-        System.out.println("id "+turistaLoggato2.getId());
-        Contributor contributor = new Contributor(comune);
-
-        PuntoInteresse puntoInteresse = new PuntoInteresse("n",new Punto(1,1));
-
-        System.out.println("A "+contenutoController.getContenuti().size());
-        System.out.println("punto "+puntoInteresse.getNome()+" "+puntoInteresse.getPt()+" "+puntoInteresse.isApproved());
-
-        contributor.addPuntoInteresse(puntoInteresse);
-        contributor.aggiungiScadenzaContenuto(puntoInteresse,new Tempo());
-        System.out.println("B "+contenutoController.getContenuti().size());
-
-        Curatore curatore = new Curatore(comune);
-        curatore.approva(puntoInteresse);
-        System.out.println("punto "+puntoInteresse.getNome()+" "+puntoInteresse.getPt()+" "+puntoInteresse.isApproved());
-
-        ContributorTrusted contributorTrusted = new ContributorTrusted(comune);
-        PuntoInteresse puntoInteresse2 = new PuntoInteresse("b", new Punto(10, 10));
-        contributorTrusted.addPuntoInteresse(puntoInteresse2);
-        System.out.println("C "+contenutoController.getContenuti().size());
-
-        System.out.println("punto "+puntoInteresse2.getNome()+" "+puntoInteresse2.getPt()+" "+puntoInteresse2.isApproved());
-
-        Animatore animatore = new Animatore(comune);
-        System.out.println("D "+contenutoController.getContenuti().size());
-        animatore.creaContest(true,"foto migliore del mese");
-        System.out.println("E "+contenutoController.getContenuti().size());
-
 
 
     }

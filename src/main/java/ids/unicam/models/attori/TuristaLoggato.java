@@ -1,6 +1,6 @@
 package ids.unicam.models.attori;
 
-import ids.unicam.controller.TuristaController;
+import ids.unicam.controller.UtentiController;
 import ids.unicam.models.*;
 import ids.unicam.models.contenuti.Contenuto;
 import ids.unicam.models.contenuti.Contest;
@@ -21,6 +21,30 @@ public class TuristaLoggato extends Turista {
     private String username;
     private String id;
 
+    public List<Invito> getInvitiRicevuti() {
+        return invitiRicevuti;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public Date getDateBirthday() {
+        return dateBirthday;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
     public String getId() {
         return id;
     }
@@ -31,7 +55,7 @@ public class TuristaLoggato extends Turista {
         this.dateBirthday = dateBirthday;
         this.password = password;
         this.username = username;
-        this.id = TuristaController.generateID();
+        this.id = UtentiController.generateID();
         save();
     }
 

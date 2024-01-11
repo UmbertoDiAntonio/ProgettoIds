@@ -9,15 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public class ContestController {
-    private static ContestController instance = null;
 
-    public static ContestController getInstance() {
-        if(instance==null)
-            instance=new ContestController();
-        return instance;
-    }
-
-    private ContestController() {    }
     private final List<Materiale> waitingMaterials = new ArrayList<>();
     private static final Set<Contest> contests = new HashSet<>();
 

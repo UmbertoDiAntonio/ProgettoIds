@@ -1,72 +1,60 @@
 package ids.unicam.controller;
 
 import ids.unicam.models.Comune;
-import ids.unicam.models.attori.Curatore;
-import ids.unicam.models.contenuti.Contenuto;
-import ids.unicam.models.contenuti.Itinerario;
-import ids.unicam.models.contenuti.Materiale;
-import ids.unicam.models.contenuti.PuntoInteresse;
+import ids.unicam.models.contenuti.*;
 
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.*;
 
 public class ContenutoController {
-    private static ContenutoController instance = null;
-
-    public static ContenutoController getInstance() {
-        if(instance==null)
-            instance=new ContenutoController();
-        return instance;
-    }
-
-    private ContenutoController() {    }
-
     private static long id = 0;
 
     public static long generateID() {
         id+=1;
         return id;
     }
-
-    public void deleteContenuto(Contenuto contenuto) {
-        //TODO
-    }
-
-    private final List<Contenuto> contenuti = new ArrayList<>();
-
-    public List<Contenuto> getContenuti() {
-        return contenuti;
-    }
-
-
-
-    private final List<Contenuto> waitingContents = new ArrayList<>();
-    private final List<Materiale> waitingMaterials = new ArrayList<>();
+    private final List<Materiale> waitingMaterials =new ArrayList<>();
+    private final List<Contenuto> waiting = new ArrayList<>();
+    private final HashMap<PuntoInteresse, Set<Materiale>> materialiPerPunto = new HashMap<>();
+    private final HashMap<String, Itinerario> itinerari = new HashMap<>();
 
     public List<Contenuto> getWaiting() {
-        return waitingContents;
+        return waiting;
     }
 
     public List<Materiale> getWaitingMaterials() {
         return waitingMaterials;
     }
 
-
     public void addPunto(PuntoInteresse puntoInteresse) {
-            contenuti.add(puntoInteresse);
+        waiting.add(puntoInteresse);
+
     }
 
     public void addMaterialeTo(PuntoInteresse puntoInteresse, Materiale materiale) {
-        puntoInteresse.addMateriale(materiale);
+        materiale.setApproved(false);
+        materialiPerPunto
+                .computeIfAbsent(puntoInteresse, k -> new HashSet<>())
+                .add(materiale);
     }
 
-    public void creaItinerario(PuntoInteresse puntoInteresseIniziale) {
-        //TODo
+    public void creaItinerario(String nome,PuntoInteresse... puntoInteresse) {
+        Itinerario itinerario = new Itinerario(nome, puntoInteresse);
+        itinerari.put(nome, itinerario);
+        itinerario.addTappa(puntoInteresse);
     }
 
     public void addTappa(Itinerario itinerario, PuntoInteresse puntoInteresse) {
-            itinerario.addTappa(puntoInteresse);
+        itinerario.addTappa(puntoInteresse);
     }
-    
 
+    public void deleteContenuto(Contenuto contenuto) {
+        if (contenuto instanceof PuntoInteresse) {
+            waiting.remove(contenuto);
+            materialiPerPunto.remove(contenuto);
+        } else if (contenuto instanceof Itinerario) {
+            itinerari.remove(((Itinerario) contenuto).getNome());
+
+        }
+    }
 }

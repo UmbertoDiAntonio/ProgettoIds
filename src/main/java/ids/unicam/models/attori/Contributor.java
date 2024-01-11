@@ -7,8 +7,23 @@ import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.Materiale;
 import ids.unicam.models.contenuti.PuntoInteresse;
 
+import java.util.Date;
+
 public class Contributor extends TuristaLoggato {
-    protected final Comune comune;
+    private Comune comune;
+
+    public Comune getComune() {
+        return comune;
+    }
+
+    public Contributor(Comune comune, TuristaLoggato turistaLoggato){
+        super(turistaLoggato.getName(),turistaLoggato.getSurname(),turistaLoggato.getDateBirthday(),turistaLoggato.getPassword(), turistaLoggato.getUsername());
+        this.comune=comune;
+    }
+    public Contributor(Comune comune,String name, String surname, Date dateBirthday, String password, String username) {
+        super(name, surname, dateBirthday, password, username);
+        this.comune=comune;
+    }
 
     public void addPuntoInteresse(PuntoInteresse puntoInteresse){
         comune.getContenutoController().addPunto(puntoInteresse);
@@ -16,8 +31,9 @@ public class Contributor extends TuristaLoggato {
     public void addMateriale(PuntoInteresse puntoInteresse, Materiale materiale){
         comune.getContenutoController().addMaterialeTo(puntoInteresse,materiale);
     }
-    public void creaItinerario(PuntoInteresse puntoInteresseIniziale){
-        comune.getContenutoController().creaItinerario(puntoInteresseIniziale);
+    public void creaItinerario(String nome,PuntoInteresse... puntoInteresseIniziale){
+        Itinerario itinerario = new Itinerario(nome, puntoInteresseIniziale);
+        comune.getContenutoController().creaItinerario(nome,puntoInteresseIniziale);
     }
     public void aggiungiTappaItinerario(Itinerario itinerario, PuntoInteresse puntoInteresse){
         comune.getContenutoController().addTappa(itinerario,puntoInteresse);
@@ -32,8 +48,5 @@ public class Contributor extends TuristaLoggato {
         return true;
     }
 
-    public Contributor(Turista turista,Comune comune) {
-        super(turista);
-        this.comune=comune;
-    }
+
 }
