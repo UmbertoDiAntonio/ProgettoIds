@@ -17,7 +17,7 @@ public class Comune {
 
 
 
-    private final Set<Curatore> curatori = new HashSet<>();
+    private final ArrayList<Curatore> curatori = new ArrayList<>();
     private GestorePiattaforma gestorePiattaforma ;
     private final ArrayList<Contributor> contributors = new ArrayList<>();
     private final Set<Animatore> animatori = new HashSet<>();
@@ -46,7 +46,7 @@ public class Comune {
         return contributors;
     }
 
-    public Set<Curatore> getCuratori() {
+    public ArrayList<Curatore> getCuratori() {
         return curatori;
     }
 

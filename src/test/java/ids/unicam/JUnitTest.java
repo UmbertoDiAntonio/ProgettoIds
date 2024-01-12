@@ -28,7 +28,6 @@ public class JUnitTest {
     @Test
     public void creaTuristaLoggato() {
         {
-            Turista turista = new Turista();
             GestorePiattaforma gestorePiattaforma=new GestorePiattaforma();
             Comune comune=new Comune("nome",new Punto(1,1),gestorePiattaforma, new ContenutoController(), new ContestController(),new UtentiController());
 
@@ -41,8 +40,19 @@ public class JUnitTest {
             assertEquals(1,comune.getContributors().size());
 
             gestorePiattaforma.promuovi(comune,comune.getContributors().get(0), Gradi.Curatore);
+
             assertEquals(0,comune.getContributors().size());
             assertEquals(1,comune.getCuratori().size());
+
+            gestorePiattaforma.promuovi(comune,comune.getCuratori().get(0), Gradi.Contributor);
+
+            assertEquals(1,comune.getContributors().size());
+            assertEquals(0,comune.getCuratori().size());
+
+            gestorePiattaforma.promuovi(comune,comune.getContributors().get(0), Gradi.ContributorTrusted);
+
+            assertEquals(1,comune.getContributors().size());
+            assertEquals(0,comune.getCuratori().size());
         }
     }
 }
