@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>C:/Users/umber/IdeaProjects/ProgettoIds</OriginalElement>
+  <nodes>
+    <node x="752.0" y="241.5">ids.unicam.JUnitTest</node>
+    <node x="642.0" y="-15.0">ids.unicam.DatabaseManager</node>
+    <node x="794.0" y="1110.5">ids.unicam.controller.ContenutoController</node>
+    <node x="615.0" y="3039.5">ids.unicam.controller.UtentiController</node>
+    <node x="-43.5" y="3028.5">ids.unicam.models.attori.Curatore</node>
+    <node x="-108.5" y="1861.5">ids.unicam.models.attori.Contributor</node>
+    <node x="867.0" y="1872.5">ids.unicam.utilites.Punto</node>
+    <node x="400.0" y="2892.5">ids.unicam.boundary.MenuTurista</node>
+    <node x="-93.0" y="989.5">ids.unicam.models.attori.TuristaLoggato</node>
+    <node x="296.0" y="2459.5">ids.unicam.models.contenuti.Contest</node>
+    <node x="-10.0" y="241.5">ids.unicam.models.attori.Turista</node>
+    <node x="225.0" y="3061.5">ids.unicam.controller.GestoreController</node>
+    <node x="737.5" y="2503.5">ids.unicam.models.contenuti.Itinerario</node>
+    <node x="686.0" y="1705.0">ids.unicam.models.contenuti.Foto</node>
+    <node x="544.0" y="132.5">ids.unicam.models.attori.GestorePiattaforma</node>
+    <node x="125.0" y="2869.0">ids.unicam.models.Invito</node>
+    <node x="612.5" y="596.0">ids.unicam.models.contenuti.Materiale</node>
+    <node x="446.0" y="241.5">ids.unicam.models.Gradi</node>
+    <node x="509.5" y="1212.5">ids.unicam.Main</node>
+    <node x="445.0" y="-15.0">ids.unicam.boundary.MenuContributor</node>
+    <node x="296.0" y="-15.0">ids.unicam.models.Tempo</node>
+    <node x="96.0" y="145.0">ids.unicam.DatabaseManagerPending</node>
+    <node x="585.5" y="1874.0">ids.unicam.models.contenuti.Contenuto</node>
+    <node x="82.0" y="-15.0">ids.unicam.controller.ComuneController</node>
+    <node x="207.5" y="431.0">ids.unicam.models.Comune</node>
+    <node x="151.0" y="2261.5">ids.unicam.models.attori.Animatore</node>
+    <node x="-107.0" y="2539.5">ids.unicam.models.attori.ContributorTrusted</node>
+    <node x="282.5" y="1623.5">ids.unicam.controller.ContestController</node>
+    <node x="602.0" y="2203.5">ids.unicam.models.contenuti.PuntoInteresse</node>
+    <node x="378.0" y="145.0">ids.unicam.models.Orario</node>
+    <node x="298.0" y="265.0">ids.unicam.models.Range</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="ids.unicam.models.attori.ContributorTrusted" target="ids.unicam.models.attori.Contributor" relationship="GENERALIZATION">
+      <point x="0.0" y="-72.5" />
+      <point x="0.0" y="130.5" />
+    </edge>
+    <edge source="ids.unicam.models.Range" target="ids.unicam.models.Tempo" relationship="GENERALIZATION">
+      <point x="0.0" y="-27.0" />
+      <point x="0.0" y="27.0" />
+    </edge>
+    <edge source="ids.unicam.models.attori.Curatore" target="ids.unicam.models.attori.ContributorTrusted" relationship="GENERALIZATION">
+      <point x="0.0" y="-83.5" />
+      <point x="0.0" y="72.5" />
+    </edge>
+    <edge source="ids.unicam.models.contenuti.Foto" target="ids.unicam.models.contenuti.Materiale" relationship="GENERALIZATION">
+      <point x="0.0" y="-27.0" />
+      <point x="826.0" y="1672.0" />
+      <point x="766.0" y="1672.0" />
+      <point x="0.0" y="96.0" />
+    </edge>
+    <edge source="ids.unicam.models.contenuti.Contest" target="ids.unicam.models.contenuti.Contenuto" relationship="GENERALIZATION">
+      <point x="0.0" y="-152.5" />
+      <point x="486.0" y="2172.0" />
+      <point x="666.0" y="2172.0" />
+      <point x="0.0" y="118.0" />
+    </edge>
+    <edge source="ids.unicam.models.attori.Animatore" target="ids.unicam.models.attori.Contributor" relationship="GENERALIZATION">
+      <point x="0.0" y="-50.5" />
+      <point x="266.0" y="2232.0" />
+      <point x="66.0" y="2232.0" />
+      <point x="0.0" y="130.5" />
+    </edge>
+    <edge source="ids.unicam.models.attori.TuristaLoggato" target="ids.unicam.models.attori.Turista" relationship="GENERALIZATION">
+      <point x="0.0" y="-262.5" />
+      <point x="0.0" y="50.5" />
+    </edge>
+    <edge source="ids.unicam.models.contenuti.Itinerario" target="ids.unicam.models.contenuti.Contenuto" relationship="GENERALIZATION">
+      <point x="0.0" y="-108.5" />
+      <point x="866.0" y="2172.0" />
+      <point x="666.0" y="2172.0" />
+      <point x="0.0" y="118.0" />
+    </edge>
+    <edge source="ids.unicam.models.contenuti.PuntoInteresse" target="ids.unicam.models.contenuti.Contenuto" relationship="GENERALIZATION">
+      <point x="0.0" y="-108.5" />
+      <point x="706.0" y="2172.0" />
+      <point x="666.0" y="2172.0" />
+      <point x="0.0" y="118.0" />
+    </edge>
+    <edge source="ids.unicam.models.Orario" target="ids.unicam.models.Tempo" relationship="GENERALIZATION">
+      <point x="0.0" y="-27.0" />
+      <point x="426.0" y="112.0" />
+      <point x="346.0" y="112.0" />
+      <point x="0.0" y="27.0" />
+    </edge>
+    <edge source="ids.unicam.models.attori.Contributor" target="ids.unicam.models.attori.TuristaLoggato" relationship="GENERALIZATION">
+      <point x="0.0" y="-130.5" />
+      <point x="0.0" y="262.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Compact" zoom="0.40017602909315997" showDependencies="false" x="497.9999999999998" y="1590.4999999999998" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
