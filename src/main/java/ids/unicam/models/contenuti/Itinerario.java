@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Itinerario extends Contenuto {
     private final String nome;
-    private final List<Contenuto> percorso = new ArrayList<>();
+    private final List<PuntoInteresse> percorso = new ArrayList<>();
 
     public Itinerario(String nome,  PuntoInteresse... puntoInteresses) {
         super(false);
@@ -29,7 +29,7 @@ public class Itinerario extends Contenuto {
         return nome;
     }
 
-    public List<Contenuto> getPercorso() {
+    public List<PuntoInteresse> getPercorso() {
         return percorso;
     }
 }

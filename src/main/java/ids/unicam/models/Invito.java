@@ -7,9 +7,9 @@ import java.util.Set;
 
 public class Invito {
     private final Contest contest;
-    private final long idTurista;
+    private final String idTurista;
 
-    public Invito(Contest contest, long idTurista) {
+    public Invito(Contest contest, String idTurista) {
         this.contest = contest;
         this.idTurista = idTurista;
     }

@@ -16,11 +16,11 @@ public class ContestController {
     private final List<Materiale> waitingMaterials = new ArrayList<>();
     private static final Set<Contest> contests = new HashSet<>();
 
-    public static @NotNull Set<Contest> getContestByTurist(long idTurista) {
+    public static @NotNull Set<Contest> getContestByTurist(String idTurista) {
         Set<Contest> result = new HashSet<>();
         contests.stream().filter(contest -> contest.
                 getInvitati().
-                stream().anyMatch(turistaLoggato -> Long.parseLong(turistaLoggato.getId()) == idTurista)
+                stream().anyMatch(turistaLoggato -> turistaLoggato.getId().equals(idTurista))
         ).forEach(result::add);
         return result;
     }
