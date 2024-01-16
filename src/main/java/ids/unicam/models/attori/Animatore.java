@@ -1,9 +1,6 @@
 package ids.unicam.models.attori;
 
-import ids.unicam.models.Comune;
 import ids.unicam.models.contenuti.Materiale;
-
-import java.util.Date;
 
 public class Animatore extends Contributor {
 

@@ -1,8 +1,5 @@
 package ids.unicam.models;
 
-import ids.unicam.controller.UtentiController;
-import ids.unicam.models.attori.*;
-
 public enum Gradi {
     Contributor,
     ContributorTrusted,

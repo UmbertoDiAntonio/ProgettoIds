@@ -1,16 +1,14 @@
 package ids.unicam.models.contenuti;
 
-import ids.unicam.models.Tempo;
-import ids.unicam.models.contenuti.Contenuto;
-import ids.unicam.models.contenuti.Materiale;
 import ids.unicam.utilites.Punto;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PuntoInteresse extends Contenuto {
-    private String nome;
-    private Punto pt;
+public abstract class PuntoInteresse extends Contenuto {
+    private final String nome;
+    private final Punto pt;
+
 
     public Punto getPt() {
         return pt;
@@ -34,4 +32,8 @@ public class PuntoInteresse extends Contenuto {
         this.nome=nome;
         this.pt = pt;
     }
+
+    public abstract void mostraDettagli();
+
+    public abstract void getGeneralInfo();
 }

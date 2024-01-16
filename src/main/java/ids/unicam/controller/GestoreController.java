@@ -7,8 +7,6 @@ import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.ContributorTrusted;
 import ids.unicam.models.attori.Curatore;
 
-import java.util.HashMap;
-
 public class GestoreController {
 
 

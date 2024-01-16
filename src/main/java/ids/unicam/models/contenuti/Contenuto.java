@@ -18,18 +18,18 @@ public abstract class Contenuto {
         return scadenza;
     }
 
-    private long id;
+    private final long id;
     private boolean approved = false;
 
     private final Set<String> tags=new HashSet<>();
 
-    private boolean isContest;
-    public long getId() {
-        return id;
+    public Contenuto(boolean approved) {
+        this.approved = approved;
+        this.id = ContenutoController.generateID();
     }
 
-    public boolean isContest() {
-        return isContest;
+    public long getId() {
+        return id;
     }
 
     public boolean isApproved() {
@@ -40,8 +40,5 @@ public abstract class Contenuto {
         this.approved = approved;
     }
 
-    public Contenuto(boolean approved) {
-        this.approved = approved;
-        this.id = ContenutoController.generateID();
-    }
+
 }

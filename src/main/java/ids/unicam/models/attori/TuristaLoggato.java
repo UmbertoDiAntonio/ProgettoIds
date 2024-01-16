@@ -1,7 +1,7 @@
 package ids.unicam.models.attori;
 
 import ids.unicam.controller.UtentiController;
-import ids.unicam.models.*;
+import ids.unicam.models.Invito;
 import ids.unicam.models.contenuti.Contenuto;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.Foto;

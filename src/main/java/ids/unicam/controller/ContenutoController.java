@@ -1,8 +1,9 @@
 package ids.unicam.controller;
 
-import ids.unicam.models.Comune;
-import ids.unicam.models.contenuti.*;
-
+import ids.unicam.models.contenuti.Contenuto;
+import ids.unicam.models.contenuti.Itinerario;
+import ids.unicam.models.contenuti.Materiale;
+import ids.unicam.models.contenuti.PuntoInteresse;
 
 import java.util.*;
 

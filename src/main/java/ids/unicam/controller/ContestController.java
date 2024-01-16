@@ -1,12 +1,15 @@
 package ids.unicam.controller;
 
 import ids.unicam.models.attori.Animatore;
+import ids.unicam.models.attori.TuristaLoggato;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.Materiale;
-import ids.unicam.models.attori.TuristaLoggato;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class ContestController {
 
@@ -26,6 +29,13 @@ public class ContestController {
         Set<Contest> result = new HashSet<>();
         contests.stream().filter(contest1 -> Long.parseLong(contest1.getAuthor().getId()) == idAutore).forEach(result::add);
         return result;
+    }
+
+    private static long id = 0;
+
+    public static String generateID() {
+        id+=1;
+        return "CST"+id;
     }
 
     public void creaContest(boolean open, String obbiettivo, Animatore animatore) {

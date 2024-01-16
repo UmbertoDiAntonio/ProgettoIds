@@ -1,10 +1,8 @@
 package ids.unicam.models.attori;
 
-import ids.unicam.models.*;
+import ids.unicam.models.Comune;
 import ids.unicam.models.contenuti.Contenuto;
-import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.Materiale;
-import ids.unicam.models.contenuti.PuntoInteresse;
 
 public class Curatore extends ContributorTrusted {
 

@@ -9,22 +9,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-public class Contest extends Contenuto{
+public class Contest {
     private boolean open;
     private final ContestController controller;
     private final String obiettivo;
     private final Animatore author;
+    private final String id ;
 
     public Animatore getAuthor() {
         return author;
     }
 
     public Contest(boolean open, ContestController controller, String obiettivo, Animatore author) {
-        super(true);
+        this.id = ContestController.generateID();
         this.open = open;
         this.controller = controller;
         this.obiettivo = obiettivo;
         this.author = author;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public void setOpen(boolean open) {
