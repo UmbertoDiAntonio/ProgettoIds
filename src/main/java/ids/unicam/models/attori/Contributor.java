@@ -31,9 +31,10 @@ public class Contributor extends TuristaLoggato {
     public void addMateriale(PuntoInteresse puntoInteresse, Materiale materiale){
         comune.getContenutoController().addMaterialeTo(puntoInteresse,materiale);
     }
-    public void creaItinerario(String nome,PuntoInteresse... puntoInteresseIniziale){
-        Itinerario itinerario = new Itinerario(nome, puntoInteresseIniziale);
-        comune.getContenutoController().creaItinerario(nome,puntoInteresseIniziale);
+    public Itinerario creaItinerario(String nome,PuntoInteresse... puntoInteresseIniziale){
+        //TODO check puntiInteresse sono approvati
+        return comune.getContenutoController().creaItinerario(nome,puntoInteresseIniziale);
+
     }
     public void aggiungiTappaItinerario(Itinerario itinerario, PuntoInteresse puntoInteresse){
         comune.getContenutoController().addTappa(itinerario,puntoInteresse);

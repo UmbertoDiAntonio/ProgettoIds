@@ -21,7 +21,7 @@ public class Curatore extends ContributorTrusted {
     }
     public void approva(Contenuto contenuto) {
         contenuto.setApproved(true);
-        getComune().getContenutoController().getWaiting().remove(contenuto);
+        getComune().getContenutoController().getContenuti().remove(contenuto);
     }
 
 

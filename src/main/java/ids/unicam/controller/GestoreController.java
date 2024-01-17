@@ -2,15 +2,16 @@ package ids.unicam.controller;
 
 import ids.unicam.models.Comune;
 import ids.unicam.models.Gradi;
-import ids.unicam.models.attori.Animatore;
-import ids.unicam.models.attori.Contributor;
-import ids.unicam.models.attori.ContributorTrusted;
-import ids.unicam.models.attori.Curatore;
+import ids.unicam.models.attori.*;
+
+import java.util.Date;
 
 public class GestoreController {
 
 
-    public static void upgrade(Comune comune, Contributor contributor, Gradi grado) {
+    private final UtentiController utentiController = new UtentiController();
+
+    public void upgrade(Comune comune, Contributor contributor, Gradi grado) {
         switch (grado) {
             case Curatore -> {
                 comune.getCuratori().add(new Curatore(comune, contributor));
@@ -22,28 +23,65 @@ public class GestoreController {
             }
             case ContributorTrusted -> {
                 removeOldRank(comune, contributor);
-                comune.getContributors().add(new ContributorTrusted(comune,contributor));//TODO verifica
-
+                comune.getContributorTrusteds().add(new ContributorTrusted(comune, contributor));//TODO verifica
             }
             default -> {
-                comune.getContributors().add(new Contributor(comune,contributor));//TODO verifica
+                comune.getContributors().add(new Contributor(comune, contributor));//TODO verifica
                 removeOldRank(comune, contributor);
             }
         }
 
     }
 
-    private static void removeOldRank(Comune comune, Contributor contributor) {
+    private void removeOldRank(Comune comune, Contributor contributor) {
         switch (contributor) {
-            case Curatore curatore ->{ comune.getCuratori().remove(curatore);}
-            case ContributorTrusted contributorTrusted -> {
-                comune.getContributors().remove(contributorTrusted);//TODO verifica
+            case Curatore curatore -> {
+                comune.getCuratori().remove(curatore);
             }
-            case Animatore animatore -> {comune.getAnimatori().remove(animatore);}
+            case ContributorTrusted contributorTrusted -> {
+                comune.getContributorTrusteds().remove(contributorTrusted);//TODO verifica
+            }
+            case Animatore animatore -> {
+                comune.getAnimatori().remove(animatore);
+            }
             case Contributor contributor1 -> {
                 comune.getContributors().remove(contributor1);
             }
             case null -> System.out.println("NULLL"); //TODO
         }
+    }
+
+    public void registra(Comune comune, int tipo, String nome, String cognome, Date birthday, String password, String username) {
+        switch (tipo) {
+            case 0:
+                registraTurista(nome, cognome, birthday, password, username);
+                break;
+            case 1:
+                registraContributor(comune, nome, cognome, birthday, password, username);
+                break;
+            default:
+                //TODO
+                return;
+        }
+
+    }
+
+    public void registraTurista(String nome, String cognome, Date birthday, String password, String username) {
+        utentiController.getTuristi().add(new TuristaLoggato(nome, cognome, birthday, password, username));
+
+        //TODO aggiungere al database
+
+    }
+
+
+    public Contributor registraContributor(Comune comune, String nome, String cognome, Date birthday, String password, String username) {
+        Contributor contributor = new Contributor(comune, nome, cognome, birthday, password, username);
+        comune.getContributors().add(contributor);
+        return contributor;
+        //TODO
+    }
+
+    public UtentiController getUtentiController() {
+        return utentiController;
     }
 }

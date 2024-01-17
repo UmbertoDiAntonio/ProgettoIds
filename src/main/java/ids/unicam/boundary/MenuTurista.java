@@ -13,6 +13,6 @@ public class MenuTurista {
     }
 
     public void registra(Comune comune, int tipo, String nome, String cognome, Date birthday, String password, String username){
-        controller.registra(comune,tipo,nome,cognome,birthday,password,username);
+        comune.getGestorePiattaforma().getGestoreController().registra(comune,tipo,nome,cognome,birthday,password,username);
     }
 }

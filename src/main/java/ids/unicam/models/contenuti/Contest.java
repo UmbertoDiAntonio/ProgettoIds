@@ -14,7 +14,9 @@ public class Contest {
     private final ContestController controller;
     private final String obiettivo;
     private final Animatore author;
-    private final String id ;
+    private final String id;
+    private final List<TuristaLoggato> invitati = new ArrayList<>();
+    private final HashMap<TuristaLoggato, Set<Materiale>> materialiContest = new HashMap<>();
 
     public Animatore getAuthor() {
         return author;
@@ -37,28 +39,26 @@ public class Contest {
     }
 
 
-    private final List<TuristaLoggato> invitati=new ArrayList<>();
-
     public String getObiettivo() {
         return obiettivo;
     }
 
     //Multimap<String,String> map = ArrayListMultimap.create();
-    private final HashMap<TuristaLoggato, Set<Materiale>> materialiContest = new HashMap<>();
+
 
     public HashMap<TuristaLoggato, Set<Materiale>> getMaterialiContest() {
         return materialiContest;
     }
 
-    public void invita(TuristaLoggato turistaLoggato){
-        controller.invita(this,turistaLoggato);
+    public void invita(TuristaLoggato turistaLoggato) {
+        controller.invita(this, turistaLoggato);
     }
 
     public boolean isOpen() {
         return open;
     }
 
-    public List<TuristaLoggato> getInvitati() {
+    public List<TuristaLoggato> getPartecipanti() {
         return invitati;
     }
 

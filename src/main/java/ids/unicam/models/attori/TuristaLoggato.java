@@ -75,7 +75,7 @@ public class TuristaLoggato extends Turista {
         //TODO
     }
 
-    public void joinContest(Invito invito) { //invocato dall'interfaccia
+    public void accettaInvito(Invito invito) { //invocato dall'interfaccia
         for (Invito inv : invitiRicevuti) {
             if (inv.equals(invito)) {
                 Contest contest = invito.getContest();
@@ -83,10 +83,14 @@ public class TuristaLoggato extends Turista {
                     //TODO
                     return;
                 }
-                assert contest.getInvitati() != null;
-                contest.getInvitati().add(this);
+                assert contest.getPartecipanti() != null;
+                contest.getPartecipanti().add(this);
             }
         }
+    }
+
+    public void joinContest(Contest contest){
+        contest.getPartecipanti().add(this);
     }
 
     public boolean logOut() {

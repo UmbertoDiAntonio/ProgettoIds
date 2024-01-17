@@ -14,19 +14,19 @@ import java.util.Set;
 public class ContestController {
 
     private final List<Materiale> waitingMaterials = new ArrayList<>();
-    private static final Set<Contest> contests = new HashSet<>();
+    private final Set<Contest> contests = new HashSet<>();
 
-    public static @NotNull Set<Contest> getContestByTurist(String idTurista) {
+    public @NotNull Set<Contest> getContestByTurist(String idTurista) {
         Set<Contest> result = new HashSet<>();
         contests.stream().filter(contest -> contest.
-                getInvitati().
+                getPartecipanti().
                 stream().anyMatch(turistaLoggato -> turistaLoggato.getId().equals(idTurista))
         ).forEach(result::add);
         return result;
     }
 
-    public static @NotNull Set<Contest> getContestByAuthor(long idAutore) {
-        Set<Contest> result = new HashSet<>();
+    public @NotNull ArrayList<Contest> getContestByAuthor(long idAutore) {
+        ArrayList<Contest> result = new ArrayList<>();
         contests.stream().filter(contest1 -> Long.parseLong(contest1.getAuthor().getId()) == idAutore).forEach(result::add);
         return result;
     }

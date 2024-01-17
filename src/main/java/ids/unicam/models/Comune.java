@@ -20,21 +20,17 @@ public class Comune {
     private final ArrayList<Curatore> curatori = new ArrayList<>();
     private GestorePiattaforma gestorePiattaforma ;
     private final ArrayList<Contributor> contributors = new ArrayList<>();
-    private final Set<Animatore> animatori = new HashSet<>();
-    private final ArrayList<TuristaLoggato> turisti = new ArrayList<>();
+
+    private final ArrayList<ContributorTrusted> contributorTrusteds = new ArrayList<>();
+    private final ArrayList<Animatore> animatori = new ArrayList<>();
     private ContenutoController contenutoController;
     private ContestController contestController;
-    private UtentiController utentiController;
 
-
-    public ArrayList<TuristaLoggato> getTuristi() {
-        return turisti;
-    }
     public GestorePiattaforma getGestorePiattaforma() {
         return gestorePiattaforma;
     }
 
-    public Set<Animatore> getAnimatori() {
+    public ArrayList<Animatore> getAnimatori() {
         return animatori;
     }
 
@@ -44,6 +40,10 @@ public class Comune {
 
     public ArrayList<Contributor> getContributors() {
         return contributors;
+    }
+
+    public ArrayList<ContributorTrusted> getContributorTrusteds() {
+        return contributorTrusteds;
     }
 
     public ArrayList<Curatore> getCuratori() {
@@ -68,7 +68,6 @@ public class Comune {
         this.nome=nome;
         this.contenutoController=contenutoController;
         this.contestController=contestController;
-        this.utentiController = utentiController;
     }
     public Comune(String nome, Punto posizione, GestorePiattaforma gestorePiattaforma){
         new Comune(nome,posizione,gestorePiattaforma,new ContenutoController(), new ContestController(),new UtentiController());
@@ -81,6 +80,6 @@ public class Comune {
     public ContestController getContestController() {
         return contestController;
     }
-    public UtentiController getUtentiController(){return utentiController;}
+
 
 }

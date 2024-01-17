@@ -17,7 +17,7 @@ public class Invito {
         if (contest.isOpen())
             return false;
 
-        Set<Contest> c1 = ContestController.getContestByTurist(idTurista);
+        Set<Contest> c1 = contest.getAuthor().getComune().getContestController().getContestByTurist(idTurista);
         return c1.contains(contest);
     }
 

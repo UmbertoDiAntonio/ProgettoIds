@@ -24,13 +24,13 @@ public class ContributorTrusted extends Contributor{
     }
 
     @Override
-    public void creaItinerario(String nome,PuntoInteresse... puntoInteresse){
-        super.creaItinerario(nome,puntoInteresse);
-        Arrays.stream(puntoInteresse).toList().forEach(puntoInteresse1 -> puntoInteresse1.setApproved(true));
+    public Itinerario creaItinerario(String nome,PuntoInteresse... puntoInteresse){
+        return super.creaItinerario(nome,puntoInteresse);
+        //Arrays.stream(puntoInteresse).toList().forEach(puntoInteresse1 -> puntoInteresse1.setApproved(true));
     }
     @Override
     public void aggiungiTappaItinerario(Itinerario itinerario, PuntoInteresse puntoInteresse){
         super.aggiungiTappaItinerario(itinerario,puntoInteresse);
-        puntoInteresse.setApproved(true);
+        //puntoInteresse.setApproved(true);
     }
 }

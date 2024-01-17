@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>/Users/leonardo/Workspace - Projects Coding/Unicam.Project/Ids</OriginalElement>
+  <nodes>
+    <node x="912.0" y="-14.0">ids.unicam.models.Tempo</node>
+    <node x="1439.0" y="3953.5">ids.unicam.Main</node>
+    <node x="1761.0" y="1595.0">ids.unicam.models.contenuti.Itinerario</node>
+    <node x="1674.0" y="3853.0">ids.unicam.models.contenuti.PuntoInteresse</node>
+    <node x="1872.5" y="4399.0">ids.unicam.models.contenuti.POIFactory.Museo</node>
+    <node x="766.0" y="581.0">ids.unicam.models.attori.TuristaLoggato</node>
+    <node x="1627.5" y="4399.0">ids.unicam.models.contenuti.POIFactory.Attivita</node>
+    <node x="592.5" y="99.0">ids.unicam.models.Invito</node>
+    <node x="893.5" y="146.0">ids.unicam.models.Range</node>
+    <node x="1221.5" y="2369.5">ids.unicam.models.attori.Curatore</node>
+    <node x="373.5" y="1421.0">ids.unicam.boundary.MenuTurista</node>
+    <node x="1750.0" y="4606.0">ids.unicam.DatabaseManager</node>
+    <node x="1234.5" y="3566.0">ids.unicam.models.contenuti.Materiale</node>
+    <node x="897.5" y="4137.0">ids.unicam.models.Gradi</node>
+    <node x="607.5" y="1606.0">ids.unicam.controller.GestoreController</node>
+    <node x="974.5" y="264.0">ids.unicam.models.contenuti.Contenuto</node>
+    <node x="1131.0" y="1640.5">ids.unicam.models.attori.ContributorTrusted</node>
+    <node x="1034.5" y="1222.5">ids.unicam.models.attori.Animatore</node>
+    <node x="1027.0" y="2725.0">ids.unicam.models.Comune</node>
+    <node x="686.0" y="2390.0">ids.unicam.models.attori.GestorePiattaforma</node>
+    <node x="829.5" y="4410.0">ids.unicam.models.contenuti.POIFactory.AttivitaFactory</node>
+    <node x="758.0" y="342.5">ids.unicam.models.attori.Turista</node>
+    <node x="-121.5" y="1518.0">ids.unicam.models.contenuti.Contest</node>
+    <node x="79.5" y="1993.0">ids.unicam.controller.ContestController</node>
+    <node x="-110.0" y="2335.0">ids.unicam.utilites.Punto</node>
+    <node x="1149.5" y="4182.5">ids.unicam.models.contenuti.POIFactory.PoiFactory</node>
+    <node x="1080.5" y="3966.0">ids.unicam.models.contenuti.Foto</node>
+    <node x="700.0" y="4593.5">ids.unicam.GestioneUtenti.JUnitTestUtenti</node>
+    <node x="1080.0" y="4606.0">ids.unicam.DatabaseManagerPending</node>
+    <node x="701.0" y="1199.0">ids.unicam.controller.UtentiController</node>
+    <node x="1211.0" y="3255.0">ids.unicam.models.attori.Contributor</node>
+    <node x="514.0" y="366.0">ids.unicam.models.Orario</node>
+    <node x="1506.0" y="4560.5">ids.unicam.GestioneContenuti.JUnitTestContenuti</node>
+    <node x="1550.0" y="4206.0">ids.unicam.controller.ComuneController</node>
+    <node x="1609.5" y="2269.0">ids.unicam.controller.ContenutoController</node>
+    <node x="1874.0" y="4206.0">ids.unicam.boundary.MenuContributor</node>
+    <node x="1229.5" y="4422.5">ids.unicam.models.contenuti.POIFactory.MuseoFactory</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="ids.unicam.models.contenuti.POIFactory.MuseoFactory" target="ids.unicam.models.contenuti.POIFactory.PoiFactory" relationship="REALIZATION">
+      <point x="0.0" y="-37.5" />
+      <point x="1402.0" y="4380.0" />
+      <point x="1322.0" y="4380.0" />
+      <point x="0.0" y="37.5" />
+    </edge>
+    <edge source="ids.unicam.models.contenuti.Contenuto" target="ids.unicam.models.Tempo" relationship="TO_ONE">
+      <point x="0.0" y="-116.0" />
+      <point x="1082.0" y="120.0" />
+      <point x="987.0" y="120.0" />
+      <point x="25.0" y="14.0" />
+    </edge>
+    <edge source="ids.unicam.models.contenuti.Contest" target="ids.unicam.controller.ContestController" relationship="TO_ONE">
+      <point x="-111.75" y="182.0" />
+      <point x="-9.75" y="1960.0" />
+      <point x="180.75" y="1960.0" />
+      <point x="-101.25" y="-127.0" />
+    </edge>
+    <edge source="ids.unicam.controller.UtentiController" target="ids.unicam.models.attori.TuristaLoggato" relationship="TO_MANY">
+      <point x="0.0" y="-61.0" />
+      <point x="842.0" y="1120.0" />
+      <point x="834.0" y="1120.0" />
+      <point x="-68.0" y="259.0" />
+    </edge>
+    <edge source="ids.unicam.models.contenuti.PuntoInteresse" target="ids.unicam.models.contenuti.Contenuto" relationship="GENERALIZATION">
+      <point x="85.33333333333334" y="-127.0" />
+      <point x="1887.3333333333333" y="3820.0" />
+      <point x="2102.0" y="3820.0" />
+      <point x="2102.0" y="820.0" />
+      <point x="1902.0" y="820.0" />
+      <point x="1902.0" y="520.0" />
+      <point x="1135.75" y="520.0" />
+      <point x="53.75" y="116.0" />
+    </edge>
+    <edge source="ids.unicam.models.contenuti.Itinerario" target="ids.unicam.models.contenuti.Contenuto" relationship="GENERALIZATION">
+      <point x="0.0" y="-105.0" />
+      <point x="1902.0" y="520.0" />
+      <point x="1135.75" y="520.0" />
+      <point x="53.75" y="116.0" />
+    </edge>
+    <edge source="ids.unicam.boundary.MenuTurista" target="ids.unicam.controller.UtentiController" relationship="TO_ONE">
+      <point x="0.0" y="-39.0" />
+      <point x="582.0" y="1400.0" />
+      <point x="842.0" y="1400.0" />
+      <point x="0.0" y="61.0" />
+    </edge>
+    <edge source="ids.unicam.models.contenuti.POIFactory.AttivitaFactory" target="ids.unicam.models.contenuti.POIFactory.PoiFactory" relationship="REALIZATION">
+      <point x="0.0" y="-50.0" />
+      <point x="1002.0" y="4380.0" />
+      <point x="1322.0" y="4380.0" />
+      <point x="0.0" y="37.5" />
+    </edge>
+    <edge source="ids.unicam.models.contenuti.Contest" target="ids.unicam.models.attori.TuristaLoggato" relationship="TO_MANY">
+      <point x="111.75" y="-182.0" />
+      <point x="213.75" y="1400.0" />
+      <point x="542.0" y="1400.0" />
+      <point x="542.0" y="1340.0" />
+      <point x="682.0" y="1340.0" />
+      <point x="682.0" y="1180.0" />
+      <point x="842.0" y="1180.0" />
+      <point x="842.0" y="1120.0" />
+      <point x="834.0" y="1120.0" />
+      <point x="-68.0" y="259.0" />
+    </edge>
+    <edge source="ids.unicam.controller.ContenutoController" target="ids.unicam.models.contenuti.PuntoInteresse" relationship="TO_MANY">
+      <point x="106.25" y="171.0" />
+      <point x="1928.25" y="2640.0" />
+      <point x="1922.0" y="2640.0" />
+      <point x="1922.0" y="2920.0" />
+      <point x="1962.0" y="2920.0" />
+      <point x="1962.0" y="3780.0" />
+      <point x="1802.0" y="3780.0" />
+      <point x="0.0" y="-127.0" />
+    </edge>
+    <edge source="ids.unicam.models.Orario" target="ids.unicam.models.Tempo" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="562.0" y="80.0" />
+      <point x="942.0" y="80.0" />
+      <point x="942.0" y="40.0" />
+      <point x="937.0" y="40.0" />
+      <point x="-25.0" y="14.0" />
+    </edge>
+    <edge source="ids.unicam.models.contenuti.POIFactory.Attivita" target="ids.unicam.models.contenuti.PuntoInteresse" relationship="GENERALIZATION">
+      <point x="0.0" y="-61.0" />
+      <point x="1722.0" y="4360.0" />
+      <point x="1802.0" y="4360.0" />
+      <point x="0.0" y="127.0" />
+    </edge>
+    <edge source="ids.unicam.models.attori.Contributor" target="ids.unicam.models.attori.TuristaLoggato" relationship="GENERALIZATION">
+      <point x="143.25" y="-105.0" />
+      <point x="1545.25" y="3220.0" />
+      <point x="1582.0" y="3220.0" />
+      <point x="1582.0" y="1180.0" />
+      <point x="970.0" y="1180.0" />
+      <point x="68.0" y="259.0" />
+    </edge>
+    <edge source="ids.unicam.models.contenuti.PuntoInteresse" target="ids.unicam.models.contenuti.Materiale" relationship="TO_MANY">
+      <point x="-85.33333333333334" y="-127.0" />
+      <point x="1716.6666666666667" y="3820.0" />
+      <point x="1342.0" y="3820.0" />
+      <point x="0.0" y="94.0" />
+    </edge>
+    <edge source="ids.unicam.models.attori.Curatore" target="ids.unicam.models.attori.ContributorTrusted" relationship="GENERALIZATION">
+      <point x="0.0" y="-70.5" />
+      <point x="0.0" y="59.5" />
+    </edge>
+    <edge source="ids.unicam.models.contenuti.Foto" target="ids.unicam.models.contenuti.Materiale" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1122.0" y="3940.0" />
+      <point x="1270.3333333333333" y="3940.0" />
+      <point x="-71.66666666666666" y="94.0" />
+    </edge>
+    <edge source="ids.unicam.models.contenuti.Materiale" target="ids.unicam.models.contenuti.PuntoInteresse" relationship="TO_ONE">
+      <point x="71.66666666666666" y="94.0" />
+      <point x="1413.6666666666667" y="3780.0" />
+      <point x="1802.0" y="3780.0" />
+      <point x="0.0" y="-127.0" />
+    </edge>
+    <edge source="ids.unicam.controller.ContestController" target="ids.unicam.models.contenuti.Materiale" relationship="TO_MANY">
+      <point x="-101.25" y="127.0" />
+      <point x="180.75" y="2920.0" />
+      <point x="1002.0" y="2920.0" />
+      <point x="1002.0" y="3480.0" />
+      <point x="1282.0" y="3480.0" />
+      <point x="1282.0" y="3540.0" />
+      <point x="1288.25" y="3540.0" />
+      <point x="-53.75" y="-94.0" />
+    </edge>
+    <edge source="ids.unicam.models.attori.TuristaLoggato" target="ids.unicam.models.attori.Turista" relationship="GENERALIZATION">
+      <point x="-68.0" y="-259.0" />
+      <point x="834.0" y="560.0" />
+      <point x="842.0" y="560.0" />
+      <point x="0.0" y="37.5" />
+    </edge>
+    <edge source="ids.unicam.controller.ContenutoController" target="ids.unicam.models.contenuti.Materiale" relationship="TO_MANY">
+      <point x="106.25" y="171.0" />
+      <point x="1928.25" y="2640.0" />
+      <point x="1922.0" y="2640.0" />
+      <point x="1922.0" y="3480.0" />
+      <point x="1282.0" y="3480.0" />
+      <point x="1282.0" y="3540.0" />
+      <point x="1288.25" y="3540.0" />
+      <point x="-53.75" y="-94.0" />
+    </edge>
+    <edge source="ids.unicam.models.attori.GestorePiattaforma" target="ids.unicam.controller.GestoreController" relationship="TO_ONE">
+      <point x="0.0" y="-50.0" />
+      <point x="0.0" y="94.0" />
+    </edge>
+    <edge source="ids.unicam.models.contenuti.Materiale" target="ids.unicam.models.attori.Contributor" relationship="TO_ONE">
+      <point x="53.75" y="-94.0" />
+      <point x="1395.75" y="3540.0" />
+      <point x="1402.0" y="3540.0" />
+      <point x="0.0" y="105.0" />
+    </edge>
+    <edge source="ids.unicam.models.contenuti.Contest" target="ids.unicam.models.attori.Animatore" relationship="TO_ONE">
+      <point x="111.75" y="-182.0" />
+      <point x="213.75" y="1400.0" />
+      <point x="542.0" y="1400.0" />
+      <point x="542.0" y="1380.0" />
+      <point x="1102.0" y="1380.0" />
+      <point x="1102.0" y="1320.0" />
+      <point x="1098.25" y="1320.0" />
+      <point x="-63.75" y="37.5" />
+    </edge>
+    <edge source="ids.unicam.models.Comune" target="ids.unicam.controller.ContenutoController" relationship="TO_ONE">
+      <point x="0.0" y="-215.0" />
+      <point x="1222.0" y="2700.0" />
+      <point x="1202.0" y="2700.0" />
+      <point x="1202.0" y="2640.0" />
+      <point x="1715.75" y="2640.0" />
+      <point x="-106.25" y="171.0" />
+    </edge>
+    <edge source="ids.unicam.models.Comune" target="ids.unicam.controller.ContestController" relationship="TO_ONE">
+      <point x="0.0" y="-215.0" />
+      <point x="1222.0" y="2700.0" />
+      <point x="1202.0" y="2700.0" />
+      <point x="1202.0" y="2640.0" />
+      <point x="383.25" y="2640.0" />
+      <point x="101.25" y="127.0" />
+    </edge>
+    <edge source="ids.unicam.models.Invito" target="ids.unicam.models.contenuti.Contest" relationship="TO_ONE">
+      <point x="-44.75" y="61.0" />
+      <point x="637.25" y="820.0" />
+      <point x="-18.0" y="820.0" />
+      <point x="-18.0" y="1480.0" />
+      <point x="-9.75" y="1480.0" />
+      <point x="-111.75" y="-182.0" />
+    </edge>
+    <edge source="ids.unicam.models.Comune" target="ids.unicam.models.attori.Contributor" relationship="TO_MANY">
+      <point x="97.5" y="215.0" />
+      <point x="1319.5" y="3220.0" />
+      <point x="1354.25" y="3220.0" />
+      <point x="-47.75" y="-105.0" />
+    </edge>
+    <edge source="ids.unicam.models.Range" target="ids.unicam.models.Tempo" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="942.0" y="40.0" />
+      <point x="937.0" y="40.0" />
+      <point x="-25.0" y="14.0" />
+    </edge>
+    <edge source="ids.unicam.models.attori.TuristaLoggato" target="ids.unicam.models.Invito" relationship="TO_MANY">
+      <point x="68.0" y="-259.0" />
+      <point x="970.0" y="560.0" />
+      <point x="962.0" y="560.0" />
+      <point x="962.0" y="520.0" />
+      <point x="726.75" y="520.0" />
+      <point x="44.75" y="61.0" />
+    </edge>
+    <edge source="ids.unicam.models.attori.TuristaLoggato" target="ids.unicam.models.contenuti.Contenuto" relationship="TO_MANY">
+      <point x="68.0" y="-259.0" />
+      <point x="970.0" y="560.0" />
+      <point x="962.0" y="560.0" />
+      <point x="962.0" y="520.0" />
+      <point x="1028.25" y="520.0" />
+      <point x="-53.75" y="116.0" />
+    </edge>
+    <edge source="ids.unicam.models.Comune" target="ids.unicam.models.attori.Curatore" relationship="TO_MANY">
+      <point x="0.0" y="-215.0" />
+      <point x="1222.0" y="2700.0" />
+      <point x="1202.0" y="2700.0" />
+      <point x="1202.0" y="2640.0" />
+      <point x="1322.0" y="2640.0" />
+      <point x="0.0" y="70.5" />
+    </edge>
+    <edge source="ids.unicam.controller.GestoreController" target="ids.unicam.controller.UtentiController" relationship="TO_ONE">
+      <point x="0.0" y="-94.0" />
+      <point x="0.0" y="61.0" />
+    </edge>
+    <edge source="ids.unicam.models.Comune" target="ids.unicam.utilites.Punto" relationship="TO_ONE">
+      <point x="0.0" y="-215.0" />
+      <point x="1222.0" y="2700.0" />
+      <point x="1202.0" y="2700.0" />
+      <point x="1202.0" y="2660.0" />
+      <point x="22.0" y="2660.0" />
+      <point x="0.0" y="105.0" />
+    </edge>
+    <edge source="ids.unicam.models.attori.Contributor" target="ids.unicam.models.Comune" relationship="TO_ONE">
+      <point x="-143.25" y="-105.0" />
+      <point x="1258.75" y="3220.0" />
+      <point x="1124.5" y="3220.0" />
+      <point x="-97.5" y="215.0" />
+    </edge>
+    <edge source="ids.unicam.models.Comune" target="ids.unicam.models.attori.GestorePiattaforma" relationship="TO_ONE">
+      <point x="0.0" y="-215.0" />
+      <point x="1222.0" y="2700.0" />
+      <point x="1202.0" y="2700.0" />
+      <point x="1202.0" y="2640.0" />
+      <point x="842.0" y="2640.0" />
+      <point x="0.0" y="50.0" />
+    </edge>
+    <edge source="ids.unicam.models.Comune" target="ids.unicam.models.attori.ContributorTrusted" relationship="TO_MANY">
+      <point x="0.0" y="-215.0" />
+      <point x="1222.0" y="2700.0" />
+      <point x="1202.0" y="2700.0" />
+      <point x="1202.0" y="2420.0" />
+      <point x="1194.6666666666667" y="2420.0" />
+      <point x="-127.33333333333334" y="59.5" />
+    </edge>
+    <edge source="ids.unicam.models.attori.ContributorTrusted" target="ids.unicam.models.attori.Contributor" relationship="GENERALIZATION">
+      <point x="127.33333333333337" y="59.5" />
+      <point x="1449.3333333333335" y="2420.0" />
+      <point x="1442.0" y="2420.0" />
+      <point x="1442.0" y="3220.0" />
+      <point x="1449.75" y="3220.0" />
+      <point x="47.75" y="-105.0" />
+    </edge>
+    <edge source="ids.unicam.models.contenuti.Itinerario" target="ids.unicam.models.contenuti.PuntoInteresse" relationship="TO_MANY">
+      <point x="70.5" y="105.0" />
+      <point x="1972.5" y="2240.0" />
+      <point x="2062.0" y="2240.0" />
+      <point x="2062.0" y="3780.0" />
+      <point x="1802.0" y="3780.0" />
+      <point x="0.0" y="-127.0" />
+    </edge>
+    <edge source="ids.unicam.models.contenuti.PuntoInteresse" target="ids.unicam.utilites.Punto" relationship="TO_ONE">
+      <point x="-85.33333333333334" y="-127.0" />
+      <point x="1716.6666666666667" y="3820.0" />
+      <point x="1342.0" y="3820.0" />
+      <point x="1342.0" y="3780.0" />
+      <point x="22.0" y="3780.0" />
+      <point x="0.0" y="105.0" />
+    </edge>
+    <edge source="ids.unicam.models.attori.Animatore" target="ids.unicam.models.attori.Contributor" relationship="GENERALIZATION">
+      <point x="63.75" y="37.5" />
+      <point x="1225.75" y="1620.0" />
+      <point x="1542.0" y="1620.0" />
+      <point x="1542.0" y="3200.0" />
+      <point x="1442.0" y="3200.0" />
+      <point x="1442.0" y="3220.0" />
+      <point x="1449.75" y="3220.0" />
+      <point x="47.75" y="-105.0" />
+    </edge>
+    <edge source="ids.unicam.controller.ContenutoController" target="ids.unicam.models.contenuti.Itinerario" relationship="TO_MANY">
+      <point x="0.0" y="-171.0" />
+      <point x="1822.0" y="2240.0" />
+      <point x="1831.5" y="2240.0" />
+      <point x="-70.5" y="105.0" />
+    </edge>
+    <edge source="ids.unicam.controller.ContestController" target="ids.unicam.models.contenuti.Contest" relationship="TO_MANY">
+      <point x="101.25" y="-127.0" />
+      <point x="383.25" y="1960.0" />
+      <point x="213.75" y="1960.0" />
+      <point x="111.75" y="182.0" />
+    </edge>
+    <edge source="ids.unicam.models.Comune" target="ids.unicam.models.attori.Animatore" relationship="TO_MANY">
+      <point x="0.0" y="-215.0" />
+      <point x="1222.0" y="2700.0" />
+      <point x="1202.0" y="2700.0" />
+      <point x="1202.0" y="2640.0" />
+      <point x="1102.0" y="2640.0" />
+      <point x="1102.0" y="1320.0" />
+      <point x="1098.25" y="1320.0" />
+      <point x="-63.75" y="37.5" />
+    </edge>
+    <edge source="ids.unicam.models.contenuti.POIFactory.Museo" target="ids.unicam.models.contenuti.PuntoInteresse" relationship="GENERALIZATION">
+      <point x="0.0" y="-61.0" />
+      <point x="1962.0" y="4360.0" />
+      <point x="1802.0" y="4360.0" />
+      <point x="0.0" y="127.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Compact" zoom="0.10500636402206194" showDependencies="true" x="1000.0" y="2343.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

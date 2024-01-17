@@ -13,7 +13,8 @@ import java.util.Optional;
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
     public static void main(String[] args) {
-        AttivitaFactory attivitaFactory=new AttivitaFactory();
+
+        AttivitaFactory attivitaFactory=new AttivitaFactory(LocalDate.now());
         PuntoInteresse punto= attivitaFactory.creaPoi("attività",new Punto(1,1),LocalDate.now());
 
         MuseoFactory museoFactory=new MuseoFactory();

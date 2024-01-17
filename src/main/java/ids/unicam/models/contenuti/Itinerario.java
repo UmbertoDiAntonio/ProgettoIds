@@ -25,6 +25,10 @@ public class Itinerario extends Contenuto {
         return true;
     }
 
+    public int getNumeroTappe(){
+        return percorso.size();
+    }
+
     public String getNome() {
         return nome;
     }
