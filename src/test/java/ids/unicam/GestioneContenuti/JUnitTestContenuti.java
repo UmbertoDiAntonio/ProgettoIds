@@ -121,6 +121,7 @@ public class JUnitTestContenuti {
         gestorePiattaforma.getGestoreController().registraTurista("andrea", "neri", new Date(), "eroe", "AN2");
         TuristaLoggato turistaLoggato = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi().getFirst();
 
+
     }
 }
 

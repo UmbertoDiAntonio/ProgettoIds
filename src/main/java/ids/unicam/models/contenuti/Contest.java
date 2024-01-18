@@ -17,6 +17,7 @@ public class Contest {
     private final String id;
     private final List<TuristaLoggato> invitati = new ArrayList<>();
     private final HashMap<TuristaLoggato, Set<Materiale>> materialiContest = new HashMap<>();
+    private String nome;
 
     public Animatore getAuthor() {
         return author;
