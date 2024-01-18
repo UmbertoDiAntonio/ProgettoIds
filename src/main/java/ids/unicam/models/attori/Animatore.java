@@ -11,8 +11,8 @@ public class Animatore extends Contributor {
         super(contributor.getComune(), contributor);
     }
 
-    public void creaContest(String obiettivo, boolean open) {
-        getComune().getContestController().creaContest(open, obiettivo, this);
+    public void creaContest(String nome,String obiettivo, boolean open) {
+        getComune().getContestController().creaContest(nome, open, obiettivo, this);
     }
 
     public void approva(Materiale materiale) {
@@ -23,5 +23,6 @@ public class Animatore extends Contributor {
 
     public void invita(Contest contest, TuristaLoggato turistaLoggato){
         new Invito(contest, turistaLoggato.getId());
+        turistaLoggato.getInvitiRicevuti().add(contest.getInviti().getFirst());
     }
 }

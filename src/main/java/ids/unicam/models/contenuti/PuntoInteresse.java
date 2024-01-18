@@ -1,5 +1,6 @@
 package ids.unicam.models.contenuti;
 
+import ids.unicam.models.attori.TuristaLoggato;
 import ids.unicam.utilites.Punto;
 
 import java.util.ArrayList;
@@ -27,6 +28,9 @@ public abstract class PuntoInteresse extends Contenuto {
         return nome;
     }
 
+    public Materiale creaMateriale(boolean approved, TuristaLoggato turistaLoggato){
+       return new Materiale(approved,this, turistaLoggato);
+    }
     public PuntoInteresse(String nome, Punto pt) {
         super(false);
         this.nome=nome;

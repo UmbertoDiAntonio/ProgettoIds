@@ -7,6 +7,7 @@ import ids.unicam.models.Comune;
 import ids.unicam.models.Gradi;
 import ids.unicam.models.attori.*;
 import ids.unicam.models.contenuti.Itinerario;
+import ids.unicam.models.contenuti.Materiale;
 import ids.unicam.models.contenuti.POIFactory.AttivitaFactory;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Punto;
@@ -94,32 +95,67 @@ public class JUnitTestContenuti {
         GestorePiattaforma gestorePiattaforma = new GestorePiattaforma();
         Comune comune = new Comune("nome", new Punto(1, 1), gestorePiattaforma, new ContenutoController(), new ContestController(), new UtentiController());
 
-        Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new Date(),"ciao","mr");
-        gestorePiattaforma.promuovi(comune,contributor, Gradi.Animatore);
+        Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new Date(), "ciao", "mr");
+        gestorePiattaforma.promuovi(comune, contributor, Gradi.Animatore);
         Animatore animatore = comune.getAnimatori().getFirst();
-        animatore.creaContest("Foto più bella", true);
-        assertEquals(1,comune.getContestController().getContestByAuthor(Long.parseLong(comune.getAnimatori().getFirst().getId())).size());
+        animatore.creaContest("Monumento", "Foto più bella", true);
+        assertEquals(1, comune.getContestController().getContestByAuthor(Long.parseLong(comune.getAnimatori().getFirst().getId())).size());
 
         gestorePiattaforma.getGestoreController().registraTurista("andrea", "neri", new Date(), "eroe", "AN2");
         TuristaLoggato turistaLoggato = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi().getFirst();
         turistaLoggato.joinContest(comune.getContestController().getContestByAuthor(Long.parseLong(comune.getAnimatori().getFirst().getId())).getFirst());
-        assertEquals(1,comune.getContestController().getContestByAuthor(Long.parseLong(comune.getAnimatori().getFirst().getId())).getFirst().getPartecipanti().size());
+        assertEquals(1, comune.getContestController().getContestByAuthor(Long.parseLong(comune.getAnimatori().getFirst().getId())).getFirst().getPartecipanti().size());
 
     }
 
     @Test
-    public void creaContestSuInvito(){
+    public void creaContestSuInvito() {
         GestorePiattaforma gestorePiattaforma = new GestorePiattaforma();
         Comune comune = new Comune("nome", new Punto(1, 1), gestorePiattaforma, new ContenutoController(), new ContestController(), new UtentiController());
 
-        Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new Date(),"ciao","mr");
-        gestorePiattaforma.promuovi(comune,contributor, Gradi.Animatore);
+        Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new Date(), "ciao", "mr");
+        gestorePiattaforma.promuovi(comune, contributor, Gradi.Animatore);
         Animatore animatore = comune.getAnimatori().getFirst();
-        animatore.creaContest("Foto più bella", false);
-        assertEquals(1,comune.getContestController().getContestByAuthor(Long.parseLong(comune.getAnimatori().getFirst().getId())).size());
+        animatore.creaContest("monumento", "Foto più bella", false);
+        assertEquals(1, comune.getContestController().getContestByAuthor(Long.parseLong(comune.getAnimatori().getFirst().getId())).size());
 
         gestorePiattaforma.getGestoreController().registraTurista("andrea", "neri", new Date(), "eroe", "AN2");
         TuristaLoggato turistaLoggato = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi().getFirst();
+        animatore.invita(comune.getContestController().getContests().getFirst(), turistaLoggato);
+        turistaLoggato.accettaInvito(turistaLoggato.getInvitiRicevuti().getFirst());
+        assertEquals(1, comune.getContestController().getContests().getFirst().getPartecipanti().size());
+        assertEquals(true, comune.getContestController().getContests().getFirst().equals(comune.getContestController().getContestByTurist(turistaLoggato.getId()).getFirst()));
+
+    }
+
+    @Test
+    public void aggiuntaMateriale() {
+        GestorePiattaforma gestorePiattaforma = new GestorePiattaforma();
+        Comune comune = new Comune("nome", new Punto(1, 1), gestorePiattaforma, new ContenutoController(), new ContestController(), new UtentiController());
+        Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new Date(), "ciao", "mr");
+        gestorePiattaforma.getGestoreController().registraTurista("andrea", "neri", new Date(), "eroe", "AN2");
+        TuristaLoggato turistaLoggato = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi().getFirst();
+
+        {
+            gestorePiattaforma.promuovi(comune, contributor, Gradi.Animatore);
+            Animatore animatore = comune.getAnimatori().getFirst();
+            animatore.creaContest("monumento", "Foto più bella", true);
+            Materiale materiale = comune.getContestController().getContests().getFirst().creaMateriale(true, turistaLoggato);
+            turistaLoggato.joinContest(comune.getContestController().getContests().getFirst());
+            turistaLoggato.addMaterialeContest(comune.getContestController().getContests().getFirst(), materiale);
+            assertEquals(1, comune.getContestController().getContests().getFirst().getMaterialiContest().size());
+        }
+
+        {
+            AttivitaFactory attivitaFactory = new AttivitaFactory(LocalDate.now());
+            PuntoInteresse puntoInteresse = attivitaFactory.creaPoi("Edicola", new Punto(2,3));
+            Materiale materiale = puntoInteresse.creaMateriale(true, turistaLoggato);
+            contributor.addMateriale(puntoInteresse, materiale);
+            assertEquals(1, puntoInteresse.getMaterialeList().size());
+        }
+
+
+
 
 
     }

@@ -4,6 +4,7 @@ import ids.unicam.controller.ContenutoController;
 import ids.unicam.controller.ContestController;
 import ids.unicam.controller.UtentiController;
 import ids.unicam.models.attori.*;
+import ids.unicam.models.contenuti.Contest;
 import ids.unicam.utilites.Punto;
 
 import java.util.ArrayList;
@@ -16,15 +17,14 @@ public class Comune {
     private Punto posizione;
 
 
-
     private final ArrayList<Curatore> curatori = new ArrayList<>();
     private GestorePiattaforma gestorePiattaforma ;
     private final ArrayList<Contributor> contributors = new ArrayList<>();
-
     private final ArrayList<ContributorTrusted> contributorTrusteds = new ArrayList<>();
     private final ArrayList<Animatore> animatori = new ArrayList<>();
     private ContenutoController contenutoController;
     private ContestController contestController;
+
 
     public GestorePiattaforma getGestorePiattaforma() {
         return gestorePiattaforma;
@@ -80,6 +80,5 @@ public class Comune {
     public ContestController getContestController() {
         return contestController;
     }
-
 
 }

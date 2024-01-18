@@ -14,14 +14,12 @@ public class Curatore extends ContributorTrusted {
         //TODO
     }
     public void approva(Materiale materiale){
-        getComune().getContenutoController().getWaitingMaterials().remove(materiale);
         materiale.setApproved(true);
         materiale.getOwner().addMateriale(materiale);
 
     }
     public void approva(Contenuto contenuto) {
         contenuto.setApproved(true);
-        getComune().getContenutoController().getContenuti().remove(contenuto);
     }
 
 

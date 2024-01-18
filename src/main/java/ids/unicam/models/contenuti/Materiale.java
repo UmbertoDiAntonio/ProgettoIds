@@ -1,17 +1,19 @@
 package ids.unicam.models.contenuti;
 
 import ids.unicam.models.attori.Contributor;
+import ids.unicam.models.attori.TuristaLoggato;
 
 public class Materiale {
     private final PuntoInteresse owner;
-    private final Contributor author;
+
+    private final TuristaLoggato author;
     private boolean approved;
 
     public PuntoInteresse getOwner() {
         return owner;
     }
 
-    public Contributor getAuthor() {
+    public TuristaLoggato getAuthor() {
         return author;
     }
 
@@ -23,10 +25,11 @@ public class Materiale {
         this.approved = approved;
     }
 
-    public Materiale(boolean approved, PuntoInteresse owner, Contributor author) {
+    public Materiale(boolean approved, PuntoInteresse owner, TuristaLoggato author) {
         this.approved = approved;
         this.author=author;
         this.owner=owner;
         owner.getMaterialeList().add(this);
     }
+
 }

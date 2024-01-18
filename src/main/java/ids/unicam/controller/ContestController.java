@@ -14,10 +14,10 @@ import java.util.Set;
 public class ContestController {
 
     private final List<Materiale> waitingMaterials = new ArrayList<>();
-    private final Set<Contest> contests = new HashSet<>();
+    private final ArrayList<Contest> contests = new ArrayList<>();
 
-    public @NotNull Set<Contest> getContestByTurist(String idTurista) {
-        Set<Contest> result = new HashSet<>();
+    public @NotNull ArrayList<Contest> getContestByTurist(String idTurista) {
+        ArrayList<Contest> result = new ArrayList<>();
         contests.stream().filter(contest -> contest.
                 getPartecipanti().
                 stream().anyMatch(turistaLoggato -> turistaLoggato.getId().equals(idTurista))
@@ -38,8 +38,8 @@ public class ContestController {
         return "CST"+id;
     }
 
-    public void creaContest(boolean open, String obbiettivo, Animatore animatore) {
-        contests.add(new Contest(open, this, obbiettivo, animatore));
+    public void creaContest(String nome, boolean open, String obbiettivo, Animatore animatore) {
+        contests.add(new Contest(nome, open, this, obbiettivo, animatore));
     }
 
     public List<Materiale> getWaitingMaterials() {
@@ -55,5 +55,9 @@ public class ContestController {
         contest.getMaterialiContest()
                 .computeIfAbsent(turista, k -> new HashSet<>())
                 .add(materiale);
+    }
+
+    public ArrayList<Contest> getContests() {
+        return contests;
     }
 }

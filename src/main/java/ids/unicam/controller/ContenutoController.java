@@ -14,8 +14,6 @@ public class ContenutoController {
         id+=1;
         return id;
     }
-    private final List<Materiale> waitingMaterials =new ArrayList<>();
-
     private final List<PuntoInteresse> contenuti = new ArrayList<>();
     private final HashMap<PuntoInteresse, Set<Materiale>> materialiPerPunto = new HashMap<>();
 
@@ -25,17 +23,12 @@ public class ContenutoController {
         return contenuti;
     }
 
-    public List<Materiale> getWaitingMaterials() {
-        return waitingMaterials;
-    }
-
     public HashMap<String, Itinerario> getItinerari() {
         return itinerari;
     }
 
     public void addPunto(PuntoInteresse puntoInteresse) {
         contenuti.add(puntoInteresse);
-
     }
 
     public void addMaterialeTo(PuntoInteresse puntoInteresse, Materiale materiale) {

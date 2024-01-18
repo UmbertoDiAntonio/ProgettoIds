@@ -36,4 +36,6 @@ public class Itinerario extends Contenuto {
     public List<PuntoInteresse> getPercorso() {
         return percorso;
     }
+
 }
+

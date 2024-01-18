@@ -4,6 +4,7 @@ import ids.unicam.models.Comune;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.ContributorTrusted;
 import ids.unicam.models.attori.TuristaLoggato;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,6 +20,10 @@ public class UtentiController {
 
     public ArrayList<TuristaLoggato> getTuristi() {
         return turisti;
+    }
+
+    public @Nullable TuristaLoggato getTuristaById(String id){
+        return turisti.stream().filter(turistaLoggato -> turistaLoggato.getId().equals(id)).findFirst().orElse(null);
     }
 
 

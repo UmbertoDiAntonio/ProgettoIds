@@ -2,10 +2,7 @@ package ids.unicam.models.attori;
 
 import ids.unicam.controller.UtentiController;
 import ids.unicam.models.Invito;
-import ids.unicam.models.contenuti.Contenuto;
-import ids.unicam.models.contenuti.Contest;
-import ids.unicam.models.contenuti.Foto;
-import ids.unicam.models.contenuti.PuntoInteresse;
+import ids.unicam.models.contenuti.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -87,6 +84,10 @@ public class TuristaLoggato extends Turista {
                 contest.getPartecipanti().add(this);
             }
         }
+    }
+
+    public void addMaterialeContest(Contest contest, Materiale materiale){
+        contest.getContestController().aggiungiMateriale(this, materiale, contest);
     }
 
     public void joinContest(Contest contest){
