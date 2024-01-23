@@ -13,14 +13,21 @@ public class ContributorTrusted extends Contributor{
     }
 
     @Override
-    public void addPuntoInteresse(PuntoInteresse puntoInteresse){
-       super.addPuntoInteresse(puntoInteresse);
-       puntoInteresse.setApproved(true);
+    public boolean addPuntoInteresse(PuntoInteresse puntoInteresse){
+        if(super.addPuntoInteresse(puntoInteresse)){
+            puntoInteresse.setApproved(true);
+            return true;
+        }
+        return false;
     }
     @Override
-    public void addMateriale(PuntoInteresse puntoInteresse, Materiale materiale){
-        super.addMateriale(puntoInteresse,materiale);
-        materiale.setApproved(true);
+    public boolean addMateriale(PuntoInteresse puntoInteresse, Materiale materiale){
+
+        if(super.addMateriale(puntoInteresse,materiale)){
+            materiale.setApproved(true);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -28,9 +35,5 @@ public class ContributorTrusted extends Contributor{
         return super.creaItinerario(nome,puntoInteresse);
         //Arrays.stream(puntoInteresse).toList().forEach(puntoInteresse1 -> puntoInteresse1.setApproved(true));
     }
-    @Override
-    public void aggiungiTappaItinerario(Itinerario itinerario, PuntoInteresse puntoInteresse){
-        super.aggiungiTappaItinerario(itinerario,puntoInteresse);
-        //puntoInteresse.setApproved(true);
-    }
+
 }

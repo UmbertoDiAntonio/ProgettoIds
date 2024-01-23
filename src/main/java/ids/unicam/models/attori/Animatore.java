@@ -11,7 +11,7 @@ public class Animatore extends Contributor {
         super(contributor.getComune(), contributor);
     }
 
-    public void creaContest(String nome,String obiettivo, boolean open) {
+    public void creaContest(String nome, String obiettivo, boolean open) {
         getComune().getContestController().creaContest(nome, open, obiettivo, this);
     }
 

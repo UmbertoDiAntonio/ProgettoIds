@@ -4,30 +4,31 @@ import org.jetbrains.annotations.NotNull;
 
 public class Punto {
 
-    private double x;
-    private double y;
+    private double latitudine;
+    private double longitudine;
 
-    public Punto(double x, double y) {
-        this.x = x;
-        this.y = y;
+    public Punto(double lat, double lon) {
+        this.latitudine = lat;
+        this.longitudine = lon;
     }
 
-    public double getX() {
-        return x;
+
+    public double getLatitudine() {
+        return latitudine;
     }
 
-    public double getY() {
-        return y;
+    public double getLongitudine() {
+        return longitudine;
     }
 
     public void normalize() {
-        double length = Math.sqrt(x * x + y * y);
+        double length = Math.sqrt(latitudine * latitudine + longitudine * longitudine);
         if (length != 0) {
-            x /= length;
-            y /= length;
+            latitudine /= length;
+            longitudine /= length;
         } else {
-            x = 0;
-            y = 0;
+            latitudine = 0;
+            longitudine = 0;
         }
     }
 
@@ -39,13 +40,13 @@ public class Punto {
     }
 
     public double getDistanceSquared(@NotNull Punto pt) {
-        return Math.pow(pt.getX() - x, 2) + Math.pow(pt.getY() - y, 2);
+        return Math.pow(pt.getLatitudine() - latitudine, 2) + Math.pow(pt.getLongitudine() - longitudine, 2);
     }
 
 
     @Override
     public String toString() {
-        return "(" + x + "," + y + ")";
+        return "(" + latitudine + "," + longitudine + ")";
     }
 
 }

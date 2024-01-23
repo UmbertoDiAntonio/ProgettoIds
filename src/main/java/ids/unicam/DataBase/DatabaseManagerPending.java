@@ -1,4 +1,4 @@
-package ids.unicam;
+package ids.unicam.DataBase;
 
 public class DatabaseManagerPending {
 }

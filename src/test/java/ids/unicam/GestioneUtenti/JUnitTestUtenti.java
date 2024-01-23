@@ -21,7 +21,7 @@ public class JUnitTestUtenti {
     public void generazioneUtenti() {
 
         GestorePiattaforma gestorePiattaforma = new GestorePiattaforma();
-        Comune comune = new Comune("nome", new Punto(1, 1), gestorePiattaforma, new ContenutoController(), new ContestController(), new UtentiController());
+        Comune comune = new Comune("nome", gestorePiattaforma, new ContenutoController(), new ContestController(), new UtentiController());
 
         gestorePiattaforma.getGestoreController().registraTurista("Mario", "Rossi", new Date(), "pass", "user");
         gestorePiattaforma.getGestoreController().registraTurista("Paolo", "Giallo", new Date(), "pass", "user");
@@ -49,7 +49,7 @@ public class JUnitTestUtenti {
     @Test
     public void approvaContenutoCuratore(){
         GestorePiattaforma gestorePiattaforma = new GestorePiattaforma();
-        Comune comune = new Comune("nome", new Punto(1, 1), gestorePiattaforma, new ContenutoController(), new ContestController(), new UtentiController());
+        Comune comune = new Comune("nome", gestorePiattaforma, new ContenutoController(), new ContestController(), new UtentiController());
 
         gestorePiattaforma.getGestoreController().registraContributor(comune, "Peppe", "Peppe", new Date(), "PASS", "user");
         gestorePiattaforma.promuovi(comune, comune.getContributors().get(0), Gradi.Curatore);
@@ -57,7 +57,8 @@ public class JUnitTestUtenti {
 
         gestorePiattaforma.getGestoreController().registraContributor(comune, "Luca", "Rossi", new Date(), "pass1", "user2");
         Contributor contributor = comune.getContributors().get(0);
-        contributor.addPuntoInteresse(new MuseoFactory().creaPoi("Accademia", new Punto(5,6)));
+        System.out.println(contributor.getComune().getPosizione());
+        contributor.addPuntoInteresse(new MuseoFactory().creaPoi("Accademia", new Punto(comune.getPosizione().getLatitudine()+0.1,comune.getPosizione().getLongitudine()+0.1)));
         assertEquals(false, comune.getContenutoController().getContenuti().getFirst().isApproved());
         curatore.approva(comune.getContenutoController().getContenuti().getFirst());
         assertEquals(true, comune.getContenutoController().getContenuti().getFirst().isApproved());

@@ -29,21 +29,19 @@ public class JUnitTestContenuti {
         }
     }
 
-
     @Test
     public void creaPoi() {
 
         GestorePiattaforma gestorePiattaforma = new GestorePiattaforma();
-        Comune comune = new Comune("nome", new Punto(1, 1), gestorePiattaforma, new ContenutoController(), new ContestController(), new UtentiController());
+        Comune comune = new Comune("Milano", gestorePiattaforma, new ContenutoController(), new ContestController(), new UtentiController());
 
         {
             gestorePiattaforma.getGestoreController().registraContributor(comune, "Mario", "Rossi", new Date(), "pass", "user");
             Contributor contributor = comune.getContributors().get(0);
 
-
             assertEquals(0, comune.getContenutoController().getContenuti().size());
             AttivitaFactory attivita1 = new AttivitaFactory(LocalDate.now());
-            PuntoInteresse punto1 = attivita1.creaPoi("bar", new Punto(1, 1));
+            PuntoInteresse punto1 = attivita1.creaPoi("bar", new Punto(comune.getPosizione().getLatitudine() + 0.01, comune.getPosizione().getLongitudine() + 0.01));
             contributor.addPuntoInteresse(punto1);
             assertEquals(1, comune.getContenutoController().getContenuti().size());
             assertEquals(false, comune.getContenutoController().getContenuti().getFirst().isApproved());
@@ -56,18 +54,11 @@ public class JUnitTestContenuti {
             ContributorTrusted contributorTrusted = comune.getContributorTrusteds().get(0);
             assertEquals(1, comune.getContenutoController().getContenuti().size());
             AttivitaFactory attivita1 = new AttivitaFactory(LocalDate.now());
-            PuntoInteresse punto2 = attivita1.creaPoi("bar2", new Punto(2, 2));
+            PuntoInteresse punto2 = attivita1.creaPoi("bar2", new Punto(comune.getPosizione().getLatitudine() + 0.02, comune.getPosizione().getLongitudine() + 0.02));
             contributorTrusted.addPuntoInteresse(punto2);
             assertEquals(2, comune.getContenutoController().getContenuti().size());
             assertEquals(true, comune.getContenutoController().getContenuti().getLast().isApproved());
         }
-
-    }
-
-    @Test
-    public void creaItinerario() {
-        GestorePiattaforma gestorePiattaforma = new GestorePiattaforma();
-        Comune comune = new Comune("nome", new Punto(1, 1), gestorePiattaforma, new ContenutoController(), new ContestController(), new UtentiController());
 
         {
             gestorePiattaforma.getGestoreController().registraContributor(comune, "Mario", "Rossi", new Date(), "pass", "user");
@@ -75,14 +66,32 @@ public class JUnitTestContenuti {
 
             ContributorTrusted contributorTrusted = comune.getContributorTrusteds().get(0);
             AttivitaFactory attivita1 = new AttivitaFactory(LocalDate.now());
-            contributorTrusted.addPuntoInteresse(attivita1.creaPoi("bar2", new Punto(2, 2)));
-            contributorTrusted.addPuntoInteresse(attivita1.creaPoi("barcentrale", new Punto(0, 0)));
+            PuntoInteresse punto3 = attivita1.creaPoi("bar3", new Punto(comune.getPosizione().getLatitudine() + 2, comune.getPosizione().getLongitudine() + 2));
+            assertEquals(false, contributorTrusted.addPuntoInteresse(punto3));
+
+        }
+
+    }
+
+    @Test
+    public void creaItinerario() {
+        GestorePiattaforma gestorePiattaforma = new GestorePiattaforma();
+        Comune comune = new Comune("Milano", gestorePiattaforma, new ContenutoController(), new ContestController(), new UtentiController());
+
+        {
+            gestorePiattaforma.getGestoreController().registraContributor(comune, "Mario", "Rossi", new Date(), "pass", "user");
+            gestorePiattaforma.promuovi(comune, comune.getContributors().get(0), Gradi.ContributorTrusted);
+
+            ContributorTrusted contributorTrusted = comune.getContributorTrusteds().get(0);
+            AttivitaFactory attivita1 = new AttivitaFactory(LocalDate.now());
+            contributorTrusted.addPuntoInteresse(attivita1.creaPoi("bar2", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03)));
+            contributorTrusted.addPuntoInteresse(attivita1.creaPoi("barcentrale", new Punto(comune.getPosizione().getLatitudine() - 0.02, comune.getPosizione().getLongitudine() - 0.02)));
             Itinerario itenerario1 = contributorTrusted.creaItinerario("girodeibar", comune.getContenutoController().getContenuti().get(0)
                     , comune.getContenutoController().getContenuti().get(1));
             assertEquals(1, comune.getContenutoController().getItinerari().size());
             assertEquals(2, comune.getContenutoController().getItinerari().values().stream().toList().getFirst().getNumeroTappe());
 
-            PuntoInteresse nuovoPunto = attivita1.creaPoi("birreria", new Punto(4, 4));
+            PuntoInteresse nuovoPunto = attivita1.creaPoi("birreria", new Punto(comune.getPosizione().getLatitudine() + 0.14, comune.getPosizione().getLongitudine() + 0.14));
             contributorTrusted.addPuntoInteresse(nuovoPunto);
             itenerario1.addTappa(nuovoPunto);
             assertEquals(1, comune.getContenutoController().getItinerari().size());
@@ -93,7 +102,7 @@ public class JUnitTestContenuti {
     @Test
     public void creaContest() {
         GestorePiattaforma gestorePiattaforma = new GestorePiattaforma();
-        Comune comune = new Comune("nome", new Punto(1, 1), gestorePiattaforma, new ContenutoController(), new ContestController(), new UtentiController());
+        Comune comune = new Comune("Milano", gestorePiattaforma, new ContenutoController(), new ContestController(), new UtentiController());
 
         Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new Date(), "ciao", "mr");
         gestorePiattaforma.promuovi(comune, contributor, Gradi.Animatore);
@@ -111,7 +120,7 @@ public class JUnitTestContenuti {
     @Test
     public void creaContestSuInvito() {
         GestorePiattaforma gestorePiattaforma = new GestorePiattaforma();
-        Comune comune = new Comune("nome", new Punto(1, 1), gestorePiattaforma, new ContenutoController(), new ContestController(), new UtentiController());
+        Comune comune = new Comune("Milano", gestorePiattaforma, new ContenutoController(), new ContestController(), new UtentiController());
 
         Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new Date(), "ciao", "mr");
         gestorePiattaforma.promuovi(comune, contributor, Gradi.Animatore);
@@ -131,7 +140,7 @@ public class JUnitTestContenuti {
     @Test
     public void aggiuntaMateriale() {
         GestorePiattaforma gestorePiattaforma = new GestorePiattaforma();
-        Comune comune = new Comune("nome", new Punto(1, 1), gestorePiattaforma, new ContenutoController(), new ContestController(), new UtentiController());
+        Comune comune = new Comune("Milano", gestorePiattaforma, new ContenutoController(), new ContestController(), new UtentiController());
         Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new Date(), "ciao", "mr");
         gestorePiattaforma.getGestoreController().registraTurista("andrea", "neri", new Date(), "eroe", "AN2");
         TuristaLoggato turistaLoggato = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi().getFirst();
@@ -148,17 +157,12 @@ public class JUnitTestContenuti {
 
         {
             AttivitaFactory attivitaFactory = new AttivitaFactory(LocalDate.now());
-            PuntoInteresse puntoInteresse = attivitaFactory.creaPoi("Edicola", new Punto(2,3));
+            PuntoInteresse puntoInteresse = attivitaFactory.creaPoi("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.15, comune.getPosizione().getLongitudine() + 0.15));
             Materiale materiale = puntoInteresse.creaMateriale(true, turistaLoggato);
             contributor.addMateriale(puntoInteresse, materiale);
             assertEquals(1, puntoInteresse.getMaterialeList().size());
         }
 
 
-
-
-
     }
 }
-
-
