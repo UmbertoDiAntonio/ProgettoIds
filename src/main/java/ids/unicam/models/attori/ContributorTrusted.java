@@ -31,8 +31,8 @@ public class ContributorTrusted extends Contributor{
     }
 
     @Override
-    public Itinerario creaItinerario(String nome,PuntoInteresse... puntoInteresse){
-        return super.creaItinerario(nome,puntoInteresse);
+    public Itinerario creaItinerario(String nome,PuntoInteresse... puntiInteresse){
+        return super.creaItinerario(nome, puntiInteresse);
         //Arrays.stream(puntoInteresse).toList().forEach(puntoInteresse1 -> puntoInteresse1.setApproved(true));
     }
 

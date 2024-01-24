@@ -29,13 +29,15 @@ public class Contest extends PuntoInteresse{
     }
 
     @Override
-    public void mostraDettagli() {
+    public String mostraDettagli() {
         //TODO
+        return null;
     }
 
     @Override
-    public void getGeneralInfo() {
+    public String getGeneralInfo() {
         //TODO
+        return null;
     }
 
     public ArrayList<Invito> getInviti() {
@@ -64,10 +66,6 @@ public class Contest extends PuntoInteresse{
 
     public HashMap<TuristaLoggato, Set<Materiale>> getMaterialiContest() {
         return materialiContest;
-    }
-
-    public void invita(TuristaLoggato turistaLoggato) {
-        controller.invita(this, turistaLoggato);
     }
 
     public boolean isOpen() {

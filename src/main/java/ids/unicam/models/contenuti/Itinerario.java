@@ -21,8 +21,7 @@ public class Itinerario extends Contenuto {
         percorso.addAll(Arrays.stream(puntoInteresse).toList());
     }
     public boolean removeTappa(PuntoInteresse puntoInteresse){
-        //TODO
-        return true;
+        return percorso.remove(puntoInteresse);
     }
 
     public int getNumeroTappe(){

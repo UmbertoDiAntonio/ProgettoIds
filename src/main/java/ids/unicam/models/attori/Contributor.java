@@ -7,11 +7,12 @@ import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.Materiale;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.OSM.OSMRequester;
+import ids.unicam.utilites.Observer;
 import ids.unicam.utilites.Punto;
 
 import java.util.Date;
 
-public class Contributor extends TuristaLoggato {
+public class Contributor extends TuristaLoggato implements Observer {
     private Comune comune;
 
     public Comune getComune() {
@@ -41,14 +42,13 @@ public class Contributor extends TuristaLoggato {
         }
         return false;
     }
-    public Itinerario creaItinerario(String nome,PuntoInteresse... puntoInteresseIniziale){
-        //TODO check puntiInteresse sono approvati
-        for(PuntoInteresse puntoInteresse : puntoInteresseIniziale){
-            if(!checkCoordinateComune(puntoInteresse)){
+    public Itinerario creaItinerario(String nome,PuntoInteresse... puntiInteresse){
+        for(PuntoInteresse puntoInteresse : puntiInteresse){
+            if(!checkCoordinateComune(puntoInteresse) && puntoInteresse.isApproved() ){
                 return null;
             }
         }
-        return comune.getContenutoController().creaItinerario(nome,puntoInteresseIniziale);
+        return comune.getContenutoController().creaItinerario(nome,puntiInteresse);
     }
 
     public boolean aggiungiTappaItinerario(Itinerario itinerario, PuntoInteresse puntoInteresse){
@@ -76,4 +76,21 @@ public class Contributor extends TuristaLoggato {
         return false;
     }
 
+    @Override
+    public void riceviNotifica(boolean eventType, PuntoInteresse puntoInteresse) {
+        if (eventType) {
+            System.out.println("Il tuo " + puntoInteresse.getGeneralInfo() + " è stato approvato");
+        } else {
+            System.out.println("Il tuo " + puntoInteresse.getGeneralInfo() + " non è stato approvato");
+        }
+    }
+
+    @Override
+    public void riceviNotifica(boolean eventType, Materiale materiale) {
+        if (eventType) {
+            System.out.println("Il tuo contenuto relativo al punto di interesse " + materiale.getOwner().getNome() + " è stato approvato");
+        } else {
+            System.out.println("Il tuo contenuto relativo al punto di interesse " + materiale.getOwner().getNome() + " non è stato approvato");
+        }
+    }
 }

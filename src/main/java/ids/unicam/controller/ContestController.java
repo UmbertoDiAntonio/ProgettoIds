@@ -1,5 +1,6 @@
 package ids.unicam.controller;
 
+import ids.unicam.models.Invito;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaLoggato;
 import ids.unicam.models.contenuti.Contest;
@@ -46,8 +47,8 @@ public class ContestController {
         return waitingMaterials;
     }
 
-    public void invita(Contest contest, TuristaLoggato turistaLoggato) {
-        //TODO
+    public void invita(Invito invito) {
+        invito.getTuristaLoggato().getInvitiRicevuti().add(invito);
     }
 
     public void aggiungiMateriale(TuristaLoggato turista,Materiale materiale,Contest contest){

@@ -57,15 +57,15 @@ public class JUnitTestUtenti {
 
         gestorePiattaforma.getGestoreController().registraContributor(comune, "Luca", "Rossi", new Date(), "pass1", "user2");
         Contributor contributor = comune.getContributors().get(0);
-        System.out.println(contributor.getComune().getPosizione());
         contributor.addPuntoInteresse(new MuseoFactory().creaPoi("Accademia", new Punto(comune.getPosizione().getLatitudine()+0.1,comune.getPosizione().getLongitudine()+0.1)));
         assertEquals(false, comune.getContenutoController().getContenuti().getFirst().isApproved());
-        curatore.approva(comune.getContenutoController().getContenuti().getFirst());
+        curatore.aggiungiOsservatore(contributor);
+        curatore.approva(comune.getContenutoController().getContenuti().getFirst(),true);
         assertEquals(true, comune.getContenutoController().getContenuti().getFirst().isApproved());
 
         comune.getContenutoController().getContenuti().getFirst().creaMateriale(false, contributor);
         assertEquals(false, comune.getContenutoController().getContenuti().getFirst().getMaterialeList().getFirst().isApproved());
-        curatore.approva(comune.getContenutoController().getContenuti().getFirst().getMaterialeList().getFirst());
+        curatore.approva(comune.getContenutoController().getContenuti().getFirst().getMaterialeList().getFirst(), true);
         assertEquals(true, comune.getContenutoController().getContenuti().getFirst().getMaterialeList().getFirst().isApproved());
 
     }

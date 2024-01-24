@@ -37,7 +37,7 @@ public abstract class PuntoInteresse extends Contenuto {
         this.pt = pt;
     }
 
-    public abstract void mostraDettagli();
+    public abstract String mostraDettagli();
 
-    public abstract void getGeneralInfo();
+    public abstract String getGeneralInfo();
 }

@@ -23,10 +23,10 @@ public class GestoreController {
             }
             case ContributorTrusted -> {
                 removeOldRank(comune, contributor);
-                comune.getContributorTrusteds().add(new ContributorTrusted(comune, contributor));//TODO verifica
+                comune.getContributorTrusteds().add(new ContributorTrusted(comune, contributor));
             }
             default -> {
-                comune.getContributors().add(new Contributor(comune, contributor));//TODO verifica
+                comune.getContributors().add(new Contributor(comune, contributor));
                 removeOldRank(comune, contributor);
             }
         }
@@ -39,7 +39,7 @@ public class GestoreController {
                 comune.getCuratori().remove(curatore);
             }
             case ContributorTrusted contributorTrusted -> {
-                comune.getContributorTrusteds().remove(contributorTrusted);//TODO verifica
+                comune.getContributorTrusteds().remove(contributorTrusted);
             }
             case Animatore animatore -> {
                 comune.getAnimatori().remove(animatore);
@@ -47,7 +47,7 @@ public class GestoreController {
             case Contributor contributor1 -> {
                 comune.getContributors().remove(contributor1);
             }
-            case null -> System.out.println("NULLL"); //TODO
+            case null -> System.out.println("NULL"); //TODO
         }
     }
 

@@ -22,12 +22,14 @@ public class Attivita extends PuntoInteresse {
     }
 
     @Override
-    public void mostraDettagli() {
-
+    public String mostraDettagli() {
+        //TODO
+        return null;
     }
 
     @Override
-    public void getGeneralInfo() {
-
+    public String getGeneralInfo() {
+        return getNome() + " " + getOrario();
+        //TODO
     }
 }

@@ -60,13 +60,13 @@ public class OSMRequester {
     }
 
     private static String buildReverseApiUrl(Punto punto) {
-        return "https://nominatim.openstreetmap.org/reverse.php?lat=" +
+        return "https://nominatim.openstreetmap.org/reverse?lat=" +
                 punto.getLatitudine() + "&lon=" + punto.getLongitudine() +
                 "&zoom=10&format=jsonv2";
     }
 
     private static String buildSearchApiUrl(String nome) {
-        return "https://nominatim.openstreetmap.org/search.php?q=" +
+        return "https://nominatim.openstreetmap.org/search?q=" +
                 nome + "&format=jsonv2";
     }
 

@@ -112,7 +112,7 @@ public class JUnitTestContenuti {
 
         gestorePiattaforma.getGestoreController().registraTurista("andrea", "neri", new Date(), "eroe", "AN2");
         TuristaLoggato turistaLoggato = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi().getFirst();
-        turistaLoggato.joinContest(comune.getContestController().getContestByAuthor(Long.parseLong(comune.getAnimatori().getFirst().getId())).getFirst());
+        turistaLoggato.joinFreeContest(comune.getContestController().getContestByAuthor(Long.parseLong(comune.getAnimatori().getFirst().getId())).getFirst());
         assertEquals(1, comune.getContestController().getContestByAuthor(Long.parseLong(comune.getAnimatori().getFirst().getId())).getFirst().getPartecipanti().size());
 
     }
@@ -150,7 +150,7 @@ public class JUnitTestContenuti {
             Animatore animatore = comune.getAnimatori().getFirst();
             animatore.creaContest("monumento", "Foto più bella", true);
             Materiale materiale = comune.getContestController().getContests().getFirst().creaMateriale(true, turistaLoggato);
-            turistaLoggato.joinContest(comune.getContestController().getContests().getFirst());
+            turistaLoggato.joinFreeContest(comune.getContestController().getContests().getFirst());
             turistaLoggato.addMaterialeContest(comune.getContestController().getContests().getFirst(), materiale);
             assertEquals(1, comune.getContestController().getContests().getFirst().getMaterialiContest().size());
         }

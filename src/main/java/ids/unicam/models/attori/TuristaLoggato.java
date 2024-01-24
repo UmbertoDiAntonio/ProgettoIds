@@ -14,7 +14,7 @@ public class TuristaLoggato extends Turista {
     private String name;
     private String surname;
     private Date dateBirthday;
-    private String password; //TODO
+    private String password;
     private String username;
     private String id;
 
@@ -69,17 +69,13 @@ public class TuristaLoggato extends Turista {
     }
 
     public void addPhoto(PuntoInteresse puntoInteresse, Foto foto) {
-        //TODO
+        puntoInteresse.addMateriale(foto);
     }
 
     public void accettaInvito(Invito invito) { //invocato dall'interfaccia
         for (Invito inv : invitiRicevuti) {
             if (inv.equals(invito)) {
                 Contest contest = invito.getContest();
-                if (contest.isOpen()) {
-                    //TODO
-                    return;
-                }
                 assert contest.getPartecipanti() != null;
                 contest.getPartecipanti().add(this);
             }
@@ -90,7 +86,10 @@ public class TuristaLoggato extends Turista {
         contest.getContestController().aggiungiMateriale(this, materiale, contest);
     }
 
-    public void joinContest(Contest contest){
+    public void joinFreeContest(Contest contest){
+        if(!contest.isOpen()) {
+            return;
+        }
         contest.getPartecipanti().add(this);
     }
 
