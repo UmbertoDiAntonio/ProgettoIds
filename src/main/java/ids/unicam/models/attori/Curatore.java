@@ -42,11 +42,8 @@ public class Curatore extends ContributorTrusted {
     public void approva(Materiale materiale, boolean approvato){
         notifica(approvato, materiale);
         materiale.setApproved(approvato);
-        if(approvato){
-            materiale.getOwner().addMateriale(materiale);
-        }else{
-            materiale.getOwner().getMaterialeList().remove(materiale);
-        }
+        if(!approvato)
+            getComune().getContestController().getWaitingMaterials().remove(materiale);
     }
 
     public void approva(PuntoInteresse puntoInteresse, boolean approvato) {
@@ -64,9 +61,4 @@ public class Curatore extends ContributorTrusted {
         getComune().getContenutoController().deleteContenuto(contenuto);
     }
 
-    @Override
-    public boolean logOut(){
-        //TODO
-        return true;
-    }
 }

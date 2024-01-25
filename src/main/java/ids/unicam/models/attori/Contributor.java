@@ -19,11 +19,11 @@ public class Contributor extends TuristaLoggato implements Observer {
         return comune;
     }
 
-    public Contributor(Comune comune, TuristaLoggato turistaLoggato){
+    protected Contributor(Comune comune, TuristaLoggato turistaLoggato){
         super(turistaLoggato.getName(),turistaLoggato.getSurname(),turistaLoggato.getDateBirthday(),turistaLoggato.getPassword(), turistaLoggato.getUsername());
         this.comune=comune;
     }
-    public Contributor(Comune comune,String name, String surname, Date dateBirthday, String password, String username) {
+    protected Contributor(Comune comune,String name, String surname, Date dateBirthday, String password, String username) {
         super(name, surname, dateBirthday, password, username);
         this.comune=comune;
     }
@@ -62,11 +62,6 @@ public class Contributor extends TuristaLoggato implements Observer {
         contenuto.setScadenza(giorni);
 
     }
-    @Override
-    public boolean logOut(){
-        //TODO
-        return true;
-    }
 
     public final boolean checkCoordinateComune(PuntoInteresse puntoInteresse){
         String nomeComune = OSMRequester.getComuneAt(new Punto(puntoInteresse.getPt().getLatitudine(),puntoInteresse.getPt().getLongitudine()));
@@ -88,9 +83,9 @@ public class Contributor extends TuristaLoggato implements Observer {
     @Override
     public void riceviNotifica(boolean eventType, Materiale materiale) {
         if (eventType) {
-            System.out.println("Il tuo contenuto relativo al punto di interesse " + materiale.getOwner().getNome() + " è stato approvato");
+            System.out.println("Il tuo contenuto relativo al punto di interesse " + materiale.getId() + " è stato approvato");
         } else {
-            System.out.println("Il tuo contenuto relativo al punto di interesse " + materiale.getOwner().getNome() + " non è stato approvato");
+            System.out.println("Il tuo contenuto relativo al punto di interesse " + materiale.getId() + " non è stato approvato");
         }
     }
 }

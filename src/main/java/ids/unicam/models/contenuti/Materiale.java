@@ -2,17 +2,17 @@ package ids.unicam.models.contenuti;
 
 import ids.unicam.models.attori.TuristaLoggato;
 
+import java.util.Random;
+import java.util.UUID;
+
 public class Materiale {
-    private final PuntoInteresse owner;
 
     private final TuristaLoggato author;
     private boolean approved;
+    private UUID id;
 
-    public PuntoInteresse getOwner() {
-        return owner;
-    }
 
-    public TuristaLoggato getAuthor() {
+    public TuristaLoggato  getAuthor() {
         return author;
     }
 
@@ -24,11 +24,13 @@ public class Materiale {
         this.approved = approved;
     }
 
-    public Materiale(boolean approved, PuntoInteresse owner, TuristaLoggato author) {
+    public Materiale(boolean approved, TuristaLoggato author) {
         this.approved = approved;
         this.author=author;
-        this.owner=owner;
-        owner.getMaterialeList().add(this);
+        this.id = UUID.randomUUID();
     }
 
+    public UUID getId() {
+        return id;
+    }
 }

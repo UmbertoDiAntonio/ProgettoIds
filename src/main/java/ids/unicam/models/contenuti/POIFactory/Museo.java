@@ -8,17 +8,17 @@ import java.time.LocalDate;
 
 public class Museo extends PuntoInteresse {
     private LocalDate data;
-    public Museo(String nome, Punto punto, LocalDate data) {
+    protected Museo(String nome, Punto punto, LocalDate data) {
         super(nome,punto);
         this.data=data;
     }
 
-    public @Nullable LocalDate getData() {
-        return data;
+    protected Museo(String nome, Punto punto) {
+        super(nome,punto);
     }
 
-    public Museo(String nome, Punto punto) {
-        super(nome,punto);
+    public @Nullable LocalDate getData() {
+        return data;
     }
 
     @Override

@@ -10,16 +10,15 @@ public abstract class PuntoInteresse extends Contenuto {
     private final String nome;
     private final Punto pt;
 
-
     public Punto getPt() {
         return pt;
     }
     List<Materiale> materialeList =new ArrayList<>();
-    List<Materiale> waitingMaterials =new ArrayList<>();
 
     public List<Materiale> getMaterialeList() {
         return materialeList;
     }
+
     public void addMateriale(Materiale materiale){
         materialeList.add(materiale);
     }
@@ -28,15 +27,11 @@ public abstract class PuntoInteresse extends Contenuto {
         return nome;
     }
 
-    public Materiale creaMateriale(boolean approved, TuristaLoggato turistaLoggato){
-       return new Materiale(approved,this, turistaLoggato);
-    }
     public PuntoInteresse(String nome, Punto pt) {
         super(false);
         this.nome=nome;
         this.pt = pt;
     }
-
     public abstract String mostraDettagli();
 
     public abstract String getGeneralInfo();

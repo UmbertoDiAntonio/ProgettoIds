@@ -8,12 +8,12 @@ import java.time.LocalDate;
 
 public class Attivita extends PuntoInteresse {
     private LocalDate orario;
-    public Attivita(String nome, Punto pt,LocalDate orario) {
+    protected Attivita(String nome, Punto pt,LocalDate orario) {
         super(nome, pt);
         this.orario=orario;
     }
 
-    public Attivita(String nome, Punto punto) {
+    protected Attivita(String nome, Punto punto) {
         super(nome,punto);
     }
 

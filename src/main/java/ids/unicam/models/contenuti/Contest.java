@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-public class Contest extends PuntoInteresse{
+public class Contest extends Contenuto {
     private boolean open;
     private final ContestController controller;
     private final String obiettivo;
@@ -28,24 +28,12 @@ public class Contest extends PuntoInteresse{
         return nome;
     }
 
-    @Override
-    public String mostraDettagli() {
-        //TODO
-        return null;
-    }
-
-    @Override
-    public String getGeneralInfo() {
-        //TODO
-        return null;
-    }
-
     public ArrayList<Invito> getInviti() {
         return inviti;
     }
 
     public Contest(String nome, boolean open, ContestController controller, String obiettivo, Animatore author) {
-        super(nome, author.getComune().getPosizione());
+        super(true);
         this.open = open;
         this.controller = controller;
         this.obiettivo = obiettivo;
@@ -62,7 +50,6 @@ public class Contest extends PuntoInteresse{
         return obiettivo;
     }
 
-    //Multimap<String,String> map = ArrayListMultimap.create();
 
     public HashMap<TuristaLoggato, Set<Materiale>> getMaterialiContest() {
         return materialiContest;

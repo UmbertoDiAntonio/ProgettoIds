@@ -1,8 +1,10 @@
-package ids.unicam.controller;
+package ids.unicam.models.attori;
 
+import ids.unicam.controller.UtentiController;
 import ids.unicam.models.Comune;
 import ids.unicam.models.Gradi;
 import ids.unicam.models.attori.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 
@@ -33,13 +35,12 @@ public class GestoreController {
 
     }
 
-    private void removeOldRank(Comune comune, Contributor contributor) {
+    private void removeOldRank(Comune comune, @NotNull Contributor contributor) {
         switch (contributor) {
             case Curatore curatore -> comune.getCuratori().remove(curatore);
             case ContributorTrusted contributorTrusted -> comune.getContributorTrusteds().remove(contributorTrusted);
             case Animatore animatore -> comune.getAnimatori().remove(animatore);
             case Contributor contributor1 -> comune.getContributors().remove(contributor1);
-            case null -> System.out.println("NULL"); //TODO
         }
     }
 
@@ -69,7 +70,7 @@ public class GestoreController {
         Contributor contributor = new Contributor(comune, nome, cognome, birthday, password, username);
         comune.getContributors().add(contributor);
         return contributor;
-        //TODO
+        //TODO aggiungere al database
     }
 
     public UtentiController getUtentiController() {

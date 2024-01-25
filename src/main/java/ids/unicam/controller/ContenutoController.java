@@ -33,9 +33,11 @@ public class ContenutoController {
 
     public void addMaterialeTo(PuntoInteresse puntoInteresse, Materiale materiale) {
         materiale.setApproved(false);
-        materialiPerPunto
+        puntoInteresse.addMateriale(materiale);
+        /* materialiPerPunto
                 .computeIfAbsent(puntoInteresse, k -> new HashSet<>())
                 .add(materiale);
+         */
     }
 
     public Itinerario creaItinerario(String nome,PuntoInteresse... puntoInteresse) {

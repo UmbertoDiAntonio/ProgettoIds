@@ -7,18 +7,16 @@ import ids.unicam.models.contenuti.Materiale;
 public class Animatore extends Contributor {
 
 
-    public Animatore(Contributor contributor) {
+    protected Animatore(Contributor contributor) {
         super(contributor.getComune(), contributor);
     }
 
-    public void creaContest(String nome, String obiettivo, boolean open) {
-        getComune().getContestController().creaContest(nome, open, obiettivo, this);
+    public Contest creaContest(String nome, String obiettivo, boolean open) {
+        return getComune().getContestController().creaContest(nome, open, obiettivo, this);
     }
 
     public void approva(Materiale materiale) {
-        getComune().getContestController().getWaitingMaterials().remove(materiale);
-        materiale.setApproved(true);
-        materiale.getOwner().addMateriale(materiale);
+        getComune().getContestController().approvaMateriale(materiale);
     }
 
     public void invita(Contest contest, TuristaLoggato turistaLoggato){

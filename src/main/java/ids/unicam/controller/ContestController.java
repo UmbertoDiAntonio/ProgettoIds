@@ -31,8 +31,17 @@ public class ContestController {
         return result;
     }
 
-    public void creaContest(String nome, boolean open, String obbiettivo, Animatore animatore) {
-        contests.add(new Contest(nome, open, this, obbiettivo, animatore));
+    public Contest creaContest(String nome, boolean open, String obiettivo, Animatore animatore) {
+        Contest contest = new Contest(nome, open, this,obiettivo, animatore);
+        contests.add(contest);
+        return contest;
+    }
+
+    public void approvaMateriale(Materiale materiale){
+        if(materiale.isApproved())
+            return;
+        materiale.setApproved(true);
+        getWaitingMaterials().remove(materiale);
     }
 
     public List<Materiale> getWaitingMaterials() {

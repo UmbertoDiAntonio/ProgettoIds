@@ -8,6 +8,7 @@ import ids.unicam.models.Gradi;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.Curatore;
 import ids.unicam.models.attori.GestorePiattaforma;
+import ids.unicam.models.contenuti.Materiale;
 import ids.unicam.models.contenuti.POIFactory.MuseoFactory;
 import ids.unicam.utilites.Punto;
 import org.junit.Test;
@@ -57,13 +58,13 @@ public class JUnitTestUtenti {
 
         gestorePiattaforma.getGestoreController().registraContributor(comune, "Luca", "Rossi", new Date(), "pass1", "user2");
         Contributor contributor = comune.getContributors().get(0);
-        contributor.addPuntoInteresse(new MuseoFactory().creaPoi("Accademia", new Punto(comune.getPosizione().getLatitudine()+0.1,comune.getPosizione().getLongitudine()+0.1)));
+        contributor.addPuntoInteresse(new MuseoFactory().creaPoi("Accademia", new Punto(comune.getPosizione().getLatitudine()+0.01,comune.getPosizione().getLongitudine()+0.01)));
         assertEquals(false, comune.getContenutoController().getContenuti().getFirst().isApproved());
         curatore.aggiungiOsservatore(contributor);
         curatore.approva(comune.getContenutoController().getContenuti().getFirst(),true);
         assertEquals(true, comune.getContenutoController().getContenuti().getFirst().isApproved());
-
-        comune.getContenutoController().getContenuti().getFirst().creaMateriale(false, contributor);
+        Materiale materiale1 = new Materiale(false, contributor);
+        comune.getContenutoController().getContenuti().getFirst().addMateriale(materiale1);
         assertEquals(false, comune.getContenutoController().getContenuti().getFirst().getMaterialeList().getFirst().isApproved());
         curatore.approva(comune.getContenutoController().getContenuti().getFirst().getMaterialeList().getFirst(), true);
         assertEquals(true, comune.getContenutoController().getContenuti().getFirst().getMaterialeList().getFirst().isApproved());

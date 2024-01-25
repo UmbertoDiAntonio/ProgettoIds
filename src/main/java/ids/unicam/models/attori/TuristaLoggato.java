@@ -46,7 +46,7 @@ public class TuristaLoggato extends Turista {
         return id;
     }
 
-    public TuristaLoggato(String name, String surname, Date dateBirthday, String password, String username) {
+    protected TuristaLoggato(String name, String surname, Date dateBirthday, String password, String username) {
         this.name = name;
         this.surname = surname;
         this.dateBirthday = dateBirthday;

@@ -1,6 +1,5 @@
 package ids.unicam.models.attori;
 
-import ids.unicam.controller.GestoreController;
 import ids.unicam.models.Comune;
 import ids.unicam.models.Gradi;
 
