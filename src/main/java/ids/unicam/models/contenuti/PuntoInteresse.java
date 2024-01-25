@@ -1,6 +1,5 @@
 package ids.unicam.models.contenuti;
 
-import ids.unicam.models.attori.TuristaLoggato;
 import ids.unicam.utilites.Punto;
 
 import java.util.ArrayList;

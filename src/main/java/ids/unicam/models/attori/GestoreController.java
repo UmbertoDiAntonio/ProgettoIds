@@ -3,7 +3,6 @@ package ids.unicam.models.attori;
 import ids.unicam.controller.UtentiController;
 import ids.unicam.models.Comune;
 import ids.unicam.models.Gradi;
-import ids.unicam.models.attori.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;

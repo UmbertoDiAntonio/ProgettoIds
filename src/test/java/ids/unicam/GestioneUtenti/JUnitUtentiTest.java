@@ -2,7 +2,6 @@ package ids.unicam.GestioneUtenti;
 
 import ids.unicam.controller.ContenutoController;
 import ids.unicam.controller.ContestController;
-import ids.unicam.controller.UtentiController;
 import ids.unicam.models.Comune;
 import ids.unicam.models.Gradi;
 import ids.unicam.models.attori.Contributor;
@@ -15,14 +14,14 @@ import org.junit.Test;
 
 import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
-public class JUnitTestUtenti {
+public class JUnitUtentiTest {
     @Test
     public void generazioneUtenti() {
 
         GestorePiattaforma gestorePiattaforma = new GestorePiattaforma();
-        Comune comune = new Comune("nome", gestorePiattaforma, new ContenutoController(), new ContestController(), new UtentiController());
+        Comune comune = new Comune("nome", gestorePiattaforma, new ContenutoController(), new ContestController());
 
         gestorePiattaforma.getGestoreController().registraTurista("Mario", "Rossi", new Date(), "pass", "user");
         gestorePiattaforma.getGestoreController().registraTurista("Paolo", "Giallo", new Date(), "pass", "user");
@@ -30,17 +29,17 @@ public class JUnitTestUtenti {
         gestorePiattaforma.getGestoreController().registraContributor(comune, "Peppe", "Peppe", new Date(), "PASS", "user");
         assertEquals(1, comune.getContributors().size());
 
-        gestorePiattaforma.promuovi(comune, comune.getContributors().get(0), Gradi.Curatore);
+        gestorePiattaforma.promuovi(comune, comune.getContributors().getFirst(), Gradi.Curatore);
 
         assertEquals(0, comune.getContributors().size());
         assertEquals(1, comune.getCuratori().size());
 
-        gestorePiattaforma.promuovi(comune, comune.getCuratori().get(0), Gradi.Contributor);
+        gestorePiattaforma.promuovi(comune, comune.getCuratori().getFirst(), Gradi.Contributor);
 
         assertEquals(1, comune.getContributors().size());
         assertEquals(0, comune.getCuratori().size());
 
-        gestorePiattaforma.promuovi(comune, comune.getContributors().get(0), Gradi.ContributorTrusted);
+        gestorePiattaforma.promuovi(comune, comune.getContributors().getFirst(), Gradi.ContributorTrusted);
 
         assertEquals(1, comune.getContributorTrusteds().size());
         assertEquals(0, comune.getCuratori().size());
@@ -50,24 +49,24 @@ public class JUnitTestUtenti {
     @Test
     public void approvaContenutoCuratore(){
         GestorePiattaforma gestorePiattaforma = new GestorePiattaforma();
-        Comune comune = new Comune("nome", gestorePiattaforma, new ContenutoController(), new ContestController(), new UtentiController());
+        Comune comune = new Comune("nome", gestorePiattaforma, new ContenutoController(), new ContestController());
 
         gestorePiattaforma.getGestoreController().registraContributor(comune, "Peppe", "Peppe", new Date(), "PASS", "user");
-        gestorePiattaforma.promuovi(comune, comune.getContributors().get(0), Gradi.Curatore);
+        gestorePiattaforma.promuovi(comune, comune.getContributors().getFirst(), Gradi.Curatore);
         Curatore curatore = comune.getCuratori().getFirst();
 
         gestorePiattaforma.getGestoreController().registraContributor(comune, "Luca", "Rossi", new Date(), "pass1", "user2");
-        Contributor contributor = comune.getContributors().get(0);
+        Contributor contributor = comune.getContributors().getFirst();
         contributor.addPuntoInteresse(new MuseoFactory().creaPoi("Accademia", new Punto(comune.getPosizione().getLatitudine()+0.01,comune.getPosizione().getLongitudine()+0.01)));
-        assertEquals(false, comune.getContenutoController().getContenuti().getFirst().isApproved());
+        assertFalse(comune.getContenutoController().getContenuti().getFirst().isApproved());
         curatore.aggiungiOsservatore(contributor);
         curatore.approva(comune.getContenutoController().getContenuti().getFirst(),true);
-        assertEquals(true, comune.getContenutoController().getContenuti().getFirst().isApproved());
+        assertTrue(comune.getContenutoController().getContenuti().getFirst().isApproved());
         Materiale materiale1 = new Materiale(false, contributor);
         comune.getContenutoController().getContenuti().getFirst().addMateriale(materiale1);
-        assertEquals(false, comune.getContenutoController().getContenuti().getFirst().getMaterialeList().getFirst().isApproved());
+        assertFalse(comune.getContenutoController().getContenuti().getFirst().getMaterialeList().getFirst().isApproved());
         curatore.approva(comune.getContenutoController().getContenuti().getFirst().getMaterialeList().getFirst(), true);
-        assertEquals(true, comune.getContenutoController().getContenuti().getFirst().getMaterialeList().getFirst().isApproved());
+        assertTrue(comune.getContenutoController().getContenuti().getFirst().getMaterialeList().getFirst().isApproved());
 
     }
 }

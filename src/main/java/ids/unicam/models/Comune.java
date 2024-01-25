@@ -3,7 +3,6 @@ package ids.unicam.models;
 import ids.unicam.OSM.OSMRequester;
 import ids.unicam.controller.ContenutoController;
 import ids.unicam.controller.ContestController;
-import ids.unicam.controller.UtentiController;
 import ids.unicam.models.attori.*;
 import ids.unicam.utilites.Punto;
 
@@ -52,7 +51,7 @@ public class Comune {
         return nome;
     }
 
-    public Comune(String nome, GestorePiattaforma gestorePiattaforma, ContenutoController contenutoController, ContestController contestController, UtentiController utentiController) {
+    public Comune(String nome, GestorePiattaforma gestorePiattaforma, ContenutoController contenutoController, ContestController contestController) {
         this.gestorePiattaforma = gestorePiattaforma;
         this.posizione = OSMRequester.getCentroComune(nome);
         this.nome = nome;
@@ -66,7 +65,7 @@ public class Comune {
     }
 
     public Comune(String nome, GestorePiattaforma gestorePiattaforma) {
-        new Comune(nome, gestorePiattaforma, new ContenutoController(), new ContestController(), new UtentiController());
+        new Comune(nome, gestorePiattaforma, new ContenutoController(), new ContestController());
     }
 
     public ContenutoController getContenutoController() {

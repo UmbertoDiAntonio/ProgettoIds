@@ -2,14 +2,14 @@ package ids.unicam.models.contenuti;
 
 import ids.unicam.models.attori.TuristaLoggato;
 
-import java.util.Random;
+
 import java.util.UUID;
 
 public class Materiale {
 
     private final TuristaLoggato author;
     private boolean approved;
-    private UUID id;
+    private final UUID id;
 
 
     public TuristaLoggato  getAuthor() {

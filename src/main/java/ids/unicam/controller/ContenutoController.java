@@ -15,7 +15,6 @@ public class ContenutoController {
         return id;
     }
     private final List<PuntoInteresse> contenuti = new ArrayList<>();
-    private final HashMap<PuntoInteresse, Set<Materiale>> materialiPerPunto = new HashMap<>();
 
     private final HashMap<String, Itinerario> itinerari = new HashMap<>();
 
@@ -34,10 +33,6 @@ public class ContenutoController {
     public void addMaterialeTo(PuntoInteresse puntoInteresse, Materiale materiale) {
         materiale.setApproved(false);
         puntoInteresse.addMateriale(materiale);
-        /* materialiPerPunto
-                .computeIfAbsent(puntoInteresse, k -> new HashSet<>())
-                .add(materiale);
-         */
     }
 
     public Itinerario creaItinerario(String nome,PuntoInteresse... puntoInteresse) {
@@ -54,7 +49,6 @@ public class ContenutoController {
     public void deleteContenuto(Contenuto contenuto) {
         if (contenuto instanceof PuntoInteresse) {
             contenuti.remove(contenuto);
-            materialiPerPunto.remove(contenuto);
         } else if (contenuto instanceof Itinerario) {
             itinerari.remove(((Itinerario) contenuto).getNome());
 
