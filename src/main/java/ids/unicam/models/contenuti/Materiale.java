@@ -1,6 +1,5 @@
 package ids.unicam.models.contenuti;
 
-import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.TuristaLoggato;
 
 public class Materiale {

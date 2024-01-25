@@ -1,13 +1,11 @@
 package ids.unicam;
 
 import ids.unicam.models.contenuti.POIFactory.AttivitaFactory;
-import ids.unicam.models.contenuti.POIFactory.Museo;
 import ids.unicam.models.contenuti.POIFactory.MuseoFactory;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Punto;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.

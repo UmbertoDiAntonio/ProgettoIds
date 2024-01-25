@@ -10,7 +10,7 @@ public class ComuneController {
     private static ComuneController instance;
     public ArrayList<Comune> listaComuni = new ArrayList<>();
 
-    private ComuneController(){};
+    private ComuneController(){}
 
     public static ComuneController getInstance() {
         if(instance == null){

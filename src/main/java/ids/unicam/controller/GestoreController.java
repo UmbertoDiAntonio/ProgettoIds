@@ -35,18 +35,10 @@ public class GestoreController {
 
     private void removeOldRank(Comune comune, Contributor contributor) {
         switch (contributor) {
-            case Curatore curatore -> {
-                comune.getCuratori().remove(curatore);
-            }
-            case ContributorTrusted contributorTrusted -> {
-                comune.getContributorTrusteds().remove(contributorTrusted);
-            }
-            case Animatore animatore -> {
-                comune.getAnimatori().remove(animatore);
-            }
-            case Contributor contributor1 -> {
-                comune.getContributors().remove(contributor1);
-            }
+            case Curatore curatore -> comune.getCuratori().remove(curatore);
+            case ContributorTrusted contributorTrusted -> comune.getContributorTrusteds().remove(contributorTrusted);
+            case Animatore animatore -> comune.getAnimatori().remove(animatore);
+            case Contributor contributor1 -> comune.getContributors().remove(contributor1);
             case null -> System.out.println("NULL"); //TODO
         }
     }
@@ -61,7 +53,6 @@ public class GestoreController {
                 break;
             default:
                 //TODO
-                return;
         }
 
     }

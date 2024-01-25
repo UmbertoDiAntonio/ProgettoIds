@@ -1,10 +1,10 @@
 package ids.unicam.models;
 
+import ids.unicam.OSM.OSMRequester;
 import ids.unicam.controller.ContenutoController;
 import ids.unicam.controller.ContestController;
 import ids.unicam.controller.UtentiController;
 import ids.unicam.models.attori.*;
-import ids.unicam.OSM.OSMRequester;
 import ids.unicam.utilites.Punto;
 
 import java.util.ArrayList;
@@ -56,7 +56,10 @@ public class Comune {
         this.gestorePiattaforma = gestorePiattaforma;
         this.posizione = OSMRequester.getCentroComune(nome);
         this.nome = nome;
-        if(!OSMRequester.getComuneAt(posizione).equalsIgnoreCase(nome))
+        String nomeComune = OSMRequester.getComuneAt(posizione);
+        if (nomeComune == null)
+            throw new RuntimeException("Impossibile stabilire la connessione con il sistema OSM");
+        if (!nomeComune.equalsIgnoreCase(nome))
             throw new IllegalArgumentException("Il nome del comune ricercato non corrisponde con nessun comune reale");
         this.contenutoController = contenutoController;
         this.contestController = contestController;

@@ -1,13 +1,9 @@
 package ids.unicam.controller;
 
-import ids.unicam.models.Comune;
-import ids.unicam.models.attori.Contributor;
-import ids.unicam.models.attori.ContributorTrusted;
 import ids.unicam.models.attori.TuristaLoggato;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class UtentiController {
     private static long id = 0;

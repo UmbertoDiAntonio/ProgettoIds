@@ -1,19 +1,19 @@
 package ids.unicam.models.attori;
 
+import ids.unicam.OSM.OSMRequester;
 import ids.unicam.models.Comune;
 import ids.unicam.models.Tempo;
 import ids.unicam.models.contenuti.Contenuto;
 import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.Materiale;
 import ids.unicam.models.contenuti.PuntoInteresse;
-import ids.unicam.OSM.OSMRequester;
 import ids.unicam.utilites.Observer;
 import ids.unicam.utilites.Punto;
 
 import java.util.Date;
 
 public class Contributor extends TuristaLoggato implements Observer {
-    private Comune comune;
+    private final Comune comune;
 
     public Comune getComune() {
         return comune;

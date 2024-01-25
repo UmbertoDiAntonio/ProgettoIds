@@ -5,8 +5,6 @@ import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.Materiale;
 import ids.unicam.models.contenuti.PuntoInteresse;
 
-import java.util.Arrays;
-
 public class ContributorTrusted extends Contributor{
     public ContributorTrusted(Comune comune,Contributor contributor) {
         super(comune,contributor);

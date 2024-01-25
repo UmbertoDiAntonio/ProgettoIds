@@ -4,7 +4,6 @@ import ids.unicam.controller.ContenutoController;
 import ids.unicam.models.Tempo;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public abstract class Contenuto {
@@ -20,7 +19,7 @@ public abstract class Contenuto {
     }
 
     private final long id;
-    private boolean approved = false;
+    private boolean approved;
 
     private final Set<String> tags=new HashSet<>();
 

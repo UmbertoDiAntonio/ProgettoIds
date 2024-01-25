@@ -3,7 +3,6 @@ package ids.unicam.OSM;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import ids.unicam.utilites.Punto;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 
 public class OSMRequester {
@@ -19,11 +19,8 @@ public class OSMRequester {
         try {
             String apiUrl = buildReverseApiUrl(punto);
             String jsonResponse = makeHttpRequest(apiUrl);
-
-            if (jsonResponse == null) {
+            if(jsonResponse == null)
                 return null;
-            }
-
             JsonNode jsonNode = new ObjectMapper().readTree(jsonResponse);
             return jsonNode.path("address").path(jsonNode.path("address").fieldNames().next()).asText();
         } catch (IOException e) {
@@ -36,18 +33,13 @@ public class OSMRequester {
         try {
             String apiUrl = buildSearchApiUrl(nome);
             String jsonResponse = makeHttpRequest(apiUrl);
-
-            if (jsonResponse == null) {
+            if(jsonResponse == null)
                 return null;
-            }
-
             ArrayNode jsonArray = (ArrayNode) new ObjectMapper().readTree(jsonResponse);
-
             if (jsonArray.isEmpty()) {
                 System.out.println("Nessun elemento trovato nella risposta JSON.");
                 return null;
             }
-
             JsonNode firstElement = jsonArray.get(0);
             double latitudine = firstElement.path("lat").asDouble();
             double longitudine = firstElement.path("lon").asDouble();
@@ -75,6 +67,8 @@ public class OSMRequester {
             StringBuilder response = new StringBuilder();
             String line;
 
+            if(reader == null)
+                return null;
             while ((line = reader.readLine()) != null) {
                 response.append(line);
             }
@@ -84,7 +78,7 @@ public class OSMRequester {
     }
 
     private static BufferedReader getApiResponseReader(String apiUrl) throws IOException {
-        URL url = new URL(apiUrl);
+        URL url = URI.create(apiUrl).toURL();
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
 

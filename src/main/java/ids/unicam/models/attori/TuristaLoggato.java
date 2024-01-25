@@ -11,12 +11,12 @@ import java.util.List;
 public class TuristaLoggato extends Turista {
     private final List<Contenuto> favourites = new ArrayList<>();
     private final List<Invito> invitiRicevuti = new ArrayList<>();
-    private String name;
-    private String surname;
-    private Date dateBirthday;
-    private String password;
-    private String username;
-    private String id;
+    private final String name;
+    private final String surname;
+    private final Date dateBirthday;
+    private final String password;
+    private final String username;
+    private final String id;
 
     public List<Invito> getInvitiRicevuti() {
         return invitiRicevuti;
