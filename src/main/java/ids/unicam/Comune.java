@@ -1,4 +1,4 @@
-package ids.unicam.models;
+package ids.unicam;
 
 import ids.unicam.OSM.OSMRequester;
 import ids.unicam.controller.ContenutoController;
@@ -21,7 +21,6 @@ public class Comune {
     private final ArrayList<Animatore> animatori = new ArrayList<>();
     private ContenutoController contenutoController;
     private ContestController contestController;
-
 
     public GestorePiattaforma getGestorePiattaforma() {
         return gestorePiattaforma;

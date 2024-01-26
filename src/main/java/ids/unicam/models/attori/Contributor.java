@@ -1,7 +1,7 @@
 package ids.unicam.models.attori;
 
 import ids.unicam.OSM.OSMRequester;
-import ids.unicam.models.Comune;
+import ids.unicam.Comune;
 import ids.unicam.models.Tempo;
 import ids.unicam.models.contenuti.Contenuto;
 import ids.unicam.models.contenuti.Itinerario;

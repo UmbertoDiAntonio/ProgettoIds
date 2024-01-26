@@ -8,24 +8,25 @@ import java.util.ArrayList;
 
 public class Invito {
     private final Contest contest;
-    private final TuristaLoggato turistaLoggato;
+    private final TuristaLoggato invitato;
+
 
     public Contest getContest() {
         return contest;
     }
 
-    public TuristaLoggato getTuristaLoggato() {
-        return turistaLoggato;
+    public TuristaLoggato getInvitato() {
+        return invitato;
     }
 
     /**
      * Crea un invito e lo aggiunge alla lista degli iniviti mandati dal contest
      * @param contest il contest da cui si sta mandando l'invito
-     * @param turistaLoggato il turista da invitare
+     * @param invitato il turista da invitare
      */
-    public Invito(Contest contest, TuristaLoggato turistaLoggato) {
+    public Invito(Contest contest, TuristaLoggato invitato) {
         this.contest = contest;
-        this.turistaLoggato = turistaLoggato;
+        this.invitato = invitato;
         contest.getInviti().add(this);
     }
 
@@ -37,7 +38,7 @@ public class Invito {
         if (contest.isOpen())
             return false;
 
-        ArrayList<Contest> c1 = contest.getAuthor().getComune().getContestController().getContestByTurist(turistaLoggato.getId());
+        ArrayList<Contest> c1 = contest.getAuthor().getComune().getContestController().getContestByTourist(invitato.getId());
         return c1.contains(contest);
     }
 

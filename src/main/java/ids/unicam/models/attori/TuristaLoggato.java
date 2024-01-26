@@ -1,5 +1,6 @@
 package ids.unicam.models.attori;
 
+import ids.unicam.Exception.NotInContestException;
 import ids.unicam.controller.UtentiController;
 import ids.unicam.models.Invito;
 import ids.unicam.models.contenuti.*;
@@ -47,7 +48,11 @@ public class TuristaLoggato extends Turista {
     }
     public List<Contenuto> getFavourites() {
         return favourites;
-    }
+    }//TODO test
+    public void addFavourites(Contenuto contenuto) {
+        favourites.add(contenuto);
+    } //TODO test
+
 
     protected TuristaLoggato(String name, String surname, Date dateBirthday, String password, String username) {
         this.name = name;
@@ -65,9 +70,6 @@ public class TuristaLoggato extends Turista {
 
 
 
-    public void addFavourites(Contenuto contenuto) {
-        favourites.add(contenuto);
-    }
 
     //TODO test
     public void addPhoto(PuntoInteresse puntoInteresse, Foto foto) {
@@ -95,7 +97,11 @@ public class TuristaLoggato extends Turista {
      * @param materiale il materiale da aggiungere
      */
     public void addMaterialeContest(Contest contest, Materiale materiale){
-        contest.getContestController().aggiungiMateriale(this, materiale, contest);
+        if(contest.getPartecipanti().contains(this)) {
+            contest.getContestController().aggiungiMateriale(this, materiale, contest);
+        }else {
+            throw new NotInContestException("Il Turista dovrebbe prima entrare nel contest, per caricare contenuti su di esso");
+        }
     }
 
     /**

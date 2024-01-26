@@ -14,7 +14,7 @@ public class Materiale {
         return id;
     }
 
-    public TuristaLoggato  getAuthor() {
+    public TuristaLoggato getAuthor() {
         return author;
     }
 

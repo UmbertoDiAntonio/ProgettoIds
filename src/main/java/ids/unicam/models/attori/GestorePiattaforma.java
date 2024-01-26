@@ -1,7 +1,6 @@
 package ids.unicam.models.attori;
 
-import ids.unicam.models.Comune;
-import ids.unicam.models.Gradi;
+import ids.unicam.models.Ruolo;
 
 public class GestorePiattaforma{
 
@@ -15,8 +14,8 @@ public class GestorePiattaforma{
      * @param contributor il contributor a cui cambiare grado
      * @param grado il nuovo grado
      */
-    public void promuovi(Contributor contributor, Gradi grado){ //TODO rinominare
-        gestoreController.upgrade(contributor,grado);
+    public void promuovi(Contributor contributor, Ruolo grado){ //TODO rinominare
+        gestoreController.cambiaRuolo(contributor,grado);
     }
 
 

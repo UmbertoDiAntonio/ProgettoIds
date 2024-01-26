@@ -1,5 +1,6 @@
 package ids.unicam.controller;
 
+import ids.unicam.Exception.NotInContestException;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaLoggato;
@@ -9,16 +10,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 public class ContestController {
 
-    private final List<Materiale> contestNotApprovedMaterials = new ArrayList<>(); //TODO questo forse non serve
     private final ArrayList<Contest> contests = new ArrayList<>();
 
-    public List<Materiale> getContestNotApprovedMaterials() {
-        return contestNotApprovedMaterials;
-    }
     public ArrayList<Contest> getContests() {
         return contests;
     }
@@ -27,7 +23,7 @@ public class ContestController {
      * @param idTurista l'id del Turista
      * @return tutti i contest di cui è membro
      */
-    public @NotNull ArrayList<Contest> getContestByTurist(String idTurista) {
+    public @NotNull ArrayList<Contest> getContestByTourist(String idTurista) {
         ArrayList<Contest> result = new ArrayList<>();
         contests.stream().filter(contest -> contest.
                 getPartecipanti().
@@ -63,16 +59,20 @@ public class ContestController {
 
 
     /**
-     * Aggiungi un materiale non approvato al contest
+     * Aggiungi un materiale non approvato al contest, se i
      * @param turista il turista che sta caricando il materiale
      * @param materiale il materiale da caricare
      * @param contest il contest su cui si vuole aggiungere
+     *
+     * @throws NotInContestException se si cerca di caricare materiale su un contest senza essere entrati
      */
     public void aggiungiMateriale(TuristaLoggato turista,Materiale materiale,Contest contest){//TODO controllo se il turista fa parte del contest
-        materiale.setApproved(false);
-        contest.getMaterialiContest()
-                .computeIfAbsent(turista, k -> new HashSet<>())
-                .add(materiale);
+
+            materiale.setApproved(false);
+            contest.getMaterialiContest()
+                    .computeIfAbsent(turista, k -> new HashSet<>())
+                    .add(materiale);
+
     }
     /**
      * Imposta un materiale del contest come approvato e lo rimuove dalla lista dei materiali in attesa di approvazione
@@ -82,11 +82,10 @@ public class ContestController {
         if(materiale.isApproved())
             return;
         materiale.setApproved(true);
-        getContestNotApprovedMaterials().remove(materiale);
     }
 
     public void invita(Invito invito) { //TODO perchè gli passiamo invito?
-        invito.getTuristaLoggato().getInvitiRicevuti().add(invito); //TODO questo lo potrebber dover fare utenti controller
+        invito.getInvitato().getInvitiRicevuti().add(invito); //TODO questo lo potrebber dover fare utenti controller
     }
 
 }

@@ -10,4 +10,11 @@ public class Turista {
     public void report(){
         //TODO segnala un contenuto al Curatore
     }
+
+    /**
+     * ti fa accedere con a uno dei tuoi account, che varia in base al comune selezionato
+     */
+    public void accedi(){
+        //TODO
+    }
 }

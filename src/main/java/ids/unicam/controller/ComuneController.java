@@ -1,6 +1,6 @@
 package ids.unicam.controller;
 
-import ids.unicam.models.Comune;
+import ids.unicam.Comune;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;

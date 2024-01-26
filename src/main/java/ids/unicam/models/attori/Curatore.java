@@ -1,6 +1,6 @@
 package ids.unicam.models.attori;
 
-import ids.unicam.models.Comune;
+import ids.unicam.Comune;
 import ids.unicam.models.contenuti.Contenuto;
 import ids.unicam.models.contenuti.Materiale;
 import ids.unicam.models.contenuti.PuntoInteresse;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class Curatore extends ContributorTrusted {
 
-    ArrayList<Observer> osservatori = new ArrayList<>();
+    private final ArrayList<Observer> osservatori = new ArrayList<>();
 
     public void aggiungiOsservatore(Observer osservatore) {
         osservatori.add(osservatore);
@@ -34,7 +34,7 @@ public class Curatore extends ContributorTrusted {
         }
     }
 
-    public Curatore(Comune comune, Contributor contributor) {
+    protected Curatore(Comune comune, Contributor contributor) {
         super(comune, contributor);
     }
 
@@ -51,9 +51,6 @@ public class Curatore extends ContributorTrusted {
      */
     public void approva(Materiale materiale, boolean approvato) { //TODO rename
         materiale.setApproved(approvato);
-        if (!approvato)
-            getComune().getContestController().getContestNotApprovedMaterials().remove(materiale);
-
         notifica(approvato, materiale);
     }
 

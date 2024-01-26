@@ -1,8 +1,8 @@
 package ids.unicam.models.attori;
 
 import ids.unicam.controller.UtentiController;
-import ids.unicam.models.Comune;
-import ids.unicam.models.Gradi;
+import ids.unicam.Comune;
+import ids.unicam.models.Ruolo;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
@@ -15,35 +15,35 @@ public class GestoreController {
     }
 
     /**
-     * Modifica il grado di un contributor all'interno del comune
+     * Modifica il ruolo di un contributor all'interno del comune
      *
-     * @param contributor il contributor a cui cambiare grado
-     * @param grado il nuovo grado
+     * @param contributor il contributor a cui cambiare ruolo
+     * @param ruolo il nuovo ruolo
      */
-    public void upgrade(Contributor contributor, Gradi grado) {//TODO rinominare
+    public void cambiaRuolo(Contributor contributor, @NotNull Ruolo ruolo) {
         Comune comune=contributor.getComune();
-        switch (grado) {
+        switch (ruolo) {
             case Curatore -> {
                 comune.getCuratori().add(new Curatore(comune, contributor));
-                removeOldRank(contributor);
+                rimuoviVecchioRuolo(contributor);
             }
             case Animatore -> {
                 comune.getAnimatori().add(new Animatore(contributor));
-                removeOldRank(contributor);
+                rimuoviVecchioRuolo(contributor);
             }
             case ContributorTrusted -> {
-                removeOldRank(contributor);
+                rimuoviVecchioRuolo(contributor);
                 comune.getContributorTrusteds().add(new ContributorTrusted(comune, contributor));
             }
             default -> {
                 comune.getContributors().add(new Contributor(comune, contributor));
-                removeOldRank(contributor);
+                rimuoviVecchioRuolo(contributor);
             }
         }
 
     }
 
-    private void removeOldRank(@NotNull Contributor contributor) {
+    private void rimuoviVecchioRuolo(@NotNull Contributor contributor) {
         Comune comune=contributor.getComune();
         switch (contributor) {
             case Curatore curatore -> comune.getCuratori().remove(curatore);
