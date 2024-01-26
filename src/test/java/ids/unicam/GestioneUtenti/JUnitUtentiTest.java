@@ -29,17 +29,17 @@ public class JUnitUtentiTest {
         gestorePiattaforma.getGestoreController().registraContributor(comune, "Peppe", "Peppe", new Date(), "PASS", "user");
         assertEquals(1, comune.getContributors().size());
 
-        gestorePiattaforma.promuovi(comune, comune.getContributors().getFirst(), Gradi.Curatore);
+        gestorePiattaforma.promuovi( comune.getContributors().getFirst(), Gradi.Curatore);
 
         assertEquals(0, comune.getContributors().size());
         assertEquals(1, comune.getCuratori().size());
 
-        gestorePiattaforma.promuovi(comune, comune.getCuratori().getFirst(), Gradi.Contributor);
+        gestorePiattaforma.promuovi( comune.getCuratori().getFirst(), Gradi.Contributor);
 
         assertEquals(1, comune.getContributors().size());
         assertEquals(0, comune.getCuratori().size());
 
-        gestorePiattaforma.promuovi(comune, comune.getContributors().getFirst(), Gradi.ContributorTrusted);
+        gestorePiattaforma.promuovi(comune.getContributors().getFirst(), Gradi.ContributorTrusted);
 
         assertEquals(1, comune.getContributorTrusteds().size());
         assertEquals(0, comune.getCuratori().size());
@@ -52,7 +52,7 @@ public class JUnitUtentiTest {
         Comune comune = new Comune("nome", gestorePiattaforma, new ContenutoController(), new ContestController());
 
         gestorePiattaforma.getGestoreController().registraContributor(comune, "Peppe", "Peppe", new Date(), "PASS", "user");
-        gestorePiattaforma.promuovi(comune, comune.getContributors().getFirst(), Gradi.Curatore);
+        gestorePiattaforma.promuovi( comune.getContributors().getFirst(), Gradi.Curatore);
         Curatore curatore = comune.getCuratori().getFirst();
 
         gestorePiattaforma.getGestoreController().registraContributor(comune, "Luca", "Rossi", new Date(), "pass1", "user2");

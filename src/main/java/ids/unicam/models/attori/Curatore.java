@@ -16,6 +16,7 @@ public class Curatore extends ContributorTrusted {
         osservatori.add(osservatore);
     }
 
+    //TODo test
     public void rimuoviOsservatore(Observer osservatore) {
         osservatori.remove(osservatore);
     }
@@ -25,6 +26,7 @@ public class Curatore extends ContributorTrusted {
             listener.riceviNotifica(eventType, puntoInteresse);
         }
     }
+
     public void notifica(Boolean eventType, Materiale materiale) {
 
         for (Observer listener : osservatori) {
@@ -32,32 +34,47 @@ public class Curatore extends ContributorTrusted {
         }
     }
 
-    public Curatore(Comune comune,Contributor contributor) {
-        super(comune,contributor);
+    public Curatore(Comune comune, Contributor contributor) {
+        super(comune, contributor);
     }
 
-    public void share(Contenuto contenuto){
+    public void share(Contenuto contenuto) {
         //TODO
     }
-    public void approva(Materiale materiale, boolean approvato){
-        notifica(approvato, materiale);
+
+    /**
+     * Approva o non approva un Materiale, in caso di non approvazione lo rimuove dalla lista di materiali in attesa di approvazione del contest???????,
+     * notifica i subscriber
+     *
+     * @param materiale il materiale che si vuole valutare
+     * @param approvato approvato o non approvato
+     */
+    public void approva(Materiale materiale, boolean approvato) { //TODO rename
         materiale.setApproved(approvato);
-        if(!approvato)
-            getComune().getContestController().getWaitingMaterials().remove(materiale);
+        if (!approvato)
+            getComune().getContestController().getContestNotApprovedMaterials().remove(materiale);
+
+        notifica(approvato, materiale);
     }
 
-    public void approva(PuntoInteresse puntoInteresse, boolean approvato) {
-        puntoInteresse.setApproved(true);
+    /**
+     * Approva o non approva un punto di interesse, in caso di non approvazione lo rimuove dalla lista dei contenuti nel controller del comune associato,
+     * notifica i subscriber
+     *
+     * @param puntoInteresse il punto di interesse che si vuole valutare
+     * @param approvato approvato o non approvato
+     */
+    public void approva(PuntoInteresse puntoInteresse, boolean approvato) { //TODO rename
+        puntoInteresse.setApproved(approvato);
+        if (!approvato)
+            getComune().getContenutoController().getContenuti().remove(puntoInteresse);
 
         notifica(approvato, puntoInteresse);
-        puntoInteresse.setApproved(approvato);
-        if(!approvato){
-            getComune().getContenutoController().getContenuti().remove(puntoInteresse);
-        }
     }
 
 
-    public void delete(Contenuto contenuto){
+    //TODO test
+    public void delete(Contenuto contenuto) {
         getComune().getContenutoController().deleteContenuto(contenuto);
     }
 

@@ -45,6 +45,9 @@ public class TuristaLoggato extends Turista {
     public String getId() {
         return id;
     }
+    public List<Contenuto> getFavourites() {
+        return favourites;
+    }
 
     protected TuristaLoggato(String name, String surname, Date dateBirthday, String password, String username) {
         this.name = name;
@@ -60,18 +63,22 @@ public class TuristaLoggato extends Turista {
         //TODO
     }
 
-    public List<Contenuto> getFavourites() {
-        return favourites;
-    }
+
 
     public void addFavourites(Contenuto contenuto) {
         favourites.add(contenuto);
     }
 
+    //TODO test
     public void addPhoto(PuntoInteresse puntoInteresse, Foto foto) {
         puntoInteresse.addMateriale(foto);
     }
 
+    /**
+     * Accetta, se è stato ricevuto un invito a un contest
+     * @param invito l'invito da accettare
+     */
+    //TODO metodo per capire se l'invito è stato accettato
     public void accettaInvito(Invito invito) { //invocato dall'interfaccia
         for (Invito inv : invitiRicevuti) {
             if (inv.equals(invito)) {
@@ -82,10 +89,19 @@ public class TuristaLoggato extends Turista {
         }
     }
 
+    /**
+     * Invia al controller del contest la richiesta di aggiungere un materiale
+     * @param contest il contest in cui aggiungere il materiale
+     * @param materiale il materiale da aggiungere
+     */
     public void addMaterialeContest(Contest contest, Materiale materiale){
         contest.getContestController().aggiungiMateriale(this, materiale, contest);
     }
 
+    /**
+     * Entra nel contest se è aperto
+     * @param contest il contest in cui si vuole entrare
+     */
     public void joinFreeContest(Contest contest){
         if(!contest.isOpen()) {
             return;

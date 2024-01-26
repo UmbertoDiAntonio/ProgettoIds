@@ -15,6 +15,13 @@ import java.net.URL;
 
 public class OSMRequester {
 
+    /**
+     * Ottieni il nome del comune alle coordinate inviate
+     * @param punto il punto di cui vogliamo avere informazioni
+     * @return il nome del comune a cui appartiene il punto, o null se la connessione è fallita
+     *
+     */
+    //TODO migliorare la gestione dell'errore di connessione
     public static @Nullable String getComuneAt(Punto punto) {
         try {
             String apiUrl = buildReverseApiUrl(punto);
@@ -29,6 +36,12 @@ public class OSMRequester {
         return null;
     }
 
+    /**
+     * Ottieni le coordinate del centro del comune di cui si vuole ottenere l'informazione
+     *
+     * @param nome il nome del comune di cui stiamo cercando il centro
+     * @return la latitudine e longitudine del centro del comune
+     */
     public static @Nullable Punto getCentroComune(String nome) {
         try {
             String apiUrl = buildSearchApiUrl(nome);

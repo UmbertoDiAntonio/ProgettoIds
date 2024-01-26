@@ -8,33 +8,43 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Date;
 
 public class GestoreController {
-
-
     private final UtentiController utentiController = new UtentiController();
 
-    public void upgrade(Comune comune, Contributor contributor, Gradi grado) {
+    public UtentiController getUtentiController() {
+        return utentiController;
+    }
+
+    /**
+     * Modifica il grado di un contributor all'interno del comune
+     *
+     * @param contributor il contributor a cui cambiare grado
+     * @param grado il nuovo grado
+     */
+    public void upgrade(Contributor contributor, Gradi grado) {//TODO rinominare
+        Comune comune=contributor.getComune();
         switch (grado) {
             case Curatore -> {
                 comune.getCuratori().add(new Curatore(comune, contributor));
-                removeOldRank(comune, contributor);
+                removeOldRank(contributor);
             }
             case Animatore -> {
                 comune.getAnimatori().add(new Animatore(contributor));
-                removeOldRank(comune, contributor);
+                removeOldRank(contributor);
             }
             case ContributorTrusted -> {
-                removeOldRank(comune, contributor);
+                removeOldRank(contributor);
                 comune.getContributorTrusteds().add(new ContributorTrusted(comune, contributor));
             }
             default -> {
                 comune.getContributors().add(new Contributor(comune, contributor));
-                removeOldRank(comune, contributor);
+                removeOldRank(contributor);
             }
         }
 
     }
 
-    private void removeOldRank(Comune comune, @NotNull Contributor contributor) {
+    private void removeOldRank(@NotNull Contributor contributor) {
+        Comune comune=contributor.getComune();
         switch (contributor) {
             case Curatore curatore -> comune.getCuratori().remove(curatore);
             case ContributorTrusted contributorTrusted -> comune.getContributorTrusteds().remove(contributorTrusted);
@@ -72,7 +82,5 @@ public class GestoreController {
         //TODO aggiungere al database
     }
 
-    public UtentiController getUtentiController() {
-        return utentiController;
-    }
+
 }

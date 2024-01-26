@@ -8,6 +8,9 @@ import java.time.LocalDate;
 
 public class Attivita extends PuntoInteresse {
     private LocalDate orario;
+    public @Nullable LocalDate getOrario() {
+        return orario;
+    }
     protected Attivita(String nome, Punto pt,LocalDate orario) {
         super(nome, pt);
         this.orario=orario;
@@ -17,9 +20,6 @@ public class Attivita extends PuntoInteresse {
         super(nome,punto);
     }
 
-    public @Nullable LocalDate getOrario() {
-        return orario;
-    }
 
     @Override
     public String mostraDettagli() {

@@ -6,13 +6,6 @@ public class Punto {
 
     private final double latitudine;
     private final double longitudine;
-
-    public Punto(double lat, double lon) {
-        this.latitudine = lat;
-        this.longitudine = lon;
-    }
-
-
     public double getLatitudine() {
         return latitudine;
     }
@@ -20,6 +13,12 @@ public class Punto {
     public double getLongitudine() {
         return longitudine;
     }
+    public Punto(double lat, double lon) {
+        this.latitudine = lat;
+        this.longitudine = lon;
+    }
+
+
 
     public double getDistance(@NotNull Punto pt) {
         return Math.sqrt(getDistanceSquared(pt));

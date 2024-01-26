@@ -31,25 +31,13 @@ public class Contest extends Contenuto {
     public ArrayList<Invito> getInviti() {
         return inviti;
     }
-
-    public Contest(String nome, boolean open, ContestController controller, String obiettivo, Animatore author) {
-        super(true);
-        this.open = open;
-        this.controller = controller;
-        this.obiettivo = obiettivo;
-        this.author = author;
-        this.nome = nome;
-    }
-
     public void setOpen(boolean open) {
         this.open = open;
     }
 
-
     public String getObiettivo() {
         return obiettivo;
     }
-
 
     public HashMap<TuristaLoggato, Set<Materiale>> getMaterialiContest() {
         return materialiContest;
@@ -63,7 +51,21 @@ public class Contest extends Contenuto {
         return partecipanti;
     }
 
+
     public ContestController getContestController() {
         return controller;
     }
+
+
+
+    public Contest(String nome, boolean open, ContestController controller, String obiettivo, Animatore author) {
+        super(true);
+        this.open = open;
+        this.controller = controller;
+        this.obiettivo = obiettivo;
+        this.author = author;
+        this.nome = nome;
+    }
+
+
 }

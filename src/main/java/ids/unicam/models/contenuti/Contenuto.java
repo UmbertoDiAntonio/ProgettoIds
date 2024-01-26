@@ -23,10 +23,6 @@ public abstract class Contenuto {
 
     private final Set<String> tags=new HashSet<>();
 
-    public Contenuto(boolean approved) {
-        this.approved = approved;
-        this.id = ContenutoController.generateID();
-    }
 
     public long getId() {
         return id;
@@ -38,6 +34,15 @@ public abstract class Contenuto {
 
     public void setApproved(boolean approved) {
         this.approved = approved;
+    }
+
+    public Set<String> getTags() {
+        return tags;
+    }
+
+    public Contenuto(boolean approved) {
+        this.approved = approved;
+        this.id = ContenutoController.generateID();
     }
 
 }

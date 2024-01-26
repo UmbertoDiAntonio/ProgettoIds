@@ -8,19 +8,16 @@ import java.util.List;
 public abstract class PuntoInteresse extends Contenuto {
     private final String nome;
     private final Punto pt;
+    List<Materiale> materialeList = new ArrayList<>();
 
     public Punto getPt() {
         return pt;
     }
-    List<Materiale> materialeList =new ArrayList<>();
 
     public List<Materiale> getMaterialeList() {
         return materialeList;
     }
 
-    public void addMateriale(Materiale materiale){
-        materialeList.add(materiale);
-    }
 
     public String getNome() {
         return nome;
@@ -28,10 +25,16 @@ public abstract class PuntoInteresse extends Contenuto {
 
     public PuntoInteresse(String nome, Punto pt) {
         super(false);
-        this.nome=nome;
+        this.nome = nome;
         this.pt = pt;
     }
+
     public abstract String mostraDettagli();
 
     public abstract String getGeneralInfo();
+
+    public void addMateriale(Materiale materiale) {//TODO siamo sicuri che non vada nel controller
+        materialeList.add(materiale);
+    }
+
 }

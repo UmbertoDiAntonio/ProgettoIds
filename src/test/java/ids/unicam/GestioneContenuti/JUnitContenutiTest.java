@@ -49,7 +49,7 @@ public class JUnitContenutiTest {
 
         {
             gestorePiattaforma.getGestoreController().registraContributor(comune, "Mario", "Rossi", new Date(), "pass", "user");
-            gestorePiattaforma.promuovi(comune, comune.getContributors().getFirst(), Gradi.ContributorTrusted);
+            gestorePiattaforma.promuovi( comune.getContributors().getFirst(), Gradi.ContributorTrusted);
 
             ContributorTrusted contributorTrusted = comune.getContributorTrusteds().getFirst();
             assertEquals(1, comune.getContenutoController().getContenuti().size());
@@ -62,7 +62,7 @@ public class JUnitContenutiTest {
 
         {
             gestorePiattaforma.getGestoreController().registraContributor(comune, "Mario", "Rossi", new Date(), "pass", "user");
-            gestorePiattaforma.promuovi(comune, comune.getContributors().getFirst(), Gradi.ContributorTrusted);
+            gestorePiattaforma.promuovi(comune.getContributors().getFirst(), Gradi.ContributorTrusted);
 
             ContributorTrusted contributorTrusted = comune.getContributorTrusteds().getFirst();
             AttivitaFactory attivita1 = new AttivitaFactory(LocalDate.now());
@@ -80,7 +80,7 @@ public class JUnitContenutiTest {
 
         {
             gestorePiattaforma.getGestoreController().registraContributor(comune, "Mario", "Rossi", new Date(), "pass", "user");
-            gestorePiattaforma.promuovi(comune, comune.getContributors().getFirst(), Gradi.ContributorTrusted);
+            gestorePiattaforma.promuovi( comune.getContributors().getFirst(), Gradi.ContributorTrusted);
 
             ContributorTrusted contributorTrusted = comune.getContributorTrusteds().getFirst();
             AttivitaFactory attivita1 = new AttivitaFactory(LocalDate.now());
@@ -105,7 +105,7 @@ public class JUnitContenutiTest {
         Comune comune = new Comune("Milano", gestorePiattaforma, new ContenutoController(), new ContestController());
 
         Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new Date(), "ciao", "mr");
-        gestorePiattaforma.promuovi(comune, contributor, Gradi.Animatore);
+        gestorePiattaforma.promuovi( contributor, Gradi.Animatore);
         Animatore animatore = comune.getAnimatori().getFirst();
         animatore.creaContest("Monumento", "Foto più bella", true);
         assertEquals(1, comune.getContestController().getContestByAuthor(Long.parseLong(comune.getAnimatori().getFirst().getId())).size());
@@ -123,7 +123,7 @@ public class JUnitContenutiTest {
         Comune comune = new Comune("Milano", gestorePiattaforma, new ContenutoController(), new ContestController());
 
         Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new Date(), "ciao", "mr");
-        gestorePiattaforma.promuovi(comune, contributor, Gradi.Animatore);
+        gestorePiattaforma.promuovi( contributor, Gradi.Animatore);
         Animatore animatore = comune.getAnimatori().getFirst();
         animatore.creaContest("monumento", "Foto più bella", false);
         assertEquals(1, comune.getContestController().getContestByAuthor(Long.parseLong(comune.getAnimatori().getFirst().getId())).size());
@@ -146,7 +146,7 @@ public class JUnitContenutiTest {
         TuristaLoggato turistaLoggato = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi().getFirst();
 
         {
-            gestorePiattaforma.promuovi(comune, contributor, Gradi.Animatore);
+            gestorePiattaforma.promuovi( contributor, Gradi.Animatore);
             Animatore animatore = comune.getAnimatori().getFirst();
             animatore.creaContest("monumento", "Foto più bella", true);
             Materiale materiale = new Materiale(true, turistaLoggato);
@@ -173,7 +173,7 @@ public class JUnitContenutiTest {
         gestorePiattaforma.getGestoreController().registraTurista("andrea", "neri", new Date(), "eroe", "AN2");
         TuristaLoggato turistaLoggato = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi().getFirst();
 
-        gestorePiattaforma.promuovi(comune,contributor,Gradi.Animatore);
+        gestorePiattaforma.promuovi(contributor,Gradi.Animatore);
         Animatore animatore = comune.getAnimatori().getFirst();
         Contest contest = animatore.creaContest("monumento", "Foto più bella", true);
         Materiale materiale = new Materiale(true, turistaLoggato);

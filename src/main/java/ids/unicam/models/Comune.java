@@ -47,10 +47,26 @@ public class Comune {
         return curatori;
     }
 
+    public ContenutoController getContenutoController() {
+        return contenutoController;
+    }
+
+    public ContestController getContestController() {
+        return contestController;
+    }
+
     public String getNome() {
         return nome;
     }
 
+    /**
+     * @param nome                Nome del Comune
+     * @param gestorePiattaforma
+     * @param contenutoController
+     * @param contestController
+     * @throws IllegalArgumentException se il nome del comune non corrisponde a nessun comune
+     * @throws RuntimeException se non è possibile raggiungere il sistema OSM
+     */
     public Comune(String nome, GestorePiattaforma gestorePiattaforma, ContenutoController contenutoController, ContestController contestController) {
         this.gestorePiattaforma = gestorePiattaforma;
         this.posizione = OSMRequester.getCentroComune(nome);
@@ -64,16 +80,17 @@ public class Comune {
         this.contestController = contestController;
     }
 
+    /**
+     *
+     * @param nome nome del Comune
+     * @param gestorePiattaforma
+     *
+     * @throws IllegalArgumentException se il nome del comune non corrisponde a nessun comune
+     * @throws RuntimeException se non è possibile raggiungere il sistema OSM
+     */
     public Comune(String nome, GestorePiattaforma gestorePiattaforma) {
         new Comune(nome, gestorePiattaforma, new ContenutoController(), new ContestController());
     }
 
-    public ContenutoController getContenutoController() {
-        return contenutoController;
-    }
-
-    public ContestController getContestController() {
-        return contestController;
-    }
 
 }
