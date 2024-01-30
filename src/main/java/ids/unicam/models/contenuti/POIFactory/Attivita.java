@@ -20,7 +20,6 @@ public class Attivita extends PuntoInteresse {
         super(nome,punto);
     }
 
-
     @Override
     public String mostraDettagli() {
         //TODO

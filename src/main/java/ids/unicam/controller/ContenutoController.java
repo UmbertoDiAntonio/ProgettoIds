@@ -33,14 +33,12 @@ public class ContenutoController {
         contenuti.add(puntoInteresse);
     }
 
-    //TODO capire perche materiale approved false
     /**
-     * Aggiunge un materiale non approvato? a un punto di interesse
+     * Aggiunge un materiale a un punto di interesse
      * @param puntoInteresse il punto di interesse in cui aggiungere il materiale
      * @param materiale il materiale
      */
     public void addMaterialeTo(PuntoInteresse puntoInteresse, Materiale materiale) {
-        materiale.setApproved(false);
         puntoInteresse.addMateriale(materiale);
     }
 

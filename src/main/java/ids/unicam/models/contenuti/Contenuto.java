@@ -44,5 +44,4 @@ public abstract class Contenuto {
         this.approved = approved;
         this.id = ContenutoController.generateID();
     }
-
 }

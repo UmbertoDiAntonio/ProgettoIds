@@ -43,25 +43,25 @@ public class Curatore extends ContributorTrusted {
     }
 
     /**
-     * Approva o non approva un Materiale, in caso di non approvazione lo rimuove dalla lista di materiali in attesa di approvazione del contest???????,
+     * Valuta un Materiale, in caso di non approvazione lo rimuove dalla lista di materiali in attesa di approvazione del contest???????,
      * notifica i subscriber
      *
      * @param materiale il materiale che si vuole valutare
      * @param approvato approvato o non approvato
      */
-    public void approva(Materiale materiale, boolean approvato) { //TODO rename
+    public void valuta(Materiale materiale, boolean approvato) { //TODO rename
         materiale.setApproved(approvato);
         notifica(approvato, materiale);
     }
 
     /**
-     * Approva o non approva un punto di interesse, in caso di non approvazione lo rimuove dalla lista dei contenuti nel controller del comune associato,
+     * Valuta un punto di interesse, in caso di non approvazione lo rimuove dalla lista dei contenuti nel controller del comune associato,
      * notifica i subscriber
      *
      * @param puntoInteresse il punto di interesse che si vuole valutare
-     * @param approvato approvato o non approvato
+     * @param approvato stato punto di interesse : approvato/non approvato
      */
-    public void approva(PuntoInteresse puntoInteresse, boolean approvato) { //TODO rename
+    public void valuta(PuntoInteresse puntoInteresse, boolean approvato) {
         puntoInteresse.setApproved(approvato);
         if (!approvato)
             getComune().getContenutoController().getContenuti().remove(puntoInteresse);

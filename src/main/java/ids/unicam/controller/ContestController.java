@@ -66,7 +66,7 @@ public class ContestController {
      *
      * @throws NotInContestException se si cerca di caricare materiale su un contest senza essere entrati
      */
-    public void aggiungiMateriale(TuristaLoggato turista,Materiale materiale,Contest contest){//TODO controllo se il turista fa parte del contest
+    public void aggiungiMateriale(TuristaLoggato turista,Materiale materiale,Contest contest){
             materiale.setApproved(false);
             contest.getMaterialiContest()
                     .computeIfAbsent(turista, k -> new HashSet<>())
@@ -84,7 +84,7 @@ public class ContestController {
     }
 
     public void invita(Invito invito) { //TODO perchè gli passiamo invito?
-        invito.getInvitato().getInvitiRicevuti().add(invito); //TODO questo lo potrebber dover fare utenti controller
+        invito.getInvitato().getInvitiRicevuti().add(invito); //TODO questo lo potrebbe dover fare utenti controller
     }
 
 }

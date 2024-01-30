@@ -3,8 +3,8 @@ package ids.unicam.models.contenuti;
 import ids.unicam.models.attori.TuristaLoggato;
 
 public class Descrizione  extends Materiale{
-    public Descrizione(boolean approved, TuristaLoggato autore) {
-        super(approved,autore);
+    public Descrizione(TuristaLoggato autore) {
+        super(autore);
     }
 
     @Override

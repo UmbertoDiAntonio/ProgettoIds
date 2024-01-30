@@ -6,11 +6,8 @@ import ids.unicam.controller.ContestController;
 import ids.unicam.Comune;
 import ids.unicam.models.Ruolo;
 import ids.unicam.models.attori.*;
-import ids.unicam.models.contenuti.Contest;
-import ids.unicam.models.contenuti.Itinerario;
-import ids.unicam.models.contenuti.Materiale;
+import ids.unicam.models.contenuti.*;
 import ids.unicam.models.contenuti.POIFactory.AttivitaFactory;
-import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Punto;
 import org.junit.jupiter.api.Test;
 
@@ -151,7 +148,7 @@ public class JUnitContenutiTest {
             gestorePiattaforma.promuovi( contributor, Ruolo.Animatore);
             Animatore animatore = comune.getAnimatori().getFirst();
             animatore.creaContest("monumento", "Foto più bella", true);
-            Materiale materiale = new Materiale(true, turistaLoggato);
+            Materiale materiale = new Foto( turistaLoggato);
             turistaLoggato.joinFreeContest(comune.getContestController().getContests().getFirst());
             turistaLoggato.addMaterialeContest(comune.getContestController().getContests().getFirst(), materiale);
             assertEquals(1, comune.getContestController().getContests().getFirst().getMaterialiContest().size());
@@ -160,7 +157,8 @@ public class JUnitContenutiTest {
         {
             AttivitaFactory attivitaFactory = new AttivitaFactory(LocalDate.now());
             PuntoInteresse puntoInteresse = attivitaFactory.creaPoi("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015));
-            Materiale materiale = new Materiale(true, turistaLoggato);
+            Materiale materiale = new Foto( turistaLoggato);
+
             contributor.addMateriale(puntoInteresse, materiale);
             assertEquals(1, puntoInteresse.getMaterialeList().size());
         }
@@ -178,7 +176,7 @@ public class JUnitContenutiTest {
         gestorePiattaforma.promuovi(contributor, Ruolo.Animatore);
         Animatore animatore = comune.getAnimatori().getFirst();
         Contest contest = animatore.creaContest("monumento", "Foto più bella", true);
-        Materiale materiale = new Materiale(true, turistaLoggato);
+        Materiale materiale = new Descrizione( turistaLoggato);
         assertThrows(NotInContestException.class, () -> turistaLoggato.addMaterialeContest(contest, materiale));
         turistaLoggato.joinFreeContest(contest);
         turistaLoggato.addMaterialeContest(contest, materiale);

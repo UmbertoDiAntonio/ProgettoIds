@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public abstract class Materiale {
     private final TuristaLoggato author;
-    private boolean approved;
+    private boolean approved=false;
     private final UUID id;
     public UUID getId() {
         return id;
@@ -32,11 +32,9 @@ public abstract class Materiale {
 
     /**
      * Crea un materiale e gli assegna un id randomico
-     * @param approved se il materiale è approvato o non approvato
      * @param author l'autore del materiale
      */
-    public Materiale(boolean approved, TuristaLoggato author) {
-        this.approved = approved;
+    public Materiale(TuristaLoggato author) {
         this.author=author;
         this.id = UUID.randomUUID();
     }

@@ -35,8 +35,5 @@ public class Itinerario extends Contenuto {
     public boolean removeTappa(PuntoInteresse puntoInteresse){//TODO siamo sicuri che non vada nel controller?
         return percorso.remove(puntoInteresse);
     }
-
-
-
 }
 

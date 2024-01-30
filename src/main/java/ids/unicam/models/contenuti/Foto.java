@@ -4,8 +4,8 @@ import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.TuristaLoggato;
 
 public class Foto extends Materiale{
-    public Foto(boolean approved, TuristaLoggato autore) {
-        super(approved,autore);
+    public Foto(TuristaLoggato autore) {
+        super(autore);
     }
 
     /**
