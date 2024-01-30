@@ -13,9 +13,6 @@ public abstract class PuntoInteresse extends Contenuto {
     public Punto getPt() {
         return pt;
     }
-    public void addMateriale(Materiale materiale) {//TODO siamo sicuri che non vada nel controller
-        materialeList.add(materiale);
-    }
 
     public List<Materiale> getMaterialeList() {
         return materialeList;

@@ -4,6 +4,7 @@ import ids.unicam.OSM.OSMRequester;
 import ids.unicam.controller.ContenutoController;
 import ids.unicam.controller.ContestController;
 import ids.unicam.models.attori.*;
+import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Punto;
 
 import java.util.ArrayList;
@@ -90,6 +91,16 @@ public class Comune {
     public Comune(String nome, GestorePiattaforma gestorePiattaforma) {
         new Comune(nome, gestorePiattaforma, new ContenutoController(), new ContestController());
     }
+
+
+    public final boolean checkCoordinateComune(PuntoInteresse puntoInteresse){
+        String nomeComune = OSMRequester.getComuneAt(new Punto(puntoInteresse.getPt().getLatitudine(),puntoInteresse.getPt().getLongitudine()));
+        if(nomeComune != null) {
+            return nomeComune.equalsIgnoreCase(getNome());
+        }
+        return false;
+    }
+
 
 
 }

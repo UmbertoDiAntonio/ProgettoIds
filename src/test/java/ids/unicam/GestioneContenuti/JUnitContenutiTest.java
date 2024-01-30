@@ -18,6 +18,8 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class JUnitContenutiTest {
+
+    //TODO inserire commenti ad ogni TEST
     @Test
     public void testCoordinate() {
         {
@@ -85,16 +87,16 @@ public class JUnitContenutiTest {
             AttivitaFactory attivita1 = new AttivitaFactory(LocalDate.now());
             contributorTrusted.addPuntoInteresse(attivita1.creaPoi("bar2", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03)));
             contributorTrusted.addPuntoInteresse(attivita1.creaPoi("barcentrale", new Punto(comune.getPosizione().getLatitudine() - 0.02, comune.getPosizione().getLongitudine() - 0.02)));
-            Itinerario itenerario1 = contributorTrusted.creaItinerario("girodeibar", comune.getContenutoController().getContenuti().get(0)
+            Itinerario itinerario1 = contributorTrusted.creaItinerario("girodeibar", comune.getContenutoController().getContenuti().get(0)
                     , comune.getContenutoController().getContenuti().get(1));
             assertEquals(1, comune.getContenutoController().getItinerari().size());
-            assertEquals(2, comune.getContenutoController().getItinerari().values().stream().toList().getFirst().getNumeroTappe());
+            assertEquals(2, comune.getContenutoController().getItinerari().getFirst().getNumeroTappe());
 
             PuntoInteresse nuovoPunto = attivita1.creaPoi("birreria", new Punto(comune.getPosizione().getLatitudine() + 0.14, comune.getPosizione().getLongitudine() + 0.14));
             contributorTrusted.addPuntoInteresse(nuovoPunto);
-            itenerario1.addTappa(nuovoPunto);
+            comune.getContenutoController().addTappa(itinerario1, nuovoPunto);
             assertEquals(1, comune.getContenutoController().getItinerari().size());
-            assertEquals(3, comune.getContenutoController().getItinerari().values().stream().toList().getFirst().getNumeroTappe());
+            assertEquals(3, comune.getContenutoController().getItinerari().getFirst().getNumeroTappe());
         }
     }
 
@@ -143,6 +145,7 @@ public class JUnitContenutiTest {
         Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new Date(), "ciao", "mr");
         gestorePiattaforma.getGestoreController().registraTurista("andrea", "neri", new Date(), "eroe", "AN2");
         TuristaLoggato turistaLoggato = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi().getFirst();
+        AttivitaFactory attivitaFactory = new AttivitaFactory(LocalDate.now());
 
         {
             gestorePiattaforma.promuovi( contributor, Ruolo.Animatore);
@@ -155,12 +158,20 @@ public class JUnitContenutiTest {
         }
 
         {
-            AttivitaFactory attivitaFactory = new AttivitaFactory(LocalDate.now());
             PuntoInteresse puntoInteresse = attivitaFactory.creaPoi("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015));
             Materiale materiale = new Foto( turistaLoggato);
 
             contributor.addMateriale(puntoInteresse, materiale);
             assertEquals(1, puntoInteresse.getMaterialeList().size());
+        }
+
+        {
+            PuntoInteresse puntoInteresse = attivitaFactory.creaPoi("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015));
+            contributor.addPuntoInteresse(puntoInteresse);
+            assertEquals(0,turistaLoggato.getFavourites().size());
+            turistaLoggato.addFavourites(puntoInteresse);
+            assertEquals(1,turistaLoggato.getFavourites().size());
+
         }
 
     }
@@ -185,6 +196,54 @@ public class JUnitContenutiTest {
 
         animatore.approva(materiale);
         assertTrue(materiale.isApproved());
+
+    }
+
+    @Test
+    public void eliminaContenuto(){
+        GestorePiattaforma gestorePiattaforma = new GestorePiattaforma();
+        Comune comune = new Comune("Milano", gestorePiattaforma, new ContenutoController(), new ContestController());
+        Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new Date(), "ciao", "mr");
+        gestorePiattaforma.getGestoreController().registraTurista("andrea", "neri", new Date(), "eroe", "AN2");
+        Contributor contributor2 = gestorePiattaforma.getGestoreController().registraContributor(comune, "Leonardo", "rosso", new Date(), "esc", "org");
+        Contributor contributor3 = gestorePiattaforma.getGestoreController().registraContributor(comune, "Fede", "Verde", new Date(), "arg", "use");
+
+        gestorePiattaforma.promuovi(contributor2, Ruolo.Curatore);
+        gestorePiattaforma.promuovi(contributor3, Ruolo.Animatore);
+        Animatore animatore = comune.getAnimatori().getFirst();
+        Curatore curatore = comune.getCuratori().getFirst();
+
+        AttivitaFactory attivita1 = new AttivitaFactory(LocalDate.now());
+        contributor.addPuntoInteresse(attivita1.creaPoi("bar2", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03)));
+
+        assertEquals(1, comune.getContenutoController().getContenuti().size());
+        curatore.delete(comune.getContenutoController().getContenuti().getFirst());
+        assertEquals(0, comune.getContenutoController().getContenuti().size());
+
+        contributor.addPuntoInteresse(attivita1.creaPoi("bar2", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03)));
+
+
+        Itinerario itinerario1 = contributor.creaItinerario("girodeibar", comune.getContenutoController().getContenuti().getFirst());
+        assertEquals(0, comune.getContenutoController().getItinerari().size());
+        curatore.valuta(comune.getContenutoController().getContenuti().getFirst(), true);
+        itinerario1 = contributor.creaItinerario("girodeibar", comune.getContenutoController().getContenuti().getFirst());
+        assertEquals(1, comune.getContenutoController().getItinerari().size());
+        curatore.delete(itinerario1);
+        assertEquals(0, comune.getContenutoController().getItinerari().size());
+
+        animatore.creaContest("contest", "spiaggia", true);
+        assertEquals(1, comune.getContestController().getContests().size());
+        curatore.delete(comune.getContestController().getContests().getFirst());
+        assertEquals(0, comune.getContestController().getContests().size());
+
+        itinerario1 = contributor.creaItinerario("girodeibar", comune.getContenutoController().getContenuti().getFirst());
+        assertEquals(1, comune.getContenutoController().getItinerari().getFirst().getNumeroTappe());
+        contributor.aggiungiTappaItinerario(itinerario1, comune.getContenutoController().getContenuti().getFirst());
+        assertEquals(2, comune.getContenutoController().getItinerari().getFirst().getNumeroTappe());
+        curatore.rimuoviTappa(itinerario1, comune.getContenutoController().getContenuti().getFirst());
+        assertEquals(1, comune.getContenutoController().getItinerari().getFirst().getNumeroTappe());
+
+
 
 
     }

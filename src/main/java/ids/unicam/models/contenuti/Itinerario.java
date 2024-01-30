@@ -26,14 +26,6 @@ public class Itinerario extends Contenuto {
         percorso.addAll(Arrays.stream(puntoInteresses).toList());
     }
 
-    public void addTappa(PuntoInteresse puntoInteresse){//TODO siamo sicuri che non vada nel controller?
-        percorso.add(puntoInteresse);
-    }
-    public void addTappa(PuntoInteresse... puntoInteresse){//TODO siamo sicuri che non vada nel controller?
-        percorso.addAll(Arrays.stream(puntoInteresse).toList());
-    }
-    public boolean removeTappa(PuntoInteresse puntoInteresse){//TODO siamo sicuri che non vada nel controller?
-        return percorso.remove(puntoInteresse);
-    }
+
 }
 

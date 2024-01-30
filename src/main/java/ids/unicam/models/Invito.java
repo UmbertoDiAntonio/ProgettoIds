@@ -38,7 +38,7 @@ public class Invito {
         if (contest.isOpen())
             return false;
 
-        ArrayList<Contest> c1 = contest.getAuthor().getComune().getContestController().getContestByTourist(invitato.getId());
+        ArrayList<Contest> c1 = contest.getContestController().getContestByTourist(invitato.getId());
         return c1.contains(contest);
     }
 

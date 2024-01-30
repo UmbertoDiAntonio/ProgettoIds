@@ -15,13 +15,13 @@ public class ContenutoController {
     }
     private final List<PuntoInteresse> contenuti = new ArrayList<>();
 
-    private final HashMap<String, Itinerario> itinerari = new HashMap<>();
+    private final ArrayList<Itinerario> itinerari = new ArrayList<>();
 
     public List<PuntoInteresse> getContenuti() {
         return contenuti;
     }
 
-    public HashMap<String, Itinerario> getItinerari() {
+    public ArrayList<Itinerario> getItinerari() {
         return itinerari;
     }
 
@@ -39,7 +39,7 @@ public class ContenutoController {
      * @param materiale il materiale
      */
     public void addMaterialeTo(PuntoInteresse puntoInteresse, Materiale materiale) {
-        puntoInteresse.addMateriale(materiale);
+        puntoInteresse.getMaterialeList().add(materiale);
     }
 
     /**
@@ -50,7 +50,7 @@ public class ContenutoController {
      */
     public Itinerario creaItinerario(String nome,PuntoInteresse... puntoInteresse) {
         Itinerario itinerario = new Itinerario(nome, puntoInteresse);
-        itinerari.put(nome, itinerario);
+        itinerari.add(itinerario);
 
         return itinerario;
     }
@@ -61,16 +61,24 @@ public class ContenutoController {
      * @param puntoInteresse il punto di interesse da aggiungere come tappa
      */
     public void addTappa(Itinerario itinerario, PuntoInteresse puntoInteresse) {
-        itinerario.addTappa(puntoInteresse);
+        itinerario.getPercorso().add(puntoInteresse);
+    }
+    public void addTappa(Itinerario itinerario, PuntoInteresse... puntoInteresse){
+        itinerario.getPercorso().addAll(Arrays.stream(puntoInteresse).toList());
+    }
+    public boolean removeTappa(Itinerario itinerario, PuntoInteresse puntoInteresse){
+        return  itinerario.getPercorso().remove(puntoInteresse);
     }
 
-    //TODO testare
     public void deleteContenuto(Contenuto contenuto) {
         if (contenuto instanceof PuntoInteresse) {
             contenuti.remove(contenuto);
-        } else if (contenuto instanceof Itinerario) {
-            itinerari.remove(((Itinerario) contenuto).getNome());
-
+        } else if (contenuto instanceof Itinerario itinerario) {
+            itinerari.remove(itinerario);
         }
+    }
+
+    public void confermaIdentità(){
+
     }
 }

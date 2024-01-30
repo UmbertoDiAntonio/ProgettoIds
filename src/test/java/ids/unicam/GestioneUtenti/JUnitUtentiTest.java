@@ -63,13 +63,16 @@ public class JUnitUtentiTest {
         contributor.addPuntoInteresse(new MuseoFactory().creaPoi("Accademia", new Punto(comune.getPosizione().getLatitudine()+0.01,comune.getPosizione().getLongitudine()+0.01)));
         assertFalse(comune.getContenutoController().getContenuti().getFirst().isApproved());
         curatore.aggiungiOsservatore(contributor);
+        assertEquals(1, curatore.getOsservatori().size());
         curatore.valuta(comune.getContenutoController().getContenuti().getFirst(),true);
         assertTrue(comune.getContenutoController().getContenuti().getFirst().isApproved());
         Materiale materiale1 = new Foto( contributor);
-        comune.getContenutoController().getContenuti().getFirst().addMateriale(materiale1);
+        comune.getContenutoController().getContenuti().getFirst().getMaterialeList().add(materiale1);
         assertFalse(comune.getContenutoController().getContenuti().getFirst().getMaterialeList().getFirst().isApproved());
         curatore.valuta(comune.getContenutoController().getContenuti().getFirst().getMaterialeList().getFirst(), true);
         assertTrue(comune.getContenutoController().getContenuti().getFirst().getMaterialeList().getFirst().isApproved());
+        curatore.rimuoviOsservatore(contributor);
+        assertEquals(0, curatore.getOsservatori().size());
 
     }
 }

@@ -24,7 +24,7 @@ public class Animatore extends Contributor {
      * Invia al controller di contest associato al comune dell'animatore la richiesta di approvare il materiale
      * @param materiale il materiale da approvare
      */
-    public void approva(Materiale materiale) { //TODO come capiamo se è andato a buon fine?
+    public void approva(Materiale materiale) {
         getComune().getContestController().approvaMateriale(materiale);
     }
 
@@ -34,8 +34,7 @@ public class Animatore extends Contributor {
      * @param turistaLoggato
      */
     public void invita(Contest contest, TuristaLoggato turistaLoggato){
-        Invito invito = new Invito(contest, turistaLoggato); //TODO non mi piace
-        contest.getContestController().invita(invito);
+        contest.getContestController().invita(turistaLoggato, contest);
         //turistaLoggato.getInvitiRicevuti().add(contest.getInviti().getFirst());
     }
 }

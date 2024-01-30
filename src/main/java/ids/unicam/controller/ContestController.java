@@ -74,17 +74,21 @@ public class ContestController {
 
     }
     /**
-     * Imposta un materiale del contest come approvato e lo rimuove dalla lista dei materiali in attesa di approvazione
+     * Imposta un materiale del contest come approvato
      * @param materiale il Materiale da approvare
      */
-    public void approvaMateriale(Materiale materiale){//TODO forse va cambiato
+    public void approvaMateriale(Materiale materiale){
         if(materiale.isApproved())
             return;
         materiale.setApproved(true);
     }
 
-    public void invita(Invito invito) { //TODO perchè gli passiamo invito?
-        invito.getInvitato().getInvitiRicevuti().add(invito); //TODO questo lo potrebbe dover fare utenti controller
+    public void invita(TuristaLoggato turistaLoggato, Contest contest) {
+        turistaLoggato.getInvitiRicevuti().add(new Invito(contest,turistaLoggato));
+        //TODO questo lo potrebbe dover fare utenti controller
     }
 
+    public void deleteContest(Contest contest) {
+        contests.remove(contest);
+    }
 }

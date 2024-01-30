@@ -16,8 +16,7 @@ import java.util.Date;
 
 public class Contributor extends TuristaLoggato implements Observer {
     private final Comune comune;
-
-    public final Comune getComune() {
+    final Comune getComune() {
         return comune;
     }
 
@@ -38,7 +37,7 @@ public class Contributor extends TuristaLoggato implements Observer {
      * @return true se il punto di interesse è stato aggiunto, false se il punto non fa parte del comune
      */
     public boolean addPuntoInteresse(PuntoInteresse puntoInteresse){
-        if(checkCoordinateComune(puntoInteresse)){
+        if(comune.checkCoordinateComune(puntoInteresse)){
             comune.getContenutoController().addPunto(puntoInteresse);
             return true;
         }
@@ -53,7 +52,7 @@ public class Contributor extends TuristaLoggato implements Observer {
      * @return true se il punto di interesse è stato aggiunto, false se il punto non fa parte del comune
      */
     public boolean addMateriale(PuntoInteresse puntoInteresse, Materiale materiale){
-        if(checkCoordinateComune(puntoInteresse)){
+        if(comune.checkCoordinateComune(puntoInteresse)){
             comune.getContenutoController().addMaterialeTo(puntoInteresse,materiale);
             return true;
         }
@@ -69,7 +68,7 @@ public class Contributor extends TuristaLoggato implements Observer {
      */
     public @Nullable Itinerario creaItinerario(String nome, PuntoInteresse... puntiInteresse){
         for(PuntoInteresse puntoInteresse : puntiInteresse){
-            if(!checkCoordinateComune(puntoInteresse) && puntoInteresse.isApproved() ){
+            if(!comune.checkCoordinateComune(puntoInteresse) || !puntoInteresse.isApproved() ){
                 return null;
             }
         }
@@ -82,9 +81,8 @@ public class Contributor extends TuristaLoggato implements Observer {
      * @param puntoInteresse il punto di interesse da aggiungere come tappa all'itinerario
      * @return true se il punto è stato aggiunto, false se l'aggiunta è fallita (il punto è fuori dal territorio del comune)
      */
-    //TODO testare
     public boolean aggiungiTappaItinerario(Itinerario itinerario, PuntoInteresse puntoInteresse){
-        if(checkCoordinateComune(puntoInteresse)){
+        if(comune.checkCoordinateComune(puntoInteresse)){
             comune.getContenutoController().addTappa(itinerario,puntoInteresse);
             return true;
         }
@@ -100,15 +98,6 @@ public class Contributor extends TuristaLoggato implements Observer {
     public void aggiungiScadenzaContenuto(Contenuto contenuto, Tempo giorni){
         contenuto.setScadenza(giorni);
 
-    }
-
-    //TODO va qui? direi di no
-    public final boolean checkCoordinateComune(PuntoInteresse puntoInteresse){
-        String nomeComune = OSMRequester.getComuneAt(new Punto(puntoInteresse.getPt().getLatitudine(),puntoInteresse.getPt().getLongitudine()));
-        if(nomeComune != null) {
-            return nomeComune.equalsIgnoreCase(comune.getNome());
-        }
-        return false;
     }
 
     @Override

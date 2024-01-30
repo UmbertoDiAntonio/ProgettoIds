@@ -49,11 +49,11 @@ public class TuristaLoggato extends Turista {
 
     public List<Contenuto> getFavourites() {
         return favourites;
-    }//TODO test
+    }
 
     public void addFavourites(Contenuto contenuto) {
         favourites.add(contenuto);
-    } //TODO test
+    } //TODO controlli
 
 
     protected TuristaLoggato(String name, String surname, Date dateBirthday, String password, String username) {
@@ -73,7 +73,7 @@ public class TuristaLoggato extends Turista {
 
     //TODO test
     public void addPhoto(PuntoInteresse puntoInteresse, Foto foto) {
-        puntoInteresse.addMateriale(foto);
+        puntoInteresse.getMaterialeList().add(foto);
     }
 
     /**
@@ -81,16 +81,19 @@ public class TuristaLoggato extends Turista {
      *
      * @param invito l'invito da accettare
      */
-    //TODO metodo per capire se l'invito è stato accettato
-    public void accettaInvito(Invito invito) { //invocato dall'interfaccia
+    public boolean accettaInvito(Invito invito) { //invocato dall'interfaccia
+        boolean success = false;
         for (Invito inv : invitiRicevuti) {
             if (inv.equals(invito)) {
                 Contest contest = invito.getContest();
                 assert contest.getPartecipanti() != null;
                 contest.getPartecipanti().add(this);
+                success = true;
             }
         }
+        return success;
     }
+
 
     /**
      * Invia al controller del contest la richiesta di aggiungere un materiale

@@ -1,5 +1,6 @@
 package ids.unicam.models.attori;
 
+import ids.unicam.Exception.RegisterException;
 import ids.unicam.controller.UtentiController;
 import ids.unicam.Comune;
 import ids.unicam.models.Ruolo;
@@ -62,9 +63,8 @@ public class GestoreController {
                 registraContributor(comune, nome, cognome, birthday, password, username);
                 break;
             default:
-                //TODO
+                throw new RegisterException("Il tipo di registrazione richiesta non è valido");
         }
-
     }
 
     public void registraTurista(String nome, String cognome, Date birthday, String password, String username) {

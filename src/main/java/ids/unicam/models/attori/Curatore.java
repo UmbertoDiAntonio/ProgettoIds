@@ -1,10 +1,9 @@
 package ids.unicam.models.attori;
 
 import ids.unicam.Comune;
-import ids.unicam.models.contenuti.Contenuto;
-import ids.unicam.models.contenuti.Materiale;
-import ids.unicam.models.contenuti.PuntoInteresse;
+import ids.unicam.models.contenuti.*;
 import ids.unicam.utilites.Observer;
+import ids.unicam.utilites.Punto;
 
 import java.util.ArrayList;
 
@@ -16,7 +15,6 @@ public class Curatore extends ContributorTrusted {
         osservatori.add(osservatore);
     }
 
-    //TODo test
     public void rimuoviOsservatore(Observer osservatore) {
         osservatori.remove(osservatore);
     }
@@ -25,6 +23,10 @@ public class Curatore extends ContributorTrusted {
         for (Observer listener : osservatori) {
             listener.riceviNotifica(eventType, puntoInteresse);
         }
+    }
+
+    public ArrayList<Observer> getOsservatori() {
+        return osservatori;
     }
 
     public void notifica(Boolean eventType, Materiale materiale) {
@@ -49,7 +51,7 @@ public class Curatore extends ContributorTrusted {
      * @param materiale il materiale che si vuole valutare
      * @param approvato approvato o non approvato
      */
-    public void valuta(Materiale materiale, boolean approvato) { //TODO rename
+    public void valuta(Materiale materiale, boolean approvato) {
         materiale.setApproved(approvato);
         notifica(approvato, materiale);
     }
@@ -59,7 +61,7 @@ public class Curatore extends ContributorTrusted {
      * notifica i subscriber
      *
      * @param puntoInteresse il punto di interesse che si vuole valutare
-     * @param approvato stato punto di interesse : approvato/non approvato
+     * @param approvato      stato punto di interesse : approvato/non approvato
      */
     public void valuta(PuntoInteresse puntoInteresse, boolean approvato) {
         puntoInteresse.setApproved(approvato);
@@ -70,9 +72,16 @@ public class Curatore extends ContributorTrusted {
     }
 
 
-    //TODO test
     public void delete(Contenuto contenuto) {
-        getComune().getContenutoController().deleteContenuto(contenuto);
+        if (contenuto instanceof Contest contest) {
+            getComune().getContestController().deleteContest(contest);
+        } else {
+            getComune().getContenutoController().deleteContenuto(contenuto);
+        }
+    }
+
+    public void rimuoviTappa(Itinerario itinerario, PuntoInteresse puntoInteresse){
+        getComune().getContenutoController().removeTappa(itinerario, puntoInteresse);
     }
 
 }
