@@ -9,7 +9,6 @@ import java.util.*;
 
 public class ContenutoController {
     private static long id = 0;
-
     public static long generateID() {
         id+=1;
         return id;

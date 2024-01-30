@@ -12,15 +12,14 @@ public class Comune {
 
     private String nome;
     private Punto posizione;
-
-
-    private final ArrayList<Curatore> curatori = new ArrayList<>();
     private GestorePiattaforma gestorePiattaforma;
+    private final ArrayList<Curatore> curatori = new ArrayList<>();
     private final ArrayList<Contributor> contributors = new ArrayList<>();
     private final ArrayList<ContributorTrusted> contributorTrusteds = new ArrayList<>();
     private final ArrayList<Animatore> animatori = new ArrayList<>();
     private ContenutoController contenutoController;
     private ContestController contestController;
+
 
     public GestorePiattaforma getGestorePiattaforma() {
         return gestorePiattaforma;
@@ -66,6 +65,7 @@ public class Comune {
      * @throws IllegalArgumentException se il nome del comune non corrisponde a nessun comune
      * @throws RuntimeException se non è possibile raggiungere il sistema OSM
      */
+    //TODO passare come parametri i controller ha senso solo se sono interfacce
     public Comune(String nome, GestorePiattaforma gestorePiattaforma, ContenutoController contenutoController, ContestController contestController) {
         this.gestorePiattaforma = gestorePiattaforma;
         this.posizione = OSMRequester.getCentroComune(nome);

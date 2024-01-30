@@ -5,14 +5,18 @@ import ids.unicam.models.attori.TuristaLoggato;
 
 import java.util.UUID;
 
-public class Materiale {
-
+public abstract class Materiale {
     private final TuristaLoggato author;
     private boolean approved;
     private final UUID id;
     public UUID getId() {
         return id;
     }
+
+    /**
+     *@return  le informazioni sul materiale
+     */
+    public abstract String get();
 
     public TuristaLoggato getAuthor() {
         return author;

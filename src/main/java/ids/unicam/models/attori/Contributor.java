@@ -9,6 +9,7 @@ import ids.unicam.models.contenuti.Materiale;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Observer;
 import ids.unicam.utilites.Punto;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
@@ -122,9 +123,9 @@ public class Contributor extends TuristaLoggato implements Observer {
     @Override
     public void riceviNotifica(boolean eventType, Materiale materiale) {
         if (eventType) {
-            System.out.println("Il tuo contenuto relativo al punto di interesse " + materiale.getId() + " è stato approvato");
+            System.out.println("Il tuo contenuto relativo al punto di interesse " + materiale.get() + " è stato approvato");
         } else {
-            System.out.println("Il tuo contenuto relativo al punto di interesse " + materiale.getId() + " non è stato approvato");
+            System.out.println("Il tuo contenuto relativo al punto di interesse " + materiale.get() + " non è stato approvato");
         }
     }
 }

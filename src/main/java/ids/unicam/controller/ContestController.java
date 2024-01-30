@@ -67,7 +67,6 @@ public class ContestController {
      * @throws NotInContestException se si cerca di caricare materiale su un contest senza essere entrati
      */
     public void aggiungiMateriale(TuristaLoggato turista,Materiale materiale,Contest contest){//TODO controllo se il turista fa parte del contest
-
             materiale.setApproved(false);
             contest.getMaterialiContest()
                     .computeIfAbsent(turista, k -> new HashSet<>())
