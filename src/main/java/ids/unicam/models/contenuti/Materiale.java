@@ -30,7 +30,7 @@ public abstract class Materiale {
     }
 
     /**
-     * Crea un materiale e gli assegna un id randomico
+     * Crea un materiale e gli assegna un id random
      * @param author l'autore del materiale
      */
     public Materiale(TuristaLoggato author) {

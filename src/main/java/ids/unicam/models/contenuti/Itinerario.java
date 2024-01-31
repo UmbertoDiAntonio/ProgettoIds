@@ -20,10 +20,10 @@ public class Itinerario extends Contenuto {
         return percorso;
     }
 
-    public Itinerario(String nome,  PuntoInteresse... puntoInteresses) {
+    public Itinerario(String nome,  PuntoInteresse... puntoInteresse) {
         super(false);
         this.nome=nome;
-        percorso.addAll(Arrays.stream(puntoInteresses).toList());
+        percorso.addAll(Arrays.stream(puntoInteresse).toList());
     }
 
 

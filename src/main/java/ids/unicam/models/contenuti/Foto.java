@@ -7,12 +7,9 @@ public class Foto extends Materiale{
         super(autore);
     }
 
-    /**
-     *
-     * @return
-     */
+
     @Override
     public String get() {
-        return "Questa è una foto, creata da "+super.getAuthor()+", con id: "+super.getId();
+        return "Questa è una foto, creata da "+super.getAuthor().getName()+", con id: "+super.getId();
     }
 }

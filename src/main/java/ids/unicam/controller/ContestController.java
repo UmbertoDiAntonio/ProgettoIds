@@ -34,7 +34,7 @@ public class ContestController {
 
     /**
      *
-     * @param idAutore l'id dell'Animatore
+     * @param idAutore l' id dell' Animatore
      * @return tutti i contest che ha creato
      */
     public @NotNull ArrayList<Contest> getContestByAuthor(long idAutore) {
@@ -83,9 +83,8 @@ public class ContestController {
         materiale.setApproved(true);
     }
 
-    public void invita(TuristaLoggato turistaLoggato, Contest contest) {
+    public void generaInvito(TuristaLoggato turistaLoggato, Contest contest) {
         turistaLoggato.getInvitiRicevuti().add(new Invito(contest,turistaLoggato));
-        //TODO questo lo potrebbe dover fare utenti controller
     }
 
     public void deleteContest(Contest contest) {

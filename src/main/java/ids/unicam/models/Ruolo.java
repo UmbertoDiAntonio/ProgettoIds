@@ -5,7 +5,6 @@ package ids.unicam.models;
  */
 public enum Ruolo {
     Contributor,
-
     ContributorTrusted,
     Animatore,
     Curatore

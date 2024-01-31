@@ -9,6 +9,6 @@ public class Descrizione  extends Materiale{
 
     @Override
     public String get() {
-        return "Questa è una descrizione, creata da "+super.getAuthor()+", con id: "+super.getId();
+        return "Questa è una descrizione, creata da "+super.getAuthor().getName()+", con id: "+super.getId();
     }
 }

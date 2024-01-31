@@ -1,5 +1,6 @@
 package ids.unicam;
 
+import ids.unicam.Exception.ConnectionFailed;
 import ids.unicam.OSM.OSMRequester;
 import ids.unicam.controller.ComuneController;
 import ids.unicam.controller.ContenutoController;
@@ -12,15 +13,15 @@ import java.util.ArrayList;
 
 public class Comune {
 
-    private String nome;
+    private final String nome;
     private Punto posizione;
-    private GestorePiattaforma gestorePiattaforma;
+    private final GestorePiattaforma gestorePiattaforma;
     private final ArrayList<Curatore> curatori = new ArrayList<>();
     private final ArrayList<Contributor> contributors = new ArrayList<>();
     private final ArrayList<ContributorTrusted> contributorTrusteds = new ArrayList<>();
     private final ArrayList<Animatore> animatori = new ArrayList<>();
-    private ContenutoController contenutoController;
-    private ContestController contestController;
+    private final ContenutoController contenutoController = new ContenutoController();
+    private final ContestController contestController = new ContestController();
 
 
     public GestorePiattaforma getGestorePiattaforma() {
@@ -61,42 +62,39 @@ public class Comune {
 
     /**
      * @param nome                Nome del Comune
-     * @param gestorePiattaforma
-     * @param contenutoController
-     * @param contestController
-     * @throws IllegalArgumentException se il nome del comune non corrisponde a nessun comune
-     * @throws RuntimeException se non è possibile raggiungere il sistema OSM
-     */
-    //TODO passare come parametri i controller ha senso solo se sono interfacce
-    public Comune(String nome, GestorePiattaforma gestorePiattaforma, ContenutoController contenutoController, ContestController contestController) {
-        ComuneController.getInstance().listaComuni.add(this);
-        this.gestorePiattaforma = gestorePiattaforma;
-        this.posizione = OSMRequester.getCentroComune(nome);
-        this.nome = nome;
-        String nomeComune = OSMRequester.getComuneAt(posizione);
-        if (nomeComune == null)
-            throw new RuntimeException("Impossibile stabilire la connessione con il sistema OSM");
-        if (!nomeComune.equalsIgnoreCase(nome))
-            throw new IllegalArgumentException("Il nome del comune ricercato non corrisponde con nessun comune reale");
-        this.contenutoController = contenutoController;
-        this.contestController = contestController;
-    }
-
-    /**
-     *
-     * @param nome nome del Comune
-     * @param gestorePiattaforma
-     *
+     * @param gestorePiattaforma  il gestore della piattaforma
      * @throws IllegalArgumentException se il nome del comune non corrisponde a nessun comune
      * @throws RuntimeException se non è possibile raggiungere il sistema OSM
      */
     public Comune(String nome, GestorePiattaforma gestorePiattaforma) {
-        new Comune(nome, gestorePiattaforma, new ContenutoController(), new ContestController());
+        ComuneController.getInstance().listaComuni.add(this);
+        this.gestorePiattaforma = gestorePiattaforma;
+        try {
+            this.posizione = OSMRequester.getCentroComune(nome);
+        } catch (ConnectionFailed e) {
+            e.printStackTrace();
+        }
+        this.nome = nome;
+        String nomeComune = null;
+        try {
+            nomeComune = OSMRequester.getComuneAt(posizione);
+        } catch (ConnectionFailed e) {
+            e.printStackTrace();
+        }
+        if (nomeComune == null)
+            throw new RuntimeException("Impossibile stabilire la connessione con il sistema OSM");
+        if (!nomeComune.equalsIgnoreCase(nome))
+            throw new IllegalArgumentException("Il nome del comune ricercato non corrisponde con nessun comune reale");
     }
 
 
     public final boolean checkCoordinateComune(PuntoInteresse puntoInteresse){
-        String nomeComune = OSMRequester.getComuneAt(new Punto(puntoInteresse.getPt().getLatitudine(),puntoInteresse.getPt().getLongitudine()));
+        String nomeComune = null;
+        try {
+            nomeComune = OSMRequester.getComuneAt(new Punto(puntoInteresse.getPt().getLatitudine(),puntoInteresse.getPt().getLongitudine()));
+        } catch (ConnectionFailed e) {
+            e.printStackTrace();
+        }
         if(nomeComune != null) {
             return nomeComune.equalsIgnoreCase(getNome());
         }

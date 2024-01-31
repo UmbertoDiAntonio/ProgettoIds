@@ -20,7 +20,7 @@ public class Invito {
     }
 
     /**
-     * Crea un invito e lo aggiunge alla lista degli iniviti mandati dal contest
+     * Crea un invito e lo aggiunge alla lista degli inviti mandati dal contest
      * @param contest il contest da cui si sta mandando l'invito
      * @param invitato il turista da invitare
      */
@@ -34,12 +34,13 @@ public class Invito {
      * Verifica se l'invito è valido, controlla se il contest è solo su invito e se il turista non è già entrato
      * @return true se l'invito è valido
      */
-    public boolean isValid() {//TODO test e usare
-        if (contest.isOpen())
+    public boolean isValid() {
+        if (contest.isOpen()){
+            System.out.println("aperto");
             return false;
-
+        }
         ArrayList<Contest> c1 = contest.getContestController().getContestByTourist(invitato.getId());
-        return c1.contains(contest);
+        return !c1.contains(contest);
     }
 
 

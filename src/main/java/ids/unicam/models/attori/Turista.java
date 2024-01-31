@@ -2,7 +2,6 @@ package ids.unicam.models.attori;
 
 import ids.unicam.Comune;
 import ids.unicam.controller.ComuneController;
-import ids.unicam.models.contenuti.Contenuto;
 import ids.unicam.models.contenuti.PuntoInteresse;
 
 import java.util.ArrayList;
@@ -21,13 +20,13 @@ public class Turista {
         }
         return result;
     }
-    public void report(){
+    public void report(PuntoInteresse puntoInteresse){
         throw new UnsupportedOperationException();
         //TODO segnala un contenuto al Curatore
     }
 
     /**
-     * ti fa accedere con a uno dei tuoi account, che varia in base al comune selezionato
+     * Ti fa accedere con a uno dei tuoi account, che varia in base al comune selezionato
      */
     public void accedi(){
         throw new UnsupportedOperationException();

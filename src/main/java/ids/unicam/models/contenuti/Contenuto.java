@@ -2,14 +2,18 @@ package ids.unicam.models.contenuti;
 
 import ids.unicam.controller.ContenutoController;
 import ids.unicam.models.Tempo;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jdk.jfr.Enabled;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
+@Entity
 public abstract class Contenuto {
 
     private Tempo scadenza;
+
 
     public void setScadenza(Tempo scadenza) {
         this.scadenza = scadenza;
@@ -19,8 +23,10 @@ public abstract class Contenuto {
         return scadenza;
     }
 
+    @Id
     private final long id;
-    private boolean approved;
+    private boolean approved = false;
+
 
     private final ArrayList<String> tags=new ArrayList<>();
 
@@ -43,8 +49,8 @@ public abstract class Contenuto {
     public void addTag(String tag){
         tags.add(tag);
     }
-    public Contenuto(boolean approved) {
-        this.approved = approved;
+    public Contenuto() {
+
         this.id = ContenutoController.generateID();
     }
 }

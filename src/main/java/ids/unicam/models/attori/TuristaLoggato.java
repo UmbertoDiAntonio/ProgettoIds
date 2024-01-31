@@ -52,8 +52,9 @@ public class TuristaLoggato extends Turista {
     }
 
     public void addFavourites(Contenuto contenuto) {
-        favourites.add(contenuto);
-    } //TODO controlli
+        if(contenuto.isApproved())
+            favourites.add(contenuto);
+    }
 
 
     protected TuristaLoggato(String name, String surname, Date dateBirthday, String password, String username) {
@@ -70,8 +71,6 @@ public class TuristaLoggato extends Turista {
         //TODO
     }
 
-
-    //TODO test
     public void addPhoto(PuntoInteresse puntoInteresse, Foto foto) {
         puntoInteresse.getMaterialeList().add(foto);
     }

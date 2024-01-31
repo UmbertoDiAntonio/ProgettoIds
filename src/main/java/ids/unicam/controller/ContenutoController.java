@@ -29,7 +29,7 @@ public class ContenutoController {
 
     /**
      * Aggiunge il punto di interesse alla lista dei contenuti
-     * @param puntoInteresse il Punto di interesse da aggiugnere
+     * @param puntoInteresse il Punto di interesse da aggiungere
      */
     public void addPunto(PuntoInteresse puntoInteresse) {
         contenuti.add(puntoInteresse);
@@ -58,7 +58,7 @@ public class ContenutoController {
     }
 
     /**
-     * aggiunge una nuova tappa a un itinerario esistente
+     * Aggiunge una nuova tappa a un itinerario esistente
      * @param itinerario l'itinerario a cui aggiungere la tappa
      * @param puntoInteresse il punto di interesse da aggiungere come tappa
      */

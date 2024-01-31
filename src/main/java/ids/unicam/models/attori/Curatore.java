@@ -46,7 +46,7 @@ public class Curatore extends ContributorTrusted {
     }
 
     /**
-     * Valuta un Materiale, in caso di non approvazione lo rimuove dalla lista di materiali in attesa di approvazione del contest???????,
+     * Valuta un Materiale,
      * notifica i subscriber
      *
      * @param materiale il materiale che si vuole valutare
@@ -62,7 +62,7 @@ public class Curatore extends ContributorTrusted {
      * notifica i subscriber
      *
      * @param puntoInteresse il punto di interesse che si vuole valutare
-     * @param approvato      stato punto di interesse : approvato/non approvato
+     * @param approvato      stato punto di interesse: approvato/non approvato
      */
     public void valuta(@NotNull PuntoInteresse puntoInteresse, boolean approvato) {
         puntoInteresse.setApproved(approvato);

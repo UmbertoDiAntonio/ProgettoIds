@@ -3,6 +3,7 @@ package ids.unicam.OSM;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import ids.unicam.Exception.ConnectionFailed;
 import ids.unicam.utilites.Punto;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,8 +22,7 @@ public class OSMRequester {
      * @return il nome del comune a cui appartiene il punto, o null se la connessione è fallita
      *
      */
-    //TODO migliorare la gestione dell'errore di connessione
-    public static @Nullable String getComuneAt(Punto punto) {
+    public static @Nullable String getComuneAt(Punto punto) throws ConnectionFailed {
         try {
             String apiUrl = buildReverseApiUrl(punto);
             String jsonResponse = makeHttpRequest(apiUrl);
@@ -31,9 +31,8 @@ public class OSMRequester {
             JsonNode jsonNode = new ObjectMapper().readTree(jsonResponse);
             return jsonNode.path("address").path(jsonNode.path("address").fieldNames().next()).asText();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ConnectionFailed("La connessione non è riuscita");
         }
-        return null;
     }
 
     /**
@@ -42,7 +41,7 @@ public class OSMRequester {
      * @param nome il nome del comune di cui stiamo cercando il centro
      * @return la latitudine e longitudine del centro del comune
      */
-    public static @Nullable Punto getCentroComune(String nome) {
+    public static @Nullable Punto getCentroComune(String nome) throws ConnectionFailed {
         try {
             String apiUrl = buildSearchApiUrl(nome);
             String jsonResponse = makeHttpRequest(apiUrl);
@@ -59,9 +58,8 @@ public class OSMRequester {
 
             return new Punto(latitudine, longitudine);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ConnectionFailed("La connessione non è riuscita");
         }
-        return null;
     }
 
     private static String buildReverseApiUrl(Punto punto) {

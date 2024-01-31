@@ -88,10 +88,10 @@ public class Contributor extends TuristaLoggato implements Observer {
 
     /**
      *
-     * @param contenuto il Contenuto di cui stiamo modificando la scenza
+     * @param contenuto il Contenuto di cui stiamo modificando la scadenza
      * @param giorni la nuova scadenza
      */
-    //TODO testare/fare
+    //TODO completar metodo
     public void aggiungiScadenzaContenuto(Contenuto contenuto, Tempo giorni){
         contenuto.setScadenza(giorni);
         throw new UnsupportedOperationException();

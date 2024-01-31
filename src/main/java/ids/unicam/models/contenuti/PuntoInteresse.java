@@ -1,9 +1,11 @@
 package ids.unicam.models.contenuti;
 
 import ids.unicam.utilites.Punto;
+import jakarta.persistence.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public abstract class PuntoInteresse extends Contenuto {
     private final String nome;
