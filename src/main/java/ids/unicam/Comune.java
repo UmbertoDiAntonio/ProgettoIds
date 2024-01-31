@@ -1,6 +1,7 @@
 package ids.unicam;
 
 import ids.unicam.OSM.OSMRequester;
+import ids.unicam.controller.ComuneController;
 import ids.unicam.controller.ContenutoController;
 import ids.unicam.controller.ContestController;
 import ids.unicam.models.attori.*;
@@ -68,6 +69,7 @@ public class Comune {
      */
     //TODO passare come parametri i controller ha senso solo se sono interfacce
     public Comune(String nome, GestorePiattaforma gestorePiattaforma, ContenutoController contenutoController, ContestController contestController) {
+        ComuneController.getInstance().listaComuni.add(this);
         this.gestorePiattaforma = gestorePiattaforma;
         this.posizione = OSMRequester.getCentroComune(nome);
         this.nome = nome;

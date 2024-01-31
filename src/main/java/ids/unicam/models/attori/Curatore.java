@@ -3,7 +3,7 @@ package ids.unicam.models.attori;
 import ids.unicam.Comune;
 import ids.unicam.models.contenuti.*;
 import ids.unicam.utilites.Observer;
-import ids.unicam.utilites.Punto;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -41,6 +41,7 @@ public class Curatore extends ContributorTrusted {
     }
 
     public void share(Contenuto contenuto) {
+        throw new UnsupportedOperationException(contenuto.getId()+"non può ancora essere condiviso");
         //TODO
     }
 
@@ -63,7 +64,7 @@ public class Curatore extends ContributorTrusted {
      * @param puntoInteresse il punto di interesse che si vuole valutare
      * @param approvato      stato punto di interesse : approvato/non approvato
      */
-    public void valuta(PuntoInteresse puntoInteresse, boolean approvato) {
+    public void valuta(@NotNull PuntoInteresse puntoInteresse, boolean approvato) {
         puntoInteresse.setApproved(approvato);
         if (!approvato)
             getComune().getContenutoController().getContenuti().remove(puntoInteresse);

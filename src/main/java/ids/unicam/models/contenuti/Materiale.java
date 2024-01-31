@@ -2,7 +2,6 @@ package ids.unicam.models.contenuti;
 
 import ids.unicam.models.attori.TuristaLoggato;
 
-
 import java.util.UUID;
 
 public abstract class Materiale {

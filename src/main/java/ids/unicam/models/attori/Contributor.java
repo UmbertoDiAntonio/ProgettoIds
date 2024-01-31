@@ -1,6 +1,5 @@
 package ids.unicam.models.attori;
 
-import ids.unicam.OSM.OSMRequester;
 import ids.unicam.Comune;
 import ids.unicam.models.Tempo;
 import ids.unicam.models.contenuti.Contenuto;
@@ -8,8 +7,6 @@ import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.Materiale;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Observer;
-import ids.unicam.utilites.Punto;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
@@ -91,12 +88,13 @@ public class Contributor extends TuristaLoggato implements Observer {
 
     /**
      *
-     * @param contenuto
-     * @param giorni
+     * @param contenuto il Contenuto di cui stiamo modificando la scenza
+     * @param giorni la nuova scadenza
      */
     //TODO testare/fare
     public void aggiungiScadenzaContenuto(Contenuto contenuto, Tempo giorni){
         contenuto.setScadenza(giorni);
+        throw new UnsupportedOperationException();
 
     }
 

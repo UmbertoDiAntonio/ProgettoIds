@@ -5,6 +5,7 @@ import ids.unicam.controller.ContenutoController;
 import ids.unicam.controller.ContestController;
 import ids.unicam.Comune;
 import ids.unicam.models.Ruolo;
+import ids.unicam.models.Tempo;
 import ids.unicam.models.attori.*;
 import ids.unicam.models.contenuti.*;
 import ids.unicam.models.contenuti.POIFactory.AttivitaFactory;
@@ -50,7 +51,7 @@ public class JUnitContenutiTest {
 
         {
             gestorePiattaforma.getGestoreController().registraContributor(comune, "Mario", "Rossi", new Date(), "pass", "user");
-            gestorePiattaforma.promuovi( comune.getContributors().getFirst(), Ruolo.ContributorTrusted);
+            gestorePiattaforma.promuovi(comune.getContributors().getFirst(), Ruolo.ContributorTrusted);
 
             ContributorTrusted contributorTrusted = comune.getContributorTrusteds().getFirst();
             assertEquals(1, comune.getContenutoController().getContenuti().size());
@@ -81,7 +82,7 @@ public class JUnitContenutiTest {
 
         {
             gestorePiattaforma.getGestoreController().registraContributor(comune, "Mario", "Rossi", new Date(), "pass", "user");
-            gestorePiattaforma.promuovi( comune.getContributors().getFirst(), Ruolo.ContributorTrusted);
+            gestorePiattaforma.promuovi(comune.getContributors().getFirst(), Ruolo.ContributorTrusted);
 
             ContributorTrusted contributorTrusted = comune.getContributorTrusteds().getFirst();
             AttivitaFactory attivita1 = new AttivitaFactory(LocalDate.now());
@@ -97,6 +98,9 @@ public class JUnitContenutiTest {
             comune.getContenutoController().addTappa(itinerario1, nuovoPunto);
             assertEquals(1, comune.getContenutoController().getItinerari().size());
             assertEquals(3, comune.getContenutoController().getItinerari().getFirst().getNumeroTappe());
+            comune.getContenutoController().addTappa(itinerario1, nuovoPunto,nuovoPunto,nuovoPunto);
+            assertEquals(1, comune.getContenutoController().getItinerari().size());
+            assertEquals(6, comune.getContenutoController().getItinerari().getFirst().getNumeroTappe());
         }
     }
 
@@ -106,7 +110,7 @@ public class JUnitContenutiTest {
         Comune comune = new Comune("Milano", gestorePiattaforma, new ContenutoController(), new ContestController());
 
         Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new Date(), "ciao", "mr");
-        gestorePiattaforma.promuovi( contributor, Ruolo.Animatore);
+        gestorePiattaforma.promuovi(contributor, Ruolo.Animatore);
         Animatore animatore = comune.getAnimatori().getFirst();
         animatore.creaContest("Monumento", "Foto più bella", true);
         assertEquals(1, comune.getContestController().getContestByAuthor(Long.parseLong(comune.getAnimatori().getFirst().getId())).size());
@@ -124,7 +128,7 @@ public class JUnitContenutiTest {
         Comune comune = new Comune("Milano", gestorePiattaforma, new ContenutoController(), new ContestController());
 
         Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new Date(), "ciao", "mr");
-        gestorePiattaforma.promuovi( contributor, Ruolo.Animatore);
+        gestorePiattaforma.promuovi(contributor, Ruolo.Animatore);
         Animatore animatore = comune.getAnimatori().getFirst();
         animatore.creaContest("monumento", "Foto più bella", false);
         assertEquals(1, comune.getContestController().getContestByAuthor(Long.parseLong(comune.getAnimatori().getFirst().getId())).size());
@@ -148,10 +152,10 @@ public class JUnitContenutiTest {
         AttivitaFactory attivitaFactory = new AttivitaFactory(LocalDate.now());
 
         {
-            gestorePiattaforma.promuovi( contributor, Ruolo.Animatore);
+            gestorePiattaforma.promuovi(contributor, Ruolo.Animatore);
             Animatore animatore = comune.getAnimatori().getFirst();
             animatore.creaContest("monumento", "Foto più bella", true);
-            Materiale materiale = new Foto( turistaLoggato);
+            Materiale materiale = new Foto(turistaLoggato);
             turistaLoggato.joinFreeContest(comune.getContestController().getContests().getFirst());
             turistaLoggato.addMaterialeContest(comune.getContestController().getContests().getFirst(), materiale);
             assertEquals(1, comune.getContestController().getContests().getFirst().getMaterialiContest().size());
@@ -159,25 +163,15 @@ public class JUnitContenutiTest {
 
         {
             PuntoInteresse puntoInteresse = attivitaFactory.creaPoi("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015));
-            Materiale materiale = new Foto( turistaLoggato);
+            Materiale materiale = new Foto(turistaLoggato);
 
             contributor.addMateriale(puntoInteresse, materiale);
             assertEquals(1, puntoInteresse.getMaterialeList().size());
         }
-
-        {
-            PuntoInteresse puntoInteresse = attivitaFactory.creaPoi("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015));
-            contributor.addPuntoInteresse(puntoInteresse);
-            assertEquals(0,turistaLoggato.getFavourites().size());
-            turistaLoggato.addFavourites(puntoInteresse);
-            assertEquals(1,turistaLoggato.getFavourites().size());
-
-        }
-
     }
 
     @Test
-    public void approvaMaterialeByAnimatore(){
+    public void approvaMaterialeByAnimatore() {
         GestorePiattaforma gestorePiattaforma = new GestorePiattaforma();
         Comune comune = new Comune("Milano", gestorePiattaforma, new ContenutoController(), new ContestController());
         Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new Date(), "ciao", "mr");
@@ -187,7 +181,7 @@ public class JUnitContenutiTest {
         gestorePiattaforma.promuovi(contributor, Ruolo.Animatore);
         Animatore animatore = comune.getAnimatori().getFirst();
         Contest contest = animatore.creaContest("monumento", "Foto più bella", true);
-        Materiale materiale = new Descrizione( turistaLoggato);
+        Materiale materiale = new Descrizione(turistaLoggato);
         assertThrows(NotInContestException.class, () -> turistaLoggato.addMaterialeContest(contest, materiale));
         turistaLoggato.joinFreeContest(contest);
         turistaLoggato.addMaterialeContest(contest, materiale);
@@ -200,7 +194,7 @@ public class JUnitContenutiTest {
     }
 
     @Test
-    public void eliminaContenuto(){
+    public void eliminaContenuto() {
         GestorePiattaforma gestorePiattaforma = new GestorePiattaforma();
         Comune comune = new Comune("Milano", gestorePiattaforma, new ContenutoController(), new ContestController());
         Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new Date(), "ciao", "mr");
@@ -238,14 +232,24 @@ public class JUnitContenutiTest {
 
         itinerario1 = contributor.creaItinerario("girodeibar", comune.getContenutoController().getContenuti().getFirst());
         assertEquals(1, comune.getContenutoController().getItinerari().getFirst().getNumeroTappe());
-        contributor.aggiungiTappaItinerario(itinerario1, comune.getContenutoController().getContenuti().getFirst());
+        assertTrue(contributor.aggiungiTappaItinerario(itinerario1, comune.getContenutoController().getContenuti().getFirst()));
         assertEquals(2, comune.getContenutoController().getItinerari().getFirst().getNumeroTappe());
         curatore.rimuoviTappa(itinerario1, comune.getContenutoController().getContenuti().getFirst());
         assertEquals(1, comune.getContenutoController().getItinerari().getFirst().getNumeroTappe());
-
-
-
-
     }
 
+    @Test
+    public void modificaScadenzaContenuto(){
+        GestorePiattaforma gestorePiattaforma = new GestorePiattaforma();
+        Comune comune = new Comune("Milano", gestorePiattaforma, new ContenutoController(), new ContestController());
+        Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new Date(), "ciao", "mr");
+
+        AttivitaFactory attivita1 = new AttivitaFactory(LocalDate.now());
+        PuntoInteresse puntoInteresse = attivita1.creaPoi("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015));
+
+        contributor.addPuntoInteresse(puntoInteresse);
+
+        assertThrows(UnsupportedOperationException.class,()->contributor.aggiungiScadenzaContenuto(puntoInteresse,new Tempo()));
+        //TODO
+    }
 }

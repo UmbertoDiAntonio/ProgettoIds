@@ -1,8 +1,8 @@
 package ids.unicam.models.attori;
 
+import ids.unicam.Comune;
 import ids.unicam.Exception.RegisterException;
 import ids.unicam.controller.UtentiController;
-import ids.unicam.Comune;
 import ids.unicam.models.Ruolo;
 import org.jetbrains.annotations.NotNull;
 

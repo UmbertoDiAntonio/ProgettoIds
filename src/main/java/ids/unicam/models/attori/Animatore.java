@@ -1,6 +1,5 @@
 package ids.unicam.models.attori;
 
-import ids.unicam.models.Invito;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.Materiale;
 
@@ -30,8 +29,8 @@ public class Animatore extends Contributor {
 
     /**
      * Crea un invito al contest per il turista, poi tramite il contest controller???? lo aggiungiamo all'utente
-     * @param contest
-     * @param turistaLoggato
+     * @param contest il Contest in cui stiamo invitando
+     * @param turistaLoggato il turista che stiamo invitando
      */
     public void invita(Contest contest, TuristaLoggato turistaLoggato){
         contest.getContestController().invita(turistaLoggato, contest);

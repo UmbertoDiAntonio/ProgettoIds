@@ -5,7 +5,9 @@ import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.Materiale;
 import ids.unicam.models.contenuti.PuntoInteresse;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ContenutoController {
     private static long id = 0;
@@ -66,8 +68,8 @@ public class ContenutoController {
     public void addTappa(Itinerario itinerario, PuntoInteresse... puntoInteresse){
         itinerario.getPercorso().addAll(Arrays.stream(puntoInteresse).toList());
     }
-    public boolean removeTappa(Itinerario itinerario, PuntoInteresse puntoInteresse){
-        return  itinerario.getPercorso().remove(puntoInteresse);
+    public void removeTappa(Itinerario itinerario, PuntoInteresse puntoInteresse){
+        itinerario.getPercorso().remove(puntoInteresse);
     }
 
     public void deleteContenuto(Contenuto contenuto) {
@@ -76,9 +78,5 @@ public class ContenutoController {
         } else if (contenuto instanceof Itinerario itinerario) {
             itinerari.remove(itinerario);
         }
-    }
-
-    public void confermaIdentità(){
-
     }
 }
