@@ -1,6 +1,7 @@
 package ids.unicam;
 
 
+import ids.unicam.DataBase.DatabaseManager;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -18,6 +19,7 @@ public class Main implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         System.out.println("prova");
+        DatabaseManager.creaDB();
     }
 
     @RequestMapping(value="/")

@@ -1,30 +1,30 @@
 package ids.unicam.models.contenuti;
 
 import ids.unicam.utilites.Punto;
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.Transient;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Entity
 public abstract class PuntoInteresse extends Contenuto {
-    private String nome=null;
-    private Punto pt=null;
+
+    private String nome="";
+    @Transient
+    private Punto pt=new Punto(0,0);
+    @Transient
     private final List<Materiale> materialeList = new ArrayList<>();
 
     public PuntoInteresse() {
 
     }
 
-    @OneToOne
     public Punto getPt() {
         return pt;
     }
 
-    @OneToMany
     public List<Materiale> getMaterialeList() {
         return materialeList;
     }
@@ -43,5 +43,7 @@ public abstract class PuntoInteresse extends Contenuto {
     public abstract String mostraDettagli();
 
     public abstract String getGeneralInfo();
+
+
 
 }

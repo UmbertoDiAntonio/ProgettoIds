@@ -7,10 +7,10 @@ public class DatabaseManager {
         private static final String DB_URL = "jdbc:h2:mem:testdb";
 
         // Nome utente e password del database (scegliere come preferisci)
-        private static String user = "";
-        private static String password = "";
+        private static String user = "user";
+        private static String password = "pass";
 
-        public static void main(String[] args) {
+        public static void creaDB() {
             try {
                 // Carica il driver JDBC per H2
                 Class.forName("org.h2.Driver");

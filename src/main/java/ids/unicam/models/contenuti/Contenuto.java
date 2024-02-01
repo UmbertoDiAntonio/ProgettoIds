@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 
 @Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Contenuto {
 
     @Id
@@ -17,7 +18,8 @@ public abstract class Contenuto {
 
     @OneToOne
     private Tempo scadenza;
-
+    @ElementCollection
+    private final ArrayList<String> tags=new ArrayList<>();
 
     public void setScadenza(Tempo scadenza) {
         this.scadenza = scadenza;
@@ -26,11 +28,6 @@ public abstract class Contenuto {
     public Tempo getScadenza() {
         return scadenza;
     }
-
-    @ElementCollection
-    private final ArrayList<String> tags=new ArrayList<>();
-
-
     public long getId() {
         return id;
     }
@@ -50,7 +47,6 @@ public abstract class Contenuto {
         tags.add(tag);
     }
     public Contenuto() {
-
         this.id = ContenutoController.generateID();
     }
 }
