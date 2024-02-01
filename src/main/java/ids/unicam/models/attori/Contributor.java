@@ -9,12 +9,14 @@ import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Observer;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Transient;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
-
+@Entity
 public class Contributor extends TuristaLoggato implements Observer {
+    @OneToOne
     private Comune comune=null;
 
     public Contributor() {
@@ -22,7 +24,7 @@ public class Contributor extends TuristaLoggato implements Observer {
     }
 
     
-    final Comune getComune() {
+    Comune getComune() {
         return comune;
     }
 

@@ -2,18 +2,29 @@ package ids.unicam.models;
 
 import ids.unicam.models.attori.TuristaLoggato;
 import ids.unicam.models.contenuti.Contest;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 
 
+@Entity
 public class Invito {
+    @Id
+    private long id;
+    @OneToOne
     private Contest contest=null;
+    @OneToOne
     private TuristaLoggato invitato=null;
-    private Long id;
+
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
 
     public Invito() {
 
@@ -52,17 +63,6 @@ public class Invito {
         }
         ArrayList<Contest> c1 = contest.getContestController().getContestByTourist(invitato.getId());
         return !c1.contains(contest);
-    }
-
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    
-    @GeneratedValue
-    public Long getId() {
-        return id;
     }
 }
 

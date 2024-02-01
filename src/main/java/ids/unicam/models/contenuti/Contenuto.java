@@ -9,14 +9,14 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 
 
-
+@Entity
 public abstract class Contenuto {
 
-
+    @Id
     private final long id;
     private boolean approved = false;
 
-
+    @Transient
     private Tempo scadenza;
     @ElementCollection
     private final ArrayList<String> tags=new ArrayList<>();

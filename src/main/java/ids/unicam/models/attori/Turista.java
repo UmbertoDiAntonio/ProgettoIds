@@ -3,10 +3,13 @@ package ids.unicam.models.attori;
 import ids.unicam.Comune;
 import ids.unicam.controller.ComuneController;
 import ids.unicam.models.contenuti.PuntoInteresse;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 
+
 public class Turista {
+
     public ArrayList<PuntoInteresse> search(String searchedTags){
         ComuneController comuneController = ComuneController.getInstance();
         ArrayList<Comune> comuni = comuneController.listaComuni;

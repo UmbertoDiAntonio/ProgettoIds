@@ -1,10 +1,6 @@
 package ids.unicam.controller;
 
 import ids.unicam.models.attori.TuristaLoggato;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

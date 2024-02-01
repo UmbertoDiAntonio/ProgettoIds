@@ -4,24 +4,30 @@ import ids.unicam.Exception.NotInContestException;
 import ids.unicam.controller.UtentiController;
 import ids.unicam.models.Invito;
 import ids.unicam.models.contenuti.*;
-
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
-public class TuristaLoggato extends Turista {
-    private final List<Contenuto> favourites = new ArrayList<>();
-    private final List<Invito> invitiRicevuti = new ArrayList<>();
-    private String name=null;
-    private String surname=null;
-    private Date dateBirthday=null;
-    private String password=null;
-    private String username=null;
-
+@Entity
+public class TuristaLoggato extends Turista{
+    @Id
     private final String id=UtentiController.generateID();;
+    private String name="";
+    private String username="";
+    private String surname="";
+    private Date dateBirthday=null;
+    private String password="";
+
+    @OneToMany
+    private final List<Contenuto> favourites = new ArrayList<>();
+    @OneToMany
+    private final List<Invito> invitiRicevuti = new ArrayList<>();
+
 
     public TuristaLoggato() {
 

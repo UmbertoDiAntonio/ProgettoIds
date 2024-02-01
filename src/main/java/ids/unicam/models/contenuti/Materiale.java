@@ -1,17 +1,18 @@
 package ids.unicam.models.contenuti;
 
 import ids.unicam.models.attori.TuristaLoggato;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 import java.util.UUID;
 
-
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Materiale {
+    @OneToOne
     private TuristaLoggato author=null;
     private boolean approved=false;
-    
+
+    @Id
     private final UUID id=UUID.randomUUID();
 
     public Materiale() {

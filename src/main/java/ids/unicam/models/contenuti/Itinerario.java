@@ -3,14 +3,17 @@ package ids.unicam.models.contenuti;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 
+@Entity
 public class Itinerario extends Contenuto {
     private String nome="";
+    @OneToMany
     private final List<PuntoInteresse> percorso = new ArrayList<>();
 
     public Itinerario() {
@@ -35,7 +38,5 @@ public class Itinerario extends Contenuto {
         this.nome=nome;
         percorso.addAll(Arrays.stream(puntoInteresse).toList());
     }
-
-
 }
 

@@ -5,13 +5,16 @@ import ids.unicam.models.contenuti.*;
 import ids.unicam.utilites.Observer;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
 
+@Entity
 public class Curatore extends ContributorTrusted {
 
+    @Transient
     private final ArrayList<Observer> osservatori = new ArrayList<>();
 
     public Curatore() {

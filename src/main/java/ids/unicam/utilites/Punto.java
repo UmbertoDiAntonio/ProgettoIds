@@ -1,18 +1,26 @@
 package ids.unicam.utilites;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import org.jetbrains.annotations.NotNull;
 
-
+@Entity
 public class Punto {
+    @Id
+    private long id;
 
     private double latitudine=0;
     private double longitudine=0;
-    
-    @GeneratedValue
-    private Long id;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public Punto() {
 
@@ -46,11 +54,5 @@ public class Punto {
         return "(" + latitudine + "," + longitudine + ")";
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public Long getId() {
-        return id;
-    }
 }

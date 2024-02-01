@@ -6,21 +6,13 @@ import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaLoggato;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.Materiale;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
 
 public class ContestController {
-
-
     private final ArrayList<Contest> contests = new ArrayList<>();
-
-
     public ArrayList<Contest> getContests() {
         return contests;
     }

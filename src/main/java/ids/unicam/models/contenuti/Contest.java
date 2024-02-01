@@ -9,16 +9,19 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Entity
 public class Contest extends Contenuto {
     private boolean open;
-
+    @Transient
     private ContestController controller=null;
     private String obiettivo=null;
+    @OneToOne
     private Animatore author=null;
+    @OneToMany
     private final ArrayList<TuristaLoggato> partecipanti = new ArrayList<>();
+    @OneToMany
     private final ArrayList<Invito> inviti = new ArrayList<>();
-
+    @OneToMany
     private final ArrayList<Materiale> materiali = new ArrayList<>();
     private String nome=null;
 
@@ -35,7 +38,7 @@ public class Contest extends Contenuto {
         return nome;
     }
 
-    
+
     public ArrayList<Invito> getInviti() {
         return inviti;
     }

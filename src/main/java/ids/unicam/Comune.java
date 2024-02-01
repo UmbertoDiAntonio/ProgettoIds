@@ -12,19 +12,26 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 
-
+@Entity
 public class Comune {
-
+    @Id
     private String nome="";
+    @OneToOne
     private Punto posizione;
-    private GestorePiattaforma gestorePiattaforma=null;
+    @OneToMany
     private final ArrayList<Curatore> curatori = new ArrayList<>();
+    @OneToMany
     private final ArrayList<Contributor> contributors = new ArrayList<>();
+    @OneToMany
     private final ArrayList<ContributorTrusted> contributorTrusteds = new ArrayList<>();
+    @OneToMany
     private final ArrayList<Animatore> animatori = new ArrayList<>();
+    @Transient
     private final ContenutoController contenutoController = new ContenutoController();
+    @Transient
     private final ContestController contestController = new ContestController();
-    private Long id;
+    @Transient
+    private GestorePiattaforma gestorePiattaforma=null;
 
     public Comune() {
 
@@ -113,16 +120,5 @@ public class Comune {
             return nomeComune.equalsIgnoreCase(getNome());
         }
         return false;
-    }
-
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    
-    @GeneratedValue
-    public Long getId() {
-        return id;
     }
 }
