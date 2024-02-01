@@ -3,10 +3,16 @@ package ids.unicam.models.attori;
 import ids.unicam.Comune;
 import ids.unicam.models.contenuti.Materiale;
 import ids.unicam.models.contenuti.PuntoInteresse;
+import jakarta.persistence.Entity;
 
+@Entity
 public class ContributorTrusted extends Contributor{
     protected ContributorTrusted(Comune comune,Contributor contributor) {
         super(comune,contributor);
+    }
+
+    public ContributorTrusted() {
+
     }
 
     /**

@@ -7,12 +7,21 @@ import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.Materiale;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Observer;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
+@Entity
 public class Contributor extends TuristaLoggato implements Observer {
-    private final Comune comune;
+    private Comune comune=null;
+
+    public Contributor() {
+
+    }
+
+    @OneToOne
     final Comune getComune() {
         return comune;
     }

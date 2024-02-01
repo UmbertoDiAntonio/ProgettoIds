@@ -4,21 +4,32 @@ import ids.unicam.Exception.NotInContestException;
 import ids.unicam.controller.UtentiController;
 import ids.unicam.models.Invito;
 import ids.unicam.models.contenuti.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Entity
 public class TuristaLoggato extends Turista {
     private final List<Contenuto> favourites = new ArrayList<>();
     private final List<Invito> invitiRicevuti = new ArrayList<>();
-    private final String name;
-    private final String surname;
-    private final Date dateBirthday;
-    private final String password;
-    private final String username;
-    private final String id;
+    private String name=null;
+    private String surname=null;
+    private Date dateBirthday=null;
+    private String password=null;
+    private String username=null;
+    @Id
+    private final String id=UtentiController.generateID();;
 
+    public TuristaLoggato() {
+
+    }
+
+    @OneToMany
     public List<Invito> getInvitiRicevuti() {
         return invitiRicevuti;
     }
@@ -47,6 +58,7 @@ public class TuristaLoggato extends Turista {
         return id;
     }
 
+    @OneToMany
     public List<Contenuto> getFavourites() {
         return favourites;
     }
@@ -63,7 +75,6 @@ public class TuristaLoggato extends Turista {
         this.dateBirthday = dateBirthday;
         this.password = password;
         this.username = username;
-        this.id = UtentiController.generateID();
         save();
     }
 
@@ -102,7 +113,7 @@ public class TuristaLoggato extends Turista {
      */
     public void addMaterialeContest(Contest contest, Materiale materiale) {
         if (contest.getPartecipanti().contains(this)) {
-            contest.getContestController().aggiungiMateriale(this, materiale, contest);
+            contest.getContestController().aggiungiMateriale(materiale, contest);
         } else {
             throw new NotInContestException("Il Turista dovrebbe prima entrare nel contest, per caricare contenuti su di esso");
         }

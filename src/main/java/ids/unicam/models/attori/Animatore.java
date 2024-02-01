@@ -2,10 +2,16 @@ package ids.unicam.models.attori;
 
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.Materiale;
+import jakarta.persistence.Entity;
 
+@Entity
 public class Animatore extends Contributor {
     protected Animatore(Contributor contributor) {
         super(contributor.getComune(), contributor);
+    }
+
+    public Animatore() {
+        super();
     }
 
     /**

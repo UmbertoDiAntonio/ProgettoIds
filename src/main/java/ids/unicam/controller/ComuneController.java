@@ -1,16 +1,27 @@
 package ids.unicam.controller;
 
 import ids.unicam.Comune;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
+@Entity
 public class  ComuneController {
 
     private static ComuneController instance;
+    @OneToMany
     public ArrayList<Comune> listaComuni = new ArrayList<>();
+    @Id
+    @GeneratedValue
+    private Long id;
 
-    private ComuneController(){}
+    public ComuneController(){}
+
+
 
 
     public static ComuneController getInstance() {
@@ -25,4 +36,11 @@ public class  ComuneController {
     }
 
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
 }

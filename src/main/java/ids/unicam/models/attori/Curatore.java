@@ -3,13 +3,20 @@ package ids.unicam.models.attori;
 import ids.unicam.Comune;
 import ids.unicam.models.contenuti.*;
 import ids.unicam.utilites.Observer;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+@Entity
 public class Curatore extends ContributorTrusted {
 
     private final ArrayList<Observer> osservatori = new ArrayList<>();
+
+    public Curatore() {
+
+    }
 
     public void aggiungiOsservatore(Observer osservatore) {
         osservatori.add(osservatore);
@@ -25,6 +32,7 @@ public class Curatore extends ContributorTrusted {
         }
     }
 
+    @OneToMany
     public ArrayList<Observer> getOsservatori() {
         return osservatori;
     }

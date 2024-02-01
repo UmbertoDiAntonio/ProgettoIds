@@ -6,14 +6,22 @@ import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaLoggato;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.Materiale;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
+@Entity
 public class ContestController {
 
+    @OneToMany
     private final ArrayList<Contest> contests = new ArrayList<>();
+    @Id
+    @GeneratedValue
+    private Long id;
 
     public ArrayList<Contest> getContests() {
         return contests;
@@ -60,17 +68,14 @@ public class ContestController {
 
     /**
      * Aggiungi un materiale non approvato al contest, se i
-     * @param turista il turista che sta caricando il materiale
      * @param materiale il materiale da caricare
      * @param contest il contest su cui si vuole aggiungere
      *
      * @throws NotInContestException se si cerca di caricare materiale su un contest senza essere entrati
      */
-    public void aggiungiMateriale(TuristaLoggato turista,Materiale materiale,Contest contest){
+    public void aggiungiMateriale(Materiale materiale,Contest contest){
             materiale.setApproved(false);
-            contest.getMaterialiContest()
-                    .computeIfAbsent(turista, k -> new HashSet<>())
-                    .add(materiale);
+            contest.getMaterialiContest().add(materiale);
 
     }
     /**
@@ -89,5 +94,13 @@ public class ContestController {
 
     public void deleteContest(Contest contest) {
         contests.remove(contest);
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

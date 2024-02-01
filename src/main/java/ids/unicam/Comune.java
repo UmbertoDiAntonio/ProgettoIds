@@ -8,50 +8,64 @@ import ids.unicam.controller.ContestController;
 import ids.unicam.models.attori.*;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Punto;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 
+@Entity
 public class Comune {
 
-    private final String nome;
+    private String nome=null;
     private Punto posizione;
-    private final GestorePiattaforma gestorePiattaforma;
+    private GestorePiattaforma gestorePiattaforma=null;
     private final ArrayList<Curatore> curatori = new ArrayList<>();
     private final ArrayList<Contributor> contributors = new ArrayList<>();
     private final ArrayList<ContributorTrusted> contributorTrusteds = new ArrayList<>();
     private final ArrayList<Animatore> animatori = new ArrayList<>();
     private final ContenutoController contenutoController = new ContenutoController();
     private final ContestController contestController = new ContestController();
+    private Long id;
+
+    public Comune() {
+
+    }
 
 
+    @OneToOne
     public GestorePiattaforma getGestorePiattaforma() {
         return gestorePiattaforma;
     }
 
+    @OneToMany
     public ArrayList<Animatore> getAnimatori() {
         return animatori;
     }
 
+    @OneToOne
     public Punto getPosizione() {
         return posizione;
     }
 
+    @OneToMany
     public ArrayList<Contributor> getContributors() {
         return contributors;
     }
 
+    @OneToMany
     public ArrayList<ContributorTrusted> getContributorTrusteds() {
         return contributorTrusteds;
     }
 
+    @OneToMany
     public ArrayList<Curatore> getCuratori() {
         return curatori;
     }
 
+    @OneToOne
     public ContenutoController getContenutoController() {
         return contenutoController;
     }
-
+    @OneToOne
     public ContestController getContestController() {
         return contestController;
     }
@@ -102,5 +116,13 @@ public class Comune {
     }
 
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
+    @Id
+    @GeneratedValue
+    public Long getId() {
+        return id;
+    }
 }

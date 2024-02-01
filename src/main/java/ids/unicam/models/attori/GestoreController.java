@@ -4,12 +4,21 @@ import ids.unicam.Comune;
 import ids.unicam.Exception.RegisterException;
 import ids.unicam.controller.UtentiController;
 import ids.unicam.models.Ruolo;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 
+@Entity
 public class GestoreController {
+    @OneToOne
     private final UtentiController utentiController = new UtentiController();
+    @Id
+    @GeneratedValue
+    private Long id;
 
     public UtentiController getUtentiController() {
         return utentiController;
@@ -83,4 +92,11 @@ public class GestoreController {
     }
 
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
 }

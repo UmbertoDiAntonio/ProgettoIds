@@ -4,22 +4,29 @@ import ids.unicam.controller.ContestController;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaLoggato;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
+@Entity
 public class Contest extends Contenuto {
     private boolean open;
-    private final ContestController controller;
-    private final String obiettivo;
-    private final Animatore author;
+    @OneToOne
+    private ContestController controller=null;
+    private String obiettivo=null;
+    private Animatore author=null;
     private final ArrayList<TuristaLoggato> partecipanti = new ArrayList<>();
     private final ArrayList<Invito> inviti = new ArrayList<>();
-    private final HashMap<TuristaLoggato, Set<Materiale>> materialiContest = new HashMap<>();
-    private final String nome;
+    @ManyToMany
+    private final ArrayList<Materiale> materiali = new ArrayList<>();
+    private String nome=null;
 
+    public Contest() {
+
+    }
+
+    @OneToOne
     public Animatore getAuthor() {
         return author;
     }
@@ -28,6 +35,7 @@ public class Contest extends Contenuto {
         return nome;
     }
 
+    @OneToMany
     public ArrayList<Invito> getInviti() {
         return inviti;
     }
@@ -39,19 +47,22 @@ public class Contest extends Contenuto {
         return obiettivo;
     }
 
-    public HashMap<TuristaLoggato, Set<Materiale>> getMaterialiContest() {
-        return materialiContest;
+
+    public ArrayList<Materiale> getMaterialiContest() {
+        return materiali;
     }
 
     public boolean isOpen() {
         return open;
     }
 
+    @OneToMany
     public List<TuristaLoggato> getPartecipanti() {
         return partecipanti;
     }
 
 
+    @OneToOne
     public ContestController getContestController() {
         return controller;
     }
@@ -67,6 +78,7 @@ public class Contest extends Contenuto {
         this.author = author;
         this.nome = nome;
     }
+
 
 
 }

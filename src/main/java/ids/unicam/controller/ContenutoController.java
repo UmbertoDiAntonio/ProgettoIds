@@ -4,19 +4,30 @@ import ids.unicam.models.contenuti.Contenuto;
 import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.Materiale;
 import ids.unicam.models.contenuti.PuntoInteresse;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Entity
 public class ContenutoController {
-    private static long id = 0;
+    private static long _id = 0;
+    @Id
+    @GeneratedValue
+    private Long id;
+
     public static long generateID() {
-        id+=1;
-        return id;
+        _id+=1;
+        return _id;
     }
+    @OneToMany
     private final List<PuntoInteresse> contenuti = new ArrayList<>();
 
+    @OneToMany
     private final ArrayList<Itinerario> itinerari = new ArrayList<>();
 
     public List<PuntoInteresse> getContenuti() {
@@ -78,5 +89,13 @@ public class ContenutoController {
         } else if (contenuto instanceof Itinerario itinerario) {
             itinerari.remove(itinerario);
         }
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

@@ -1,13 +1,23 @@
 package ids.unicam.models.contenuti;
 
 import ids.unicam.models.attori.TuristaLoggato;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 
 import java.util.UUID;
 
+@Entity
 public abstract class Materiale {
-    private final TuristaLoggato author;
+    private TuristaLoggato author=null;
     private boolean approved=false;
-    private final UUID id;
+    @Id
+    private final UUID id=UUID.randomUUID();
+
+    public Materiale() {
+
+    }
+
     public UUID getId() {
         return id;
     }
@@ -17,6 +27,7 @@ public abstract class Materiale {
      */
     public abstract String get();
 
+    @OneToOne
     public TuristaLoggato getAuthor() {
         return author;
     }
@@ -35,7 +46,6 @@ public abstract class Materiale {
      */
     public Materiale(TuristaLoggato author) {
         this.author=author;
-        this.id = UUID.randomUUID();
     }
 
 
