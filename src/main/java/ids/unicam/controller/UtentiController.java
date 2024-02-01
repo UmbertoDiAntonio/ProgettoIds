@@ -10,15 +10,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
-@Entity
+
 public class UtentiController {
 
 
     private final ArrayList<TuristaLoggato> turisti = new ArrayList<>();
-    private Long id;
+
 
     private static long _id;
-    @OneToMany
+
     public ArrayList<TuristaLoggato> getTuristi() {
         return turisti;
     }
@@ -42,13 +42,5 @@ public class UtentiController {
     }
 
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    @Id
-    @GeneratedValue
-    public Long getId() {
-        return id;
-    }
 }

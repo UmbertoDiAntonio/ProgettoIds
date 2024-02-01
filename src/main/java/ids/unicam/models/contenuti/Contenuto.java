@@ -8,15 +8,15 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 
-@Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+
+
 public abstract class Contenuto {
 
-    @Id
+
     private final long id;
     private boolean approved = false;
 
-    @OneToOne
+
     private Tempo scadenza;
     @ElementCollection
     private final ArrayList<String> tags=new ArrayList<>();

@@ -13,21 +13,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Entity
+
 public class ContenutoController {
     private static long _id = 0;
-    @Id
-    @GeneratedValue
-    private Long id;
+
 
     public static long generateID() {
         _id+=1;
         return _id;
     }
-    @OneToMany
+
     private final List<PuntoInteresse> contenuti = new ArrayList<>();
 
-    @OneToMany
+
     private final ArrayList<Itinerario> itinerari = new ArrayList<>();
 
     public List<PuntoInteresse> getContenuti() {
@@ -91,11 +89,5 @@ public class ContenutoController {
         }
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public Long getId() {
-        return id;
-    }
 }

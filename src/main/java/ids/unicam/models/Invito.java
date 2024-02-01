@@ -9,7 +9,7 @@ import jakarta.persistence.OneToOne;
 
 import java.util.ArrayList;
 
-@Entity
+
 public class Invito {
     private Contest contest=null;
     private TuristaLoggato invitato=null;
@@ -20,12 +20,12 @@ public class Invito {
     }
 
 
-    @OneToOne
+
     public Contest getContest() {
         return contest;
     }
 
-    @OneToOne
+
     public TuristaLoggato getInvitato() {
         return invitato;
     }
@@ -59,7 +59,7 @@ public class Invito {
         this.id = id;
     }
 
-    @Id
+    
     @GeneratedValue
     public Long getId() {
         return id;

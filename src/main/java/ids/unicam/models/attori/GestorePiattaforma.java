@@ -6,15 +6,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 
-@Entity
+
 public class GestorePiattaforma{
 
     //TODO è strano che tutto ciò che faccia sia solo chiamare il suo controller, senza avere alcun dato o logica
-    @OneToOne
+
     private final GestoreController gestoreController = new GestoreController();
-    @Id
-    @GeneratedValue
-    private Long id;
 
     public GestoreController getGestoreController() {
         return gestoreController;
@@ -30,11 +27,5 @@ public class GestorePiattaforma{
     }
 
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public Long getId() {
-        return id;
-    }
 }

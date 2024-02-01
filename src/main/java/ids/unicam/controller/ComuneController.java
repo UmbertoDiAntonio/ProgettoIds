@@ -9,15 +9,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
-@Entity
+
 public class  ComuneController {
 
     private static ComuneController instance;
-    @OneToMany
+
     public ArrayList<Comune> listaComuni = new ArrayList<>();
-    @Id
-    @GeneratedValue
-    private Long id;
+
 
     public ComuneController(){}
 
@@ -36,11 +34,5 @@ public class  ComuneController {
     }
 
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public Long getId() {
-        return id;
-    }
 }

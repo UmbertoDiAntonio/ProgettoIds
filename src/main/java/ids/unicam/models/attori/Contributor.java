@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
-@Entity
+
 public class Contributor extends TuristaLoggato implements Observer {
     private Comune comune=null;
 
@@ -21,7 +21,7 @@ public class Contributor extends TuristaLoggato implements Observer {
 
     }
 
-    @OneToOne
+    
     final Comune getComune() {
         return comune;
     }

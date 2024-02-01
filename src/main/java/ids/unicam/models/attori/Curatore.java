@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-@Entity
+
 public class Curatore extends ContributorTrusted {
 
     private final ArrayList<Observer> osservatori = new ArrayList<>();
@@ -32,7 +32,7 @@ public class Curatore extends ContributorTrusted {
         }
     }
 
-    @OneToMany
+    
     public ArrayList<Observer> getOsservatori() {
         return osservatori;
     }

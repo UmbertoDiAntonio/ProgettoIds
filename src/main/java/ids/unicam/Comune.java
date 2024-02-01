@@ -12,10 +12,10 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 
-@Entity
+
 public class Comune {
 
-    private String nome=null;
+    private String nome="";
     private Punto posizione;
     private GestorePiattaforma gestorePiattaforma=null;
     private final ArrayList<Curatore> curatori = new ArrayList<>();
@@ -31,41 +31,41 @@ public class Comune {
     }
 
 
-    @OneToOne
+
     public GestorePiattaforma getGestorePiattaforma() {
         return gestorePiattaforma;
     }
 
-    @OneToMany
+
     public ArrayList<Animatore> getAnimatori() {
         return animatori;
     }
 
-    @OneToOne
+
     public Punto getPosizione() {
         return posizione;
     }
 
-    @OneToMany
+
     public ArrayList<Contributor> getContributors() {
         return contributors;
     }
 
-    @OneToMany
+
     public ArrayList<ContributorTrusted> getContributorTrusteds() {
         return contributorTrusteds;
     }
 
-    @OneToMany
+
     public ArrayList<Curatore> getCuratori() {
         return curatori;
     }
 
-    @OneToOne
+
     public ContenutoController getContenutoController() {
         return contenutoController;
     }
-    @OneToOne
+
     public ContestController getContestController() {
         return contestController;
     }
@@ -120,7 +120,7 @@ public class Comune {
         this.id = id;
     }
 
-    @Id
+    
     @GeneratedValue
     public Long getId() {
         return id;

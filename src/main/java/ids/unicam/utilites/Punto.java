@@ -5,12 +5,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import org.jetbrains.annotations.NotNull;
 
-@Entity
+
 public class Punto {
 
     private double latitudine=0;
     private double longitudine=0;
-    @Id
+    
     @GeneratedValue
     private Long id;
 

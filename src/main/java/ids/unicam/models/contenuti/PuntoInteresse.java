@@ -8,13 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Entity
+
 public abstract class PuntoInteresse extends Contenuto {
 
     private String nome="";
-    @Transient
+
     private Punto pt=new Punto(0,0);
-    @Transient
+
     private final List<Materiale> materialeList = new ArrayList<>();
 
     public PuntoInteresse() {

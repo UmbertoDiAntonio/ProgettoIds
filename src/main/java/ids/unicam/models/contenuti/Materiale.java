@@ -7,11 +7,11 @@ import jakarta.persistence.OneToOne;
 
 import java.util.UUID;
 
-@Entity
+
 public abstract class Materiale {
     private TuristaLoggato author=null;
     private boolean approved=false;
-    @Id
+    
     private final UUID id=UUID.randomUUID();
 
     public Materiale() {
@@ -27,7 +27,7 @@ public abstract class Materiale {
      */
     public abstract String get();
 
-    @OneToOne
+    
     public TuristaLoggato getAuthor() {
         return author;
     }

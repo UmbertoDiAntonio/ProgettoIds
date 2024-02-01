@@ -4,16 +4,14 @@ import ids.unicam.Exception.NotInContestException;
 import ids.unicam.controller.UtentiController;
 import ids.unicam.models.Invito;
 import ids.unicam.models.contenuti.*;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+
 import jakarta.persistence.OneToOne;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Entity
+
 public class TuristaLoggato extends Turista {
     private final List<Contenuto> favourites = new ArrayList<>();
     private final List<Invito> invitiRicevuti = new ArrayList<>();
@@ -22,14 +20,14 @@ public class TuristaLoggato extends Turista {
     private Date dateBirthday=null;
     private String password=null;
     private String username=null;
-    @Id
+
     private final String id=UtentiController.generateID();;
 
     public TuristaLoggato() {
 
     }
 
-    @OneToMany
+
     public List<Invito> getInvitiRicevuti() {
         return invitiRicevuti;
     }
@@ -58,7 +56,7 @@ public class TuristaLoggato extends Turista {
         return id;
     }
 
-    @OneToMany
+
     public List<Contenuto> getFavourites() {
         return favourites;
     }

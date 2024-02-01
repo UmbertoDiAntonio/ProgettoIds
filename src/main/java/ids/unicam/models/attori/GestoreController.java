@@ -12,11 +12,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 
-@Entity
+
 public class GestoreController {
-    @OneToOne
+    
     private final UtentiController utentiController = new UtentiController();
-    @Id
+    
     @GeneratedValue
     private Long id;
 

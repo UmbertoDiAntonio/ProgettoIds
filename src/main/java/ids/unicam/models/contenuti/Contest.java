@@ -9,16 +9,16 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+
 public class Contest extends Contenuto {
     private boolean open;
-    @OneToOne
+
     private ContestController controller=null;
     private String obiettivo=null;
     private Animatore author=null;
     private final ArrayList<TuristaLoggato> partecipanti = new ArrayList<>();
     private final ArrayList<Invito> inviti = new ArrayList<>();
-    @ManyToMany
+
     private final ArrayList<Materiale> materiali = new ArrayList<>();
     private String nome=null;
 
@@ -26,7 +26,7 @@ public class Contest extends Contenuto {
 
     }
 
-    @OneToOne
+    
     public Animatore getAuthor() {
         return author;
     }
@@ -35,7 +35,7 @@ public class Contest extends Contenuto {
         return nome;
     }
 
-    @OneToMany
+    
     public ArrayList<Invito> getInviti() {
         return inviti;
     }
@@ -56,13 +56,13 @@ public class Contest extends Contenuto {
         return open;
     }
 
-    @OneToMany
+    
     public List<TuristaLoggato> getPartecipanti() {
         return partecipanti;
     }
 
 
-    @OneToOne
+    
     public ContestController getContestController() {
         return controller;
     }

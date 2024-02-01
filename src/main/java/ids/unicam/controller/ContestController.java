@@ -14,14 +14,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-@Entity
+
 public class ContestController {
 
-    @OneToMany
+
     private final ArrayList<Contest> contests = new ArrayList<>();
-    @Id
-    @GeneratedValue
-    private Long id;
+
 
     public ArrayList<Contest> getContests() {
         return contests;
@@ -96,11 +94,4 @@ public class ContestController {
         contests.remove(contest);
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
 }

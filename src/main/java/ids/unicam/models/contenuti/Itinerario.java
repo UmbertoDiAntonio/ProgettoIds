@@ -8,10 +8,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Entity
-@DiscriminatorValue("ITINERARIO")
+
 public class Itinerario extends Contenuto {
-    private String nome=null;
+    private String nome="";
     private final List<PuntoInteresse> percorso = new ArrayList<>();
 
     public Itinerario() {
@@ -26,7 +25,7 @@ public class Itinerario extends Contenuto {
         return nome;
     }
 
-    @OneToMany
+
     public List<PuntoInteresse> getPercorso() {
         return percorso;
     }
