@@ -38,18 +38,16 @@ public class DatabaseManager {
 
                 // Esempio: inserisci dei dati nella tabella
                 String insertDataSQL = "INSERT INTO TURISTI (id, name, surname, username, password) VALUES (?, ?, ?, ?, ?)";
-                PreparedStatement statement = connection.prepareStatement(insertDataSQL);
+                Statement statement = connection.createStatement();
                 List<TuristaLoggato> turisti = utentiController.getTuristi();
 
                 for (TuristaLoggato turistaLoggato : turisti) {
-                    statement.setString(1, turistaLoggato.getId());
-                    statement.setString(2, turistaLoggato.getName());
-                    statement.setString(3, turistaLoggato.getSurname());
-                    statement.setString(4, turistaLoggato.getUsername());
-                    statement.setString(5, turistaLoggato.getPassword());
-                    statement.executeUpdate();
+                    String values = String.format("('%s', '%s', '%s', '%s', '%s')",
+                            turistaLoggato.getId(), turistaLoggato.getName(), turistaLoggato.getSurname(),
+                            turistaLoggato.getUsername(), turistaLoggato.getPassword());
+                    statement.addBatch(insertDataSQL + values);
                 }
-
+statement.executeBatch();
                 // Esegui una query di selezione per ottenere i dati appena inseriti
                 String selectSQL = "SELECT * FROM TURISTI WHERE username = 'Leonardo'";
                 ResultSet resultSet = statement.executeQuery(selectSQL);
