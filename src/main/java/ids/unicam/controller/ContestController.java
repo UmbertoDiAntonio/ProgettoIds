@@ -21,11 +21,11 @@ public class ContestController {
      * @param idTurista l'id del Turista
      * @return tutti i contest di cui è membro
      */
-    public @NotNull ArrayList<Contest> getContestByTourist(String idTurista) {
+    public @NotNull ArrayList<Contest> getContestByTourist(long idTurista) {
         ArrayList<Contest> result = new ArrayList<>();
         contests.stream().filter(contest -> contest.
                 getPartecipanti().
-                stream().anyMatch(turistaLoggato -> turistaLoggato.getId().equals(idTurista))
+                stream().anyMatch(turistaLoggato -> turistaLoggato.getId()==(idTurista))
         ).forEach(result::add);
         return result;
     }
@@ -37,7 +37,7 @@ public class ContestController {
      */
     public @NotNull ArrayList<Contest> getContestByAuthor(long idAutore) {
         ArrayList<Contest> result = new ArrayList<>();
-        contests.stream().filter(contest1 -> Long.parseLong(contest1.getAuthor().getId()) == idAutore).forEach(result::add);
+        contests.stream().filter(contest1 -> contest1.getAuthor().getId() == idAutore).forEach(result::add);
         return result;
     }
 

@@ -4,11 +4,9 @@ import ids.unicam.Exception.NotInContestException;
 import ids.unicam.controller.UtentiController;
 import ids.unicam.models.Invito;
 import ids.unicam.models.contenuti.*;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 
+import javax.annotation.processing.Generated;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +14,8 @@ import java.util.List;
 @Entity
 public class TuristaLoggato extends Turista{
     @Id
-    private final String id=UtentiController.generateID();;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id= 0;
     private String name="";
     private String username="";
     private String surname="";
@@ -58,7 +57,7 @@ public class TuristaLoggato extends Turista{
         return username;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 

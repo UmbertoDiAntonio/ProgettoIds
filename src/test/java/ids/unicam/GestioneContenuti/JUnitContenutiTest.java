@@ -185,13 +185,13 @@ public class JUnitContenutiTest {
 
         {
             animatore.creaContest("Monumento", "Foto più bella", true);
-            assertEquals(1, comune.getContestController().getContestByAuthor(Long.parseLong(comune.getAnimatori().getFirst().getId())).size());
+            assertEquals(1, comune.getContestController().getContestByAuthor((comune.getAnimatori().getFirst().getId())).size());
 
             gestorePiattaforma.getGestoreController().registraTurista("andrea", "neri", new Date(), "eroe", "AN2");
             TuristaLoggato turistaLoggato = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi().getFirst();
             Materiale materiale = new Foto(turistaLoggato);
-            turistaLoggato.joinFreeContest(comune.getContestController().getContestByAuthor(Long.parseLong(comune.getAnimatori().getFirst().getId())).getFirst());
-            assertEquals(1, comune.getContestController().getContestByAuthor(Long.parseLong(comune.getAnimatori().getFirst().getId())).getFirst().getPartecipanti().size());
+            turistaLoggato.joinFreeContest(comune.getContestController().getContestByAuthor((comune.getAnimatori().getFirst().getId())).getFirst());
+            assertEquals(1, comune.getContestController().getContestByAuthor((comune.getAnimatori().getFirst().getId())).getFirst().getPartecipanti().size());
             turistaLoggato.addMaterialeContest(comune.getContestController().getContests().getFirst(), materiale);
             assertEquals(1, comune.getContestController().getContests().getFirst().getMaterialiContest().size());
         }
@@ -205,7 +205,7 @@ public class JUnitContenutiTest {
 
         {
             animatore.creaContest("monumento", "Foto più bella", false);
-            assertEquals(2, comune.getContestController().getContestByAuthor(Long.parseLong(comune.getAnimatori().getFirst().getId())).size());
+            assertEquals(2, comune.getContestController().getContestByAuthor((comune.getAnimatori().getFirst().getId())).size());
 
             gestorePiattaforma.getGestoreController().registraTurista("andrea", "neri", new Date(), "eroe", "AN2");
             TuristaLoggato turistaLoggato = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi().getFirst();

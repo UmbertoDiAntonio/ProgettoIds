@@ -33,8 +33,8 @@ public class UtentiController {
      * @param id l'id da cercare
      * @return il turista con quell'id o null se non viene trovato
      */
-    public @Nullable TuristaLoggato getTuristaById(String id){
-        return turisti.stream().filter(turistaLoggato -> turistaLoggato.getId().equals(id)).findFirst().orElse(null);
+    public @Nullable TuristaLoggato getTuristaById(long id){
+        return turisti.stream().filter(turistaLoggato -> turistaLoggato.getId()==(id)).findFirst().orElse(null);
     }
 
 

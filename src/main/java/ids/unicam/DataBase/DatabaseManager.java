@@ -1,4 +1,5 @@
 package ids.unicam.DataBase;
+
 import ids.unicam.controller.UtentiController;
 import ids.unicam.models.attori.GestorePiattaforma;
 import ids.unicam.models.attori.TuristaLoggato;
@@ -17,9 +18,9 @@ public class DatabaseManager {
 
     public static void creaDB() {
         try {
-            UtentiController utentiController = new UtentiController();
             GestorePiattaforma gestorePiattaforma = new GestorePiattaforma();
-            gestorePiattaforma.getGestoreController().registraTurista("Leonardo","Compagnucci",new Date(), "UNICAM", "leocompa");
+            gestorePiattaforma.getGestoreController().registraTurista("Leonardo", "Compagnucci", new Date(), "UNICAM", "leocompa");
+            gestorePiattaforma.getGestoreController().registraTurista("Umberto", "Di Antonio", new Date(), "ciao!", "umber");
             // Carica il driver JDBC per H2
             Class.forName("org.h2.Driver");
 
@@ -29,36 +30,43 @@ public class DatabaseManager {
                 // Esempio: crea una tabella
                 String createTableSQL =
                         "CREATE TABLE IF NOT EXISTS TURISTI(" +
-                                "id VARCHAR(50) PRIMARY KEY," +
+                                "id INT PRIMARY KEY AUTO_INCREMENT," +
                                 "name VARCHAR(50) NOT NULL," +
                                 "surname VARCHAR(50) NOT NULL," +
                                 "username VARCHAR(50) NOT NULL," +
                                 "password VARCHAR(50) NOT NULL)";
-                connection.createStatement().executeUpdate(createTableSQL);
 
-                // Esempio: inserisci dei dati nella tabella
-                String insertDataSQL = "INSERT INTO TURISTI (id, name, surname, username, password) VALUES (?, ?, ?, ?, ?)";
-                Statement statement = connection.createStatement();
-                List<TuristaLoggato> turisti = utentiController.getTuristi();
+                try (Statement statement = connection.createStatement()) {
+                    statement.executeUpdate(createTableSQL);
 
-                for (TuristaLoggato turistaLoggato : turisti) {
-                    String values = String.format("('%s', '%s', '%s', '%s', '%s')",
-                            turistaLoggato.getId(), turistaLoggato.getName(), turistaLoggato.getSurname(),
-                            turistaLoggato.getUsername(), turistaLoggato.getPassword());
-                    statement.addBatch(insertDataSQL + values);
+                    // Esempio: inserisci dei dati nella tabella
+                    List<TuristaLoggato> turisti = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi();
+
+                    for (TuristaLoggato turistaLoggato : turisti) {
+                        // Costruzione dell'istruzione SQL per l'inserimento di ogni riga
+                        String insertDataSQL = "INSERT INTO TURISTI (name, surname, username, password) VALUES ('" +
+                                turistaLoggato.getName() + "', '" +
+                                turistaLoggato.getSurname() + "', '" +
+                                turistaLoggato.getUsername() + "', '" +
+                                turistaLoggato.getPassword() + "')";
+                        statement.addBatch(insertDataSQL);
+                    }
+
+                    statement.executeBatch();
+
+                    // Esegui una query di selezione per ottenere i dati appena inseriti
+                    String selectSQL = "SELECT * FROM TURISTI WHERE username = 'leocompa'";
+                    try (ResultSet resultSet = statement.executeQuery(selectSQL)) {
+                        // Stampa i risultati della query
+                        while (resultSet.next()) {
+                            String id = resultSet.getString("id");
+                            String username = resultSet.getString("username");
+                            String password = resultSet.getString("password");
+                            System.out.println("ID: " + id + ", Username: " + username + ", Password: " + password);
+                        }
+                    }
                 }
-statement.executeBatch();
-                // Esegui una query di selezione per ottenere i dati appena inseriti
-                String selectSQL = "SELECT * FROM TURISTI WHERE username = 'Leonardo'";
-                ResultSet resultSet = statement.executeQuery(selectSQL);
-
-                // Stampa i risultati della query
-                while (resultSet.next()) {
-                    String id = resultSet.getString("id");
-                    String username = resultSet.getString("username");
-                    String password = resultSet.getString("password");
-                    System.out.println("ID: " + id + ", Username: " + username + ", Password: " + password);
-                }
+                connection.commit();
             }
 
             System.out.println("Operazioni sul database H2 completate con successo.");
@@ -67,4 +75,3 @@ statement.executeBatch();
         }
     }
 }
-
