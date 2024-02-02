@@ -1,14 +1,20 @@
 package ids.unicam.models.attori;
 
 import ids.unicam.Comune;
+import ids.unicam.DataBase.DatabaseManager;
 import ids.unicam.Exception.RegistrazioneException;
 import ids.unicam.controller.UtentiController;
 import ids.unicam.models.Ruolo;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.GregorianCalendar;
 
-
+@Component
 public class GestoreController {
     
     private final UtentiController utentiController = new UtentiController();
@@ -16,6 +22,9 @@ public class GestoreController {
     public UtentiController getUtentiController() {
         return utentiController;
     }
+
+    @Autowired
+    private DatabaseManager databaseManager;
 
     /**
      * Modifica il ruolo di un contributor all'interno del comune
@@ -70,9 +79,19 @@ public class GestoreController {
     }
 
     public void registraTurista(String nome, String cognome, GregorianCalendar birthday, String password, String username) {
-        utentiController.getTuristi().add(new TuristaAutenticato(nome, cognome, birthday, password, username));
+        // Crea un nuovo oggetto TuristaAutenticato
+        TuristaAutenticato nuovoTurista = new TuristaAutenticato(nome, cognome, birthday, password, username);
 
-        //TODO aggiungere al database
+        // Aggiungi il nuovo turista alla lista dei turisti nel controller degli utenti
+        utentiController.getTuristi().add(nuovoTurista);
+        // Ottieni una connessione al database
+        try (Connection connection = databaseManager.connectToDatabase()) {
+            // Inserisci i dati del nuovo turista nel database
+            DatabaseManager.aggiungiTuristaAlDatabase(connection, nuovoTurista);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Gestisci l'eccezione in base alle esigenze dell'applicazione
+        }
 
     }
 

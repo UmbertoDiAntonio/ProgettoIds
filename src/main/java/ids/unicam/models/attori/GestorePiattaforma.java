@@ -1,8 +1,9 @@
 package ids.unicam.models.attori;
 
 import ids.unicam.models.Ruolo;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class GestorePiattaforma{
 
     //TODO è strano che tutto ciò che faccia sia solo chiamare il suo controller, senza avere alcun dato o logica

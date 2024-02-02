@@ -1,79 +1,73 @@
 package ids.unicam.DataBase;
 
-import ids.unicam.models.attori.GestorePiattaforma;
 import ids.unicam.models.attori.TuristaAutenticato;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.Objects;
 
 @Component
 public class DatabaseManager {
+/*
+    @Value("${spring.datasource.url}")
+    private String dbUrl;
 
-    @Autowired
-    private Environment env;
+    @Value("${spring.datasource.username}")
+    private String dbUsername;
 
-    @PostConstruct
-    public void creaDB() {
+    @Value("${spring.datasource.password}")
+    private String dbPassword;
+
+ */
+@Autowired
+private Environment env;
+
+
+    public Connection connectToDatabase(){
         try {
-            System.out.println(env.getProperty("spring.datasource.url"));
-            System.out.println(env.getProperty("spring.datasource.username"));
-            System.out.println(env.getProperty("spring.datasource.password"));
-            GestorePiattaforma gestorePiattaforma = new GestorePiattaforma();
-            gestorePiattaforma.getGestoreController().registraTurista("Leonardo", "Compagnucci", new GregorianCalendar(1998, Calendar.JANUARY,1), "UNICAM", "leocompa");
-            gestorePiattaforma.getGestoreController().registraTurista("Umberto", "Di Antonio", new GregorianCalendar(1999,Calendar.NOVEMBER,23), "ciao!", "umber");
-
-            Class.forName("org.h2.Driver");
-
-            try (Connection connection = DriverManager.getConnection(Objects.requireNonNull(env.getProperty("spring.datasource.url")),
+            Connection connection = DriverManager.getConnection(
+                    Objects.requireNonNull(env.getProperty("spring.datasource.url")),
                     env.getProperty("spring.datasource.username"),
-                    env.getProperty("spring.datasource.password"))) {
-                String createTableSQL =
-                        "CREATE TABLE IF NOT EXISTS TURISTI(" +
-                                "id INT PRIMARY KEY AUTO_INCREMENT," +
-                                "name VARCHAR(50) NOT NULL," +
-                                "surname VARCHAR(50) NOT NULL," +
-                                "username VARCHAR(50) NOT NULL," +
-                                "password VARCHAR(50) NOT NULL)";
+                    env.getProperty("spring.datasource.password"));
+            System.out.println("Connessione al database stabilita!");
+            return connection;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
-                try (Statement statement = connection.createStatement()) {
-                    statement.executeUpdate(createTableSQL);
+    public void createTuristiTable(Connection connection) throws SQLException {
+        String createTableSQL =
+                "CREATE TABLE IF NOT EXISTS TURISTI(" +
+                        "id INT PRIMARY KEY AUTO_INCREMENT," +
+                        "name VARCHAR(50) NOT NULL," +
+                        "surname VARCHAR(50) NOT NULL," +
+                        "username VARCHAR(50) NOT NULL," +
+                        "password VARCHAR(50) NOT NULL)";
+        try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
+            statement.executeUpdate();
+        }
+    }
 
-                    List<TuristaAutenticato> turisti = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi();
-
-                    for (TuristaAutenticato turistaAutenticato : turisti) {
-                        String insertDataSQL = "INSERT INTO TURISTI (name, surname, username, password) VALUES ('" +
-                                turistaAutenticato.getNome() + "', '" +
-                                turistaAutenticato.getCognome() + "', '" +
-                                turistaAutenticato.getUsername() + "', '" +
-                                turistaAutenticato.getPassword() + "')";
-                        statement.addBatch(insertDataSQL);
-                    }
-
-                    statement.executeBatch();
-
-                    String selectSQL = "SELECT * FROM TURISTI WHERE username = 'leocompa'";
-                    try (ResultSet resultSet = statement.executeQuery(selectSQL)) {
-                        while (resultSet.next()) {
-                            int id = resultSet.getInt("id");
-                            String username = resultSet.getString("username");
-                            String password = resultSet.getString("password");
-                            System.out.println("ID: " + id + ", Username: " + username + ", Password: " + password);
-                        }
-                    }
-                }
-                connection.commit();
+    public static void aggiungiTuristaAlDatabase(Connection connection, TuristaAutenticato turistaAutenticato) {
+        try {
+            String insertDataSQL = "INSERT INTO TURISTI (name, surname, username, password) VALUES ('" +
+                    turistaAutenticato.getNome() + "', '" +
+                    turistaAutenticato.getCognome() + "', '" +
+                    turistaAutenticato.getUsername() + "', '" +
+                    turistaAutenticato.getPassword() + "')";
+            try (Statement statement = connection.createStatement()) {
+                statement.executeUpdate(insertDataSQL);
             }
-
-            System.out.println("Operazioni sul database H2 completate con successo.");
-        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("Turista aggiunto al database!");
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 }
+
+

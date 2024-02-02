@@ -2,11 +2,13 @@ package ids.unicam.controller;
 
 import ids.unicam.models.attori.TuristaAutenticato;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 
-
+@Component
 public class UtentiController {
+
 
 
     private final ArrayList<TuristaAutenticato> turisti = new ArrayList<>();
