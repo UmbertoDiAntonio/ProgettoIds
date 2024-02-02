@@ -4,7 +4,6 @@ import ids.unicam.utilites.Punto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.Transient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,7 @@ public abstract class PuntoInteresse extends Contenuto {
     private Punto pt=new Punto(0,0);
 
     @OneToMany
-    private final List<Materiale> materialeList = new ArrayList<>();
+    private final List<Materiale> listaMateriali = new ArrayList<>();
 
     public PuntoInteresse() {
 
@@ -29,8 +28,8 @@ public abstract class PuntoInteresse extends Contenuto {
         return pt;
     }
 
-    public List<Materiale> getMaterialeList() {
-        return materialeList;
+    public List<Materiale> getListaMateriali() {
+        return listaMateriali;
     }
 
 
@@ -44,9 +43,9 @@ public abstract class PuntoInteresse extends Contenuto {
         this.pt = pt;
     }
 
-    public abstract String mostraDettagli();
+    public abstract String mostraInformazioniDettagliate();
 
-    public abstract String getGeneralInfo();
+    public abstract String mostraInformazioniGeneriche();
 
 
 

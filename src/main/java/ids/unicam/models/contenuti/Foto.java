@@ -1,11 +1,11 @@
 package ids.unicam.models.contenuti;
 
-import ids.unicam.models.attori.TuristaLoggato;
+import ids.unicam.models.attori.TuristaAutenticato;
 import jakarta.persistence.Entity;
 
 @Entity
 public class Foto extends Materiale{
-    public Foto(TuristaLoggato autore) {
+    public Foto(TuristaAutenticato autore) {
         super(autore);
     }
 
@@ -16,6 +16,6 @@ public class Foto extends Materiale{
 
     @Override
     public String get() {
-        return "Questa è una foto, creata da "+super.getAuthor().getName()+", con id: "+super.getId();
+        return "Questa è una foto, creata da "+super.getCreatore().getNome()+", con id: "+super.getId();
     }
 }

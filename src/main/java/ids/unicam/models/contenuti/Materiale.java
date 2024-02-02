@@ -1,6 +1,6 @@
 package ids.unicam.models.contenuti;
 
-import ids.unicam.models.attori.TuristaLoggato;
+import ids.unicam.models.attori.TuristaAutenticato;
 import jakarta.persistence.*;
 
 import java.util.UUID;
@@ -9,8 +9,8 @@ import java.util.UUID;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Materiale {
     @OneToOne
-    private TuristaLoggato author=null;
-    private boolean approved=false;
+    private TuristaAutenticato creatore =null;
+    private boolean stato =false;
 
     @Id
     private final UUID id=UUID.randomUUID();
@@ -29,24 +29,24 @@ public abstract class Materiale {
     public abstract String get();
 
     
-    public TuristaLoggato getAuthor() {
-        return author;
+    public TuristaAutenticato getCreatore() {
+        return creatore;
     }
 
-    public boolean isApproved() {
-        return approved;
+    public boolean getStato() {
+        return stato;
     }
 
-    public void setApproved(boolean approved) {
-        this.approved = approved;
+    public void setStato(boolean stato) {
+        this.stato = stato;
     }
 
     /**
      * Crea un materiale e gli assegna un id random
-     * @param author l'autore del materiale
+     * @param creatore l'autore del materiale
      */
-    public Materiale(TuristaLoggato author) {
-        this.author=author;
+    public Materiale(TuristaAutenticato creatore) {
+        this.creatore = creatore;
     }
 
 

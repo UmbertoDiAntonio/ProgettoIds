@@ -36,10 +36,10 @@ public class Animatore extends Contributor {
     /**
      * Crea un invito al contest per il turista, poi lo aggiungiamo all'utente
      * @param contest il Contest in cui stiamo invitando
-     * @param turistaLoggato il turista che stiamo invitando
+     * @param turistaAutenticato il turista che stiamo invitando
      */
-    public void invita(Contest contest, TuristaLoggato turistaLoggato){
-        contest.getContestController().generaInvito(turistaLoggato, contest);
+    public void invita(Contest contest, TuristaAutenticato turistaAutenticato){
+        contest.getContestController().generaInvito(turistaAutenticato, contest);
         //turistaLoggato.getInvitiRicevuti().add(contest.getInviti().getFirst());
     }
 }

@@ -10,7 +10,6 @@ import ids.unicam.utilites.Punto;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -52,17 +51,17 @@ public class JUnitUtentiTest {
         comune.getPosizione();
         Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH,17), "ciao", "mr");
         gestorePiattaforma.getGestoreController().registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH,17), "eroe", "AN2");
-        TuristaLoggato turistaLoggato = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi().getFirst();
+        TuristaAutenticato turistaAutenticato = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi().getFirst();
         AttivitaFactory attivitaFactory = new AttivitaFactory(LocalDate.now());
 
         gestorePiattaforma.promuovi(contributor, Ruolo.ContributorTrusted);
         PuntoInteresse puntoInteresse = attivitaFactory.creaPoi("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015));
 
-        ContributorTrusted contributorTrusted = comune.getContributorTrusteds().getFirst();
-        contributorTrusted.addPuntoInteresse(puntoInteresse);
-        assertEquals(0, turistaLoggato.getFavourites().size());
-        turistaLoggato.addFavourites(puntoInteresse);
-        assertEquals(1, turistaLoggato.getFavourites().size());
+        ContributorAutorizzato contributorAutorizzato = comune.getContributorTrusteds().getFirst();
+        contributorAutorizzato.aggiungiPuntoInteresse(puntoInteresse);
+        assertEquals(0, turistaAutenticato.getPreferiti().size());
+        turistaAutenticato.aggiungiPreferito(puntoInteresse);
+        assertEquals(1, turistaAutenticato.getPreferiti().size());
     }
 
     @Test
@@ -75,7 +74,7 @@ public class JUnitUtentiTest {
         AttivitaFactory attivitaFactory = new AttivitaFactory(LocalDate.now());
         PuntoInteresse puntoInteresse = attivitaFactory.creaPoi("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015));
 
-        assertThrows(UnsupportedOperationException.class, () -> curatore.share(puntoInteresse));
+        assertThrows(UnsupportedOperationException.class, () -> curatore.condividi(puntoInteresse));
         //TODO
     }
 
@@ -92,8 +91,8 @@ public class JUnitUtentiTest {
 
         AttivitaFactory attivitaFactory = new AttivitaFactory(LocalDate.now());
         PuntoInteresse puntoInteresse = attivitaFactory.creaPoi("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015));
-        puntoInteresse.addTag("Edicola");
-        contributor.addPuntoInteresse(puntoInteresse);
+        puntoInteresse.aggiungiTag("Edicola");
+        contributor.aggiungiPuntoInteresse(puntoInteresse);
         Curatore curatore=comune.getCuratori().getFirst();
         assertEquals(0,turista.search("Edicola").size());
         curatore.valuta(puntoInteresse,true);
@@ -107,19 +106,19 @@ public class JUnitUtentiTest {
         Comune comune = new Comune("Milano", gestorePiattaforma);
         Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH,17), "ciao", "mr");
 
-        contributor.addPuntoInteresse(new AttivitaFactory(LocalDate.now()).creaPoi("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015)));
+        contributor.aggiungiPuntoInteresse(new AttivitaFactory(LocalDate.now()).creaPoi("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015)));
         PuntoInteresse puntoInteresse = comune.getContenutoController().getContenuti().getFirst();
 
         gestorePiattaforma.getGestoreController().registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH,17), "eroe", "AN2");
-        TuristaLoggato turistaLoggato = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi().getFirst();
+        TuristaAutenticato turistaAutenticato = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi().getFirst();
 
-        assertEquals(0, puntoInteresse.getMaterialeList().size());
-        turistaLoggato.addPhoto(puntoInteresse, new Foto(turistaLoggato));
-        assertEquals(1, puntoInteresse.getMaterialeList().size());
-        assertFalse(puntoInteresse.getMaterialeList().getFirst().isApproved());
+        assertEquals(0, puntoInteresse.getListaMateriali().size());
+        turistaAutenticato.aggiungiFoto(puntoInteresse, new Foto(turistaAutenticato));
+        assertEquals(1, puntoInteresse.getListaMateriali().size());
+        assertFalse(puntoInteresse.getListaMateriali().getFirst().getStato());
         gestorePiattaforma.promuovi(contributor, Ruolo.Curatore);
         Curatore curatore = comune.getCuratori().getFirst();
-        curatore.valuta(puntoInteresse.getMaterialeList().getFirst(), true);
-        assertTrue(puntoInteresse.getMaterialeList().getFirst().isApproved());
+        curatore.valuta(puntoInteresse.getListaMateriali().getFirst(), true);
+        assertTrue(puntoInteresse.getListaMateriali().getFirst().getStato());
     }
 }

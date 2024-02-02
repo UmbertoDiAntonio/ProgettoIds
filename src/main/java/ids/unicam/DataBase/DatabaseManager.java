@@ -1,12 +1,10 @@
 package ids.unicam.DataBase;
 
-import ids.unicam.controller.UtentiController;
 import ids.unicam.models.attori.GestorePiattaforma;
-import ids.unicam.models.attori.TuristaLoggato;
+import ids.unicam.models.attori.TuristaAutenticato;
 
 import java.sql.*;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -42,15 +40,15 @@ public class DatabaseManager {
                     statement.executeUpdate(createTableSQL);
 
                     // Esempio: inserisci dei dati nella tabella
-                    List<TuristaLoggato> turisti = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi();
+                    List<TuristaAutenticato> turisti = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi();
 
-                    for (TuristaLoggato turistaLoggato : turisti) {
+                    for (TuristaAutenticato turistaAutenticato : turisti) {
                         // Costruzione dell'istruzione SQL per l'inserimento di ogni riga
                         String insertDataSQL = "INSERT INTO TURISTI (name, surname, username, password) VALUES ('" +
-                                turistaLoggato.getName() + "', '" +
-                                turistaLoggato.getSurname() + "', '" +
-                                turistaLoggato.getUsername() + "', '" +
-                                turistaLoggato.getPassword() + "')";
+                                turistaAutenticato.getNome() + "', '" +
+                                turistaAutenticato.getCognome() + "', '" +
+                                turistaAutenticato.getUsername() + "', '" +
+                                turistaAutenticato.getPassword() + "')";
                         statement.addBatch(insertDataSQL);
                     }
 

@@ -3,7 +3,6 @@ package ids.unicam.models.attori;
 import ids.unicam.Comune;
 import ids.unicam.controller.ComuneController;
 import ids.unicam.models.contenuti.PuntoInteresse;
-import jakarta.persistence.*;
 
 import java.util.ArrayList;
 
@@ -16,7 +15,7 @@ public class Turista {
         ArrayList<PuntoInteresse> result=new ArrayList<>();
         for(Comune comune:comuni){
             for(PuntoInteresse puntoInteresse:comune.getContenutoController().getContenuti()){
-                if(puntoInteresse.isApproved() && puntoInteresse.getTags().contains(searchedTags)){
+                if(puntoInteresse.getStato() && puntoInteresse.getTags().contains(searchedTags)){
                     result.add(puntoInteresse);
                 }
             }

@@ -1,9 +1,9 @@
 package ids.unicam.controller;
 
-import ids.unicam.Exception.NotInContestException;
+import ids.unicam.Exception.ContestException;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.Animatore;
-import ids.unicam.models.attori.TuristaLoggato;
+import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.Materiale;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +21,7 @@ public class ContestController {
      * @param idTurista l'id del Turista
      * @return tutti i contest di cui è membro
      */
-    public @NotNull ArrayList<Contest> getContestByTourist(long idTurista) {
+    public @NotNull ArrayList<Contest> getContestDelTurista(long idTurista) {
         ArrayList<Contest> result = new ArrayList<>();
         contests.stream().filter(contest -> contest.
                 getPartecipanti().
@@ -35,9 +35,9 @@ public class ContestController {
      * @param idAutore l' id dell' Animatore
      * @return tutti i contest che ha creato
      */
-    public @NotNull ArrayList<Contest> getContestByAuthor(long idAutore) {
+    public @NotNull ArrayList<Contest> getContestDaAutore(long idAutore) {
         ArrayList<Contest> result = new ArrayList<>();
-        contests.stream().filter(contest1 -> contest1.getAuthor().getId() == idAutore).forEach(result::add);
+        contests.stream().filter(contest1 -> contest1.getCreatore().getId() == idAutore).forEach(result::add);
         return result;
     }
 
@@ -61,10 +61,10 @@ public class ContestController {
      * @param materiale il materiale da caricare
      * @param contest il contest su cui si vuole aggiungere
      *
-     * @throws NotInContestException se si cerca di caricare materiale su un contest senza essere entrati
+     * @throws ContestException se si cerca di caricare materiale su un contest senza essere entrati
      */
     public void aggiungiMateriale(Materiale materiale,Contest contest){
-            materiale.setApproved(false);
+            materiale.setStato(false);
             contest.getMaterialiContest().add(materiale);
 
     }
@@ -73,16 +73,16 @@ public class ContestController {
      * @param materiale il Materiale da approvare
      */
     public void approvaMateriale(Materiale materiale){
-        if(materiale.isApproved())
+        if(materiale.getStato())
             return;
-        materiale.setApproved(true);
+        materiale.setStato(true);
     }
 
-    public void generaInvito(TuristaLoggato turistaLoggato, Contest contest) {
-        turistaLoggato.getInvitiRicevuti().add(new Invito(contest,turistaLoggato));
+    public void generaInvito(TuristaAutenticato turistaAutenticato, Contest contest) {
+        turistaAutenticato.getInvitiRicevuti().add(new Invito(contest, turistaAutenticato));
     }
 
-    public void deleteContest(Contest contest) {
+    public void eliminaContest(Contest contest) {
         contests.remove(contest);
     }
 

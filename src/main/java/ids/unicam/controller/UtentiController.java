@@ -1,7 +1,6 @@
 package ids.unicam.controller;
 
-import ids.unicam.models.attori.TuristaLoggato;
-import org.jetbrains.annotations.NotNull;
+import ids.unicam.models.attori.TuristaAutenticato;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -10,32 +9,20 @@ import java.util.ArrayList;
 public class UtentiController {
 
 
-    private final ArrayList<TuristaLoggato> turisti = new ArrayList<>();
+    private final ArrayList<TuristaAutenticato> turisti = new ArrayList<>();
 
-
-    private static long _id;
-
-    public ArrayList<TuristaLoggato> getTuristi() {
+    public ArrayList<TuristaAutenticato> getTuristi() {
         return turisti;
     }
-
-    /**
-     * Genera un id progressivo
-     * @return l'id formattato come stringa
-     */
-    public static @NotNull String generateID() {
-        return String.format("%04d", _id++);
-    }
-
-
     /**
      * Prendi un TuristaLoggato dal suo id
      * @param id l'id da cercare
      * @return il turista con quell'id o null se non viene trovato
      */
-    public @Nullable TuristaLoggato getTuristaById(long id){
+    public @Nullable TuristaAutenticato getTuristaDaId(long id){
         return turisti.stream().filter(turistaLoggato -> turistaLoggato.getId()==(id)).findFirst().orElse(null);
     }
+
 
 
 

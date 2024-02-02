@@ -4,7 +4,6 @@ import ids.unicam.Comune;
 import ids.unicam.models.contenuti.*;
 import ids.unicam.utilites.Observer;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 
 
 @Entity
-public class Curatore extends ContributorTrusted {
+public class Curatore extends ContributorAutorizzato {
 
     @Transient
     private final ArrayList<Observer> osservatori = new ArrayList<>();
@@ -51,7 +50,7 @@ public class Curatore extends ContributorTrusted {
         super(comune, contributor);
     }
 
-    public void share(Contenuto contenuto) {
+    public void condividi(Contenuto contenuto) {
         throw new UnsupportedOperationException(contenuto.getId()+"non può ancora essere condiviso");
         //TODO
     }
@@ -64,7 +63,7 @@ public class Curatore extends ContributorTrusted {
      * @param approvato approvato o non approvato
      */
     public void valuta(Materiale materiale, boolean approvato) {
-        materiale.setApproved(approvato);
+        materiale.setStato(approvato);
         notifica(approvato, materiale);
     }
 
@@ -76,7 +75,7 @@ public class Curatore extends ContributorTrusted {
      * @param approvato      stato punto di interesse: approvato/non approvato
      */
     public void valuta(@NotNull PuntoInteresse puntoInteresse, boolean approvato) {
-        puntoInteresse.setApproved(approvato);
+        puntoInteresse.setStato(approvato);
         if (!approvato)
             getComune().getContenutoController().getContenuti().remove(puntoInteresse);
 
@@ -84,16 +83,16 @@ public class Curatore extends ContributorTrusted {
     }
 
 
-    public void delete(Contenuto contenuto) {
+    public void elimina(Contenuto contenuto) {
         if (contenuto instanceof Contest contest) {
-            getComune().getContestController().deleteContest(contest);
+            getComune().getContestController().eliminaContest(contest);
         } else {
-            getComune().getContenutoController().deleteContenuto(contenuto);
+            getComune().getContenutoController().eliminaContenuto(contenuto);
         }
     }
 
     public void rimuoviTappa(Itinerario itinerario, PuntoInteresse puntoInteresse){
-        getComune().getContenutoController().removeTappa(itinerario, puntoInteresse);
+        getComune().getContenutoController().rimuoviTappa(itinerario, puntoInteresse);
     }
 
 }

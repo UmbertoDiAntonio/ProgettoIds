@@ -1,6 +1,6 @@
 package ids.unicam.models;
 
-import ids.unicam.models.attori.TuristaLoggato;
+import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
 import jakarta.persistence.*;
 
@@ -14,7 +14,7 @@ public class Invito {
     @OneToOne
     private Contest contest=null;
     @OneToOne
-    private TuristaLoggato invitato=null;
+    private TuristaAutenticato invitato=null;
 
 
     public long getId() {
@@ -37,7 +37,7 @@ public class Invito {
     }
 
 
-    public TuristaLoggato getInvitato() {
+    public TuristaAutenticato getInvitato() {
         return invitato;
     }
 
@@ -46,7 +46,7 @@ public class Invito {
      * @param contest il contest da cui si sta mandando l'invito
      * @param invitato il turista da invitare
      */
-    public Invito(Contest contest, TuristaLoggato invitato) {
+    public Invito(Contest contest, TuristaAutenticato invitato) {
         this.contest = contest;
         this.invitato = invitato;
         contest.getInviti().add(this);
@@ -61,7 +61,7 @@ public class Invito {
             System.out.println("aperto");
             return false;
         }
-        ArrayList<Contest> c1 = contest.getContestController().getContestByTourist(invitato.getId());
+        ArrayList<Contest> c1 = contest.getContestController().getContestDelTurista(invitato.getId());
         return !c1.contains(contest);
     }
 }

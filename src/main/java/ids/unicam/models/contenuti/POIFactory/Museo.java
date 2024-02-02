@@ -22,13 +22,13 @@ public class Museo extends PuntoInteresse {
     }
 
     @Override
-    public String mostraDettagli() {
+    public String mostraInformazioniDettagliate() {
         //TODO
         return null;
     }
 
     @Override
-    public String getGeneralInfo() {
+    public String mostraInformazioniGeneriche() {
         //TODO
         return null;
     }

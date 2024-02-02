@@ -1,7 +1,7 @@
 package ids.unicam;
 
-import ids.unicam.Exception.ConnectionFailed;
-import ids.unicam.OSM.OSMRequester;
+import ids.unicam.Exception.ConnessioneFallitaException;
+import ids.unicam.OSM.RichiestaOSM;
 import ids.unicam.controller.ComuneController;
 import ids.unicam.controller.ContenutoController;
 import ids.unicam.controller.ContestController;
@@ -23,7 +23,7 @@ public class Comune {
     @OneToMany
     private final ArrayList<Contributor> contributors = new ArrayList<>();
     @OneToMany
-    private final ArrayList<ContributorTrusted> contributorTrusteds = new ArrayList<>();
+    private final ArrayList<ContributorAutorizzato> contributorAutorizzati = new ArrayList<>();
     @OneToMany
     private final ArrayList<Animatore> animatori = new ArrayList<>();
     @Transient
@@ -59,8 +59,8 @@ public class Comune {
     }
 
 
-    public ArrayList<ContributorTrusted> getContributorTrusteds() {
-        return contributorTrusteds;
+    public ArrayList<ContributorAutorizzato> getContributorTrusteds() {
+        return contributorAutorizzati;
     }
 
 
@@ -91,15 +91,15 @@ public class Comune {
         ComuneController.getInstance().listaComuni.add(this);
         this.gestorePiattaforma = gestorePiattaforma;
         try {
-            this.posizione = OSMRequester.getCentroComune(nome);
-        } catch (ConnectionFailed e) {
+            this.posizione = RichiestaOSM.getCoordinateDaComune(nome);
+        } catch (ConnessioneFallitaException e) {
             e.printStackTrace();
         }
         this.nome = nome;
         String nomeComune = null;
         try {
-            nomeComune = OSMRequester.getComuneAt(posizione);
-        } catch (ConnectionFailed e) {
+            nomeComune = RichiestaOSM.getComuneDaCoordinate(posizione);
+        } catch (ConnessioneFallitaException e) {
             e.printStackTrace();
         }
         if (nomeComune == null)
@@ -109,11 +109,11 @@ public class Comune {
     }
 
 
-    public final boolean checkCoordinateComune(PuntoInteresse puntoInteresse){
+    public final boolean verificaCoordinateComune(PuntoInteresse puntoInteresse){
         String nomeComune = null;
         try {
-            nomeComune = OSMRequester.getComuneAt(new Punto(puntoInteresse.getPt().getLatitudine(),puntoInteresse.getPt().getLongitudine()));
-        } catch (ConnectionFailed e) {
+            nomeComune = RichiestaOSM.getComuneDaCoordinate(new Punto(puntoInteresse.getPt().getLatitudine(),puntoInteresse.getPt().getLongitudine()));
+        } catch (ConnessioneFallitaException e) {
             e.printStackTrace();
         }
         if(nomeComune != null) {

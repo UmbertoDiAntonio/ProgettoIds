@@ -3,7 +3,7 @@ package ids.unicam.OSM;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import ids.unicam.Exception.ConnectionFailed;
+import ids.unicam.Exception.ConnessioneFallitaException;
 import ids.unicam.utilites.Punto;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,7 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 
-public class OSMRequester {
+public class RichiestaOSM {
 
     /**
      * Ottieni il nome del comune alle coordinate inviate
@@ -22,16 +22,16 @@ public class OSMRequester {
      * @return il nome del comune a cui appartiene il punto, o null se la connessione è fallita
      *
      */
-    public static @Nullable String getComuneAt(Punto punto) throws ConnectionFailed {
+    public static @Nullable String getComuneDaCoordinate(Punto punto) throws ConnessioneFallitaException {
         try {
             String apiUrl = buildReverseApiUrl(punto);
-            String jsonResponse = makeHttpRequest(apiUrl);
+            String jsonResponse = richiestaHttp(apiUrl);
             if(jsonResponse == null)
                 return null;
             JsonNode jsonNode = new ObjectMapper().readTree(jsonResponse);
             return jsonNode.path("address").path(jsonNode.path("address").fieldNames().next()).asText();
         } catch (IOException e) {
-            throw new ConnectionFailed("La connessione non è riuscita");
+            throw new ConnessioneFallitaException("La connessione non è riuscita");
         }
     }
 
@@ -41,10 +41,10 @@ public class OSMRequester {
      * @param nome il nome del comune di cui stiamo cercando il centro
      * @return la latitudine e longitudine del centro del comune
      */
-    public static @Nullable Punto getCentroComune(String nome) throws ConnectionFailed {
+    public static @Nullable Punto getCoordinateDaComune(String nome) throws ConnessioneFallitaException {
         try {
             String apiUrl = buildSearchApiUrl(nome);
-            String jsonResponse = makeHttpRequest(apiUrl);
+            String jsonResponse = richiestaHttp(apiUrl);
             if(jsonResponse == null)
                 return null;
             ArrayNode jsonArray = (ArrayNode) new ObjectMapper().readTree(jsonResponse);
@@ -58,7 +58,7 @@ public class OSMRequester {
 
             return new Punto(latitudine, longitudine);
         } catch (IOException e) {
-            throw new ConnectionFailed("La connessione non è riuscita");
+            throw new ConnessioneFallitaException("La connessione non è riuscita");
         }
     }
 
@@ -73,7 +73,7 @@ public class OSMRequester {
                 nome + "&format=jsonv2";
     }
 
-    private static @Nullable String makeHttpRequest(String apiUrl) throws IOException {
+    private static @Nullable String richiestaHttp(String apiUrl) throws IOException {
         try (BufferedReader reader = getApiResponseReader(apiUrl)) {
             StringBuilder response = new StringBuilder();
             String line;

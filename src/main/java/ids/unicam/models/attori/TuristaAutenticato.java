@@ -1,35 +1,33 @@
 package ids.unicam.models.attori;
 
-import ids.unicam.Exception.NotInContestException;
-import ids.unicam.controller.UtentiController;
+import ids.unicam.Exception.ContestException;
 import ids.unicam.models.Invito;
 import ids.unicam.models.contenuti.*;
 import jakarta.persistence.*;
 
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 @Entity
-public class TuristaLoggato extends Turista{
+public class TuristaAutenticato extends Turista{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id= 0;
-    private String name="";
+    private String nome ="";
     private String username="";
-    private String surname="";
-    private GregorianCalendar dateBirthday=null;
+    private String cognome ="";
+    private GregorianCalendar dataNascita = new GregorianCalendar();
     private String password="";
 
     @OneToMany
-    private final List<Contenuto> favourites = new ArrayList<>();
+    private final List<Contenuto> preferiti = new ArrayList<>();
     @OneToMany
     private final List<Invito> invitiRicevuti = new ArrayList<>();
 
 
-    public TuristaLoggato() {
+    public TuristaAutenticato() {
 
     }
 
@@ -38,16 +36,16 @@ public class TuristaLoggato extends Turista{
         return invitiRicevuti;
     }
 
-    public String getName() {
-        return name;
+    public String getNome() {
+        return nome;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getCognome() {
+        return cognome;
     }
 
-    public GregorianCalendar getDateBirthday() {
-        return dateBirthday;
+    public GregorianCalendar getDataNascita() {
+        return dataNascita;
     }
 
     public String getPassword() {
@@ -63,20 +61,20 @@ public class TuristaLoggato extends Turista{
     }
 
 
-    public List<Contenuto> getFavourites() {
-        return favourites;
+    public List<Contenuto> getPreferiti() {
+        return preferiti;
     }
 
-    public void addFavourites(Contenuto contenuto) {
-        if(contenuto.isApproved())
-            favourites.add(contenuto);
+    public void aggiungiPreferito(Contenuto contenuto) {
+        if(contenuto.getStato())
+            preferiti.add(contenuto);
     }
 
 
-    protected TuristaLoggato(String name, String surname, GregorianCalendar dateBirthday, String password, String username) {
-        this.name = name;
-        this.surname = surname;
-        this.dateBirthday = dateBirthday;
+    protected TuristaAutenticato(String nome, String cognome, GregorianCalendar dataNascita, String password, String username) {
+        this.nome = nome;
+        this.cognome = cognome;
+        this.dataNascita = dataNascita;
         this.password = password;
         this.username = username;
         save();
@@ -86,8 +84,8 @@ public class TuristaLoggato extends Turista{
         //TODO
     }
 
-    public void addPhoto(PuntoInteresse puntoInteresse, Foto foto) {
-        puntoInteresse.getMaterialeList().add(foto);
+    public void aggiungiFoto(PuntoInteresse puntoInteresse, Foto foto) {
+        puntoInteresse.getListaMateriali().add(foto);
     }
 
     /**
@@ -115,11 +113,11 @@ public class TuristaLoggato extends Turista{
      * @param contest   il contest in cui aggiungere il materiale
      * @param materiale il materiale da aggiungere
      */
-    public void addMaterialeContest(Contest contest, Materiale materiale) {
+    public void aggiungiMaterialeAlContest(Contest contest, Materiale materiale) {
         if (contest.getPartecipanti().contains(this)) {
             contest.getContestController().aggiungiMateriale(materiale, contest);
         } else {
-            throw new NotInContestException("Il Turista dovrebbe prima entrare nel contest, per caricare contenuti su di esso");
+            throw new ContestException("Il Turista dovrebbe prima entrare nel contest, per caricare contenuti su di esso");
         }
     }
 
@@ -128,7 +126,7 @@ public class TuristaLoggato extends Turista{
      *
      * @param contest il contest in cui si vuole entrare
      */
-    public void joinFreeContest(Contest contest) {
+    public void partecipaAlContest(Contest contest) {
         if (!contest.isOpen()) {
             return;
         }

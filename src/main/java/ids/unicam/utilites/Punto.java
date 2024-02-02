@@ -1,8 +1,6 @@
 package ids.unicam.utilites;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,11 +38,11 @@ public class Punto {
 
 
 
-    public double getDistance(@NotNull Punto pt) {
-        return Math.sqrt(getDistanceSquared(pt));
+    public double getDistanza(@NotNull Punto pt) {
+        return Math.sqrt(getDistanzaAlQuadrato(pt));
     }
 
-    public double getDistanceSquared(@NotNull Punto pt) {
+    public double getDistanzaAlQuadrato(@NotNull Punto pt) {
         return Math.pow(pt.getLatitudine() - latitudine, 2) + Math.pow(pt.getLongitudine() - longitudine, 2);
     }
 

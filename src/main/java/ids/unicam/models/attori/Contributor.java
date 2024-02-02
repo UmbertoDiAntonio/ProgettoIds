@@ -9,14 +9,12 @@ import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Observer;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.Transient;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 @Entity
-public class Contributor extends TuristaLoggato implements Observer {
+public class Contributor extends TuristaAutenticato implements Observer {
     @OneToOne
     private Comune comune=null;
 
@@ -30,8 +28,8 @@ public class Contributor extends TuristaLoggato implements Observer {
     }
 
 
-    protected Contributor(Comune comune, TuristaLoggato turistaLoggato){
-        super(turistaLoggato.getName(),turistaLoggato.getSurname(),turistaLoggato.getDateBirthday(),turistaLoggato.getPassword(), turistaLoggato.getUsername());
+    protected Contributor(Comune comune, TuristaAutenticato turistaAutenticato){
+        super(turistaAutenticato.getNome(), turistaAutenticato.getCognome(), turistaAutenticato.getDataNascita(), turistaAutenticato.getPassword(), turistaAutenticato.getUsername());
         this.comune=comune;
     }
     protected Contributor(Comune comune, String name, String surname, GregorianCalendar dateBirthday, String password, String username) {
@@ -45,9 +43,9 @@ public class Contributor extends TuristaLoggato implements Observer {
      * @param puntoInteresse il punto di interesse da aggiungere al comune del contributor
      * @return true se il punto di interesse è stato aggiunto, false se il punto non fa parte del comune
      */
-    public boolean addPuntoInteresse(PuntoInteresse puntoInteresse){
-        if(comune.checkCoordinateComune(puntoInteresse)){
-            comune.getContenutoController().addPunto(puntoInteresse);
+    public boolean aggiungiPuntoInteresse(PuntoInteresse puntoInteresse){
+        if(comune.verificaCoordinateComune(puntoInteresse)){
+            comune.getContenutoController().aggiungiPuntoInteresse(puntoInteresse);
             return true;
         }
         return false;
@@ -60,9 +58,9 @@ public class Contributor extends TuristaLoggato implements Observer {
      * @param materiale il materiale da aggiungere
      * @return true se il punto di interesse è stato aggiunto, false se il punto non fa parte del comune
      */
-    public boolean addMateriale(PuntoInteresse puntoInteresse, Materiale materiale){
-        if(comune.checkCoordinateComune(puntoInteresse)){
-            comune.getContenutoController().addMaterialeTo(puntoInteresse,materiale);
+    public boolean aggiungiMateriale(PuntoInteresse puntoInteresse, Materiale materiale){
+        if(comune.verificaCoordinateComune(puntoInteresse)){
+            comune.getContenutoController().aggiungiMateriale(puntoInteresse,materiale);
             return true;
         }
         return false;
@@ -77,7 +75,7 @@ public class Contributor extends TuristaLoggato implements Observer {
      */
     public @Nullable Itinerario creaItinerario(String nome, PuntoInteresse... puntiInteresse){
         for(PuntoInteresse puntoInteresse : puntiInteresse){
-            if(!comune.checkCoordinateComune(puntoInteresse) || !puntoInteresse.isApproved() ){
+            if(!comune.verificaCoordinateComune(puntoInteresse) || !puntoInteresse.getStato() ){
                 return null;
             }
         }
@@ -91,8 +89,8 @@ public class Contributor extends TuristaLoggato implements Observer {
      * @return true se il punto è stato aggiunto, false se l'aggiunta è fallita (il punto è fuori dal territorio del comune)
      */
     public boolean aggiungiTappaItinerario(Itinerario itinerario, PuntoInteresse puntoInteresse){
-        if(comune.checkCoordinateComune(puntoInteresse)){
-            comune.getContenutoController().addTappa(itinerario,puntoInteresse);
+        if(comune.verificaCoordinateComune(puntoInteresse)){
+            comune.getContenutoController().aggiungiTappa(itinerario,puntoInteresse);
             return true;
         }
         return false;
@@ -113,9 +111,9 @@ public class Contributor extends TuristaLoggato implements Observer {
     @Override
     public void riceviNotifica(boolean eventType, PuntoInteresse puntoInteresse) {
         if (eventType) {
-            System.out.println("Il tuo " + puntoInteresse.getGeneralInfo() + " è stato approvato");
+            System.out.println("Il tuo " + puntoInteresse.mostraInformazioniGeneriche() + " è stato approvato");
         } else {
-            System.out.println("Il tuo " + puntoInteresse.getGeneralInfo() + " non è stato approvato");
+            System.out.println("Il tuo " + puntoInteresse.mostraInformazioniGeneriche() + " non è stato approvato");
         }
     }
 

@@ -4,10 +4,6 @@ import ids.unicam.models.contenuti.Contenuto;
 import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.Materiale;
 import ids.unicam.models.contenuti.PuntoInteresse;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +14,7 @@ public class ContenutoController {
     private static long _id = 0;
 
 
-    public static long generateID() {
+    public static long generaID() {
         _id+=1;
         return _id;
     }
@@ -40,7 +36,7 @@ public class ContenutoController {
      * Aggiunge il punto di interesse alla lista dei contenuti
      * @param puntoInteresse il Punto di interesse da aggiungere
      */
-    public void addPunto(PuntoInteresse puntoInteresse) {
+    public void aggiungiPuntoInteresse(PuntoInteresse puntoInteresse) {
         contenuti.add(puntoInteresse);
     }
 
@@ -49,8 +45,8 @@ public class ContenutoController {
      * @param puntoInteresse il punto di interesse in cui aggiungere il materiale
      * @param materiale il materiale
      */
-    public void addMaterialeTo(PuntoInteresse puntoInteresse, Materiale materiale) {
-        puntoInteresse.getMaterialeList().add(materiale);
+    public void aggiungiMateriale(PuntoInteresse puntoInteresse, Materiale materiale) {
+        puntoInteresse.getListaMateriali().add(materiale);
     }
 
     /**
@@ -71,17 +67,17 @@ public class ContenutoController {
      * @param itinerario l'itinerario a cui aggiungere la tappa
      * @param puntoInteresse il punto di interesse da aggiungere come tappa
      */
-    public void addTappa(Itinerario itinerario, PuntoInteresse puntoInteresse) {
+    public void aggiungiTappa(Itinerario itinerario, PuntoInteresse puntoInteresse) {
         itinerario.getPercorso().add(puntoInteresse);
     }
-    public void addTappa(Itinerario itinerario, PuntoInteresse... puntoInteresse){
+    public void aggiungiTappa(Itinerario itinerario, PuntoInteresse... puntoInteresse){
         itinerario.getPercorso().addAll(Arrays.stream(puntoInteresse).toList());
     }
-    public void removeTappa(Itinerario itinerario, PuntoInteresse puntoInteresse){
+    public void rimuoviTappa(Itinerario itinerario, PuntoInteresse puntoInteresse){
         itinerario.getPercorso().remove(puntoInteresse);
     }
 
-    public void deleteContenuto(Contenuto contenuto) {
+    public void eliminaContenuto(Contenuto contenuto) {
         if (contenuto instanceof PuntoInteresse) {
             contenuti.remove(contenuto);
         } else if (contenuto instanceof Itinerario itinerario) {

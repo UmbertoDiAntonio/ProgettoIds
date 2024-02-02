@@ -7,12 +7,12 @@ import jakarta.persistence.Entity;
 
 
 @Entity
-public class ContributorTrusted extends Contributor{
-    protected ContributorTrusted(Comune comune,Contributor contributor) {
+public class ContributorAutorizzato extends Contributor{
+    protected ContributorAutorizzato(Comune comune, Contributor contributor) {
         super(comune,contributor);
     }
 
-    public ContributorTrusted() {
+    public ContributorAutorizzato() {
 
     }
 
@@ -24,9 +24,9 @@ public class ContributorTrusted extends Contributor{
      * @return true se il punto di interesse è stato aggiunto, false se il punto non fa parte del comune
      */
     @Override
-    public boolean addPuntoInteresse(PuntoInteresse puntoInteresse){
-        if(super.addPuntoInteresse(puntoInteresse)){
-            puntoInteresse.setApproved(true);
+    public boolean aggiungiPuntoInteresse(PuntoInteresse puntoInteresse){
+        if(super.aggiungiPuntoInteresse(puntoInteresse)){
+            puntoInteresse.setStato(true);
             return true;
         }
         return false;
@@ -41,9 +41,9 @@ public class ContributorTrusted extends Contributor{
      * @return true se il punto di interesse è stato aggiunto, false se il punto non fa parte del comune
      */
     @Override
-    public boolean addMateriale(PuntoInteresse puntoInteresse, Materiale materiale){
-        if(super.addMateriale(puntoInteresse,materiale)){
-            materiale.setApproved(true);
+    public boolean aggiungiMateriale(PuntoInteresse puntoInteresse, Materiale materiale){
+        if(super.aggiungiMateriale(puntoInteresse,materiale)){
+            materiale.setStato(true);
             return true;
         }
         return false;

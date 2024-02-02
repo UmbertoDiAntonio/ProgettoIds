@@ -3,7 +3,7 @@ package ids.unicam.models.contenuti;
 import ids.unicam.controller.ContestController;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.Animatore;
-import ids.unicam.models.attori.TuristaLoggato;
+import ids.unicam.models.attori.TuristaAutenticato;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -16,9 +16,9 @@ public class Contest extends Contenuto {
     private ContestController controller=null;
     private String obiettivo=null;
     @OneToOne
-    private Animatore author=null;
+    private Animatore creatore =null;
     @OneToMany
-    private final ArrayList<TuristaLoggato> partecipanti = new ArrayList<>();
+    private final ArrayList<TuristaAutenticato> partecipanti = new ArrayList<>();
     @OneToMany
     private final ArrayList<Invito> inviti = new ArrayList<>();
     @OneToMany
@@ -30,8 +30,8 @@ public class Contest extends Contenuto {
     }
 
     
-    public Animatore getAuthor() {
-        return author;
+    public Animatore getCreatore() {
+        return creatore;
     }
 
     public String getNome() {
@@ -60,7 +60,7 @@ public class Contest extends Contenuto {
     }
 
     
-    public List<TuristaLoggato> getPartecipanti() {
+    public List<TuristaAutenticato> getPartecipanti() {
         return partecipanti;
     }
 
@@ -72,13 +72,13 @@ public class Contest extends Contenuto {
 
 
 
-    public Contest(String nome, boolean open, ContestController controller, String obiettivo, Animatore author) {
+    public Contest(String nome, boolean open, ContestController controller, String obiettivo, Animatore creatore) {
         super();
-        setApproved(true);
+        setStato(true);
         this.open = open;
         this.controller = controller;
         this.obiettivo = obiettivo;
-        this.author = author;
+        this.creatore = creatore;
         this.nome = nome;
     }
 
