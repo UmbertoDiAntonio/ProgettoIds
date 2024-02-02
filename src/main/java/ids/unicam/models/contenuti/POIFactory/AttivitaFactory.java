@@ -19,7 +19,7 @@ public class AttivitaFactory implements  PoiFactory{
      * @param nome il nome del punto da creare
      * @param punto la posizione del punto da creare
      * @param orario informazioni sull'orario di attività
-     * @return
+     * @return una nuova Attività
      */
     @Override
     public PuntoInteresse creaPoi(String nome, Punto punto, LocalDate orario) {
@@ -31,7 +31,7 @@ public class AttivitaFactory implements  PoiFactory{
      *
      * @param nome il nome del punto da creare
      * @param punto la posizione del punto da creare
-     * @return
+     * @return ritorna una nuova Attività
      */
     @Override
     public PuntoInteresse creaPoi(String nome, Punto punto) {

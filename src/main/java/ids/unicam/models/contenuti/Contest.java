@@ -4,7 +4,11 @@ import ids.unicam.controller.ContestController;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
-import jakarta.persistence.*;
+import ids.unicam.utilites.Stato;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Transient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +78,7 @@ public class Contest extends Contenuto {
 
     public Contest(String nome, boolean open, ContestController controller, String obiettivo, Animatore creatore) {
         super();
-        setStato(Status.APPROVED);
+        setStato(Stato.APPROVED);
         this.open = open;
         this.controller = controller;
         this.obiettivo = obiettivo;

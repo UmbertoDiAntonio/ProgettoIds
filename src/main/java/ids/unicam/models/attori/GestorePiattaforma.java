@@ -1,10 +1,6 @@
 package ids.unicam.models.attori;
 
 import ids.unicam.models.Ruolo;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 
 
 public class GestorePiattaforma{

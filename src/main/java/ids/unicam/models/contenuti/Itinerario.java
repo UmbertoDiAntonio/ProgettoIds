@@ -1,9 +1,7 @@
 package ids.unicam.models.contenuti;
 
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Transient;
 
 import java.util.ArrayList;
 import java.util.Arrays;

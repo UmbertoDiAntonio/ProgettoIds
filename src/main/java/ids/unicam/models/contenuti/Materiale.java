@@ -1,6 +1,7 @@
 package ids.unicam.models.contenuti;
 
 import ids.unicam.models.attori.TuristaAutenticato;
+import ids.unicam.utilites.Stato;
 import jakarta.persistence.*;
 
 import java.util.UUID;
@@ -10,7 +11,7 @@ import java.util.UUID;
 public abstract class Materiale {
     @OneToOne
     private TuristaAutenticato creatore =null;
-    private Status stato =Status.NOT_APPROVED;
+    private Stato stato = Stato.NOT_APPROVED;
 
     @Id
     private final UUID id=UUID.randomUUID();
@@ -33,11 +34,11 @@ public abstract class Materiale {
         return creatore;
     }
 
-    public Status getStato() {
+    public Stato getStato() {
         return stato;
     }
 
-    public void setStato(Status stato) {
+    public void setStato(Stato stato) {
         this.stato = stato;
     }
 

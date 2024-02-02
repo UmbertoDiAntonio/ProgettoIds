@@ -3,6 +3,7 @@ package ids.unicam.models.attori;
 import ids.unicam.Comune;
 import ids.unicam.models.contenuti.*;
 import ids.unicam.utilites.Observer;
+import ids.unicam.utilites.Stato;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Transient;
 import org.jetbrains.annotations.NotNull;
@@ -28,7 +29,7 @@ public class Curatore extends ContributorAutorizzato {
         osservatori.remove(osservatore);
     }
 
-    public void notifica(Status eventType, PuntoInteresse puntoInteresse) {
+    public void notifica(Stato eventType, PuntoInteresse puntoInteresse) {
         for (Observer listener : osservatori) {
             listener.riceviNotifica(eventType, puntoInteresse);
         }
@@ -39,7 +40,7 @@ public class Curatore extends ContributorAutorizzato {
         return osservatori;
     }
 
-    public void notifica(Status eventType, Materiale materiale) {
+    public void notifica(Stato eventType, Materiale materiale) {
 
         for (Observer listener : osservatori) {
             listener.riceviNotifica(eventType, materiale);
@@ -51,7 +52,7 @@ public class Curatore extends ContributorAutorizzato {
     }
 
     public void condividi(Contenuto contenuto) {
-        throw new UnsupportedOperationException(contenuto.getId()+"non può ancora essere condiviso");
+        throw new UnsupportedOperationException(contenuto.getId()+"non puo' ancora essere condiviso");
         //TODO
     }
 
@@ -62,7 +63,7 @@ public class Curatore extends ContributorAutorizzato {
      * @param materiale il materiale che si vuole valutare
      * @param approvato approvato o non approvato
      */
-    public void valuta(Materiale materiale, Status approvato) {
+    public void valuta(Materiale materiale, Stato approvato) {
         materiale.setStato(approvato);
         notifica(approvato, materiale);
     }
@@ -74,9 +75,9 @@ public class Curatore extends ContributorAutorizzato {
      * @param puntoInteresse il punto di interesse che si vuole valutare
      * @param approvato      stato punto di interesse: approvato/non approvato
      */
-    public void valuta(@NotNull PuntoInteresse puntoInteresse, Status approvato) {
+    public void valuta(@NotNull PuntoInteresse puntoInteresse, Stato approvato) {
         puntoInteresse.setStato(approvato);
-        if (approvato==Status.NOT_APPROVED)
+        if (approvato== Stato.NOT_APPROVED)
             getComune().getContenutoController().getContenuti().remove(puntoInteresse);
 
         notifica(approvato, puntoInteresse);

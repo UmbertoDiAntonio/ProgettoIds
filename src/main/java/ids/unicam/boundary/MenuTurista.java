@@ -3,7 +3,6 @@ package ids.unicam.boundary;
 import ids.unicam.Comune;
 import ids.unicam.controller.UtentiController;
 
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class MenuTurista {

@@ -36,7 +36,7 @@ public class GestoreController {
             }
             case ContributorTrusted -> {
                 rimuoviVecchioRuolo(contributor);
-                comune.getContributorTrusteds().add(new ContributorAutorizzato(comune, contributor));
+                comune.getContributorAutorizzati().add(new ContributorAutorizzato(comune, contributor));
             }
             default -> {
                 comune.getContributors().add(new Contributor(comune, contributor));
@@ -50,7 +50,7 @@ public class GestoreController {
         Comune comune=contributor.getComune();
         switch (contributor) {
             case Curatore curatore -> comune.getCuratori().remove(curatore);
-            case ContributorAutorizzato contributorAutorizzato -> comune.getContributorTrusteds().remove(contributorAutorizzato);
+            case ContributorAutorizzato contributorAutorizzato -> comune.getContributorAutorizzati().remove(contributorAutorizzato);
             case Animatore animatore -> comune.getAnimatori().remove(animatore);
             case Contributor contributor1 -> comune.getContributors().remove(contributor1);
         }

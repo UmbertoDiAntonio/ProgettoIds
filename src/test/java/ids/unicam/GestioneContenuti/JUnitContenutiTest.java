@@ -9,6 +9,7 @@ import ids.unicam.models.contenuti.*;
 import ids.unicam.models.contenuti.POIFactory.AttivitaFactory;
 import ids.unicam.models.contenuti.POIFactory.MuseoFactory;
 import ids.unicam.utilites.Punto;
+import ids.unicam.utilites.Stato;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -61,7 +62,7 @@ public class JUnitContenutiTest {
         {
             gestorePiattaforma.promuovi(comune.getContributors().getFirst(), Ruolo.ContributorTrusted);
 
-            ContributorAutorizzato contributorAutorizzato = comune.getContributorTrusteds().getFirst();
+            ContributorAutorizzato contributorAutorizzato = comune.getContributorAutorizzati().getFirst();
             assertEquals(1, comune.getContenutoController().getContenuti().size());
             AttivitaFactory attivita1 = new AttivitaFactory(LocalDate.now());
             PuntoInteresse punto2 = attivita1.creaPoi("bar2", new Punto(comune.getPosizione().getLatitudine() + 0.02, comune.getPosizione().getLongitudine() + 0.02));
@@ -75,7 +76,7 @@ public class JUnitContenutiTest {
          * quindi non può essere creato
          */
         {
-            ContributorAutorizzato contributorAutorizzato = comune.getContributorTrusteds().getFirst();
+            ContributorAutorizzato contributorAutorizzato = comune.getContributorAutorizzati().getFirst();
             AttivitaFactory attivita1 = new AttivitaFactory(LocalDate.now());
             PuntoInteresse punto3 = attivita1.creaPoi("bar3", new Punto(comune.getPosizione().getLatitudine() + 2, comune.getPosizione().getLongitudine() + 2));
             assertFalse(contributorAutorizzato.aggiungiPuntoInteresse(punto3));
@@ -88,7 +89,7 @@ public class JUnitContenutiTest {
          * verifica finale
          */
         {
-            ContributorAutorizzato contributorAutorizzato = comune.getContributorTrusteds().getFirst();
+            ContributorAutorizzato contributorAutorizzato = comune.getContributorAutorizzati().getFirst();
             AttivitaFactory attivita1 = new AttivitaFactory(LocalDate.now());
             PuntoInteresse puntoInteresse = attivita1.creaPoi("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015));
             contributorAutorizzato.aggiungiPuntoInteresse(puntoInteresse);
@@ -115,12 +116,12 @@ public class JUnitContenutiTest {
             assertFalse(comune.getContenutoController().getContenuti().getLast().getStato().getApprovato());
             curatore.aggiungiOsservatore(contributor);
             assertEquals(1, curatore.getOsservatori().size());
-            curatore.valuta(comune.getContenutoController().getContenuti().getLast(), Status.APPROVED);
+            curatore.valuta(comune.getContenutoController().getContenuti().getLast(), Stato.APPROVED);
             assertTrue(comune.getContenutoController().getContenuti().getLast().getStato().getApprovato());
             Materiale materiale1 = new Foto(contributor);
             comune.getContenutoController().getContenuti().getLast().getListaMateriali().add(materiale1);
             assertFalse(comune.getContenutoController().getContenuti().getLast().getListaMateriali().getFirst().getStato().getApprovato());
-            curatore.valuta(comune.getContenutoController().getContenuti().getLast().getListaMateriali().getFirst(), Status.APPROVED);
+            curatore.valuta(comune.getContenutoController().getContenuti().getLast().getListaMateriali().getFirst(), Stato.APPROVED);
             assertTrue(comune.getContenutoController().getContenuti().getLast().getListaMateriali().getFirst().getStato().getApprovato());
             curatore.rimuoviOsservatore(contributor);
             assertEquals(0, curatore.getOsservatori().size());
@@ -145,7 +146,7 @@ public class JUnitContenutiTest {
             gestorePiattaforma.getGestoreController().registraContributor(comune, "Mario", "Rossi", new GregorianCalendar(2000,GregorianCalendar.MARCH,11), "pass", "user");
             gestorePiattaforma.promuovi(comune.getContributors().getFirst(), Ruolo.ContributorTrusted);
 
-            ContributorAutorizzato contributorAutorizzato = comune.getContributorTrusteds().getFirst();
+            ContributorAutorizzato contributorAutorizzato = comune.getContributorAutorizzati().getFirst();
             AttivitaFactory attivita1 = new AttivitaFactory(LocalDate.now());
             contributorAutorizzato.aggiungiPuntoInteresse(attivita1.creaPoi("bar2", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03)));
             contributorAutorizzato.aggiungiPuntoInteresse(attivita1.creaPoi("barcentrale", new Punto(comune.getPosizione().getLatitudine() - 0.02, comune.getPosizione().getLongitudine() - 0.02)));
@@ -277,7 +278,7 @@ public class JUnitContenutiTest {
 
         contributor.creaItinerario("girodeibar", comune.getContenutoController().getContenuti().getFirst());
         assertEquals(0, comune.getContenutoController().getItinerari().size());
-        curatore.valuta(comune.getContenutoController().getContenuti().getFirst(), Status.APPROVED);
+        curatore.valuta(comune.getContenutoController().getContenuti().getFirst(), Stato.APPROVED);
         Itinerario itinerario2 = contributor.creaItinerario("giro dei bar", comune.getContenutoController().getContenuti().getFirst());
         assertEquals(1, comune.getContenutoController().getItinerari().size());
         curatore.elimina(itinerario2);

@@ -13,7 +13,7 @@ public class MuseoFactory implements PoiFactory {
      * @param nome il nome del punto da creare
      * @param punto la posizione del punto da creare
      * @param data informazioni sull'orario di attività
-     * @return
+     * @return un nuovo Museo
      */
     @Override
     public PuntoInteresse creaPoi(String nome, Punto punto, LocalDate data) {
@@ -24,7 +24,7 @@ public class MuseoFactory implements PoiFactory {
      *
      * @param nome il nome del punto da creare
      * @param punto la posizione del punto da creare
-     * @return
+     * @return un nuovo Museo
      */
     @Override
     public PuntoInteresse creaPoi(String nome, Punto punto) {

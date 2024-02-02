@@ -2,8 +2,12 @@ package ids.unicam.models.attori;
 
 import ids.unicam.Comune;
 import ids.unicam.models.Tempo;
-import ids.unicam.models.contenuti.*;
+import ids.unicam.models.contenuti.Contenuto;
+import ids.unicam.models.contenuti.Itinerario;
+import ids.unicam.models.contenuti.Materiale;
+import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Observer;
+import ids.unicam.utilites.Stato;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
 import org.jetbrains.annotations.Nullable;
@@ -107,7 +111,7 @@ public class Contributor extends TuristaAutenticato implements Observer {
     }
 
     @Override
-    public void riceviNotifica(Status eventType, PuntoInteresse puntoInteresse) {
+    public void riceviNotifica(Stato eventType, PuntoInteresse puntoInteresse) {
         switch (eventType) {
             case APPROVED ->
                     System.out.println("Il tuo " + puntoInteresse.mostraInformazioniGeneriche() + " e' stato approvato");
@@ -117,7 +121,7 @@ public class Contributor extends TuristaAutenticato implements Observer {
     }
 
     @Override
-    public void riceviNotifica(Status eventType, Materiale materiale) {
+    public void riceviNotifica(Stato eventType, Materiale materiale) {
         switch (eventType) {
             case APPROVED -> System.out.println("Il tuo contenuto relativo al punto di interesse " + materiale.get() + " e' stato approvato");
             case NOT_APPROVED ->  System.out.println("Il tuo contenuto relativo al punto di interesse " + materiale.get() + " non e' stato approvato");

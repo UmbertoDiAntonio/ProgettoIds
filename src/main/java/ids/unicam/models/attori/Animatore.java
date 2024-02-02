@@ -40,6 +40,6 @@ public class Animatore extends Contributor {
      */
     public void invita(Contest contest, TuristaAutenticato turistaAutenticato){
         contest.getContestController().generaInvito(turistaAutenticato, contest);
-        //turistaLoggato.getInvitiRicevuti().add(contest.getInviti().getFirst());
+        //turistaAutenticato.getInvitiRicevuti().add(contest.getInviti().getFirst());
     }
 }

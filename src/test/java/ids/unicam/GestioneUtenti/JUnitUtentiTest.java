@@ -6,8 +6,8 @@ import ids.unicam.models.attori.*;
 import ids.unicam.models.contenuti.Foto;
 import ids.unicam.models.contenuti.POIFactory.AttivitaFactory;
 import ids.unicam.models.contenuti.PuntoInteresse;
-import ids.unicam.models.contenuti.Status;
 import ids.unicam.utilites.Punto;
+import ids.unicam.utilites.Stato;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -39,7 +39,7 @@ public class JUnitUtentiTest {
 
         gestorePiattaforma.promuovi(comune.getContributors().getFirst(), Ruolo.ContributorTrusted);
 
-        assertEquals(1, comune.getContributorTrusteds().size());
+        assertEquals(1, comune.getContributorAutorizzati().size());
         assertEquals(0, comune.getCuratori().size());
 
     }
@@ -58,7 +58,7 @@ public class JUnitUtentiTest {
         gestorePiattaforma.promuovi(contributor, Ruolo.ContributorTrusted);
         PuntoInteresse puntoInteresse = attivitaFactory.creaPoi("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015));
 
-        ContributorAutorizzato contributorAutorizzato = comune.getContributorTrusteds().getFirst();
+        ContributorAutorizzato contributorAutorizzato = comune.getContributorAutorizzati().getFirst();
         contributorAutorizzato.aggiungiPuntoInteresse(puntoInteresse);
         assertEquals(0, turistaAutenticato.getPreferiti().size());
         turistaAutenticato.aggiungiPreferito(puntoInteresse);
@@ -96,7 +96,7 @@ public class JUnitUtentiTest {
         contributor.aggiungiPuntoInteresse(puntoInteresse);
         Curatore curatore=comune.getCuratori().getFirst();
         assertEquals(0,turista.search("Edicola").size());
-        curatore.valuta(puntoInteresse, Status.APPROVED);
+        curatore.valuta(puntoInteresse, Stato.APPROVED);
         assertEquals(1,turista.search("Edicola").size());
 
     }
@@ -119,7 +119,7 @@ public class JUnitUtentiTest {
         assertFalse(puntoInteresse.getListaMateriali().getFirst().getStato().getApprovato());
         gestorePiattaforma.promuovi(contributor, Ruolo.Curatore);
         Curatore curatore = comune.getCuratori().getFirst();
-        curatore.valuta(puntoInteresse.getListaMateriali().getFirst(), Status.APPROVED);
+        curatore.valuta(puntoInteresse.getListaMateriali().getFirst(), Stato.APPROVED);
         assertTrue(puntoInteresse.getListaMateriali().getFirst().getStato().getApprovato());
     }
 }

@@ -3,7 +3,7 @@ package ids.unicam.models.attori;
 import ids.unicam.Comune;
 import ids.unicam.models.contenuti.Materiale;
 import ids.unicam.models.contenuti.PuntoInteresse;
-import ids.unicam.models.contenuti.Status;
+import ids.unicam.utilites.Stato;
 import jakarta.persistence.Entity;
 
 
@@ -27,7 +27,7 @@ public class ContributorAutorizzato extends Contributor{
     @Override
     public boolean aggiungiPuntoInteresse(PuntoInteresse puntoInteresse){
         if(super.aggiungiPuntoInteresse(puntoInteresse)){
-            puntoInteresse.setStato(Status.APPROVED);
+            puntoInteresse.setStato(Stato.APPROVED);
             return true;
         }
         return false;
@@ -44,7 +44,7 @@ public class ContributorAutorizzato extends Contributor{
     @Override
     public boolean aggiungiMateriale(PuntoInteresse puntoInteresse, Materiale materiale){
         if(super.aggiungiMateriale(puntoInteresse,materiale)){
-            materiale.setStato(Status.APPROVED);
+            materiale.setStato(Stato.APPROVED);
             return true;
         }
         return false;

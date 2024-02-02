@@ -6,7 +6,7 @@ import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.Materiale;
-import ids.unicam.models.contenuti.Status;
+import ids.unicam.utilites.Stato;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class ContestController {
         ArrayList<Contest> result = new ArrayList<>();
         contests.stream().filter(contest -> contest.
                 getPartecipanti().
-                stream().anyMatch(turistaLoggato -> turistaLoggato.getId()==(idTurista))
+                stream().anyMatch(turistaAutenticato -> turistaAutenticato.getId()==(idTurista))
         ).forEach(result::add);
         return result;
     }
@@ -65,7 +65,7 @@ public class ContestController {
      * @throws ContestException se si cerca di caricare materiale su un contest senza essere entrati
      */
     public void aggiungiMateriale(Materiale materiale,Contest contest){
-            materiale.setStato(Status.NOT_APPROVED);
+            materiale.setStato(Stato.NOT_APPROVED);
             contest.getMaterialiContest().add(materiale);
 
     }
@@ -76,7 +76,7 @@ public class ContestController {
     public void approvaMateriale(Materiale materiale){
         if(materiale.getStato().getApprovato())
             return;
-        materiale.setStato(Status.APPROVED);
+        materiale.setStato(Stato.APPROVED);
     }
 
     public void generaInvito(TuristaAutenticato turistaAutenticato, Contest contest) {

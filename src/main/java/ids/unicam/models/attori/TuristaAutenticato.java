@@ -5,7 +5,6 @@ import ids.unicam.models.Invito;
 import ids.unicam.models.contenuti.*;
 import jakarta.persistence.*;
 
-
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;

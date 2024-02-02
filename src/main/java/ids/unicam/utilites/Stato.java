@@ -1,12 +1,12 @@
-package ids.unicam.models.contenuti;
+package ids.unicam.utilites;
 
-public enum Status {
+public enum Stato {
     APPROVED(true),
     NOT_APPROVED(false);
     private final boolean approvato;
 
 
-    Status(boolean approvato) {
+    Stato(boolean approvato) {
         this.approvato = approvato;
     }
 

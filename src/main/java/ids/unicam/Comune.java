@@ -37,8 +37,6 @@ public class Comune {
 
     }
 
-
-
     public GestorePiattaforma getGestorePiattaforma() {
         return gestorePiattaforma;
     }
@@ -59,7 +57,7 @@ public class Comune {
     }
 
 
-    public ArrayList<ContributorAutorizzato> getContributorTrusteds() {
+    public ArrayList<ContributorAutorizzato> getContributorAutorizzati() {
         return contributorAutorizzati;
     }
 
@@ -67,7 +65,6 @@ public class Comune {
     public ArrayList<Curatore> getCuratori() {
         return curatori;
     }
-
 
     public ContenutoController getContenutoController() {
         return contenutoController;

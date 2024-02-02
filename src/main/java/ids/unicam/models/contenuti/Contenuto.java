@@ -2,7 +2,11 @@ package ids.unicam.models.contenuti;
 
 import ids.unicam.controller.ContenutoController;
 import ids.unicam.models.Tempo;
-import jakarta.persistence.*;
+import ids.unicam.utilites.Stato;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
 
 import java.util.ArrayList;
 
@@ -12,7 +16,7 @@ public abstract class Contenuto {
 
     @Id
     private final long id;
-    private Status stato = Status.NOT_APPROVED;
+    private Stato stato = Stato.NOT_APPROVED;
 
     @Transient
     private Tempo scadenza;
@@ -30,11 +34,11 @@ public abstract class Contenuto {
         return id;
     }
 
-    public Status getStato() {
+    public Stato getStato() {
         return stato;
     }
 
-    public void setStato(Status approved) {
+    public void setStato(Stato approved) {
         this.stato = approved;
     }
 

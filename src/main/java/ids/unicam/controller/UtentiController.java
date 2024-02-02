@@ -15,12 +15,12 @@ public class UtentiController {
         return turisti;
     }
     /**
-     * Prendi un TuristaLoggato dal suo id
+     * Prendi un TuristaAutenticato dal suo id
      * @param id l'id da cercare
      * @return il turista con quell'id o null se non viene trovato
      */
     public @Nullable TuristaAutenticato getTuristaDaId(long id){
-        return turisti.stream().filter(turistaLoggato -> turistaLoggato.getId()==(id)).findFirst().orElse(null);
+        return turisti.stream().filter(turistaAutenticato -> turistaAutenticato.getId()==(id)).findFirst().orElse(null);
     }
 
 
