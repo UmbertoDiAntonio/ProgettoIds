@@ -13,6 +13,7 @@ import jakarta.persistence.Transient;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 @Entity
 public class Contributor extends TuristaLoggato implements Observer {
@@ -33,7 +34,7 @@ public class Contributor extends TuristaLoggato implements Observer {
         super(turistaLoggato.getName(),turistaLoggato.getSurname(),turistaLoggato.getDateBirthday(),turistaLoggato.getPassword(), turistaLoggato.getUsername());
         this.comune=comune;
     }
-    protected Contributor(Comune comune,String name, String surname, Date dateBirthday, String password, String username) {
+    protected Contributor(Comune comune, String name, String surname, GregorianCalendar dateBirthday, String password, String username) {
         super(name, surname, dateBirthday, password, username);
         this.comune=comune;
     }

@@ -6,9 +6,10 @@ import ids.unicam.models.Invito;
 import ids.unicam.models.contenuti.*;
 import jakarta.persistence.*;
 
-import javax.annotation.processing.Generated;
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 @Entity
@@ -19,7 +20,7 @@ public class TuristaLoggato extends Turista{
     private String name="";
     private String username="";
     private String surname="";
-    private Date dateBirthday=null;
+    private GregorianCalendar dateBirthday=null;
     private String password="";
 
     @OneToMany
@@ -45,7 +46,7 @@ public class TuristaLoggato extends Turista{
         return surname;
     }
 
-    public Date getDateBirthday() {
+    public GregorianCalendar getDateBirthday() {
         return dateBirthday;
     }
 
@@ -72,7 +73,7 @@ public class TuristaLoggato extends Turista{
     }
 
 
-    protected TuristaLoggato(String name, String surname, Date dateBirthday, String password, String username) {
+    protected TuristaLoggato(String name, String surname, GregorianCalendar dateBirthday, String password, String username) {
         this.name = name;
         this.surname = surname;
         this.dateBirthday = dateBirthday;

@@ -11,6 +11,7 @@ import jakarta.persistence.OneToOne;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 
 public class GestoreController {
@@ -63,7 +64,7 @@ public class GestoreController {
         }
     }
 
-    public void registra(Comune comune, int tipo, String nome, String cognome, Date birthday, String password, String username) {
+    public void registra(Comune comune, int tipo, String nome, String cognome, GregorianCalendar birthday, String password, String username) {
         switch (tipo) {
             case 0:
                 registraTurista(nome, cognome, birthday, password, username);
@@ -76,7 +77,7 @@ public class GestoreController {
         }
     }
 
-    public void registraTurista(String nome, String cognome, Date birthday, String password, String username) {
+    public void registraTurista(String nome, String cognome, GregorianCalendar birthday, String password, String username) {
         utentiController.getTuristi().add(new TuristaLoggato(nome, cognome, birthday, password, username));
 
         //TODO aggiungere al database
@@ -84,7 +85,7 @@ public class GestoreController {
     }
 
 
-    public Contributor registraContributor(Comune comune, String nome, String cognome, Date birthday, String password, String username) {
+    public Contributor registraContributor(Comune comune, String nome, String cognome, GregorianCalendar birthday, String password, String username) {
         Contributor contributor = new Contributor(comune, nome, cognome, birthday, password, username);
         comune.getContributors().add(contributor);
         return contributor;

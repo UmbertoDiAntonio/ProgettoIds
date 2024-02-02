@@ -5,7 +5,9 @@ import ids.unicam.models.attori.GestorePiattaforma;
 import ids.unicam.models.attori.TuristaLoggato;
 
 import java.sql.*;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class DatabaseManager {
@@ -19,8 +21,8 @@ public class DatabaseManager {
     public static void creaDB() {
         try {
             GestorePiattaforma gestorePiattaforma = new GestorePiattaforma();
-            gestorePiattaforma.getGestoreController().registraTurista("Leonardo", "Compagnucci", new Date(), "UNICAM", "leocompa");
-            gestorePiattaforma.getGestoreController().registraTurista("Umberto", "Di Antonio", new Date(), "ciao!", "umber");
+            gestorePiattaforma.getGestoreController().registraTurista("Leonardo", "Compagnucci", new GregorianCalendar(1998, Calendar.JANUARY,1), "UNICAM", "leocompa");
+            gestorePiattaforma.getGestoreController().registraTurista("Umberto", "Di Antonio", new GregorianCalendar(1999,11,23), "ciao!", "umber");
             // Carica il driver JDBC per H2
             Class.forName("org.h2.Driver");
 
