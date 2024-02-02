@@ -6,6 +6,7 @@ import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.Materiale;
+import ids.unicam.models.contenuti.Status;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class ContestController {
      * @throws ContestException se si cerca di caricare materiale su un contest senza essere entrati
      */
     public void aggiungiMateriale(Materiale materiale,Contest contest){
-            materiale.setStato(false);
+            materiale.setStato(Status.NOT_APPROVED);
             contest.getMaterialiContest().add(materiale);
 
     }
@@ -73,9 +74,9 @@ public class ContestController {
      * @param materiale il Materiale da approvare
      */
     public void approvaMateriale(Materiale materiale){
-        if(materiale.getStato())
+        if(materiale.getStato().getApprovato())
             return;
-        materiale.setStato(true);
+        materiale.setStato(Status.APPROVED);
     }
 
     public void generaInvito(TuristaAutenticato turistaAutenticato, Contest contest) {

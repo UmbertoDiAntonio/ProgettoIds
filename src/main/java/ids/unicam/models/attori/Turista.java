@@ -15,7 +15,7 @@ public class Turista {
         ArrayList<PuntoInteresse> result=new ArrayList<>();
         for(Comune comune:comuni){
             for(PuntoInteresse puntoInteresse:comune.getContenutoController().getContenuti()){
-                if(puntoInteresse.getStato() && puntoInteresse.getTags().contains(searchedTags)){
+                if(puntoInteresse.getStato().getApprovato() && puntoInteresse.getTags().contains(searchedTags)){
                     result.add(puntoInteresse);
                 }
             }

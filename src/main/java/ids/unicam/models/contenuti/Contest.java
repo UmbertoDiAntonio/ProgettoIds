@@ -74,7 +74,7 @@ public class Contest extends Contenuto {
 
     public Contest(String nome, boolean open, ContestController controller, String obiettivo, Animatore creatore) {
         super();
-        setStato(true);
+        setStato(Status.APPROVED);
         this.open = open;
         this.controller = controller;
         this.obiettivo = obiettivo;

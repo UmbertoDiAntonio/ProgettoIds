@@ -6,6 +6,7 @@ import ids.unicam.models.attori.*;
 import ids.unicam.models.contenuti.Foto;
 import ids.unicam.models.contenuti.POIFactory.AttivitaFactory;
 import ids.unicam.models.contenuti.PuntoInteresse;
+import ids.unicam.models.contenuti.Status;
 import ids.unicam.utilites.Punto;
 import org.junit.jupiter.api.Test;
 
@@ -95,7 +96,7 @@ public class JUnitUtentiTest {
         contributor.aggiungiPuntoInteresse(puntoInteresse);
         Curatore curatore=comune.getCuratori().getFirst();
         assertEquals(0,turista.search("Edicola").size());
-        curatore.valuta(puntoInteresse,true);
+        curatore.valuta(puntoInteresse, Status.APPROVED);
         assertEquals(1,turista.search("Edicola").size());
 
     }
@@ -115,10 +116,10 @@ public class JUnitUtentiTest {
         assertEquals(0, puntoInteresse.getListaMateriali().size());
         turistaAutenticato.aggiungiFoto(puntoInteresse, new Foto(turistaAutenticato));
         assertEquals(1, puntoInteresse.getListaMateriali().size());
-        assertFalse(puntoInteresse.getListaMateriali().getFirst().getStato());
+        assertFalse(puntoInteresse.getListaMateriali().getFirst().getStato().getApprovato());
         gestorePiattaforma.promuovi(contributor, Ruolo.Curatore);
         Curatore curatore = comune.getCuratori().getFirst();
-        curatore.valuta(puntoInteresse.getListaMateriali().getFirst(), true);
-        assertTrue(puntoInteresse.getListaMateriali().getFirst().getStato());
+        curatore.valuta(puntoInteresse.getListaMateriali().getFirst(), Status.APPROVED);
+        assertTrue(puntoInteresse.getListaMateriali().getFirst().getStato().getApprovato());
     }
 }

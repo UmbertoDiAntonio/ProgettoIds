@@ -12,7 +12,7 @@ public abstract class Contenuto {
 
     @Id
     private final long id;
-    private boolean stato = false;
+    private Status stato = Status.NOT_APPROVED;
 
     @Transient
     private Tempo scadenza;
@@ -30,11 +30,11 @@ public abstract class Contenuto {
         return id;
     }
 
-    public boolean getStato() {
+    public Status getStato() {
         return stato;
     }
 
-    public void setStato(boolean approved) {
+    public void setStato(Status approved) {
         this.stato = approved;
     }
 

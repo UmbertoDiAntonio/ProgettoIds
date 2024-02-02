@@ -66,7 +66,7 @@ public class TuristaAutenticato extends Turista{
     }
 
     public void aggiungiPreferito(Contenuto contenuto) {
-        if(contenuto.getStato())
+        if(contenuto.getStato().getApprovato())
             preferiti.add(contenuto);
     }
 

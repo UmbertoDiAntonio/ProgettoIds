@@ -28,7 +28,7 @@ public class Curatore extends ContributorAutorizzato {
         osservatori.remove(osservatore);
     }
 
-    public void notifica(Boolean eventType, PuntoInteresse puntoInteresse) {
+    public void notifica(Status eventType, PuntoInteresse puntoInteresse) {
         for (Observer listener : osservatori) {
             listener.riceviNotifica(eventType, puntoInteresse);
         }
@@ -39,7 +39,7 @@ public class Curatore extends ContributorAutorizzato {
         return osservatori;
     }
 
-    public void notifica(Boolean eventType, Materiale materiale) {
+    public void notifica(Status eventType, Materiale materiale) {
 
         for (Observer listener : osservatori) {
             listener.riceviNotifica(eventType, materiale);
@@ -62,7 +62,7 @@ public class Curatore extends ContributorAutorizzato {
      * @param materiale il materiale che si vuole valutare
      * @param approvato approvato o non approvato
      */
-    public void valuta(Materiale materiale, boolean approvato) {
+    public void valuta(Materiale materiale, Status approvato) {
         materiale.setStato(approvato);
         notifica(approvato, materiale);
     }
@@ -74,9 +74,9 @@ public class Curatore extends ContributorAutorizzato {
      * @param puntoInteresse il punto di interesse che si vuole valutare
      * @param approvato      stato punto di interesse: approvato/non approvato
      */
-    public void valuta(@NotNull PuntoInteresse puntoInteresse, boolean approvato) {
+    public void valuta(@NotNull PuntoInteresse puntoInteresse, Status approvato) {
         puntoInteresse.setStato(approvato);
-        if (!approvato)
+        if (approvato==Status.NOT_APPROVED)
             getComune().getContenutoController().getContenuti().remove(puntoInteresse);
 
         notifica(approvato, puntoInteresse);

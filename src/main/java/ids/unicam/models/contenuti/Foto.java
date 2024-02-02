@@ -16,6 +16,6 @@ public class Foto extends Materiale{
 
     @Override
     public String get() {
-        return "Questa è una foto, creata da "+super.getCreatore().getNome()+", con id: "+super.getId();
+        return "Questa e' una foto, creata da "+super.getCreatore().getNome()+", con id: "+super.getId();
     }
 }

@@ -10,7 +10,7 @@ import java.util.UUID;
 public abstract class Materiale {
     @OneToOne
     private TuristaAutenticato creatore =null;
-    private boolean stato =false;
+    private Status stato =Status.NOT_APPROVED;
 
     @Id
     private final UUID id=UUID.randomUUID();
@@ -33,11 +33,11 @@ public abstract class Materiale {
         return creatore;
     }
 
-    public boolean getStato() {
+    public Status getStato() {
         return stato;
     }
 
-    public void setStato(boolean stato) {
+    public void setStato(Status stato) {
         this.stato = stato;
     }
 

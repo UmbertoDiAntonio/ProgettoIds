@@ -52,7 +52,7 @@ public class JUnitContenutiTest {
             PuntoInteresse punto1 = attivita1.creaPoi("bar", new Punto(comune.getPosizione().getLatitudine() + 0.01, comune.getPosizione().getLongitudine() + 0.01));
             contributor.aggiungiPuntoInteresse(punto1);
             assertEquals(1, comune.getContenutoController().getContenuti().size());
-            assertFalse(comune.getContenutoController().getContenuti().getFirst().getStato());
+            assertFalse(comune.getContenutoController().getContenuti().getFirst().getStato().getApprovato());
         }
 
         /*
@@ -67,7 +67,7 @@ public class JUnitContenutiTest {
             PuntoInteresse punto2 = attivita1.creaPoi("bar2", new Punto(comune.getPosizione().getLatitudine() + 0.02, comune.getPosizione().getLongitudine() + 0.02));
             contributorAutorizzato.aggiungiPuntoInteresse(punto2);
             assertEquals(2, comune.getContenutoController().getContenuti().size());
-            assertTrue(comune.getContenutoController().getContenuti().getLast().getStato());
+            assertTrue(comune.getContenutoController().getContenuti().getLast().getStato().getApprovato());
         }
 
         /*
@@ -112,16 +112,16 @@ public class JUnitContenutiTest {
             Curatore curatore = comune.getCuratori().getFirst();
 
             contributor.aggiungiPuntoInteresse(new MuseoFactory().creaPoi("Accademia", new Punto(comune.getPosizione().getLatitudine() + 0.01, comune.getPosizione().getLongitudine() + 0.01)));
-            assertFalse(comune.getContenutoController().getContenuti().getLast().getStato());
+            assertFalse(comune.getContenutoController().getContenuti().getLast().getStato().getApprovato());
             curatore.aggiungiOsservatore(contributor);
             assertEquals(1, curatore.getOsservatori().size());
-            curatore.valuta(comune.getContenutoController().getContenuti().getLast(), true);
-            assertTrue(comune.getContenutoController().getContenuti().getLast().getStato());
+            curatore.valuta(comune.getContenutoController().getContenuti().getLast(), Status.APPROVED);
+            assertTrue(comune.getContenutoController().getContenuti().getLast().getStato().getApprovato());
             Materiale materiale1 = new Foto(contributor);
             comune.getContenutoController().getContenuti().getLast().getListaMateriali().add(materiale1);
-            assertFalse(comune.getContenutoController().getContenuti().getLast().getListaMateriali().getFirst().getStato());
-            curatore.valuta(comune.getContenutoController().getContenuti().getLast().getListaMateriali().getFirst(), true);
-            assertTrue(comune.getContenutoController().getContenuti().getLast().getListaMateriali().getFirst().getStato());
+            assertFalse(comune.getContenutoController().getContenuti().getLast().getListaMateriali().getFirst().getStato().getApprovato());
+            curatore.valuta(comune.getContenutoController().getContenuti().getLast().getListaMateriali().getFirst(), Status.APPROVED);
+            assertTrue(comune.getContenutoController().getContenuti().getLast().getListaMateriali().getFirst().getStato().getApprovato());
             curatore.rimuoviOsservatore(contributor);
             assertEquals(0, curatore.getOsservatori().size());
         }
@@ -240,11 +240,11 @@ public class JUnitContenutiTest {
         assertThrows(ContestException.class, () -> turistaAutenticato.aggiungiMaterialeAlContest(contest, materiale));
         turistaAutenticato.partecipaAlContest(contest);
         turistaAutenticato.aggiungiMaterialeAlContest(contest, materiale);
-        assertFalse(materiale.getStato());
+        assertFalse(materiale.getStato().getApprovato());
         assertEquals(1, contest.getMaterialiContest().size());
 
         animatore.approva(materiale);
-        assertTrue(materiale.getStato());
+        assertTrue(materiale.getStato().getApprovato());
 
     }
 
@@ -277,7 +277,7 @@ public class JUnitContenutiTest {
 
         contributor.creaItinerario("girodeibar", comune.getContenutoController().getContenuti().getFirst());
         assertEquals(0, comune.getContenutoController().getItinerari().size());
-        curatore.valuta(comune.getContenutoController().getContenuti().getFirst(), true);
+        curatore.valuta(comune.getContenutoController().getContenuti().getFirst(), Status.APPROVED);
         Itinerario itinerario2 = contributor.creaItinerario("giro dei bar", comune.getContenutoController().getContenuti().getFirst());
         assertEquals(1, comune.getContenutoController().getItinerari().size());
         curatore.elimina(itinerario2);
