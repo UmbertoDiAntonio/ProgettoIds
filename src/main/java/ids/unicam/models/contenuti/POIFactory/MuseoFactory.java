@@ -1,9 +1,8 @@
 package ids.unicam.models.contenuti.POIFactory;
 
+import ids.unicam.models.Orario;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Punto;
-
-import java.time.LocalDate;
 
 public class MuseoFactory implements PoiFactory {
 
@@ -16,7 +15,7 @@ public class MuseoFactory implements PoiFactory {
      * @return un nuovo Museo
      */
     @Override
-    public PuntoInteresse creaPoi(String nome, Punto punto, LocalDate data) {
+    public PuntoInteresse creaPoi(String nome, Punto punto, Orario data) {
         return new Museo(nome, punto, data);
     }
 

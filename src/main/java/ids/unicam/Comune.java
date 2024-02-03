@@ -10,10 +10,7 @@ import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Punto;
 import jakarta.persistence.*;
 
-
 import java.util.ArrayList;
-
-
 
 
 @Entity
@@ -95,7 +92,6 @@ public class Comune {
     public Comune(String nome, GestorePiattaforma gestorePiattaforma) {
         ComuneController.getInstance().listaComuni.add(this);
         this.gestorePiattaforma = gestorePiattaforma;
-
         try {
             this.posizione = RichiestaOSM.getCoordinateDaComune(nome);
             this.nome = RichiestaOSM.getComuneDaCoordinate(posizione);
@@ -107,18 +103,14 @@ public class Comune {
                 throw new IllegalArgumentException("Il nome del comune ricercato non corrisponde con nessun comune reale");
 
         } catch (ConnessioneFallitaException e) {
-            //TODO logger.error("Connessione fallita durante il recupero delle coordinate o del nome del comune da OSM", e);
+            Main.logger.error("Connessione fallita durante il recupero delle coordinate o del nome del comune da OSM", e);
         }
     }
 
 
     public final boolean verificaCoordinateComune(PuntoInteresse puntoInteresse) {
-        String nomeComune = null;
-        try {
-            nomeComune = RichiestaOSM.getComuneDaCoordinate(new Punto(puntoInteresse.getPt().getLatitudine(), puntoInteresse.getPt().getLongitudine()));
-        } catch (ConnessioneFallitaException e) {
-            e.printStackTrace();
-        }
+        String nomeComune = RichiestaOSM.getComuneDaCoordinate(new Punto(puntoInteresse.getPt().getLatitudine(), puntoInteresse.getPt().getLongitudine()));
+
         if (nomeComune != null) {
             return nomeComune.equalsIgnoreCase(getNome());
         }

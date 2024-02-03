@@ -2,7 +2,10 @@ package ids.unicam.models.attori;
 
 import ids.unicam.Comune;
 import ids.unicam.models.Tempo;
-import ids.unicam.models.contenuti.*;
+import ids.unicam.models.contenuti.ContenutoGenerico;
+import ids.unicam.models.contenuti.Itinerario;
+import ids.unicam.models.contenuti.MaterialeGenerico;
+import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Observer;
 import ids.unicam.utilites.Stato;
 import jakarta.persistence.Entity;
@@ -53,8 +56,8 @@ public class Contributor extends TuristaAutenticato implements Observer {
     /**
      * Se il punto di interesse si trova all'interno del territorio del comune del Contributor invia la richiesta di aggiunta al controller di contenuti associato al comune
      *
-     * @param puntoInteresse il punto di interesse del comune in cui aggiungere il materiale
-     * @param materialeGenerico      il materiale da aggiungere
+     * @param puntoInteresse    il punto di interesse del comune in cui aggiungere il materiale
+     * @param materialeGenerico il materiale da aggiungere
      * @return true se il punto di interesse è stato aggiunto, false se il punto non fa parte del comune
      */
     public boolean aggiungiMateriale(PuntoInteresse puntoInteresse, MaterialeGenerico materialeGenerico) {
@@ -98,7 +101,7 @@ public class Contributor extends TuristaAutenticato implements Observer {
 
     /**
      * @param contenutoGenerico il Contenuto di cui stiamo modificando la scadenza
-     * @param giorni    la nuova scadenza
+     * @param giorni            la nuova scadenza
      */
     //TODO completar metodo
     public void aggiungiScadenzaContenuto(ContenutoGenerico contenutoGenerico, Tempo giorni) {
@@ -120,8 +123,10 @@ public class Contributor extends TuristaAutenticato implements Observer {
     @Override
     public void riceviNotifica(Stato eventType, MaterialeGenerico materialeGenerico) {
         switch (eventType) {
-            case APPROVED -> System.out.println("Il tuo contenuto relativo al punto di interesse " + materialeGenerico.get() + " e' stato approvato");
-            case NOT_APPROVED ->  System.out.println("Il tuo contenuto relativo al punto di interesse " + materialeGenerico.get() + " non e' stato approvato");
+            case APPROVED ->
+                    System.out.println("Il tuo contenuto relativo al punto di interesse " + materialeGenerico.get() + " e' stato approvato");
+            case NOT_APPROVED ->
+                    System.out.println("Il tuo contenuto relativo al punto di interesse " + materialeGenerico.get() + " non e' stato approvato");
         }
     }
 }

@@ -1,9 +1,8 @@
 package ids.unicam.models.contenuti.POIFactory;
 
+import ids.unicam.models.Orario;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Punto;
-
-import java.time.LocalDate;
 
 public interface PoiFactory {
     /**
@@ -13,7 +12,7 @@ public interface PoiFactory {
      * @param data informazioni sull'orario di attività
      * @return il punto di interesse creato
      */
-    PuntoInteresse creaPoi(String nome, Punto punto, LocalDate data);
+    PuntoInteresse creaPoi(String nome, Punto punto, Orario data);
     /**
      * Crea un punto di interesse di tipo attività
      * @param nome il nome del punto da creare

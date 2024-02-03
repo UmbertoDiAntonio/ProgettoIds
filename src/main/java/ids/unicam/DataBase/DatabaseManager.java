@@ -1,13 +1,14 @@
 package ids.unicam.DataBase;
 
 import ids.unicam.models.attori.TuristaAutenticato;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
-import java.util.Objects;
+
+import static ids.unicam.Main.logger;
 
 @Component
 public class DatabaseManager {
@@ -29,20 +30,19 @@ public class DatabaseManager {
     public DatabaseManager(Environment env) {
         this.env = env;
     }
-    public Connection connectToDatabase(){
+
+    public @Nullable Connection connectToDatabase() {
         try {
-            if(env==null){
-                System.out.println("ENV null");
-            }
             Connection connection = DriverManager.getConnection(
                     env.getProperty("spring.datasource.url"),
                     env.getProperty("spring.datasource.username"),
                     env.getProperty("spring.datasource.password"));
-            System.out.println("Connessione al database stabilita!");
+
+            logger.debug("Connessione a OSM Fallita");
             return connection;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            logger.error("Connessione al Database Fallita", e);
+            return null; //TODO magari va gestito?
         }
     }
 
@@ -69,9 +69,9 @@ public class DatabaseManager {
             try (Statement statement = connection.createStatement()) {
                 statement.executeUpdate(insertDataSQL);
             }
-            System.out.println("Turista aggiunto al database!");
+            logger.debug("Turista: " + turistaAutenticato + " al DB");
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Mancato inserimento di Turista " + turistaAutenticato + " al DB", e);
         }
     }
 }

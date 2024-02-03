@@ -1,9 +1,7 @@
 package ids.unicam.controller;
 
 import ids.unicam.Comune;
-import org.hibernate.boot.model.relational.Database;
 import org.jetbrains.annotations.Nullable;
-import ids.unicam.DataBase.*;
 
 import java.util.ArrayList;
 

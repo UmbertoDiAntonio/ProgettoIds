@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
 import java.util.GregorianCalendar;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -62,7 +61,7 @@ public class JUnitUtentiTest {
         Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH,17), "ciao", "mr");
         gestorePiattaforma.getGestoreController().registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH,17), "eroe", "AN2");
         TuristaAutenticato turistaAutenticato = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi().getFirst();
-        AttivitaFactory attivitaFactory = new AttivitaFactory(LocalDate.now());
+        AttivitaFactory attivitaFactory = new AttivitaFactory();
 
         gestorePiattaforma.promuovi(contributor, Ruolo.ContributorTrusted);
         PuntoInteresse puntoInteresse = attivitaFactory.creaPoi("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015));
@@ -81,7 +80,7 @@ public class JUnitUtentiTest {
         Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH,17), "ciao", "mr");
         gestorePiattaforma.promuovi(contributor, Ruolo.Curatore);
         Curatore curatore = comune.getCuratori().getFirst();
-        AttivitaFactory attivitaFactory = new AttivitaFactory(LocalDate.now());
+        AttivitaFactory attivitaFactory = new AttivitaFactory();
         PuntoInteresse puntoInteresse = attivitaFactory.creaPoi("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015));
 
         assertThrows(UnsupportedOperationException.class, () -> curatore.condividi(puntoInteresse));
@@ -99,7 +98,7 @@ public class JUnitUtentiTest {
 
         gestorePiattaforma.promuovi(contributor, Ruolo.Curatore);
 
-        AttivitaFactory attivitaFactory = new AttivitaFactory(LocalDate.now());
+        AttivitaFactory attivitaFactory = new AttivitaFactory();
         PuntoInteresse puntoInteresse = attivitaFactory.creaPoi("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015));
         puntoInteresse.aggiungiTag("Edicola");
         contributor.aggiungiPuntoInteresse(puntoInteresse);
@@ -116,7 +115,7 @@ public class JUnitUtentiTest {
         Comune comune = new Comune("Milano", gestorePiattaforma);
         Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH,17), "ciao", "mr");
 
-        contributor.aggiungiPuntoInteresse(new AttivitaFactory(LocalDate.now()).creaPoi("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015)));
+        contributor.aggiungiPuntoInteresse(new AttivitaFactory().creaPoi("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015)));
         PuntoInteresse puntoInteresse = comune.getContenutoController().getContenuti().getFirst();
 
         gestorePiattaforma.getGestoreController().registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH,17), "eroe", "AN2");

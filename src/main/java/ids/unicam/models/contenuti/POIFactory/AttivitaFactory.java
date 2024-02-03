@@ -1,18 +1,12 @@
 package ids.unicam.models.contenuti.POIFactory;
 
+import ids.unicam.models.Orario;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Punto;
-
-import java.time.LocalDate;
 
 
 public class AttivitaFactory implements  PoiFactory{
 
-    private final LocalDate data;
-
-    public AttivitaFactory(LocalDate data) {
-        this.data = data;
-    }
 
     /**
      *
@@ -22,7 +16,7 @@ public class AttivitaFactory implements  PoiFactory{
      * @return una nuova Attività
      */
     @Override
-    public PuntoInteresse creaPoi(String nome, Punto punto, LocalDate orario) {
+    public PuntoInteresse creaPoi(String nome, Punto punto, Orario orario) {
         return new Attivita(nome,punto, orario);
         
     }

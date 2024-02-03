@@ -60,7 +60,6 @@ public class Invito {
      */
     public boolean isValid() {
         if (contest.isOpen()){
-            System.out.println("aperto");
             return false;
         }
         ArrayList<Contest> c1 = contest.getContestController().getContestDelTurista(invitato.getId());

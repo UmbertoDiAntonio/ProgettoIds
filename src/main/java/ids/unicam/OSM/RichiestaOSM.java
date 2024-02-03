@@ -14,15 +14,16 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 
+import static ids.unicam.Main.logger;
+
 public class RichiestaOSM {
 
     /**
      * Ottieni il nome del comune alle coordinate inviate
      * @param punto il punto di cui vogliamo avere informazioni
      * @return il nome del comune a cui appartiene il punto, o null se la connessione è fallita
-     *
      */
-    public static @Nullable String getComuneDaCoordinate(Punto punto) throws ConnessioneFallitaException {
+    public static @Nullable String getComuneDaCoordinate(Punto punto) {
         try {
             String apiUrl = buildReverseApiUrl(punto);
             String jsonResponse = richiestaHttp(apiUrl);
@@ -31,7 +32,8 @@ public class RichiestaOSM {
             JsonNode jsonNode = new ObjectMapper().readTree(jsonResponse);
             return jsonNode.path("address").path(jsonNode.path("address").fieldNames().next()).asText();
         } catch (IOException e) {
-            throw new ConnessioneFallitaException("La connessione non è riuscita");
+            logger.error("Connessione a OSM Fallita");
+            return null;
         }
     }
 
@@ -49,7 +51,7 @@ public class RichiestaOSM {
                 return null;
             ArrayNode jsonArray = (ArrayNode) new ObjectMapper().readTree(jsonResponse);
             if (jsonArray.isEmpty()) {
-                System.out.println("Nessun elemento trovato nella risposta JSON.");
+                logger.error("la ricerca per il Comune: "+nome+" non ha prododdo risultati");
                 return null;
             }
             JsonNode firstElement = jsonArray.get(0);
@@ -58,6 +60,7 @@ public class RichiestaOSM {
 
             return new Punto(latitudine, longitudine);
         } catch (IOException e) {
+            logger.error("Connessione a OSM Fallita");
             throw new ConnessioneFallitaException("La connessione non è riuscita");
         }
     }

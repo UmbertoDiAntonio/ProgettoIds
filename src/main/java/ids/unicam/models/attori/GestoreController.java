@@ -8,15 +8,13 @@ import ids.unicam.models.Ruolo;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.GregorianCalendar;
 
 @Component
 public class GestoreController {
-    
+
     private final UtentiController utentiController = new UtentiController();
 
     public UtentiController getUtentiController() {
@@ -24,6 +22,7 @@ public class GestoreController {
     }
 
     private DatabaseManager databaseManager;
+
     @Autowired
     public GestoreController(DatabaseManager databaseManager) {
         this.databaseManager = databaseManager;
@@ -33,10 +32,10 @@ public class GestoreController {
      * Modifica il ruolo di un contributor all'interno del comune
      *
      * @param contributor il contributor a cui cambiare ruolo
-     * @param ruolo il nuovo ruolo
+     * @param ruolo       il nuovo ruolo
      */
     public void cambiaRuolo(Contributor contributor, @NotNull Ruolo ruolo) {
-        Comune comune=contributor.getComune();
+        Comune comune = contributor.getComune();
         switch (ruolo) {
             case Curatore -> {
                 comune.getCuratori().add(new Curatore(comune, contributor));
@@ -59,10 +58,11 @@ public class GestoreController {
     }
 
     private void rimuoviVecchioRuolo(@NotNull Contributor contributor) {
-        Comune comune=contributor.getComune();
+        Comune comune = contributor.getComune();
         switch (contributor) {
             case Curatore curatore -> comune.getCuratori().remove(curatore);
-            case ContributorAutorizzato contributorAutorizzato -> comune.getContributorAutorizzati().remove(contributorAutorizzato);
+            case ContributorAutorizzato contributorAutorizzato ->
+                    comune.getContributorAutorizzati().remove(contributorAutorizzato);
             case Animatore animatore -> comune.getAnimatori().remove(animatore);
             case Contributor contributor1 -> comune.getContributors().remove(contributor1);
         }
@@ -88,13 +88,12 @@ public class GestoreController {
         // Aggiungi il nuovo turista alla lista dei turisti nel controller degli utenti
         utentiController.getTuristi().add(nuovoTurista);
         // Ottieni una connessione al database
-        try (Connection connection = databaseManager.connectToDatabase()) {
-            // Inserisci i dati del nuovo turista nel database
-            DatabaseManager.aggiungiTuristaAlDatabase(connection, nuovoTurista);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Gestisci l'eccezione in base alle esigenze dell'applicazione
+        Connection connection = databaseManager.connectToDatabase();
+        if(connection==null){
+            //TODO trow oppure?
         }
+        // Inserisci i dati del nuovo turista nel database
+        DatabaseManager.aggiungiTuristaAlDatabase(connection, nuovoTurista);
 
     }
 

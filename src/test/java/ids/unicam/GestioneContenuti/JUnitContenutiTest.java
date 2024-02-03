@@ -2,19 +2,22 @@ package ids.unicam.GestioneContenuti;
 
 import ids.unicam.Comune;
 import ids.unicam.Exception.ContestException;
+import ids.unicam.models.Orario;
 import ids.unicam.models.Ruolo;
 import ids.unicam.models.Tempo;
 import ids.unicam.models.attori.*;
 import ids.unicam.models.contenuti.*;
 import ids.unicam.models.contenuti.POIFactory.AttivitaFactory;
 import ids.unicam.models.contenuti.POIFactory.MuseoFactory;
+import ids.unicam.utilites.DayOfWeek;
 import ids.unicam.utilites.Punto;
 import ids.unicam.utilites.Stato;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.GregorianCalendar;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,6 +35,7 @@ public class JUnitContenutiTest {
      * Test relativo al corretto passaggio delle coordinate
      */
     @Test
+    @Order(0)
     public void testCoordinate() {
         {
             Punto first = new Punto(0, 0);
@@ -45,9 +49,8 @@ public class JUnitContenutiTest {
      * Test per creare un punto di interesse
      */
     @Test
+    @Order(1)
     public void testPoi() {
-
-        
         Comune comune = new Comune("Milano", gestorePiattaforma);
         gestorePiattaforma.getGestoreController().registraContributor(comune, "Mario", "Rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH,17), "pass", "user");
         Contributor contributor = comune.getContributors().getFirst();
@@ -58,7 +61,7 @@ public class JUnitContenutiTest {
         {
 
             assertEquals(0, comune.getContenutoController().getContenuti().size());
-            AttivitaFactory attivita1 = new AttivitaFactory(LocalDate.now());
+            AttivitaFactory attivita1 = new AttivitaFactory();
             PuntoInteresse punto1 = attivita1.creaPoi("bar", new Punto(comune.getPosizione().getLatitudine() + 0.01, comune.getPosizione().getLongitudine() + 0.01));
             contributor.aggiungiPuntoInteresse(punto1);
             assertEquals(1, comune.getContenutoController().getContenuti().size());
@@ -73,7 +76,7 @@ public class JUnitContenutiTest {
 
             ContributorAutorizzato contributorAutorizzato = comune.getContributorAutorizzati().getFirst();
             assertEquals(1, comune.getContenutoController().getContenuti().size());
-            AttivitaFactory attivita1 = new AttivitaFactory(LocalDate.now());
+            AttivitaFactory attivita1 = new AttivitaFactory();
             PuntoInteresse punto2 = attivita1.creaPoi("bar2", new Punto(comune.getPosizione().getLatitudine() + 0.02, comune.getPosizione().getLongitudine() + 0.02));
             contributorAutorizzato.aggiungiPuntoInteresse(punto2);
             assertEquals(2, comune.getContenutoController().getContenuti().size());
@@ -86,7 +89,7 @@ public class JUnitContenutiTest {
          */
         {
             ContributorAutorizzato contributorAutorizzato = comune.getContributorAutorizzati().getFirst();
-            AttivitaFactory attivita1 = new AttivitaFactory(LocalDate.now());
+            AttivitaFactory attivita1 = new AttivitaFactory();
             PuntoInteresse punto3 = attivita1.creaPoi("bar3", new Punto(comune.getPosizione().getLatitudine() + 2, comune.getPosizione().getLongitudine() + 2));
             assertFalse(contributorAutorizzato.aggiungiPuntoInteresse(punto3));
 
@@ -99,7 +102,7 @@ public class JUnitContenutiTest {
          */
         {
             ContributorAutorizzato contributorAutorizzato = comune.getContributorAutorizzati().getFirst();
-            AttivitaFactory attivita1 = new AttivitaFactory(LocalDate.now());
+            AttivitaFactory attivita1 = new AttivitaFactory();
             PuntoInteresse puntoInteresse = attivita1.creaPoi("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015));
             contributorAutorizzato.aggiungiPuntoInteresse(puntoInteresse);
             gestorePiattaforma.getGestoreController().registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.FEBRUARY,3), "eroe", "AN2");
@@ -121,7 +124,9 @@ public class JUnitContenutiTest {
             gestorePiattaforma.promuovi(comune.getContributors().getFirst(), Ruolo.Curatore);
             Curatore curatore = comune.getCuratori().getFirst();
 
-            contributor.aggiungiPuntoInteresse(new MuseoFactory().creaPoi("Accademia", new Punto(comune.getPosizione().getLatitudine() + 0.01, comune.getPosizione().getLongitudine() + 0.01)));
+            Orario orarioAccademia = new Orario();
+            orarioAccademia.setOrarioApertura(DayOfWeek.MONDAY,LocalTime.of(9,0),LocalTime.of(18,0));
+            contributor.aggiungiPuntoInteresse(new MuseoFactory().creaPoi("Accademia", new Punto(comune.getPosizione().getLatitudine() + 0.01, comune.getPosizione().getLongitudine() + 0.01),orarioAccademia));
             assertFalse(comune.getContenutoController().getContenuti().getLast().getStato().asBoolean());
             curatore.aggiungiOsservatore(contributor);
             assertEquals(1, curatore.getOsservatori().size());
@@ -142,6 +147,7 @@ public class JUnitContenutiTest {
      * Test per le varie possibilità di gestione di un itinerario
      */
     @Test
+    @Order(2)
     public void testItinerario() {
         
         Comune comune = new Comune("Milano", gestorePiattaforma);
@@ -156,7 +162,7 @@ public class JUnitContenutiTest {
             gestorePiattaforma.promuovi(comune.getContributors().getFirst(), Ruolo.ContributorTrusted);
 
             ContributorAutorizzato contributorAutorizzato = comune.getContributorAutorizzati().getFirst();
-            AttivitaFactory attivita1 = new AttivitaFactory(LocalDate.now());
+            AttivitaFactory attivita1 = new AttivitaFactory();
             contributorAutorizzato.aggiungiPuntoInteresse(attivita1.creaPoi("bar2", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03)));
             contributorAutorizzato.aggiungiPuntoInteresse(attivita1.creaPoi("barcentrale", new Punto(comune.getPosizione().getLatitudine() - 0.02, comune.getPosizione().getLongitudine() - 0.02)));
             Itinerario itinerario1 = contributorAutorizzato.creaItinerario("girodeibar", comune.getContenutoController().getContenuti().get(0), comune.getContenutoController().getContenuti().get(1));
@@ -180,6 +186,7 @@ public class JUnitContenutiTest {
      */
 
     @Test
+    @Order(3)
     public void testContest() {
         
         Comune comune = new Comune("Milano", gestorePiattaforma);
@@ -236,6 +243,7 @@ public class JUnitContenutiTest {
      * l'animatore approva la richiesta di aggiunta materiale
      */
     @Test
+    @Order(4)
     public void approvaMaterialeByAnimatore() {
         
         Comune comune = new Comune("Milano", gestorePiattaforma);
@@ -262,6 +270,7 @@ public class JUnitContenutiTest {
      * Test relativo all'eliminazione di un contenuto, che può essere un POI, un materiale, un itinerario e un contest
      */
     @Test
+    @Order(5)
     public void eliminaContenuto() {
         
         Comune comune = new Comune("Milano", gestorePiattaforma);
@@ -275,7 +284,7 @@ public class JUnitContenutiTest {
         Animatore animatore = comune.getAnimatori().getFirst();
         Curatore curatore = comune.getCuratori().getFirst();
 
-        AttivitaFactory attivita1 = new AttivitaFactory(LocalDate.now());
+        AttivitaFactory attivita1 = new AttivitaFactory();
         contributor.aggiungiPuntoInteresse(attivita1.creaPoi("bar2", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03)));
 
         assertEquals(1, comune.getContenutoController().getContenuti().size());
@@ -314,12 +323,13 @@ public class JUnitContenutiTest {
      */
 
     @Test
+    @Order(6)
     public void modificaScadenzaContenuto(){
         
         Comune comune = new Comune("Milano", gestorePiattaforma);
         Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000,GregorianCalendar.MARCH,11), "ciao", "mr");
 
-        AttivitaFactory attivita1 = new AttivitaFactory(LocalDate.now());
+        AttivitaFactory attivita1 = new AttivitaFactory();
         PuntoInteresse puntoInteresse = attivita1.creaPoi("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015));
 
         contributor.aggiungiPuntoInteresse(puntoInteresse);

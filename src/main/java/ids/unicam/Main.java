@@ -19,7 +19,7 @@ import java.util.GregorianCalendar;
 @SpringBootApplication
 @ComponentScan(basePackages = {"ids.unicam.DataBase", "ids.unicam.models.attori"})
 public class Main implements ApplicationRunner {
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    public static final Logger logger = LoggerFactory.getLogger(Main.class);
 
 
 
@@ -39,7 +39,6 @@ public class Main implements ApplicationRunner {
         gestorePiattaforma.getGestoreController().registraTurista("Leonardo", "Compagnucci", new GregorianCalendar(1998, Calendar.JANUARY,1), "UNICAM", "leocompa");
         gestorePiattaforma.getGestoreController().registraTurista("Umberto", "Di Antonio", new GregorianCalendar(1999,Calendar.NOVEMBER,23), "ciao!", "umber");
         logger.error("this is a error message");
-        System.out.println("Esecuzione Corretta!");
     }
 
     @RequestMapping(value="/")
