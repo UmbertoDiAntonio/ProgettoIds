@@ -1,7 +1,7 @@
 Territorio Comunale -> classe envirolment (singleton)
 punto geolocalizzato -> classe ... (clone)
 
-contenuto --> interfaccia / classe astratta
+contenutoGenerico --> interfaccia / classe astratta
 social --> interfaccia (metodo share)
 
 user -> classe, metodo per verificarsi (design pattern state)

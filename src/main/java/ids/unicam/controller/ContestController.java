@@ -5,7 +5,7 @@ import ids.unicam.models.Invito;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
-import ids.unicam.models.contenuti.Materiale;
+import ids.unicam.models.contenuti.MaterialeGenerico;
 import ids.unicam.utilites.Stato;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,7 +26,7 @@ public class ContestController {
         ArrayList<Contest> result = new ArrayList<>();
         contests.stream().filter(contest -> contest.
                 getPartecipanti().
-                stream().anyMatch(turistaAutenticato -> turistaAutenticato.getId()==(idTurista))
+                stream().anyMatch(turistaLoggato -> turistaLoggato.getId()==(idTurista))
         ).forEach(result::add);
         return result;
     }
@@ -59,24 +59,24 @@ public class ContestController {
 
     /**
      * Aggiungi un materiale non approvato al contest, se i
-     * @param materiale il materiale da caricare
+     * @param materialeGenerico il materiale da caricare
      * @param contest il contest su cui si vuole aggiungere
      *
      * @throws ContestException se si cerca di caricare materiale su un contest senza essere entrati
      */
-    public void aggiungiMateriale(Materiale materiale,Contest contest){
-            materiale.setStato(Stato.NOT_APPROVED);
-            contest.getMaterialiContest().add(materiale);
+    public void aggiungiMateriale(MaterialeGenerico materialeGenerico, Contest contest){
+            materialeGenerico.setStato(Stato.NOT_APPROVED);
+            contest.getMaterialiContest().add(materialeGenerico);
 
     }
     /**
      * Imposta un materiale del contest come approvato
-     * @param materiale il Materiale da approvare
+     * @param materialeGenerico il Materiale da approvare
      */
-    public void approvaMateriale(Materiale materiale){
-        if(materiale.getStato().getApprovato())
+    public void approvaMateriale(MaterialeGenerico materialeGenerico){
+        if(materialeGenerico.getStato().asBoolean())
             return;
-        materiale.setStato(Stato.APPROVED);
+        materialeGenerico.setStato(Stato.APPROVED);
     }
 
     public void generaInvito(TuristaAutenticato turistaAutenticato, Contest contest) {

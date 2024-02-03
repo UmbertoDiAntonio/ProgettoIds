@@ -1,7 +1,7 @@
 package ids.unicam.models.attori;
 
 import ids.unicam.Comune;
-import ids.unicam.models.contenuti.Materiale;
+import ids.unicam.models.contenuti.MaterialeGenerico;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Stato;
 import jakarta.persistence.Entity;
@@ -38,13 +38,13 @@ public class ContributorAutorizzato extends Contributor{
      * il materiale è automaticamente approvato
      *
      * @param puntoInteresse il punto di interesse del comune in cui aggiungere il materiale
-     * @param materiale il materiale da aggiungere
+     * @param materialeGenerico il materiale da aggiungere
      * @return true se il punto di interesse è stato aggiunto, false se il punto non fa parte del comune
      */
     @Override
-    public boolean aggiungiMateriale(PuntoInteresse puntoInteresse, Materiale materiale){
-        if(super.aggiungiMateriale(puntoInteresse,materiale)){
-            materiale.setStato(Stato.APPROVED);
+    public boolean aggiungiMateriale(PuntoInteresse puntoInteresse, MaterialeGenerico materialeGenerico){
+        if(super.aggiungiMateriale(puntoInteresse, materialeGenerico)){
+            materialeGenerico.setStato(Stato.APPROVED);
             return true;
         }
         return false;

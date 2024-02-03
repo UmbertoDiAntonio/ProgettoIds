@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @Entity
-public class Itinerario extends Contenuto {
+public class Itinerario extends ContenutoGenerico {
     private String nome="";
     @OneToMany
     private final List<PuntoInteresse> percorso = new ArrayList<>();

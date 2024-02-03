@@ -9,16 +9,25 @@ import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Punto;
 import ids.unicam.utilites.Stato;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.util.GregorianCalendar;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 public class JUnitUtentiTest {
+    private final GestorePiattaforma gestorePiattaforma;
+
+    @Autowired
+    public JUnitUtentiTest(GestorePiattaforma gestorePiattaforma) {
+        this.gestorePiattaforma = gestorePiattaforma;
+    }
     @Test
     public void generazioneUtenti() {
-        GestorePiattaforma gestorePiattaforma = new GestorePiattaforma();
+        
         Comune comune = new Comune("nome", gestorePiattaforma);
 
         gestorePiattaforma.getGestoreController().registraTurista("Mario", "Rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH,17), "pass", "user");
@@ -47,7 +56,7 @@ public class JUnitUtentiTest {
 
     @Test
     public void aggiungiPreferito() {
-        GestorePiattaforma gestorePiattaforma = new GestorePiattaforma();
+        
         Comune comune = new Comune("Milano", gestorePiattaforma);
         comune.getPosizione();
         Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH,17), "ciao", "mr");
@@ -67,7 +76,7 @@ public class JUnitUtentiTest {
 
     @Test
     public void condividiContenuto() {
-        GestorePiattaforma gestorePiattaforma = new GestorePiattaforma();
+        
         Comune comune = new Comune("Milano", gestorePiattaforma);
         Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH,17), "ciao", "mr");
         gestorePiattaforma.promuovi(contributor, Ruolo.Curatore);
@@ -84,7 +93,7 @@ public class JUnitUtentiTest {
         Turista turista=new Turista();
         assertEquals(0,turista.search("empty").size());
 
-        GestorePiattaforma gestorePiattaforma = new GestorePiattaforma();
+        
         Comune comune = new Comune("Milano", gestorePiattaforma);
         Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH,17), "ciao", "mr");
 
@@ -103,7 +112,7 @@ public class JUnitUtentiTest {
 
     @Test
     public void aggiungiFoto() {
-        GestorePiattaforma gestorePiattaforma = new GestorePiattaforma();
+        
         Comune comune = new Comune("Milano", gestorePiattaforma);
         Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH,17), "ciao", "mr");
 
@@ -116,10 +125,10 @@ public class JUnitUtentiTest {
         assertEquals(0, puntoInteresse.getListaMateriali().size());
         turistaAutenticato.aggiungiFoto(puntoInteresse, new Foto(turistaAutenticato));
         assertEquals(1, puntoInteresse.getListaMateriali().size());
-        assertFalse(puntoInteresse.getListaMateriali().getFirst().getStato().getApprovato());
+        assertFalse(puntoInteresse.getListaMateriali().getFirst().getStato().asBoolean());
         gestorePiattaforma.promuovi(contributor, Ruolo.Curatore);
         Curatore curatore = comune.getCuratori().getFirst();
         curatore.valuta(puntoInteresse.getListaMateriali().getFirst(), Stato.APPROVED);
-        assertTrue(puntoInteresse.getListaMateriali().getFirst().getStato().getApprovato());
+        assertTrue(puntoInteresse.getListaMateriali().getFirst().getStato().asBoolean());
     }
 }

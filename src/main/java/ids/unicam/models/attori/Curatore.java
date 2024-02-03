@@ -40,10 +40,10 @@ public class Curatore extends ContributorAutorizzato {
         return osservatori;
     }
 
-    public void notifica(Stato eventType, Materiale materiale) {
+    public void notifica(Stato eventType, MaterialeGenerico materialeGenerico) {
 
         for (Observer listener : osservatori) {
-            listener.riceviNotifica(eventType, materiale);
+            listener.riceviNotifica(eventType, materialeGenerico);
         }
     }
 
@@ -51,8 +51,8 @@ public class Curatore extends ContributorAutorizzato {
         super(comune, contributor);
     }
 
-    public void condividi(Contenuto contenuto) {
-        throw new UnsupportedOperationException(contenuto.getId()+"non puo' ancora essere condiviso");
+    public void condividi(ContenutoGenerico contenutoGenerico) {
+        throw new UnsupportedOperationException(contenutoGenerico.getId()+"non può ancora essere condiviso");
         //TODO
     }
 
@@ -60,12 +60,12 @@ public class Curatore extends ContributorAutorizzato {
      * Valuta un Materiale,
      * notifica i subscriber
      *
-     * @param materiale il materiale che si vuole valutare
+     * @param materialeGenerico il materiale che si vuole valutare
      * @param approvato approvato o non approvato
      */
-    public void valuta(Materiale materiale, Stato approvato) {
-        materiale.setStato(approvato);
-        notifica(approvato, materiale);
+    public void valuta(MaterialeGenerico materialeGenerico, Stato approvato) {
+        materialeGenerico.setStato(approvato);
+        notifica(approvato, materialeGenerico);
     }
 
     /**
@@ -84,11 +84,11 @@ public class Curatore extends ContributorAutorizzato {
     }
 
 
-    public void elimina(Contenuto contenuto) {
-        if (contenuto instanceof Contest contest) {
+    public void elimina(ContenutoGenerico contenutoGenerico) {
+        if (contenutoGenerico instanceof Contest contest) {
             getComune().getContestController().eliminaContest(contest);
         } else {
-            getComune().getContenutoController().eliminaContenuto(contenuto);
+            getComune().getContenutoController().eliminaContenuto(contenutoGenerico);
         }
     }
 

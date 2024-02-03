@@ -2,7 +2,7 @@ Descrizione del progetto IdS 2023-2024
 
 Il progetto prevede lo sviluppo di una piattaforma di valorizzazione e digitalizzazione di un territorio comunale
 attraverso il caricamento di informazioni culturali, turistiche, sportive e di qualsiasi altra natura che possano essere
-di interesse per chi vive e frequenta un territorio. Il caricamento sulla piattaforma di qualsiasi contenuto è
+di interesse per chi vive e frequenta un territorio. Il caricamento sulla piattaforma di qualsiasi contenutoGenerico è
 da riferirsi a un punto geolocalizzato presente sul comune e i contenuti si riferiranno dunque all’emergenza
 presente in quel dato punto.
 Allo stesso tempo si potrebbero aggiungere contenuti di natura più generale che si riferiscano ad esempio
@@ -16,7 +16,7 @@ L’obiettivo del progetto è dunque quello di creare una piattaforma che permet
 di qualsiasi natura in relazione ad un dato territorio.
 Si immagina una piattaforma collaborativa in cui la cittadinanza stessa possa contribuire ad arricchire
 la piattaforma con contenuti testuali e/o multimediali. In tal caso chiaramente i contenuti saranno pubblicati
-sulla piattaforma soltanto dopo la verifica di conformità del contenuto in relazione ai fini del progetto.
+sulla piattaforma soltanto dopo la verifica di conformità del contenutoGenerico in relazione ai fini del progetto.
 E’ possibile creare itinerari o esperienze che rappresentano insiemi ordinati, o non, di punti di interesse.
 Tali itinerari saranno definiti secondo le stesse strategie dei punti di interesse, ovvero caricati da responsabili o
 in maniera collaborativa e successivamente confermati.
@@ -38,7 +38,7 @@ Sistemi Social destinatari di contenuti: il curatore può a sua discrezione deci
 Gestore della piattaforma: gestisce tutti gli aspetti della piattaforma non ultima l’accettazione delle autorizzazioni
                            e gli accreditamenti sulla piattaforma stessa
 Turista: può interrogare la base di conoscenza al fine di recuperare informazioni sul territorio.
-         Qualora ritenga che un contenuto non sia consono può anche segnalare il contenuto al curatore
+         Qualora ritenga che un contenutoGenerico non sia consono può anche segnalare il contenutoGenerico al curatore
 
 Sistema OSM che fornisce informazioni sulle mappe del territorio
 

@@ -4,18 +4,16 @@ import ids.unicam.models.attori.TuristaAutenticato;
 import jakarta.persistence.Entity;
 
 @Entity
-public class Foto extends Materiale{
+public class Foto extends MaterialeGenerico {
     public Foto(TuristaAutenticato autore) {
         super(autore);
     }
 
-    public Foto() {
-
-    }
+    public Foto() {    }
 
 
     @Override
     public String get() {
-        return "Questa e' una foto, creata da "+super.getCreatore().getNome()+", con id: "+super.getId();
+        return "Foto: "+getId()+", creata da "+ getCreatore().getNome();
     }
 }

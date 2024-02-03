@@ -5,16 +5,13 @@ import ids.unicam.models.Invito;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.utilites.Stato;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Contest extends Contenuto {
+public class Contest extends ContenutoGenerico {
     private boolean open;
     @Transient
     private ContestController controller=null;
@@ -26,7 +23,7 @@ public class Contest extends Contenuto {
     @OneToMany
     private final ArrayList<Invito> inviti = new ArrayList<>();
     @OneToMany
-    private final ArrayList<Materiale> materiali = new ArrayList<>();
+    private final ArrayList<MaterialeGenerico> materiali = new ArrayList<>();
     private String nome=null;
 
     public Contest() {
@@ -55,7 +52,7 @@ public class Contest extends Contenuto {
     }
 
 
-    public ArrayList<Materiale> getMaterialiContest() {
+    public ArrayList<MaterialeGenerico> getMaterialiContest() {
         return materiali;
     }
 

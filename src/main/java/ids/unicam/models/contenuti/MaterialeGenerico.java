@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Materiale {
+public abstract class MaterialeGenerico {
     @OneToOne
     private TuristaAutenticato creatore =null;
     private Stato stato = Stato.NOT_APPROVED;
@@ -16,7 +16,7 @@ public abstract class Materiale {
     @Id
     private final UUID id=UUID.randomUUID();
 
-    public Materiale() {
+    public MaterialeGenerico() {
 
     }
 
@@ -46,7 +46,7 @@ public abstract class Materiale {
      * Crea un materiale e gli assegna un id random
      * @param creatore l'autore del materiale
      */
-    public Materiale(TuristaAutenticato creatore) {
+    public MaterialeGenerico(TuristaAutenticato creatore) {
         this.creatore = creatore;
     }
 

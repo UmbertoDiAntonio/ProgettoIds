@@ -10,12 +10,18 @@ import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Punto;
 import jakarta.persistence.*;
 
+
 import java.util.ArrayList;
+
+
+
 
 @Entity
 public class Comune {
+
+
     @Id
-    private String nome="";
+    private String nome = "";
     @OneToOne
     private Punto posizione;
     @OneToMany
@@ -31,11 +37,12 @@ public class Comune {
     @Transient
     private final ContestController contestController = new ContestController();
     @Transient
-    private GestorePiattaforma gestorePiattaforma=null;
+    private GestorePiattaforma gestorePiattaforma = null;
 
     public Comune() {
 
     }
+
 
     public GestorePiattaforma getGestorePiattaforma() {
         return gestorePiattaforma;
@@ -66,6 +73,7 @@ public class Comune {
         return curatori;
     }
 
+
     public ContenutoController getContenutoController() {
         return contenutoController;
     }
@@ -79,41 +87,39 @@ public class Comune {
     }
 
     /**
-     * @param nome                Nome del Comune
-     * @param gestorePiattaforma  il gestore della piattaforma
+     * @param nome               Nome del Comune
+     * @param gestorePiattaforma il gestore della piattaforma
      * @throws IllegalArgumentException se il nome del comune non corrisponde a nessun comune
-     * @throws RuntimeException se non è possibile raggiungere il sistema OSM
+     * @throws RuntimeException         se non è possibile raggiungere il sistema OSM
      */
     public Comune(String nome, GestorePiattaforma gestorePiattaforma) {
         ComuneController.getInstance().listaComuni.add(this);
         this.gestorePiattaforma = gestorePiattaforma;
+
         try {
             this.posizione = RichiestaOSM.getCoordinateDaComune(nome);
+            this.nome = RichiestaOSM.getComuneDaCoordinate(posizione);
+
+            if (this.nome == null)
+                throw new RuntimeException("Impossibile stabilire la connessione con il sistema OSM");
+
+            if (!this.nome.equalsIgnoreCase(nome))
+                throw new IllegalArgumentException("Il nome del comune ricercato non corrisponde con nessun comune reale");
+
         } catch (ConnessioneFallitaException e) {
-            e.printStackTrace();
+            //TODO logger.error("Connessione fallita durante il recupero delle coordinate o del nome del comune da OSM", e);
         }
-        this.nome = nome;
-        String nomeComune = null;
-        try {
-            nomeComune = RichiestaOSM.getComuneDaCoordinate(posizione);
-        } catch (ConnessioneFallitaException e) {
-            e.printStackTrace();
-        }
-        if (nomeComune == null)
-            throw new RuntimeException("Impossibile stabilire la connessione con il sistema OSM");
-        if (!nomeComune.equalsIgnoreCase(nome))
-            throw new IllegalArgumentException("Il nome del comune ricercato non corrisponde con nessun comune reale");
     }
 
 
-    public final boolean verificaCoordinateComune(PuntoInteresse puntoInteresse){
+    public final boolean verificaCoordinateComune(PuntoInteresse puntoInteresse) {
         String nomeComune = null;
         try {
-            nomeComune = RichiestaOSM.getComuneDaCoordinate(new Punto(puntoInteresse.getPt().getLatitudine(),puntoInteresse.getPt().getLongitudine()));
+            nomeComune = RichiestaOSM.getComuneDaCoordinate(new Punto(puntoInteresse.getPt().getLatitudine(), puntoInteresse.getPt().getLongitudine()));
         } catch (ConnessioneFallitaException e) {
             e.printStackTrace();
         }
-        if(nomeComune != null) {
+        if (nomeComune != null) {
             return nomeComune.equalsIgnoreCase(getNome());
         }
         return false;

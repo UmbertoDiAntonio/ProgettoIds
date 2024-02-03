@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @Entity
-public abstract class PuntoInteresse extends Contenuto {
+public abstract class PuntoInteresse extends ContenutoGenerico {
 
     private String nome="";
 
@@ -18,7 +18,7 @@ public abstract class PuntoInteresse extends Contenuto {
     private Punto pt=new Punto(0,0);
 
     @OneToMany
-    private final List<Materiale> listaMateriali = new ArrayList<>();
+    private final List<MaterialeGenerico> listaMateriali = new ArrayList<>();
 
     public PuntoInteresse() {
 
@@ -28,7 +28,7 @@ public abstract class PuntoInteresse extends Contenuto {
         return pt;
     }
 
-    public List<Materiale> getListaMateriali() {
+    public List<MaterialeGenerico> getListaMateriali() {
         return listaMateriali;
     }
 

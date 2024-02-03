@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 
 @Entity
-public abstract class Contenuto {
+public abstract class ContenutoGenerico {
 
     @Id
     private final long id;
@@ -48,7 +48,7 @@ public abstract class Contenuto {
     public void aggiungiTag(String tag){
         tags.add(tag);
     }
-    public Contenuto() {
+    public ContenutoGenerico() {
         this.id = ContenutoController.generaID();
     }
 }

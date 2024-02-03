@@ -1,7 +1,7 @@
 package ids.unicam.models.attori;
 
 import ids.unicam.models.contenuti.Contest;
-import ids.unicam.models.contenuti.Materiale;
+import ids.unicam.models.contenuti.MaterialeGenerico;
 import jakarta.persistence.Entity;
 
 @Entity
@@ -27,10 +27,10 @@ public class Animatore extends Contributor {
 
     /**
      * Invia al controller di contest associato al comune dell'animatore la richiesta di approvare il materiale
-     * @param materiale il materiale da approvare
+     * @param materialeGenerico il materiale da approvare
      */
-    public void approva(Materiale materiale) {
-        getComune().getContestController().approvaMateriale(materiale);
+    public void approva(MaterialeGenerico materialeGenerico) {
+        getComune().getContestController().approvaMateriale(materialeGenerico);
     }
 
     /**

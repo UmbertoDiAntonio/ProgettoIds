@@ -23,8 +23,11 @@ public class GestoreController {
         return utentiController;
     }
 
-    @Autowired
     private DatabaseManager databaseManager;
+    @Autowired
+    public GestoreController(DatabaseManager databaseManager) {
+        this.databaseManager = databaseManager;
+    }
 
     /**
      * Modifica il ruolo di un contributor all'interno del comune

@@ -2,7 +2,7 @@ package ids.unicam.DataBase;
 
 import ids.unicam.models.attori.TuristaAutenticato;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
@@ -22,14 +22,20 @@ public class DatabaseManager {
     private String dbPassword;
 
  */
-@Autowired
-private Environment env;
 
+    private final Environment env;
 
+    @Autowired
+    public DatabaseManager(Environment env) {
+        this.env = env;
+    }
     public Connection connectToDatabase(){
         try {
+            if(env==null){
+                System.out.println("ENV null");
+            }
             Connection connection = DriverManager.getConnection(
-                    Objects.requireNonNull(env.getProperty("spring.datasource.url")),
+                    env.getProperty("spring.datasource.url"),
                     env.getProperty("spring.datasource.username"),
                     env.getProperty("spring.datasource.password"));
             System.out.println("Connessione al database stabilita!");

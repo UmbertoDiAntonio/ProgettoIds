@@ -1,8 +1,8 @@
 package ids.unicam.controller;
 
-import ids.unicam.models.contenuti.Contenuto;
+import ids.unicam.models.contenuti.ContenutoGenerico;
 import ids.unicam.models.contenuti.Itinerario;
-import ids.unicam.models.contenuti.Materiale;
+import ids.unicam.models.contenuti.MaterialeGenerico;
 import ids.unicam.models.contenuti.PuntoInteresse;
 
 import java.util.ArrayList;
@@ -43,10 +43,10 @@ public class ContenutoController {
     /**
      * Aggiunge un materiale a un punto di interesse
      * @param puntoInteresse il punto di interesse in cui aggiungere il materiale
-     * @param materiale il materiale
+     * @param materialeGenerico il materiale
      */
-    public void aggiungiMateriale(PuntoInteresse puntoInteresse, Materiale materiale) {
-        puntoInteresse.getListaMateriali().add(materiale);
+    public void aggiungiMateriale(PuntoInteresse puntoInteresse, MaterialeGenerico materialeGenerico) {
+        puntoInteresse.getListaMateriali().add(materialeGenerico);
     }
 
     /**
@@ -77,10 +77,10 @@ public class ContenutoController {
         itinerario.getPercorso().remove(puntoInteresse);
     }
 
-    public void eliminaContenuto(Contenuto contenuto) {
-        if (contenuto instanceof PuntoInteresse) {
-            contenuti.remove(contenuto);
-        } else if (contenuto instanceof Itinerario itinerario) {
+    public void eliminaContenuto(ContenutoGenerico contenutoGenerico) {
+        if (contenutoGenerico instanceof PuntoInteresse) {
+            contenuti.remove(contenutoGenerico);
+        } else if (contenutoGenerico instanceof Itinerario itinerario) {
             itinerari.remove(itinerario);
         }
     }

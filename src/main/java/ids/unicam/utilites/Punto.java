@@ -8,9 +8,8 @@ import org.jetbrains.annotations.NotNull;
 public class Punto {
     @Id
     private long id;
-
-    private double latitudine=0;
-    private double longitudine=0;
+    private double latitudine = 0;
+    private double longitudine = 0;
 
     public long getId() {
         return id;
@@ -21,7 +20,6 @@ public class Punto {
     }
 
     public Punto() {
-
     }
 
     public double getLatitudine() {
@@ -31,11 +29,11 @@ public class Punto {
     public double getLongitudine() {
         return longitudine;
     }
+
     public Punto(double lat, double lon) {
         this.latitudine = lat;
         this.longitudine = lon;
     }
-
 
 
     public double getDistanza(@NotNull Punto pt) {

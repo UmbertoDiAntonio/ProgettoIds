@@ -21,7 +21,7 @@ public class TuristaAutenticato extends Turista{
     private String password="";
 
     @OneToMany
-    private final List<Contenuto> preferiti = new ArrayList<>();
+    private final List<ContenutoGenerico> preferiti = new ArrayList<>();
     @OneToMany
     private final List<Invito> invitiRicevuti = new ArrayList<>();
 
@@ -60,13 +60,13 @@ public class TuristaAutenticato extends Turista{
     }
 
 
-    public List<Contenuto> getPreferiti() {
+    public List<ContenutoGenerico> getPreferiti() {
         return preferiti;
     }
 
-    public void aggiungiPreferito(Contenuto contenuto) {
-        if(contenuto.getStato().getApprovato())
-            preferiti.add(contenuto);
+    public void aggiungiPreferito(ContenutoGenerico contenutoGenerico) {
+        if(contenutoGenerico.getStato().asBoolean())
+            preferiti.add(contenutoGenerico);
     }
 
 
@@ -110,11 +110,11 @@ public class TuristaAutenticato extends Turista{
      * Invia al controller del contest la richiesta di aggiungere un materiale
      *
      * @param contest   il contest in cui aggiungere il materiale
-     * @param materiale il materiale da aggiungere
+     * @param materialeGenerico il materiale da aggiungere
      */
-    public void aggiungiMaterialeAlContest(Contest contest, Materiale materiale) {
+    public void aggiungiMaterialeAlContest(Contest contest, MaterialeGenerico materialeGenerico) {
         if (contest.getPartecipanti().contains(this)) {
-            contest.getContestController().aggiungiMateriale(materiale, contest);
+            contest.getContestController().aggiungiMateriale(materialeGenerico, contest);
         } else {
             throw new ContestException("Il Turista dovrebbe prima entrare nel contest, per caricare contenuti su di esso");
         }

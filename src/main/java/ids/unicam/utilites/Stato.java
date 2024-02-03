@@ -1,16 +1,17 @@
 package ids.unicam.utilites;
 
 public enum Stato {
-    APPROVED(true),
-    NOT_APPROVED(false);
-    private final boolean approvato;
+    APPROVED,
+    NOT_APPROVED;
 
-
-    Stato(boolean approvato) {
-        this.approvato = approvato;
+    public boolean asBoolean() {
+        return switch (this) {
+            case APPROVED -> true;
+            case NOT_APPROVED -> false;
+        };
     }
 
-    public boolean getApprovato() {
-        return approvato;
+    public static Stato toStatus(boolean value) {
+        return value ? APPROVED : NOT_APPROVED;
     }
 }
