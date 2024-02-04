@@ -26,7 +26,7 @@ public class ContestController {
         ArrayList<Contest> result = new ArrayList<>();
         contests.stream().filter(contest -> contest.
                 getPartecipanti().
-                stream().anyMatch(turistaLoggato -> turistaLoggato.getId()==(idTurista))
+                stream().anyMatch(turistaAutenticato -> turistaAutenticato.getId()==(idTurista))
         ).forEach(result::add);
         return result;
     }

@@ -44,11 +44,12 @@ public class Orario {
             this.closingTime = closingTime;
         }
 
-        public LocalTime getOpeningTime() {
+        public LocalTime getOrarioApertura() {
             return openingTime;
+
         }
 
-        public LocalTime getClosingTime() {
+        public LocalTime getOrarioChiusura() {
             return closingTime;
         }
 

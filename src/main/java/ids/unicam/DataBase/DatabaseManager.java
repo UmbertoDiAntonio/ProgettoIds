@@ -7,6 +7,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
+import java.util.Objects;
 
 import static ids.unicam.Main.logger;
 
@@ -34,7 +35,7 @@ public class DatabaseManager {
     public @Nullable Connection connectToDatabase() {
         try {
             Connection connection = DriverManager.getConnection(
-                    env.getProperty("spring.datasource.url"),
+                    Objects.requireNonNull(env.getProperty("spring.datasource.url")),
                     env.getProperty("spring.datasource.username"),
                     env.getProperty("spring.datasource.password"));
 
