@@ -23,7 +23,7 @@ public class GestoreController {
         return utentiController;
     }
 
-    private DatabaseManager databaseManager;
+    private final DatabaseManager databaseManager;
 
     @Autowired
     public GestoreController(DatabaseManager databaseManager) {

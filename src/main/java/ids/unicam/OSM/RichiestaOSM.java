@@ -51,7 +51,7 @@ public class RichiestaOSM {
                 return null;
             ArrayNode jsonArray = (ArrayNode) new ObjectMapper().readTree(jsonResponse);
             if (jsonArray.isEmpty()) {
-                logger.error("la ricerca per il Comune: "+nome+" non ha prododdo risultati");
+                logger.error("la ricerca per il Comune: "+nome+" non ha prodotto risultati");
                 return null;
             }
             JsonNode firstElement = jsonArray.get(0);
