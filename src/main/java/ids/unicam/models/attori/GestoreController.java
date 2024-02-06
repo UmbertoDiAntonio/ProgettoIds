@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 import java.sql.Connection;
 import java.util.GregorianCalendar;
 
+import static ids.unicam.Main.logger;
+
 @Component
 public class GestoreController {
 
@@ -90,6 +92,7 @@ public class GestoreController {
         // Ottieni una connessione al database
         Connection connection = databaseManager.connectToDatabase();
         if(connection==null){
+            logger.error("Creazione Turista fallita, impossibile stabiliere una connessione con il DB");
             //TODO trow oppure?
         }
         // Inserisci i dati del nuovo turista nel database

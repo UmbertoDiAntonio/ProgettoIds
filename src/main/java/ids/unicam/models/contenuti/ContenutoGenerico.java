@@ -21,7 +21,7 @@ public abstract class ContenutoGenerico {
     @Transient
     private Tempo scadenza;
     @ElementCollection
-    private final ArrayList<String> tags=new ArrayList<>();
+    private final ArrayList<String> tags = new ArrayList<>();
 
     public void setScadenza(Tempo scadenza) {
         this.scadenza = scadenza;
@@ -30,6 +30,7 @@ public abstract class ContenutoGenerico {
     public Tempo getScadenza() {
         return scadenza;
     }
+
     public long getId() {
         return id;
     }
@@ -45,9 +46,11 @@ public abstract class ContenutoGenerico {
     public ArrayList<String> getTags() {
         return tags;
     }
-    public void aggiungiTag(String tag){
+
+    public void aggiungiTag(String tag) {
         tags.add(tag);
     }
+
     public ContenutoGenerico() {
         this.id = ContenutoController.generaID();
     }

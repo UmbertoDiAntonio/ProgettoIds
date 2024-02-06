@@ -55,7 +55,7 @@ public class Contest extends ContenutoGenerico {
     }
 
 
-    public ArrayList<MaterialeGenerico> getMaterialiContest() {
+    public ArrayList<MaterialeGenerico> getMateriali() {
         return materiali;
     }
 

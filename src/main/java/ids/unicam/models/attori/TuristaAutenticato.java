@@ -84,7 +84,7 @@ public class TuristaAutenticato extends Turista{
     }
 
     public void aggiungiFoto(PuntoInteresse puntoInteresse, Foto foto) {
-        puntoInteresse.getListaMateriali().add(foto);
+        puntoInteresse.getMateriali().add(foto);
     }
 
     /**

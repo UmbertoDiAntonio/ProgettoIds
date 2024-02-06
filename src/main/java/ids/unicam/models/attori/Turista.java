@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 
 public class Turista {
-
     public ArrayList<PuntoInteresse> search(String searchedTags){
         ComuneController comuneController = ComuneController.getInstance();
         ArrayList<Comune> comuni = comuneController.listaComuni;
@@ -22,6 +21,7 @@ public class Turista {
         }
         return result;
     }
+
     public void report(PuntoInteresse puntoInteresse){
         throw new UnsupportedOperationException();
         //TODO segnala un contenuto al Curatore

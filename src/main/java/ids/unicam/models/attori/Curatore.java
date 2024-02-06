@@ -91,6 +91,14 @@ public class Curatore extends ContributorAutorizzato {
             getComune().getContenutoController().eliminaContenuto(contenutoGenerico);
         }
     }
+    public void elimina(MaterialeGenerico materialeDaEliminare) {//TODO se non gli passiamo anche il POI questa operazione porta via tempo
+        for(PuntoInteresse poi: getComune().getContenutoController().getContenuti()){
+            poi.getMateriali().remove(materialeDaEliminare);
+        }
+        for(Contest contest: getComune().getContestController().getContests()){
+            contest.getMateriali().remove(materialeDaEliminare);
+        }
+    }
 
     public void rimuoviTappa(Itinerario itinerario, PuntoInteresse puntoInteresse){
         getComune().getContenutoController().rimuoviTappa(itinerario, puntoInteresse);

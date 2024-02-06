@@ -8,6 +8,8 @@ import jakarta.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ids.unicam.Main.logger;
+
 
 @Entity
 public abstract class PuntoInteresse extends ContenutoGenerico {
@@ -28,7 +30,7 @@ public abstract class PuntoInteresse extends ContenutoGenerico {
         return pt;
     }
 
-    public List<MaterialeGenerico> getListaMateriali() {
+    public List<MaterialeGenerico> getMateriali() {
         return listaMateriali;
     }
 
@@ -38,7 +40,7 @@ public abstract class PuntoInteresse extends ContenutoGenerico {
     }
 
     public PuntoInteresse(String nome, Punto pt) {
-        super();
+        logger.debug("Creato POI "+nome+" in "+pt);
         this.nome = nome;
         this.pt = pt;
     }

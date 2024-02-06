@@ -46,7 +46,7 @@ public class ContenutoController {
      * @param materialeGenerico il materiale
      */
     public void aggiungiMateriale(PuntoInteresse puntoInteresse, MaterialeGenerico materialeGenerico) {
-        puntoInteresse.getListaMateriali().add(materialeGenerico);
+        puntoInteresse.getMateriali().add(materialeGenerico);
     }
 
     /**

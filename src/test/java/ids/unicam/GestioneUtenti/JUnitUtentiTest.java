@@ -84,7 +84,7 @@ public class JUnitUtentiTest {
         PuntoInteresse puntoInteresse = attivitaFactory.creaPoi("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015));
 
         assertThrows(UnsupportedOperationException.class, () -> curatore.condividi(puntoInteresse));
-        //TODO
+        //TODO test condivisione contenuto
     }
 
     @Test
@@ -121,13 +121,13 @@ public class JUnitUtentiTest {
         gestorePiattaforma.getGestoreController().registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH,17), "eroe", "AN2");
         TuristaAutenticato turistaAutenticato = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi().getFirst();
 
-        assertEquals(0, puntoInteresse.getListaMateriali().size());
+        assertEquals(0, puntoInteresse.getMateriali().size());
         turistaAutenticato.aggiungiFoto(puntoInteresse, new Foto(turistaAutenticato));
-        assertEquals(1, puntoInteresse.getListaMateriali().size());
-        assertFalse(puntoInteresse.getListaMateriali().getFirst().getStato().asBoolean());
+        assertEquals(1, puntoInteresse.getMateriali().size());
+        assertFalse(puntoInteresse.getMateriali().getFirst().getStato().asBoolean());
         gestorePiattaforma.promuovi(contributor, Ruolo.Curatore);
         Curatore curatore = comune.getCuratori().getFirst();
-        curatore.valuta(puntoInteresse.getListaMateriali().getFirst(), Stato.APPROVED);
-        assertTrue(puntoInteresse.getListaMateriali().getFirst().getStato().asBoolean());
+        curatore.valuta(puntoInteresse.getMateriali().getFirst(), Stato.APPROVED);
+        assertTrue(puntoInteresse.getMateriali().getFirst().getStato().asBoolean());
     }
 }

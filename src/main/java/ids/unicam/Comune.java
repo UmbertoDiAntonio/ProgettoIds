@@ -5,22 +5,23 @@ import ids.unicam.OSM.RichiestaOSM;
 import ids.unicam.controller.ComuneController;
 import ids.unicam.controller.ContenutoController;
 import ids.unicam.controller.ContestController;
+import ids.unicam.models.Ruolo;
 import ids.unicam.models.attori.*;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Punto;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 @Entity
 public class Comune {
-
-
     @Id
     private String nome = "";
     @OneToOne
     private Punto posizione;
+
     @OneToMany
     private final ArrayList<Curatore> curatori = new ArrayList<>();
     @OneToMany

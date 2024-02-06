@@ -66,7 +66,7 @@ public class ContestController {
      */
     public void aggiungiMateriale(MaterialeGenerico materialeGenerico, Contest contest){
             materialeGenerico.setStato(Stato.NOT_APPROVED);
-            contest.getMaterialiContest().add(materialeGenerico);
+            contest.getMateriali().add(materialeGenerico);
 
     }
     /**

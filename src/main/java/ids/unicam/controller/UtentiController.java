@@ -9,8 +9,6 @@ import java.util.ArrayList;
 @Component
 public class UtentiController {
 
-
-
     private final ArrayList<TuristaAutenticato> turisti = new ArrayList<>();
 
     public ArrayList<TuristaAutenticato> getTuristi() {

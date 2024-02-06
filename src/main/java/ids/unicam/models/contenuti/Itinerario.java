@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static ids.unicam.Main.logger;
+
 
 @Entity
 public class Itinerario extends ContenutoGenerico {
@@ -32,7 +34,7 @@ public class Itinerario extends ContenutoGenerico {
     }
 
     public Itinerario(String nome,  PuntoInteresse... puntoInteresse) {
-        super();
+        logger.debug("Creato Itinerario "+nome);
         this.nome=nome;
         percorso.addAll(Arrays.stream(puntoInteresse).toList());
     }

@@ -7,6 +7,6 @@ public enum Ruolo {
     Contributor,
     ContributorTrusted,
     Animatore,
-    Curatore
+    Curatore;
 
 }

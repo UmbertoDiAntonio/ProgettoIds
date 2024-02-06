@@ -32,7 +32,7 @@ public enum DayOfWeek {
                 case 5 -> FRIDAY;
                 case 6 -> SATURDAY;
                 case 7 -> SUNDAY;
-                default -> throw new IllegalStateException("Unexpected value: " + value);//TODO
+                default -> throw new IllegalArgumentException("Unexpected value: " + value);//TODO
             };
         }
 
