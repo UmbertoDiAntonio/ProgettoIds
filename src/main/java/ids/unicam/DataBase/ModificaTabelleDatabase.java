@@ -21,7 +21,8 @@ public class ModificaTabelleDatabase {
 
     public void aggiungiTuristaAlDatabase(TuristaAutenticato turistaAutenticato) {
         try {
-            String insertDataSQL = "INSERT INTO TURISTI (name, surname, username, password) VALUES ('" +
+            String insertDataSQL = "INSERT INTO TURISTI (id, name, surname, username, password) VALUES ('" +
+                    turistaAutenticato.getId() + "', '" +
                     turistaAutenticato.getNome() + "', '" +
                     turistaAutenticato.getCognome() + "', '" +
                     turistaAutenticato.getUsername() + "', '" +
@@ -35,17 +36,30 @@ public class ModificaTabelleDatabase {
         }
     }
 
-    public void rimuoviTuristaAlDatabase(TuristaAutenticato turistaAutenticato){
-        System.out.println("Rim " +turistaAutenticato.getId());
-            String removeDataSQL = "DELETE FROM TURISTI " +
-                                    "WHERE ID = " + turistaAutenticato.getId() + " ;";
+    public void rimuoviTuristaAlDatabase(TuristaAutenticato turistaAutenticato) {
+        System.out.println("Rim " + turistaAutenticato.getId());
+        String removeDataSQL = "DELETE FROM TURISTI " +
+                "WHERE ID = " + turistaAutenticato.getId() + " ;";
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(removeDataSQL);
             logger.debug("Turista: " + turistaAutenticato.getNome() + "rimosso dal DB");
-    }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             logger.error("Mancata rimozione di Turista " + turistaAutenticato.getNome() + " dal DB", e);
         }
+    }
+
+    public int getUltimoID(String tabella) {
+        String getMaxID = "SELECT MAX(id) AS VALORE_MASSIMO FROM " + tabella;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(getMaxID);
+            if (resultSet.next()) {
+                int massimoValore = resultSet.getInt("VALORE_MASSIMO");
+                return massimoValore;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return -1;
     }
 }
 

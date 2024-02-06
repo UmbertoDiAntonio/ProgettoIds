@@ -1,6 +1,9 @@
 package ids.unicam.controller;
 
+import ids.unicam.DataBase.GestoreDatabase;
 import ids.unicam.models.attori.TuristaAutenticato;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityManager;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
 

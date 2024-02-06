@@ -36,7 +36,7 @@ public class CreazioneTabelleDatabase {
         } else {
             String createTableSQL =
                     "CREATE TABLE IF NOT EXISTS TURISTI(" +
-                            "id INT PRIMARY KEY AUTO_INCREMENT," +
+                            "id INT PRIMARY KEY NOT NULL," +
                             "name VARCHAR(50) NOT NULL," +
                             "surname VARCHAR(50) NOT NULL," +
                             "username VARCHAR(50) NOT NULL," +
@@ -54,7 +54,7 @@ public class CreazioneTabelleDatabase {
         } else {
             String createTableSQL =
                     "CREATE TABLE IF NOT EXISTS CONTRIBUTOR(" +
-                            "id INT PRIMARY KEY AUTO_INCREMENT," +
+                            "id INT PRIMARY KEY NOT NULL," +
                             "comune VARCHAR(50) NOT NULL," +
                             "name VARCHAR(50) NOT NULL," +
                             "surname VARCHAR(50) NOT NULL," +
@@ -73,7 +73,7 @@ public class CreazioneTabelleDatabase {
         } else {
             String createTableSQL =
                     "CREATE TABLE IF NOT EXISTS CONTRIBUTOR_AUTORIZZATI(" +
-                            "id INT PRIMARY KEY AUTO_INCREMENT," +
+                            "id INT PRIMARY KEY NOT NULL," +
                             "comune VARCHAR(50) NOT NULL," +
                             "name VARCHAR(50) NOT NULL," +
                             "surname VARCHAR(50) NOT NULL," +
@@ -92,7 +92,7 @@ public class CreazioneTabelleDatabase {
         } else {
             String createTableSQL =
                     "CREATE TABLE IF NOT EXISTS ANIMATORI(" +
-                            "id INT PRIMARY KEY AUTO_INCREMENT," +
+                            "id INT PRIMARY KEY NOT NULL," +
                             "comune VARCHAR(50) NOT NULL," +
                             "name VARCHAR(50) NOT NULL," +
                             "surname VARCHAR(50) NOT NULL," +
@@ -111,7 +111,7 @@ public class CreazioneTabelleDatabase {
         } else {
             String createTableSQL =
                     "CREATE TABLE IF NOT EXISTS CURATORI(" +
-                            "id INT PRIMARY KEY AUTO_INCREMENT," +
+                            "id INT PRIMARY KEY NOT NULL," +
                             "comune VARCHAR(50) NOT NULL," +
                             "name VARCHAR(50) NOT NULL," +
                             "surname VARCHAR(50) NOT NULL," +
@@ -130,7 +130,7 @@ public class CreazioneTabelleDatabase {
         } else {
             String createTableSQL =
                     "CREATE TABLE IF NOT EXISTS PUNTI_DI_INTERESSE(" +
-                            "id INT PRIMARY KEY AUTO_INCREMENT," +
+                            "id INT PRIMARY KEY NOT NULL," +
                             "stato BOOLEAN NOT NULL," +
                             "latitudine DOUBLE NOT NULL," +
                             "longitudine DOUBLE NOT NULL," +
@@ -173,7 +173,7 @@ public class CreazioneTabelleDatabase {
         } else {
             String createTableSQL =
                     "CREATE TABLE IF NOT EXISTS CONTEST(" +
-                            "id INT PRIMARY KEY AUTO_INCREMENT," +
+                            "id INT PRIMARY KEY NOT NULL," +
                             "tag VARCHAR(50)," +
                             "nome VARCHAR(50) NOT NULL," +
                             "aperto BOOLEAN NOT NULL," +
@@ -193,7 +193,7 @@ public class CreazioneTabelleDatabase {
         }else {
             String createTableSQL =
                     "CREATE TABLE IF NOT EXISTS MATERIALI(" +
-                            "id INT PRIMARY KEY AUTO_INCREMENT," +
+                            "id INT PRIMARY KEY NOT NULL," +
                             "stato BOOLEAN NOT NULL,"+
                             "id_creatore INT NOT NULL,"+
                             "tipo VARCHAR(50) NOT NULL)";

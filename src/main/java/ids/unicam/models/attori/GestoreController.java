@@ -107,12 +107,9 @@ public class GestoreController {
         }
         // Inserisci i dati del nuovo turista nel database
         gestoreDatabase.getModificaTabelleDatabase().aggiungiTuristaAlDatabase(nuovoTurista);
-        gestoreDatabase.getModificaTabelleDatabase().rimuoviTuristaAlDatabase(nuovoTurista);
-
-
+        //gestoreDatabase.getModificaTabelleDatabase().rimuoviTuristaAlDatabase(nuovoTurista);
 
     }
-
 
     public Contributor registraContributor(Comune comune, String nome, String cognome, GregorianCalendar birthday, String password, String username) {
         Contributor contributor = new Contributor(comune, nome, cognome, birthday, password, username);
@@ -120,5 +117,6 @@ public class GestoreController {
         return contributor;
         //TODO aggiungere al database
     }
+
 
 }

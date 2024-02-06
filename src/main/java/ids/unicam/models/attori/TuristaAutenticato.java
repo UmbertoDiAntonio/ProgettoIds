@@ -1,6 +1,7 @@
 package ids.unicam.models.attori;
 
 import ids.unicam.Exception.ContestException;
+import ids.unicam.controller.UtentiController;
 import ids.unicam.models.Invito;
 import ids.unicam.models.contenuti.*;
 import jakarta.persistence.*;
@@ -13,8 +14,9 @@ import java.util.List;
 public class TuristaAutenticato extends Turista{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private int id = 0;
     private String nome ="";
+
     private String username="";
     private String cognome ="";
     private GregorianCalendar dataNascita = new GregorianCalendar();
@@ -55,10 +57,13 @@ public class TuristaAutenticato extends Turista{
         return username;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public List<ContenutoGenerico> getPreferiti() {
         return preferiti;
