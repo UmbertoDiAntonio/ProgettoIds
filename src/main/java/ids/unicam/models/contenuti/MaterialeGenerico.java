@@ -14,13 +14,14 @@ public abstract class MaterialeGenerico {
     private Stato stato = Stato.NOT_APPROVED;
 
     @Id
-    private final UUID id=UUID.randomUUID();
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id= 0;
 
     public MaterialeGenerico() {
 
     }
 
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 

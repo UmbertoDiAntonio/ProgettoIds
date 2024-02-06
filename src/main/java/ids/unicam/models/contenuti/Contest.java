@@ -18,7 +18,7 @@ public class Contest extends ContenutoGenerico {
     private boolean open;
     @Transient
     private ContestController controller=null;
-    private String obiettivo=null;
+    private String obiettivo="";
     @OneToOne
     private Animatore creatore =null;
     @OneToMany

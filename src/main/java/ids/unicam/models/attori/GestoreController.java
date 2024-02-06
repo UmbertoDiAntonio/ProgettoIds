@@ -1,7 +1,9 @@
 package ids.unicam.models.attori;
 
 import ids.unicam.Comune;
-import ids.unicam.DataBase.DatabaseManager;
+import ids.unicam.DataBase.GestoreDatabase;
+import ids.unicam.DataBase.ModificaTabelleDatabase;
+import ids.unicam.Exception.ConnessioneFallitaException;
 import ids.unicam.Exception.RegistrazioneException;
 import ids.unicam.controller.UtentiController;
 import ids.unicam.models.Ruolo;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.GregorianCalendar;
 
 import static ids.unicam.Main.logger;
@@ -23,11 +26,11 @@ public class GestoreController {
         return utentiController;
     }
 
-    private final DatabaseManager databaseManager;
+    private final GestoreDatabase gestoreDatabase;
 
     @Autowired
-    public GestoreController(DatabaseManager databaseManager) {
-        this.databaseManager = databaseManager;
+    public GestoreController(GestoreDatabase gestoreDatabase) {
+        this.gestoreDatabase = gestoreDatabase;
     }
 
     /**
@@ -90,13 +93,23 @@ public class GestoreController {
         // Aggiungi il nuovo turista alla lista dei turisti nel controller degli utenti
         utentiController.getTuristi().add(nuovoTurista);
         // Ottieni una connessione al database
-        Connection connection = databaseManager.connectToDatabase();
+        Connection connection = gestoreDatabase.getConnessioneDatabase().connessioneAlDatabase();
         if(connection==null){
             logger.error("Creazione Turista fallita, impossibile stabiliere una connessione con il DB");
             //TODO trow oppure?
         }
+        try {
+            gestoreDatabase.getCreazioneTabelleDatabase().inizializzaDatabase();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ConnessioneFallitaException e) {
+            throw new RuntimeException(e);
+        }
         // Inserisci i dati del nuovo turista nel database
-        DatabaseManager.aggiungiTuristaAlDatabase(connection, nuovoTurista);
+        gestoreDatabase.getModificaTabelleDatabase().aggiungiTuristaAlDatabase(nuovoTurista);
+        gestoreDatabase.getModificaTabelleDatabase().rimuoviTuristaAlDatabase(nuovoTurista);
+
+
 
     }
 

@@ -3,10 +3,7 @@ package ids.unicam.models.contenuti;
 import ids.unicam.controller.ContenutoController;
 import ids.unicam.models.Tempo;
 import ids.unicam.utilites.Stato;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 
@@ -15,7 +12,9 @@ import java.util.ArrayList;
 public abstract class ContenutoGenerico {
 
     @Id
-    private final long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id= 0;
+
     private Stato stato = Stato.NOT_APPROVED;
 
     @Transient
@@ -52,6 +51,6 @@ public abstract class ContenutoGenerico {
     }
 
     public ContenutoGenerico() {
-        this.id = ContenutoController.generaID();
+
     }
 }

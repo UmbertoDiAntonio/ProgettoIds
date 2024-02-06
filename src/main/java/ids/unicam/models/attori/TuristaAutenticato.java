@@ -13,7 +13,7 @@ import java.util.List;
 public class TuristaAutenticato extends Turista{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id= 0;
+    private long id;
     private String nome ="";
     private String username="";
     private String cognome ="";
