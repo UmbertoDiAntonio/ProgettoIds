@@ -7,6 +7,7 @@ import ids.unicam.Exception.ConnessioneFallitaException;
 import ids.unicam.Exception.RegistrazioneException;
 import ids.unicam.controller.UtentiController;
 import ids.unicam.models.Ruolo;
+import ids.unicam.models.Service.TuristaAutenticatoService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,10 +28,12 @@ public class GestoreController {
     }
 
     private final GestoreDatabase gestoreDatabase;
+    public final TuristaAutenticatoService turistaAutenticatoService;
 
     @Autowired
-    public GestoreController(GestoreDatabase gestoreDatabase) {
+    public GestoreController(GestoreDatabase gestoreDatabase, TuristaAutenticatoService turistaAutenticatoService) {
         this.gestoreDatabase = gestoreDatabase;
+        this.turistaAutenticatoService = turistaAutenticatoService;
     }
 
     /**
@@ -87,26 +90,25 @@ public class GestoreController {
     }
 
     public void registraTurista(String nome, String cognome, GregorianCalendar birthday, String password, String username) {
-        // Crea un nuovo oggetto TuristaAutenticato
         TuristaAutenticato nuovoTurista = new TuristaAutenticato(nome, cognome, birthday, password, username);
-
-        // Aggiungi il nuovo turista alla lista dei turisti nel controller degli utenti
         utentiController.getTuristi().add(nuovoTurista);
-        // Ottieni una connessione al database
         Connection connection = gestoreDatabase.getConnessioneDatabase().connessioneAlDatabase();
-        if(connection==null){
+        if (connection == null) {
             logger.error("Creazione Turista fallita, impossibile stabiliere una connessione con il DB");
             //TODO trow oppure?
         }
         try {
             gestoreDatabase.getCreazioneTabelleDatabase().inizializzaDatabase();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (ConnessioneFallitaException e) {
+        } catch (SQLException | ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
+
+        turistaAutenticatoService.salvaTurista(nuovoTurista);
+        System.out.println("Nuovo "+nuovoTurista.getId());
+        //System.out.println("possibile "+possibile.getId());
+
         // Inserisci i dati del nuovo turista nel database
-        gestoreDatabase.getModificaTabelleDatabase().aggiungiTuristaAlDatabase(nuovoTurista);
+        //gestoreDatabase.getModificaTabelleDatabase().aggiungiTuristaAlDatabase(nuovoTurista);
         //gestoreDatabase.getModificaTabelleDatabase().rimuoviTuristaAlDatabase(nuovoTurista);
 
     }

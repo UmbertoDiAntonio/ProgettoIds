@@ -2,6 +2,7 @@ package ids.unicam.DataBase;
 
 import ids.unicam.models.attori.Turista;
 import ids.unicam.models.attori.TuristaAutenticato;
+import jakarta.persistence.DiscriminatorValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,11 +22,12 @@ public class ModificaTabelleDatabase {
 
     public void aggiungiTuristaAlDatabase(TuristaAutenticato turistaAutenticato) {
         try {
-            String insertDataSQL = "INSERT INTO TURISTI (id, name, surname, username, password) VALUES ('" +
-                    turistaAutenticato.getId() + "', '" +
+            System.out.println(turistaAutenticato.getId());
+            String insertDataSQL = "INSERT INTO TURISTI (nome, cognome, username, dType, password) VALUES ('" +
                     turistaAutenticato.getNome() + "', '" +
                     turistaAutenticato.getCognome() + "', '" +
                     turistaAutenticato.getUsername() + "', '" +
+                    turistaAutenticato.getClass().getAnnotation(DiscriminatorValue.class).value() + "', '" +
                     turistaAutenticato.getPassword() + "')";
             try (Statement statement = connection.createStatement()) {
                 statement.executeUpdate(insertDataSQL);

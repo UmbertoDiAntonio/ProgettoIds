@@ -11,20 +11,25 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 @Entity
+@Table(name = "TURISTI")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "DTYPE")
+@DiscriminatorValue("TuristaAutenticato")
 public class TuristaAutenticato extends Turista{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id = 0;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id ;
     private String nome ="";
 
     private String username="";
     private String cognome ="";
+    @Transient
     private GregorianCalendar dataNascita = new GregorianCalendar();
     private String password="";
 
-    @OneToMany
+    @Transient
     private final List<ContenutoGenerico> preferiti = new ArrayList<>();
-    @OneToMany
+    @Transient
     private final List<Invito> invitiRicevuti = new ArrayList<>();
 
 
@@ -58,10 +63,10 @@ public class TuristaAutenticato extends Turista{
     }
 
     public int getId() {
-        return id;
+        return id==null?-2:id;
     }
 
-    public void setId(int id) {
+    void setId(Integer id) {
         this.id = id;
     }
 

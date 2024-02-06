@@ -9,7 +9,7 @@ import static ids.unicam.Main.logger;
 @Component
 public class CreazioneTabelleDatabase {
     private final Connection connection;
-    private final int numeroMassimoTappe = 20;
+    private final int NUMERO_MASSIMO_TAPPE = 20;
 
 
     @Autowired
@@ -36,16 +36,19 @@ public class CreazioneTabelleDatabase {
         } else {
             String createTableSQL =
                     "CREATE TABLE IF NOT EXISTS TURISTI(" +
-                            "id INT PRIMARY KEY NOT NULL," +
-                            "name VARCHAR(50) NOT NULL," +
-                            "surname VARCHAR(50) NOT NULL," +
+                            "id INT PRIMARY KEY AUTO_INCREMENT," +
+                            "nome VARCHAR(50) NOT NULL," +
+                            "cognome VARCHAR(50) NOT NULL," +
                             "username VARCHAR(50) NOT NULL," +
+                            "dType VARCHAR(50) NOT NULL," +
                             "password VARCHAR(50) NOT NULL)";
             try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
                 statement.executeUpdate();
             }
         }
     }
+
+
 
     private void creaTabellaContributor() throws SQLException, ConnessioneFallitaException {
         if (connection == null) {
@@ -154,9 +157,9 @@ public class CreazioneTabelleDatabase {
                             "id INT PRIMARY KEY AUTO_INCREMENT," +
                             "tag VARCHAR(50)," +
                             "name VARCHAR(50) NOT NULL,");
-            for (int i = 1; i < numeroMassimoTappe; i++) {
+            for (int i = 1; i < NUMERO_MASSIMO_TAPPE; i++) {
                 createTableSQL.append("tappa_").append(i).append(" INT NOT NULL");
-                if (i < numeroMassimoTappe - 1)
+                if (i < NUMERO_MASSIMO_TAPPE - 1)
                     createTableSQL.append(",");
             }
             createTableSQL.append(")");

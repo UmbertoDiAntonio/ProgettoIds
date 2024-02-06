@@ -23,14 +23,13 @@ import java.util.GregorianCalendar;
 public class Main implements ApplicationRunner {
     public static final Logger logger = LoggerFactory.getLogger(Main.class);
 
-    public final TuristaAutenticatoService turistaAutenticatoService;
 
 
 
     public final GestorePiattaforma gestorePiattaforma;
-    public Main(GestorePiattaforma gestorePiattaforma, TuristaAutenticatoService turistaAutenticatoService) {
+    public Main(GestorePiattaforma gestorePiattaforma) {
         this.gestorePiattaforma = gestorePiattaforma;
-        this.turistaAutenticatoService = turistaAutenticatoService;
+
     }
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
@@ -41,10 +40,10 @@ public class Main implements ApplicationRunner {
         logger.info("this is a info message");
         logger.warn("this is a warn message");
         logger.error("this is a error message");
-        //gestorePiattaforma.getGestoreController().registraTurista("Leonardo", "Compagnucci", new GregorianCalendar(1998, Calendar.JANUARY,1), "UNICAM", "leocompa");
+        gestorePiattaforma.getGestoreController().registraTurista("Leonardo", "Compagnucci", new GregorianCalendar(1998, Calendar.JANUARY,1), "UNICAM", "leocompa");
         //gestorePiattaforma.getGestoreController().registraTurista("Umberto", "Di Antonio", new GregorianCalendar(1999,Calendar.NOVEMBER,23), "ciao!", "umber");
         logger.error("this is a error message");
-        turistaAutenticatoService.eseguiOperazioniCrud();
+
     }
 
     @RequestMapping(value="/")

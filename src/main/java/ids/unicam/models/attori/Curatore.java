@@ -4,6 +4,7 @@ import ids.unicam.Comune;
 import ids.unicam.models.contenuti.*;
 import ids.unicam.utilites.Observer;
 import ids.unicam.utilites.Stato;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Transient;
 import org.jetbrains.annotations.NotNull;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 
 
 @Entity
+@DiscriminatorValue("Curatore")
 public class Curatore extends ContributorAutorizzato {
 
     @Transient

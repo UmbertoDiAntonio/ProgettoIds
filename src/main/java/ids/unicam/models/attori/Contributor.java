@@ -8,13 +8,13 @@ import ids.unicam.models.contenuti.MaterialeGenerico;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Observer;
 import ids.unicam.utilites.Stato;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.GregorianCalendar;
 
 @Entity
+@DiscriminatorValue("Contributor")
 public class Contributor extends TuristaAutenticato implements Observer {
     @OneToOne
     private Comune comune = null;

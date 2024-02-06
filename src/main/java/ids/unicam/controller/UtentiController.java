@@ -12,6 +12,11 @@ import java.util.ArrayList;
 @Component
 public class UtentiController {
 
+    static int turistaID=0;
+
+    public static int getNextId(){
+        return turistaID++;
+    }
     private final ArrayList<TuristaAutenticato> turisti = new ArrayList<>();
 
     public ArrayList<TuristaAutenticato> getTuristi() {
