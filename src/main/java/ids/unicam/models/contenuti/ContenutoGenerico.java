@@ -1,6 +1,5 @@
 package ids.unicam.models.contenuti;
 
-import ids.unicam.controller.ContenutoController;
 import ids.unicam.models.Tempo;
 import ids.unicam.utilites.Stato;
 import jakarta.persistence.*;

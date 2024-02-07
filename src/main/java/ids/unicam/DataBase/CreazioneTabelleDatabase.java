@@ -1,9 +1,12 @@
 package ids.unicam.DataBase;
+
 import ids.unicam.Exception.ConnessioneFallitaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import static ids.unicam.Main.logger;
 @Component
@@ -27,6 +30,7 @@ public class CreazioneTabelleDatabase {
         creaTabellaItinerari();
         creaTabellaContest();
         creaTabellaMateriali();
+        creaTabellaComuni();
     }
 
     private void creaTabellaTuristi() throws SQLException, ConnessioneFallitaException {
@@ -37,11 +41,12 @@ public class CreazioneTabelleDatabase {
             String createTableSQL =
                     "CREATE TABLE IF NOT EXISTS TURISTI(" +
                             "id INT PRIMARY KEY AUTO_INCREMENT," +
+                            "comune_nome VARCHAR(50) ," +
                             "nome VARCHAR(50) NOT NULL," +
                             "cognome VARCHAR(50) NOT NULL," +
                             "username VARCHAR(50) NOT NULL," +
-                            "dType VARCHAR(50) NOT NULL," +
-                            "password VARCHAR(50) NOT NULL)";
+                            "password VARCHAR(50) NOT NULL," +
+                            "Tipo VARCHAR(50) NOT NULL)";
             try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
                 statement.executeUpdate();
             }
@@ -200,6 +205,22 @@ public class CreazioneTabelleDatabase {
                             "stato BOOLEAN NOT NULL,"+
                             "id_creatore INT NOT NULL,"+
                             "tipo VARCHAR(50) NOT NULL)";
+            try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
+                statement.executeUpdate();
+            }
+        }
+    }
+
+    private void creaTabellaComuni() throws SQLException, ConnessioneFallitaException {
+        if (connection == null){
+            logger.error("errore creazione tabella Comuni");
+            throw new ConnessioneFallitaException("Stabilire una connesione al database");
+        }else {
+            String createTableSQL =
+                    "CREATE TABLE IF NOT EXISTS COMUNE(" +
+                            "nome VARCHAR(50) PRIMARY KEY NOT NULL," +
+                            "latitudine DOUBLE NOT NULL," +
+                            "longitudine DOUBLE NOT NULL)";
             try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
                 statement.executeUpdate();
             }

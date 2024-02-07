@@ -107,7 +107,7 @@ public class JUnitContenutiTest {
             PuntoInteresse puntoInteresse = attivita1.creaPoi("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015));
             contributorAutorizzato.aggiungiPuntoInteresse(puntoInteresse);
             gestorePiattaforma.getGestoreController().registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.FEBRUARY, 3), "eroe", "AN2");
-            TuristaAutenticato turistaAutenticato = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi().getFirst();
+            TuristaAutenticato turistaAutenticato = gestorePiattaforma.getGestoreController().prendiPrimoTurista();
             MaterialeGenerico materialeGenerico = new Foto(turistaAutenticato);
             contributorAutorizzato.aggiungiMateriale(puntoInteresse, materialeGenerico);
             assertEquals(1, puntoInteresse.getMateriali().size());
@@ -206,7 +206,7 @@ public class JUnitContenutiTest {
             assertEquals(1, comune.getContestController().getContestDaAutore((comune.getAnimatori().getFirst().getId())).size());
 
             gestorePiattaforma.getGestoreController().registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH, 11), "eroe", "AN2");
-            TuristaAutenticato turistaAutenticato = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi().getFirst();
+            TuristaAutenticato turistaAutenticato = gestorePiattaforma.getGestoreController().prendiPrimoTurista();
             MaterialeGenerico materialeGenerico = new Foto(turistaAutenticato);
             turistaAutenticato.partecipaAlContest(comune.getContestController().getContestDaAutore((comune.getAnimatori().getFirst().getId())).getFirst());
             assertEquals(1, comune.getContestController().getContestDaAutore((comune.getAnimatori().getFirst().getId())).getFirst().getPartecipanti().size());
@@ -226,7 +226,7 @@ public class JUnitContenutiTest {
             assertEquals(2, comune.getContestController().getContestDaAutore((comune.getAnimatori().getFirst().getId())).size());
 
             gestorePiattaforma.getGestoreController().registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.NOVEMBER, 5), "eroe", "AN2");
-            TuristaAutenticato turistaAutenticato = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi().getFirst();
+            TuristaAutenticato turistaAutenticato = gestorePiattaforma.getGestoreController().prendiPrimoTurista();
             animatore.invita(comune.getContestController().getContests().getLast(), turistaAutenticato);
 
             assertTrue(turistaAutenticato.getInvitiRicevuti().getFirst().isValid());
@@ -250,7 +250,7 @@ public class JUnitContenutiTest {
         Comune comune = new Comune("Milano", gestorePiattaforma);
         Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.OCTOBER, 1), "ciao", "mr");
         gestorePiattaforma.getGestoreController().registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.DECEMBER, 3), "eroe", "AN2");
-        TuristaAutenticato turistaAutenticato = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi().getFirst();
+        TuristaAutenticato turistaAutenticato = gestorePiattaforma.getGestoreController().prendiPrimoTurista();
 
         gestorePiattaforma.promuovi(contributor, Ruolo.Animatore);
         Animatore animatore = comune.getAnimatori().getFirst();
@@ -286,7 +286,7 @@ public class JUnitContenutiTest {
         Curatore curatore = comune.getCuratori().getFirst();
 
         gestorePiattaforma.getGestoreController().registraTurista("aldo", "neri", new GregorianCalendar(2002, 7, 12), "password", "user1234");
-        TuristaAutenticato turista = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi().getLast();
+        TuristaAutenticato turista = gestorePiattaforma.getGestoreController().prendiPrimoTurista();
 
 
         AttivitaFactory attivita1 = new AttivitaFactory();

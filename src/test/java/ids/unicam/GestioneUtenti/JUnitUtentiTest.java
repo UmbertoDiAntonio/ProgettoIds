@@ -60,7 +60,7 @@ public class JUnitUtentiTest {
         comune.getPosizione();
         Contributor contributor = gestorePiattaforma.getGestoreController().registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH,17), "ciao", "mr");
         gestorePiattaforma.getGestoreController().registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH,17), "eroe", "AN2");
-        TuristaAutenticato turistaAutenticato = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi().getFirst();
+        TuristaAutenticato turistaAutenticato = gestorePiattaforma.getGestoreController().prendiUltimoTurista();
         AttivitaFactory attivitaFactory = new AttivitaFactory();
 
         gestorePiattaforma.promuovi(contributor, Ruolo.ContributorTrusted);
@@ -88,7 +88,7 @@ public class JUnitUtentiTest {
     }
 
     @Test
-    public void searchMethodTest() {
+    public void metodoCercaTurista() {
         Turista turista=new Turista();
         assertEquals(0,turista.search("empty").size());
 
@@ -119,7 +119,7 @@ public class JUnitUtentiTest {
         PuntoInteresse puntoInteresse = comune.getContenutoController().getContenuti().getFirst();
 
         gestorePiattaforma.getGestoreController().registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH,17), "eroe", "AN2");
-        TuristaAutenticato turistaAutenticato = gestorePiattaforma.getGestoreController().getUtentiController().getTuristi().getFirst();
+        TuristaAutenticato turistaAutenticato = gestorePiattaforma.getGestoreController().prendiUltimoTurista();
 
         assertEquals(0, puntoInteresse.getMateriali().size());
         turistaAutenticato.aggiungiFoto(puntoInteresse, new Foto(turistaAutenticato));

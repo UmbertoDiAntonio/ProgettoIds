@@ -6,8 +6,6 @@ import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Stato;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 
 
 @Entity

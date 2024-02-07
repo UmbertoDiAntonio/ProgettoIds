@@ -1,7 +1,6 @@
 package ids.unicam;
 
 
-import ids.unicam.models.Service.TuristaAutenticatoService;
 import ids.unicam.models.attori.GestorePiattaforma;
 import ids.unicam.models.attori.TuristaAutenticato;
 import org.slf4j.Logger;
@@ -41,8 +40,18 @@ public class Main implements ApplicationRunner {
         logger.warn("this is a warn message");
         logger.error("this is a error message");
         gestorePiattaforma.getGestoreController().registraTurista("Leonardo", "Compagnucci", new GregorianCalendar(1998, Calendar.JANUARY,1), "UNICAM", "leocompa");
-        //gestorePiattaforma.getGestoreController().registraTurista("Umberto", "Di Antonio", new GregorianCalendar(1999,Calendar.NOVEMBER,23), "ciao!", "umber");
+        gestorePiattaforma.getGestoreController().registraTurista("Andrea", "Compagnucci", new GregorianCalendar(1998, Calendar.JANUARY,1), "UNICAM", "leocompa");
+        gestorePiattaforma.getGestoreController().registraTurista("Umberto", "Di Antonio", new GregorianCalendar(1999,Calendar.NOVEMBER,23), "ciao!", "umber");
         logger.error("this is a error message");
+        gestorePiattaforma.getGestoreController().eliminaTurista(gestorePiattaforma.getGestoreController().prendiUltimoTurista());
+        TuristaAutenticato turistaAutenticato1 = gestorePiattaforma.getGestoreController().cercaTurista(gestorePiattaforma.getGestoreController().prendiUltimoTurista());
+        if(turistaAutenticato1 == null){
+            System.out.println("ERRORE");
+        }else
+            System.out.println(turistaAutenticato1.getNome());
+        for(TuristaAutenticato turistaAutenticato : gestorePiattaforma.getGestoreController().trovaTutti())
+            System.out.println(turistaAutenticato.getId());
+        gestorePiattaforma.getGestoreController().eliminaListaTuristi();
 
     }
 
@@ -50,6 +59,5 @@ public class Main implements ApplicationRunner {
     public String hello(){
         return "Hello World";
     }
-
 
 }

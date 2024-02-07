@@ -2,10 +2,8 @@ package ids.unicam.models.attori;
 
 import ids.unicam.Comune;
 import ids.unicam.DataBase.GestoreDatabase;
-import ids.unicam.DataBase.ModificaTabelleDatabase;
 import ids.unicam.Exception.ConnessioneFallitaException;
 import ids.unicam.Exception.RegistrazioneException;
-import ids.unicam.controller.UtentiController;
 import ids.unicam.models.Ruolo;
 import ids.unicam.models.Service.TuristaAutenticatoService;
 import org.jetbrains.annotations.NotNull;
@@ -21,14 +19,8 @@ import static ids.unicam.Main.logger;
 @Component
 public class GestoreController {
 
-    private final UtentiController utentiController = new UtentiController();
-
-    public UtentiController getUtentiController() {
-        return utentiController;
-    }
-
     private final GestoreDatabase gestoreDatabase;
-    public final TuristaAutenticatoService turistaAutenticatoService;
+    private final TuristaAutenticatoService turistaAutenticatoService;
 
     @Autowired
     public GestoreController(GestoreDatabase gestoreDatabase, TuristaAutenticatoService turistaAutenticatoService) {
@@ -91,7 +83,6 @@ public class GestoreController {
 
     public void registraTurista(String nome, String cognome, GregorianCalendar birthday, String password, String username) {
         TuristaAutenticato nuovoTurista = new TuristaAutenticato(nome, cognome, birthday, password, username);
-        utentiController.getTuristi().add(nuovoTurista);
         Connection connection = gestoreDatabase.getConnessioneDatabase().connessioneAlDatabase();
         if (connection == null) {
             logger.error("Creazione Turista fallita, impossibile stabiliere una connessione con il DB");
@@ -102,15 +93,7 @@ public class GestoreController {
         } catch (SQLException | ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
-
         turistaAutenticatoService.salvaTurista(nuovoTurista);
-        System.out.println("Nuovo "+nuovoTurista.getId());
-        //System.out.println("possibile "+possibile.getId());
-
-        // Inserisci i dati del nuovo turista nel database
-        //gestoreDatabase.getModificaTabelleDatabase().aggiungiTuristaAlDatabase(nuovoTurista);
-        //gestoreDatabase.getModificaTabelleDatabase().rimuoviTuristaAlDatabase(nuovoTurista);
-
     }
 
     public Contributor registraContributor(Comune comune, String nome, String cognome, GregorianCalendar birthday, String password, String username) {
@@ -118,6 +101,33 @@ public class GestoreController {
         comune.getContributors().add(contributor);
         return contributor;
         //TODO aggiungere al database
+    }
+
+    public void eliminaTurista(TuristaAutenticato turistaAutenticato){
+        turistaAutenticatoService.eliminaTurista(turistaAutenticato);
+    }
+
+    public void eliminaListaTuristi(){
+        turistaAutenticatoService.eliminaListaTuristi();
+    }
+
+    public TuristaAutenticato cercaTurista(TuristaAutenticato turistaAutenticato){
+        return turistaAutenticatoService.cercaTurista(turistaAutenticato);
+    }
+    public TuristaAutenticato cercaTurista(int id){
+        return turistaAutenticatoService.cercaTurista(id);
+    }
+
+    public Iterable<TuristaAutenticato> trovaTutti(){
+        return turistaAutenticatoService.elencoTuristi();
+    }
+
+    public TuristaAutenticato prendiUltimoTurista(){
+        return turistaAutenticatoService.getLast();
+    }
+
+    public TuristaAutenticato prendiPrimoTurista(){
+        return turistaAutenticatoService.getFirst();
     }
 
 

@@ -1,7 +1,6 @@
 package ids.unicam.models.attori;
 
 import ids.unicam.Exception.ContestException;
-import ids.unicam.controller.UtentiController;
 import ids.unicam.models.Invito;
 import ids.unicam.models.contenuti.*;
 import jakarta.persistence.*;
@@ -13,12 +12,12 @@ import java.util.List;
 @Entity
 @Table(name = "TURISTI")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "DTYPE")
+@DiscriminatorColumn(name = "TIPO")
 @DiscriminatorValue("TuristaAutenticato")
 public class TuristaAutenticato extends Turista{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id ;
+    private int id;
     private String nome ="";
 
     private String username="";
@@ -32,11 +31,9 @@ public class TuristaAutenticato extends Turista{
     @Transient
     private final List<Invito> invitiRicevuti = new ArrayList<>();
 
-
     public TuristaAutenticato() {
 
     }
-
 
     public List<Invito> getInvitiRicevuti() {
         return invitiRicevuti;
@@ -63,7 +60,7 @@ public class TuristaAutenticato extends Turista{
     }
 
     public int getId() {
-        return id==null?-2:id;
+        return id;
     }
 
     void setId(Integer id) {
@@ -78,7 +75,6 @@ public class TuristaAutenticato extends Turista{
         if(contenutoGenerico.getStato().asBoolean())
             preferiti.add(contenutoGenerico);
     }
-
 
     protected TuristaAutenticato(String nome, String cognome, GregorianCalendar dataNascita, String password, String username) {
         this.nome = nome;

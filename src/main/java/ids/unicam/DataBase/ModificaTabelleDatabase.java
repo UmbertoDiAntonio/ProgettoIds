@@ -1,12 +1,14 @@
 package ids.unicam.DataBase;
 
-import ids.unicam.models.attori.Turista;
 import ids.unicam.models.attori.TuristaAutenticato;
 import jakarta.persistence.DiscriminatorValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import static ids.unicam.Main.logger;
 
