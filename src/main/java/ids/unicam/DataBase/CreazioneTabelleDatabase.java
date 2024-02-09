@@ -11,7 +11,6 @@ import static ids.unicam.Main.logger;
 
 @Component
 public class CreazioneTabelleDatabase {
-    private final int NUMERO_MASSIMO_TAPPE = 20;
 
     public void inizializzaDatabase(@NotNull Connection connection) {
         creaTabellaTuristi(connection);
@@ -130,19 +129,13 @@ public class CreazioneTabelleDatabase {
     }
 
     private void creaTabellaItinerari(@NotNull Connection connection) {
-        StringBuilder createTableSQL =
-                new StringBuilder("CREATE TABLE IF NOT EXISTS ITINERARI(" +
-                        "id INT PRIMARY KEY AUTO_INCREMENT," +
+        String createTableSQL =
+                "CREATE TABLE IF NOT EXISTS ITINERARI(" +
                         "nome_comune VARCHAR(50) NOT NULL," +
-                        "tag VARCHAR(50)," +
-                        "nome VARCHAR(50) NOT NULL,");
-        for (int i = 1; i < NUMERO_MASSIMO_TAPPE; i++) {
-            createTableSQL.append("tappa_").append(i).append(" INT NOT NULL");
-            if (i < NUMERO_MASSIMO_TAPPE - 1)
-                createTableSQL.append(",");
-        }
-        createTableSQL.append(")");
-        try (PreparedStatement statement = connection.prepareStatement(createTableSQL.toString())) {
+                        "nome VARCHAR(50) NOT NULL,"+
+                        "stato VARCHAR(50)," +
+                        "id INT PRIMARY KEY AUTO_INCREMENT)";
+        try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
 
         } catch (SQLException e) {
