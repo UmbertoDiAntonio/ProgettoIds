@@ -1,17 +1,14 @@
 package ids.unicam.models.Service;
 
-import ids.unicam.Comune;
 import ids.unicam.models.Repository.PoiRepository;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.ContributorAutorizzato;
 import ids.unicam.models.contenuti.MaterialeGenerico;
 import ids.unicam.models.contenuti.PuntoInteresse;
-import ids.unicam.utilites.Punto;
 import ids.unicam.utilites.Stato;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +31,6 @@ public class PoiService {
         if(contributor instanceof ContributorAutorizzato) puntoInteresse.setStato(Stato.APPROVED);//TODO check coordinate
         return repository.save(puntoInteresse);
     }
-
 
 
 

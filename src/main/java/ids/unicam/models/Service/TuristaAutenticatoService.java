@@ -2,6 +2,8 @@ package ids.unicam.models.Service;
 
 import ids.unicam.models.Repository.TuristaAutenticatoRepository;
 import ids.unicam.models.attori.TuristaAutenticato;
+import ids.unicam.models.contenuti.Foto;
+import ids.unicam.models.contenuti.PuntoInteresse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +13,12 @@ import java.util.Optional;
 @Service
 public class TuristaAutenticatoService  {
     private final TuristaAutenticatoRepository repository;
+    private final MaterialeService materialeService;
 
     @Autowired
-    public TuristaAutenticatoService(TuristaAutenticatoRepository repository) {
+    public TuristaAutenticatoService(TuristaAutenticatoRepository repository, MaterialeService materialeService) {
         this.repository = repository;
+        this.materialeService = materialeService;
     }
 
 
@@ -28,6 +32,9 @@ public class TuristaAutenticatoService  {
         return turistaAutenticato;
     }
 
+    public void aggiungiFoto(PuntoInteresse puntoInteresse, Foto foto) {
+        materialeService.aggiungiMateriale(puntoInteresse,foto);
+    }
 
 
     public Optional<TuristaAutenticato> findById(int id) {

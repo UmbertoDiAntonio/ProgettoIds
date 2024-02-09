@@ -5,14 +5,17 @@ import ids.unicam.utilites.Stato;
 import jakarta.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Table(name = "Materiali")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="tipo")
 public abstract class MaterialeGenerico {
     @OneToOne
     private TuristaAutenticato creatore =null;
     private Stato stato = Stato.NOT_APPROVED;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "sequenza_materiali")
+    @SequenceGenerator(name = "sequenza_materiali", sequenceName = "MATERIALE_SEQ", allocationSize = 1)
     private int id= 0;
 
     public MaterialeGenerico() {

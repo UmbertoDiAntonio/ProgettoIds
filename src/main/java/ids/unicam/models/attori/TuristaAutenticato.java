@@ -91,9 +91,7 @@ public class TuristaAutenticato extends Turista{
         //TODO
     }
 
-    public void aggiungiFoto(PuntoInteresse puntoInteresse, Foto foto) {
-        puntoInteresse.getMateriali().add(foto);
-    }
+
 
     /**
      * Accetta, se è stato ricevuto un invito a un contest

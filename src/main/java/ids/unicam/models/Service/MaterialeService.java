@@ -38,11 +38,14 @@ public class MaterialeService {
     }
 
 
+    public void aggiungiMateriale(PuntoInteresse puntoInteresse, MaterialeGenerico materialeGenerico){
+        poiService.aggiungiMateriale(puntoInteresse,materialeGenerico);
+    }
+
 
     public Optional<MaterialeGenerico> findById(int id) {
         return repository.findById(id);
     }
-
 
     public List<MaterialeGenerico> findAll() {
         return repository.findAll();

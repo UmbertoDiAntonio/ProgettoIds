@@ -3,6 +3,7 @@ package ids.unicam.models.contenuti;
 import ids.unicam.Comune;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +13,7 @@ import static ids.unicam.Main.logger;
 
 
 @Entity
+@Table(name = "Itinerari")
 public class Itinerario extends ContenutoGenerico {
     private String nome="";
     @OneToMany

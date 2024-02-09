@@ -1,12 +1,19 @@
 package ids.unicam.models;
 
 import ids.unicam.utilites.DayOfWeek;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.OneToMany;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class Orario {
+    @ElementCollection
     private Map<DayOfWeek, OrarioApertura> hoursMap;
 
     public Orario() {
@@ -35,13 +42,19 @@ public class Orario {
         return builder.toString();
     }
 
+    @Embeddable
     public static class OrarioApertura {
-        private final LocalTime openingTime;
-        private final LocalTime closingTime;
+
+        private LocalTime openingTime = null;
+        private LocalTime closingTime = null;
 
         public OrarioApertura(LocalTime openingTime, LocalTime closingTime) {
             this.openingTime = openingTime;
             this.closingTime = closingTime;
+        }
+
+        public OrarioApertura() {
+
         }
 
         public LocalTime getOrarioApertura() {

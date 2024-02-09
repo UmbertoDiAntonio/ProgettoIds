@@ -2,9 +2,7 @@ package ids.unicam.models.contenuti;
 
 import ids.unicam.Comune;
 import ids.unicam.utilites.Punto;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +11,8 @@ import static ids.unicam.Main.logger;
 
 
 @Entity
+@Table(name = "Punti_di_Interesse")
+@DiscriminatorColumn(name = "Tipo")
 public abstract class PuntoInteresse extends ContenutoGenerico {
     @Override
     public String toString() {

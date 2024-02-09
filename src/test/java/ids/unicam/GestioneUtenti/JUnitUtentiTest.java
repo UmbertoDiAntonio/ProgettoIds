@@ -30,8 +30,9 @@ public class JUnitUtentiTest {
     private final PoiService poiService;
     private final ItinerarioService itinerarioService;
     private final MaterialeService materialeService;
+    private final TuristaAutenticatoService turistaAutenticatoService;
     @Autowired
-    public JUnitUtentiTest(GestorePiattaforma gestorePiattaforma, ComuneController comuneController, GestioneComuneService gestioneComuneService, ContributorService contributorService, ContributorAutorizzatoService contributorAutorizzatoService, CuratoreService curatoreService, AnimatoreService animatoreService, PoiService poiService, ItinerarioService itinerarioService, MaterialeService materialeService) {
+    public JUnitUtentiTest(GestorePiattaforma gestorePiattaforma, ComuneController comuneController, GestioneComuneService gestioneComuneService, ContributorService contributorService, ContributorAutorizzatoService contributorAutorizzatoService, CuratoreService curatoreService, AnimatoreService animatoreService, PoiService poiService, ItinerarioService itinerarioService, MaterialeService materialeService, TuristaAutenticatoService turistaAutenticatoService) {
         this.gestorePiattaforma = gestorePiattaforma;
         this.comuneController = comuneController;
         this.gestioneComuneService = gestioneComuneService;
@@ -42,6 +43,7 @@ public class JUnitUtentiTest {
         this.poiService = poiService;
         this.itinerarioService = itinerarioService;
         this.materialeService = materialeService;
+        this.turistaAutenticatoService = turistaAutenticatoService;
     }
 
     @Test
@@ -145,7 +147,7 @@ public class JUnitUtentiTest {
         TuristaAutenticato turistaAutenticato = gestorePiattaforma.getGestoreController().prendiUltimoTurista();
 
         assertEquals(0, puntoInteresse.getMateriali().size());
-        turistaAutenticato.aggiungiFoto(puntoInteresse, new Foto(turistaAutenticato));
+        turistaAutenticatoService.aggiungiFoto(puntoInteresse, new Foto(turistaAutenticato));
         assertEquals(1, puntoInteresse.getMateriali().size());
         assertFalse(puntoInteresse.getMateriali().getFirst().getStato().asBoolean());
         gestorePiattaforma.promuovi(contributor, Ruolo.Curatore);

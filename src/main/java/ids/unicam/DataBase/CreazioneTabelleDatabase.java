@@ -113,6 +113,7 @@ public class CreazioneTabelleDatabase {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS PUNTI_DI_INTERESSE(" +
                         "id INT PRIMARY KEY NOT NULL," +
+                        "nome_comune VARCHAR(50) NOT NULL," +
                         "stato BOOLEAN NOT NULL," +
                         "latitudine DOUBLE NOT NULL," +
                         "longitudine DOUBLE NOT NULL," +
@@ -132,6 +133,7 @@ public class CreazioneTabelleDatabase {
         StringBuilder createTableSQL =
                 new StringBuilder("CREATE TABLE IF NOT EXISTS ITINERARI(" +
                         "id INT PRIMARY KEY AUTO_INCREMENT," +
+                        "nome_comune VARCHAR(50) NOT NULL," +
                         "tag VARCHAR(50)," +
                         "nome VARCHAR(50) NOT NULL,");
         for (int i = 1; i < NUMERO_MASSIMO_TAPPE; i++) {
@@ -152,6 +154,7 @@ public class CreazioneTabelleDatabase {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS CONTEST(" +
                         "id INT PRIMARY KEY NOT NULL," +
+                        "nome_comune VARCHAR(50) NOT NULL," +
                         "tag VARCHAR(50)," +
                         "nome VARCHAR(50) NOT NULL," +
                         "aperto BOOLEAN NOT NULL," +
