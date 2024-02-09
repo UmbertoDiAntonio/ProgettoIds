@@ -30,7 +30,6 @@ public class Contest extends ContenutoGenerico {
     private String nome=null;
 
     public Contest() {
-
     }
 
     
@@ -77,7 +76,7 @@ public class Contest extends ContenutoGenerico {
 
 
     public Contest(String nome, boolean open, ContestController controller, String obiettivo, Animatore creatore) {
-        super();
+        super(creatore.getComune());
         setStato(Stato.APPROVED);
         this.open = open;
         this.controller = controller;

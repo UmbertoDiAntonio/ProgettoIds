@@ -1,4 +1,4 @@
-package ids.unicam.Exception;
+package ids.unicam.exception;
 
 public class RegistrazioneException extends RuntimeException{
 

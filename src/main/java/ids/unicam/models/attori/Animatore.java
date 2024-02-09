@@ -1,16 +1,21 @@
 package ids.unicam.models.attori;
 
+import ids.unicam.Comune;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.MaterialeGenerico;
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.Table;
 
 @Entity
-@DiscriminatorValue("Animatore")
+@Table(name="ANIMATORI")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Animatore extends Contributor {
     protected Animatore(Contributor contributor) {
         super(contributor.getComune(), contributor);
     }
+
 
     public Animatore() {
         super();

@@ -1,54 +1,28 @@
 package ids.unicam.models.attori;
 
-import ids.unicam.Comune;
 import ids.unicam.models.contenuti.MaterialeGenerico;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Stato;
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.Table;
 
 
 @Entity
-@DiscriminatorValue("ContributorAutorizzato")
+@Table(name="CONTRIBUTOR_AUTORIZZATI")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class ContributorAutorizzato extends Contributor{
-    protected ContributorAutorizzato(Comune comune, Contributor contributor) {
-        super(comune,contributor);
+    protected ContributorAutorizzato(Contributor contributor) {
+        super(contributor.getComune(),contributor);
     }
 
     public ContributorAutorizzato() {
 
     }
 
-    /**
-     * Se il punto di interesse si trova all'interno del territorio del comune del Contributor invia la richiesta di aggiunta al controller di contenuti associato al comune,
-     * il punto di interesse è automaticamente approvato
-     *
-     * @param puntoInteresse il punto di interesse da aggiungere al comune del contributor
-     * @return true se il punto di interesse è stato aggiunto, false se il punto non fa parte del comune
-     */
     @Override
-    public boolean aggiungiPuntoInteresse(PuntoInteresse puntoInteresse){
-        if(super.aggiungiPuntoInteresse(puntoInteresse)){
-            puntoInteresse.setStato(Stato.APPROVED);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Se il punto di interesse si trova all'interno del territorio del comune del Contributor invia la richiesta di aggiunta al controller di contenuti associato al comune,
-     * il materiale è automaticamente approvato
-     *
-     * @param puntoInteresse il punto di interesse del comune in cui aggiungere il materiale
-     * @param materialeGenerico il materiale da aggiungere
-     * @return true se il punto di interesse è stato aggiunto, false se il punto non fa parte del comune
-     */
-    @Override
-    public boolean aggiungiMateriale(PuntoInteresse puntoInteresse, MaterialeGenerico materialeGenerico){
-        if(super.aggiungiMateriale(puntoInteresse, materialeGenerico)){
-            materialeGenerico.setStato(Stato.APPROVED);
-            return true;
-        }
-        return false;
+    public String toString() {
+        return "ContributorAutorizzato"+super.toString();
     }
 }

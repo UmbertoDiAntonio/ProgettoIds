@@ -1,6 +1,7 @@
 package ids.unicam;
 
 
+import ids.unicam.DataBase.GestoreDatabase;
 import ids.unicam.models.attori.GestorePiattaforma;
 import ids.unicam.models.attori.TuristaAutenticato;
 import org.slf4j.Logger;
@@ -18,17 +19,20 @@ import java.util.GregorianCalendar;
 
 @RestController
 @SpringBootApplication
-@ComponentScan(basePackages = {"ids.unicam.DataBase", "ids.unicam.models.attori", "ids.unicam.models.Service","ids.unicam.models.Repository"})
+@ComponentScan(basePackages = {"ids.unicam.DataBase", "ids.unicam.models.attori", "ids.unicam.models.Service", "ids.unicam.models.Repository","ids.unicam.controller"})
 public class Main implements ApplicationRunner {
     public static final Logger logger = LoggerFactory.getLogger(Main.class);
 
 
 
 
-    public final GestorePiattaforma gestorePiattaforma;
-    public Main(GestorePiattaforma gestorePiattaforma) {
+    private final GestorePiattaforma gestorePiattaforma;
+    private final GestoreDatabase gestoreDatabase;
+    public Main(GestorePiattaforma gestorePiattaforma, GestoreDatabase gestoreDatabase) {
         this.gestorePiattaforma = gestorePiattaforma;
 
+
+        this.gestoreDatabase = gestoreDatabase;
     }
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
@@ -39,12 +43,13 @@ public class Main implements ApplicationRunner {
         logger.info("this is a info message");
         logger.warn("this is a warn message");
         logger.error("this is a error message");
+        gestoreDatabase.inizializzaDatabase();
         gestorePiattaforma.getGestoreController().registraTurista("Leonardo", "Compagnucci", new GregorianCalendar(1998, Calendar.JANUARY,1), "UNICAM", "leocompa");
         gestorePiattaforma.getGestoreController().registraTurista("Andrea", "Compagnucci", new GregorianCalendar(1998, Calendar.JANUARY,1), "UNICAM", "leocompa");
         gestorePiattaforma.getGestoreController().registraTurista("Umberto", "Di Antonio", new GregorianCalendar(1999,Calendar.NOVEMBER,23), "ciao!", "umber");
         logger.error("this is a error message");
         gestorePiattaforma.getGestoreController().eliminaTurista(gestorePiattaforma.getGestoreController().prendiUltimoTurista());
-        TuristaAutenticato turistaAutenticato1 = gestorePiattaforma.getGestoreController().cercaTurista(gestorePiattaforma.getGestoreController().prendiUltimoTurista());
+        TuristaAutenticato turistaAutenticato1 = gestorePiattaforma.getGestoreController().cercaTurista(gestorePiattaforma.getGestoreController().prendiUltimoTurista().getId());
         if(turistaAutenticato1 == null){
             System.out.println("ERRORE");
         }else

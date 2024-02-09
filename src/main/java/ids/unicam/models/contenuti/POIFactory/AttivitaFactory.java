@@ -1,5 +1,6 @@
 package ids.unicam.models.contenuti.POIFactory;
 
+import ids.unicam.Comune;
 import ids.unicam.models.Orario;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Punto;
@@ -16,8 +17,8 @@ public class AttivitaFactory implements  PoiFactory{
      * @return una nuova Attività
      */
     @Override
-    public PuntoInteresse creaPoi(String nome, Punto punto, Orario orario) {
-        return new Attivita(nome,punto, orario);
+    public PuntoInteresse creaPoi(Comune comune,String nome, Punto punto, Orario orario) {
+        return new Attivita(comune,nome,punto, orario);
         
     }
 
@@ -28,7 +29,7 @@ public class AttivitaFactory implements  PoiFactory{
      * @return ritorna una nuova Attività
      */
     @Override
-    public PuntoInteresse creaPoi(String nome, Punto punto) {
-        return new Attivita(nome,punto);
+    public PuntoInteresse creaPoi(Comune comune, String nome, Punto punto) {
+        return new Attivita(comune,nome,punto);
     }
 }

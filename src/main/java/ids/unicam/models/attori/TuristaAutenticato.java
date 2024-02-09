@@ -1,6 +1,6 @@
 package ids.unicam.models.attori;
 
-import ids.unicam.Exception.ContestException;
+import ids.unicam.exception.ContestException;
 import ids.unicam.models.Invito;
 import ids.unicam.models.contenuti.*;
 import jakarta.persistence.*;
@@ -11,13 +11,15 @@ import java.util.List;
 
 @Entity
 @Table(name = "TURISTI")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @DiscriminatorColumn(name = "TIPO")
 @DiscriminatorValue("TuristaAutenticato")
 public class TuristaAutenticato extends Turista{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "sequenza_utenti")
+    @SequenceGenerator(name = "sequenza_utenti", sequenceName = "users", allocationSize = 1)
+    private Integer id;
+
     private String nome ="";
 
     private String username="";
@@ -59,7 +61,7 @@ public class TuristaAutenticato extends Turista{
         return username;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

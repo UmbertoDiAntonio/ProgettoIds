@@ -1,32 +1,29 @@
 package ids.unicam.controller;
 
 import ids.unicam.Comune;
+import ids.unicam.models.Repository.ComuneRepository;
+import ids.unicam.models.Service.ComuneService;
+import ids.unicam.models.attori.GestorePiattaforma;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
-import java.util.ArrayList;
 
-
+@Controller
 public class  ComuneController {
-
-    private static ComuneController instance;
-
-    public ArrayList<Comune> listaComuni = new ArrayList<>();
-
-
-    public ComuneController(){}
-
-
-
-
-    public static ComuneController getInstance() {
-        if(instance == null){
-            instance = new ComuneController();
-        }
-        return instance;
+    private final ComuneService service;
+    @Autowired
+    public ComuneController(ComuneService service){
+        this.service = service;
     }
 
-    public @Nullable Comune getComune(String nome){
-        return listaComuni.stream().filter(comune -> comune.getNome().equalsIgnoreCase(nome)).findFirst().orElse(null);
+    public Comune creaComune(String nome, GestorePiattaforma gestore){
+        return service.save(new Comune(nome,gestore));
+    }
+
+
+    public @Nullable Comune getComune(String nome){//TODO è una chiamata DB
+        return service.findByNome(nome);
     }
 
 

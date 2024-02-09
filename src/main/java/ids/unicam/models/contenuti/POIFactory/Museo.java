@@ -1,5 +1,6 @@
 package ids.unicam.models.contenuti.POIFactory;
 
+import ids.unicam.Comune;
 import ids.unicam.models.Orario;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Punto;
@@ -11,13 +12,13 @@ public class Museo extends PuntoInteresse {
         return orario;
     }
 
-    protected Museo(String nome, Punto punto, Orario orario) {
-        super(nome,punto);
+    protected Museo(Comune comune,String nome, Punto punto, Orario orario) {
+        super(comune,nome,punto);
         this.orario = orario;
     }
 
-    protected Museo(String nome, Punto punto) {
-        super(nome,punto);
+    protected Museo(Comune comune, String nome, Punto punto) {
+        super(comune,nome,punto);
         new Orario();
     }
 

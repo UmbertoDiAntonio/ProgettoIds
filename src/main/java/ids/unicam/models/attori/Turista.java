@@ -1,14 +1,12 @@
 package ids.unicam.models.attori;
 
-import ids.unicam.Comune;
-import ids.unicam.controller.ComuneController;
 import ids.unicam.models.contenuti.PuntoInteresse;
 
 import java.util.ArrayList;
 
 
 public class Turista {
-    public ArrayList<PuntoInteresse> search(String searchedTags){
+    public ArrayList<PuntoInteresse> search(String searchedTags){/*
         ComuneController comuneController = ComuneController.getInstance();
         ArrayList<Comune> comuni = comuneController.listaComuni;
         ArrayList<PuntoInteresse> result=new ArrayList<>();
@@ -18,8 +16,8 @@ public class Turista {
                     result.add(puntoInteresse);
                 }
             }
-        }
-        return result;
+        }*///TODO
+        return null;
     }
 
     public void report(PuntoInteresse puntoInteresse){

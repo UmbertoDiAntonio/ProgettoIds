@@ -3,7 +3,7 @@ package ids.unicam.OSM;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import ids.unicam.Exception.ConnessioneFallitaException;
+import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.utilites.Punto;
 import org.jetbrains.annotations.Nullable;
 

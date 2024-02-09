@@ -1,4 +1,4 @@
-package ids.unicam.Exception;
+package ids.unicam.exception;
 
 import java.io.IOException;
 

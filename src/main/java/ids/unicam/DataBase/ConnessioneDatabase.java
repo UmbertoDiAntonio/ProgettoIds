@@ -10,13 +10,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Objects;
 
-import static ids.unicam.Main.logger;
-
 @Component
 public class ConnessioneDatabase {
 
     private final Environment env;
-    private static @Nullable Connection connection = null;
 
     @Autowired
     public ConnessioneDatabase(Environment env) {
@@ -24,17 +21,17 @@ public class ConnessioneDatabase {
     }
 
     public @Nullable Connection connessioneAlDatabase() {
+        Connection connection;
         try {
             connection = DriverManager.getConnection(
                     Objects.requireNonNull(env.getProperty("spring.datasource.url")),
                     env.getProperty("spring.datasource.username"),
                     env.getProperty("spring.datasource.password"));
-            logger.debug("Connessione al database stabilita");
-            return connection;
         } catch (SQLException e) {
-            logger.error("Connessione al database fallita", e);
-            return null; //TODO magari va gestito?
+            throw new RuntimeException("Impossibile Stabiliere una connessione al Database",e);
         }
+        return connection;
+
     }
 }
 

@@ -13,13 +13,13 @@ public abstract class MaterialeGenerico {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id= 0;
+    private int id= 0;
 
     public MaterialeGenerico() {
 
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 

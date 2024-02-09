@@ -24,7 +24,6 @@ public class ModificaTabelleDatabase {
 
     public void aggiungiTuristaAlDatabase(TuristaAutenticato turistaAutenticato) {
         try {
-            System.out.println(turistaAutenticato.getId());
             String insertDataSQL = "INSERT INTO TURISTI (nome, cognome, username, dType, password) VALUES ('" +
                     turistaAutenticato.getNome() + "', '" +
                     turistaAutenticato.getCognome() + "', '" +
@@ -41,7 +40,6 @@ public class ModificaTabelleDatabase {
     }
 
     public void rimuoviTuristaAlDatabase(TuristaAutenticato turistaAutenticato) {
-        System.out.println("Rim " + turistaAutenticato.getId());
         String removeDataSQL = "DELETE FROM TURISTI " +
                 "WHERE ID = " + turistaAutenticato.getId() + " ;";
         try (Statement statement = connection.createStatement()) {

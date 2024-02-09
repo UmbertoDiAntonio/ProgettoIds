@@ -5,58 +5,51 @@ import ids.unicam.models.attori.TuristaAutenticato;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
-import static ids.unicam.Main.logger;
-
 @Service
-public class TuristaAutenticatoService {
-
-    private final TuristaAutenticatoRepository turistaAutenticatoRepository;
+public class TuristaAutenticatoService  {
+    private final TuristaAutenticatoRepository repository;
 
     @Autowired
-    public TuristaAutenticatoService(TuristaAutenticatoRepository turistaAutenticatoRepository) {
-        this.turistaAutenticatoRepository = turistaAutenticatoRepository;
+    public TuristaAutenticatoService(TuristaAutenticatoRepository repository) {
+        this.repository = repository;
     }
 
-    public void eliminaTurista(TuristaAutenticato turistaAutenticato) {
-        turistaAutenticatoRepository.deleteById(turistaAutenticato.getId());
+
+    public void deleteById(int id) {
+        repository.deleteById(id);
     }
 
-    public TuristaAutenticato salvaTurista(TuristaAutenticato turistaAutenticato) {
-        turistaAutenticato = turistaAutenticatoRepository.save(turistaAutenticato);
+
+    public TuristaAutenticato save(TuristaAutenticato turistaAutenticato) {
+        turistaAutenticato = repository.save(turistaAutenticato);
         return turistaAutenticato;
     }
 
-    public TuristaAutenticato cercaTurista(TuristaAutenticato turistaAutenticato) {
-        return cercaTurista(turistaAutenticato.getId());
-    }
 
-    public TuristaAutenticato cercaTurista(int id) {
-        Optional<TuristaAutenticato> ricerca = turistaAutenticatoRepository.findById(id);
-        if (ricerca.isPresent())
-            return ricerca.get();
-        else {
-            logger.warn("Turista non trovato da ID");
-            return null;
-        }
-    }
 
-    public Iterable<TuristaAutenticato> elencoTuristi() {
-        return turistaAutenticatoRepository.findAll();
-    }
-
-    public TuristaAutenticato getLast(){
-        return turistaAutenticatoRepository.getLast();
-    }
-
-    public TuristaAutenticato getFirst(){
-        return turistaAutenticatoRepository.getFirst();
+    public Optional<TuristaAutenticato> findById(int id) {
+        return repository.findById(id);
     }
 
 
-    public void eliminaListaTuristi() {
-        turistaAutenticatoRepository.deleteAll();
+    public List<TuristaAutenticato> findAll() {
+        return repository.findAll();
+    }
+
+    public TuristaAutenticato getLast() {
+        return repository.findAll().getLast();
+    }
+
+    public TuristaAutenticato getFirst() {
+        return repository.findAll().getFirst();
+    }
+
+
+    public void deleteAll() {
+        repository.deleteAll();
     }
 
 

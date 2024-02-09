@@ -2,30 +2,34 @@ package ids.unicam.models.attori;
 
 import ids.unicam.Comune;
 import ids.unicam.DataBase.GestoreDatabase;
-import ids.unicam.Exception.ConnessioneFallitaException;
-import ids.unicam.Exception.RegistrazioneException;
+import ids.unicam.exception.RegistrazioneException;
 import ids.unicam.models.Ruolo;
-import ids.unicam.models.Service.TuristaAutenticatoService;
+import ids.unicam.models.Service.*;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.GregorianCalendar;
-
-import static ids.unicam.Main.logger;
+import java.util.List;
 
 @Component
 public class GestoreController {
 
-    private final GestoreDatabase gestoreDatabase;
     private final TuristaAutenticatoService turistaAutenticatoService;
+    private final ContributorService contributorService;
+    private final AnimatoreService animatoreService;
+    private final CuratoreService curatoreService;
+    private final ContributorAutorizzatoService contributorAutorizzatoService;
+
 
     @Autowired
-    public GestoreController(GestoreDatabase gestoreDatabase, TuristaAutenticatoService turistaAutenticatoService) {
-        this.gestoreDatabase = gestoreDatabase;
+    public GestoreController(GestoreDatabase gestoreDatabase, TuristaAutenticatoService turistaAutenticatoService, ContributorService contributorService, AnimatoreService animatoreService, CuratoreService curatoreService, ContributorAutorizzatoService contributorAutorizzatoService) {
         this.turistaAutenticatoService = turistaAutenticatoService;
+        this.contributorService = contributorService;
+        this.animatoreService = animatoreService;
+        this.curatoreService = curatoreService;
+        this.contributorAutorizzatoService = contributorAutorizzatoService;
     }
 
     /**
@@ -38,19 +42,19 @@ public class GestoreController {
         Comune comune = contributor.getComune();
         switch (ruolo) {
             case Curatore -> {
-                comune.getCuratori().add(new Curatore(comune, contributor));
+                curatoreService.save(new Curatore(contributor));
                 rimuoviVecchioRuolo(contributor);
             }
             case Animatore -> {
-                comune.getAnimatori().add(new Animatore(contributor));
+                animatoreService.save(new Animatore(contributor));
                 rimuoviVecchioRuolo(contributor);
             }
             case ContributorTrusted -> {
+                contributorAutorizzatoService.save(new ContributorAutorizzato(contributor));
                 rimuoviVecchioRuolo(contributor);
-                comune.getContributorAutorizzati().add(new ContributorAutorizzato(comune, contributor));
             }
             default -> {
-                comune.getContributors().add(new Contributor(comune, contributor));
+                contributorService.save(new Contributor(comune, contributor));
                 rimuoviVecchioRuolo(contributor);
             }
         }
@@ -58,13 +62,14 @@ public class GestoreController {
     }
 
     private void rimuoviVecchioRuolo(@NotNull Contributor contributor) {
-        Comune comune = contributor.getComune();
         switch (contributor) {
-            case Curatore curatore -> comune.getCuratori().remove(curatore);
+            case Curatore curatore -> curatoreService.deleteById(curatore.getId());
             case ContributorAutorizzato contributorAutorizzato ->
-                    comune.getContributorAutorizzati().remove(contributorAutorizzato);
-            case Animatore animatore -> comune.getAnimatori().remove(animatore);
-            case Contributor contributor1 -> comune.getContributors().remove(contributor1);
+                    contributorAutorizzatoService.deleteById(contributorAutorizzato.getId());
+            case Animatore animatore -> animatoreService.deleteById(animatore.getId());
+            case Contributor contributor1 -> {
+                contributorService.deleteById(contributor1.getId());
+            }
         }
     }
 
@@ -81,52 +86,41 @@ public class GestoreController {
         }
     }
 
-    public void registraTurista(String nome, String cognome, GregorianCalendar birthday, String password, String username) {
+    public TuristaAutenticato registraTurista(String nome, String cognome, GregorianCalendar birthday, String password, String username) {
         TuristaAutenticato nuovoTurista = new TuristaAutenticato(nome, cognome, birthday, password, username);
-        Connection connection = gestoreDatabase.getConnessioneDatabase().connessioneAlDatabase();
-        if (connection == null) {
-            logger.error("Creazione Turista fallita, impossibile stabiliere una connessione con il DB");
-            //TODO trow oppure?
-        }
-        try {
-            gestoreDatabase.getCreazioneTabelleDatabase().inizializzaDatabase();
-        } catch (SQLException | ConnessioneFallitaException e) {
-            throw new RuntimeException(e);
-        }
-        turistaAutenticatoService.salvaTurista(nuovoTurista);
+        turistaAutenticatoService.save(nuovoTurista);
+        return nuovoTurista;
     }
 
     public Contributor registraContributor(Comune comune, String nome, String cognome, GregorianCalendar birthday, String password, String username) {
         Contributor contributor = new Contributor(comune, nome, cognome, birthday, password, username);
-        comune.getContributors().add(contributor);
+        contributorService.save(contributor);
         return contributor;
+
         //TODO aggiungere al database
     }
 
-    public void eliminaTurista(TuristaAutenticato turistaAutenticato){
-        turistaAutenticatoService.eliminaTurista(turistaAutenticato);
+    public void eliminaTurista(TuristaAutenticato turistaAutenticato) {
+        turistaAutenticatoService.deleteById(turistaAutenticato.getId());
     }
 
-    public void eliminaListaTuristi(){
-        turistaAutenticatoService.eliminaListaTuristi();
+    public void eliminaListaTuristi() {
+        turistaAutenticatoService.deleteAll();
     }
 
-    public TuristaAutenticato cercaTurista(TuristaAutenticato turistaAutenticato){
-        return turistaAutenticatoService.cercaTurista(turistaAutenticato);
-    }
-    public TuristaAutenticato cercaTurista(int id){
-        return turistaAutenticatoService.cercaTurista(id);
+    public @Nullable TuristaAutenticato cercaTurista(int id) {
+        return turistaAutenticatoService.findById(id).orElse(null);
     }
 
-    public Iterable<TuristaAutenticato> trovaTutti(){
-        return turistaAutenticatoService.elencoTuristi();
+    public List<TuristaAutenticato> trovaTutti() {
+        return turistaAutenticatoService.findAll();
     }
 
-    public TuristaAutenticato prendiUltimoTurista(){
+    public TuristaAutenticato prendiUltimoTurista() {
         return turistaAutenticatoService.getLast();
     }
 
-    public TuristaAutenticato prendiPrimoTurista(){
+    public TuristaAutenticato prendiPrimoTurista() {
         return turistaAutenticatoService.getFirst();
     }
 

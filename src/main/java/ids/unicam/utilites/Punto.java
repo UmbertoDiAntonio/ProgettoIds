@@ -1,26 +1,13 @@
 package ids.unicam.utilites;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Component;
 
-@Entity
+@Component
 public class Punto {
-    @Id
-    private long id;
     private double latitudine = 0;
     private double longitudine = 0;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public Punto() {
-    }
+    public Punto(){}
 
     public double getLatitudine() {
         return latitudine;

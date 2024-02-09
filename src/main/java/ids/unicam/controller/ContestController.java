@@ -1,6 +1,6 @@
 package ids.unicam.controller;
 
-import ids.unicam.Exception.ContestException;
+import ids.unicam.exception.ContestException;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
@@ -8,10 +8,11 @@ import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.MaterialeGenerico;
 import ids.unicam.utilites.Stato;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
 
-
+@Controller
 public class ContestController {
     private final ArrayList<Contest> contests = new ArrayList<>();
     public ArrayList<Contest> getContests() {

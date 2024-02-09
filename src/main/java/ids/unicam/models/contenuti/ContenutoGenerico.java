@@ -1,5 +1,6 @@
 package ids.unicam.models.contenuti;
 
+import ids.unicam.Comune;
 import ids.unicam.models.Tempo;
 import ids.unicam.utilites.Stato;
 import jakarta.persistence.*;
@@ -12,8 +13,10 @@ public abstract class ContenutoGenerico {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id= 0;
+    private int id= 0;
 
+    @OneToOne
+    Comune comune;
     private Stato stato = Stato.NOT_APPROVED;
 
     @Transient
@@ -29,7 +32,7 @@ public abstract class ContenutoGenerico {
         return scadenza;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -49,7 +52,8 @@ public abstract class ContenutoGenerico {
         tags.add(tag);
     }
 
-    public ContenutoGenerico() {
-
+    public ContenutoGenerico(Comune comune) {
+        this.comune=comune;
     }
+    public ContenutoGenerico(){}
 }
