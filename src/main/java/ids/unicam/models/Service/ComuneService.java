@@ -25,20 +25,18 @@ public class ComuneService {
     private final ContributorAutorizzatoService contributorAutorizzatoService;
     private final CuratoreService curatoreService;
     private final PoiService poiService;
-    private final ComuneController comuneController;
 
     @Autowired
     public ComuneService(ComuneRepository comuneRepository, AnimatoreService animatoreService,
                          ContributorService contributorService,
                          ContributorAutorizzatoService contributorAutorizzatoService,
-                         CuratoreService curatoreService, PoiService poiService, ComuneController comuneController) {
+                         CuratoreService curatoreService, PoiService poiService) {
         this.comuneRepository = comuneRepository;
         this.animatoreService = animatoreService;
         this.contributorService = contributorService;
         this.contributorAutorizzatoService = contributorAutorizzatoService;
         this.curatoreService = curatoreService;
         this.poiService = poiService;
-        this.comuneController = comuneController;
     }
 
 

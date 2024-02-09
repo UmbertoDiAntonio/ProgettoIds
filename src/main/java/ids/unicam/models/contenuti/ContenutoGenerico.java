@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 
 
-@Entity
+@MappedSuperclass
 public abstract class ContenutoGenerico {
 
     @Id

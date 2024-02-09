@@ -23477,3 +23477,9 @@ java.sql.SQLClientInfoException: Client info name 'ApplicationName' not supporte
 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
 	at java.base/java.lang.Thread.run(Thread.java:840)
+2024-02-09 14:45:06.262004+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CONTENUTO_GENERICO" not found; SQL statement:
+select pi1_0.id,pi1_0.comune_comune,pi1_0.stato,pi1_0.nome,pi1_0.latitudine,pi1_0.longitudine from contenuto_generico pi1_0 where pi1_0.dtype='PuntoInteresse' [42102-224]
+2024-02-09 14:50:27.393140+01:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PUNTO_INTERESSE" not found; SQL statement:
+select pi1_0.id,pi1_0.comune_comune,pi1_0.nome,pi1_0.latitudine,pi1_0.longitudine,pi1_0.stato from punto_interesse pi1_0 [42102-224]

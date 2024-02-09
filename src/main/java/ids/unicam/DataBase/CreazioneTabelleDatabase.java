@@ -24,7 +24,9 @@ public class CreazioneTabelleDatabase {
         creaTabellaContest(connection);
         creaTabellaMateriali(connection);
         creaTabellaComuni(connection);
+
     }
+
 
     private void creaTabellaTuristi(@NotNull Connection connection) {
         String createTableSQL =
