@@ -1,8 +1,8 @@
 package ids.unicam.models.attori;
 
-import ids.unicam.exception.ContestException;
 import ids.unicam.models.Invito;
-import ids.unicam.models.contenuti.*;
+import ids.unicam.models.contenuti.ContenutoGenerico;
+import ids.unicam.models.contenuti.Contest;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -78,7 +78,7 @@ public class TuristaAutenticato extends Turista{
             preferiti.add(contenutoGenerico);
     }
 
-    protected TuristaAutenticato(String nome, String cognome, GregorianCalendar dataNascita, String password, String username) {
+    public TuristaAutenticato(String nome, String cognome, GregorianCalendar dataNascita, String password, String username) {
         this.nome = nome;
         this.cognome = cognome;
         this.dataNascita = dataNascita;
@@ -93,38 +93,9 @@ public class TuristaAutenticato extends Turista{
 
 
 
-    /**
-     * Accetta, se è stato ricevuto un invito a un contest
-     *
-     * @param invito l'invito da accettare
-     */
-    public boolean accettaInvito(Invito invito) { //invocato dall'interfaccia
-        boolean success = false;
-        for (Invito inv : invitiRicevuti) {
-            if (inv.equals(invito)) {
-                Contest contest = invito.getContest();
-                assert contest.getPartecipanti() != null;
-                contest.getPartecipanti().add(this);
-                success = true;
-            }
-        }
-        return success;
-    }
 
 
-    /**
-     * Invia al controller del contest la richiesta di aggiungere un materiale
-     *
-     * @param contest   il contest in cui aggiungere il materiale
-     * @param materialeGenerico il materiale da aggiungere
-     */
-    public void aggiungiMaterialeAlContest(Contest contest, MaterialeGenerico materialeGenerico) {
-        if (contest.getPartecipanti().contains(this)) {
-            contest.getContestController().aggiungiMateriale(materialeGenerico, contest);
-        } else {
-            throw new ContestException("Il Turista dovrebbe prima entrare nel contest, per caricare contenuti su di esso");
-        }
-    }
+
 
     /**
      * Entra nel contest se è aperto

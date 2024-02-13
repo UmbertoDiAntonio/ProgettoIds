@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CuratoreService{
+public class CuratoreService {
     private final CuratoreRepository repository;
     private final PoiService poiService;
     private final ItinerarioService itinerarioService;
@@ -91,24 +91,31 @@ public class CuratoreService{
         return repository.findCuratoreByComuneNome(nomeComune);
     }
 
-    public void eliminaContenuto(ContenutoGenerico contenutoGenerico) {
-        if (contenutoGenerico instanceof PuntoInteresse puntoInteresse)
-            poiService.deleteById(puntoInteresse.getId());
-        else if (contenutoGenerico instanceof Itinerario itinerario)
-            itinerarioService.deleteById(itinerario.getId());
-        else if (contenutoGenerico instanceof Contest contest) {
-            //TODO ContestService
-        }
+    public void elimina(PuntoInteresse puntoInteresse) {
+        poiService.deleteById(puntoInteresse.getId());
     }
 
-    public void eliminaMateriale(MaterialeGenerico materialeGenerico) {
+    public void elimina(Itinerario itinerario) {
+        itinerarioService.deleteById(itinerario.getId());
+    }
+
+    public void elimina(Contest contest) {
+        //TODO
+    }
+    public void condividi(ContenutoGenerico contenutoGenerico) {
+        throw new UnsupportedOperationException(contenutoGenerico.getId() + "non può ancora essere condiviso");
+        //TODO
+    }
+
+
+    public void elimina(MaterialeGenerico materialeGenerico) {
         //TODO devo fare un filtro per quelli del comune del Curatore
         poiService.deleteById(materialeGenerico.getId());
-       //TODO  contestService.deleteById(materialeDaEliminare);
+        //TODO  contestService.deleteById(materialeDaEliminare);
     }
 
-    public void rimuoviTappa(Itinerario itinerario,PuntoInteresse tappa){
-        itinerarioService.rimuoviTappa(itinerario,tappa);//TODO deve essere un itinerario di sua competenza
+    public void rimuoviTappa(Itinerario itinerario, PuntoInteresse tappa) {
+        itinerarioService.rimuoviTappa(itinerario, tappa);//TODO deve essere un itinerario di sua competenza
     }
 }
 

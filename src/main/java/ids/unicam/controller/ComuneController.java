@@ -1,9 +1,7 @@
 package ids.unicam.controller;
 
 import ids.unicam.Comune;
-import ids.unicam.models.Repository.ComuneRepository;
 import ids.unicam.models.Service.ComuneService;
-import ids.unicam.models.attori.GestorePiattaforma;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,8 +15,8 @@ public class  ComuneController {
         this.service = service;
     }
 
-    public Comune creaComune(String nome, GestorePiattaforma gestore){
-        return service.save(new Comune(nome,gestore));
+    public Comune creaComune(String nome){
+        return service.save(new Comune(nome));
     }
 
 

@@ -37,5 +37,25 @@ public class Punto {
         return "(" + latitudine + "," + longitudine + ")";
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        Punto punto = (Punto) o;
+
+        if (Double.compare(latitudine, punto.latitudine) != 0) return false;
+        return Double.compare(longitudine, punto.longitudine) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(latitudine);
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(longitudine);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
 }

@@ -1,7 +1,6 @@
 package ids.unicam.models.Service;
 
 import ids.unicam.Comune;
-import ids.unicam.controller.ComuneController;
 import ids.unicam.models.Repository.ComuneRepository;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.Contributor;

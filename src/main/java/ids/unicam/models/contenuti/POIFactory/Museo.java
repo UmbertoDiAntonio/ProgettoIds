@@ -4,13 +4,13 @@ import ids.unicam.Comune;
 import ids.unicam.models.Orario;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Punto;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Transient;
 import org.jetbrains.annotations.Nullable;
 
 @Entity
+@DiscriminatorValue("Museo")
 public class Museo extends PuntoInteresse {
     @Embedded
     private Orario orario;

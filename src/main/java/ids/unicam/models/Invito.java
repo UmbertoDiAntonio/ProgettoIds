@@ -5,8 +5,7 @@ import ids.unicam.models.contenuti.Contest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
-
-import java.util.ArrayList;
+import org.jetbrains.annotations.NotNull;
 
 
 @Entity
@@ -34,7 +33,7 @@ public class Invito {
 
 
 
-    public Contest getContest() {
+    public @NotNull Contest getContest() {
         return contest;
     }
 
@@ -51,7 +50,6 @@ public class Invito {
     public Invito(Contest contest, TuristaAutenticato invitato) {
         this.contest = contest;
         this.invitato = invitato;
-        contest.getInviti().add(this);
     }
 
     /**
@@ -62,8 +60,8 @@ public class Invito {
         if (contest.isOpen()){
             return false;
         }
-        ArrayList<Contest> c1 = contest.getContestController().getContestDelTurista(invitato.getId());
-        return !c1.contains(contest);
+        //TODO ArrayList<Contest> c1 = contest.getContestController().getContestDelTurista(invitato.getId());
+        return true;//TODO !c1.contains(contest);
     }
 }
 

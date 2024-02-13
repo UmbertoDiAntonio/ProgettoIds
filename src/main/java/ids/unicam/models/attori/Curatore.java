@@ -1,10 +1,10 @@
 package ids.unicam.models.attori;
 
-import ids.unicam.models.contenuti.*;
+import ids.unicam.models.contenuti.MaterialeGenerico;
+import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Observer;
 import ids.unicam.utilites.Stato;
 import jakarta.persistence.*;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -17,15 +17,11 @@ public class Curatore extends ContributorAutorizzato {
 
     }
 
-
-    protected Curatore(Contributor contributor) {
+    public Curatore(Contributor contributor) {
         super(contributor);
     }
 
-    public void condividi(ContenutoGenerico contenutoGenerico) {
-        throw new UnsupportedOperationException(contenutoGenerico.getId() + "non può ancora essere condiviso");
-        //TODO
-    }
+
 
 
     @Transient

@@ -3,13 +3,11 @@ package ids.unicam.models.attori;
 import ids.unicam.Comune;
 import ids.unicam.models.Tempo;
 import ids.unicam.models.contenuti.ContenutoGenerico;
-import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.MaterialeGenerico;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Observer;
 import ids.unicam.utilites.Stato;
 import jakarta.persistence.*;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.GregorianCalendar;
 
@@ -31,12 +29,12 @@ public class Contributor extends TuristaAutenticato implements Observer {
     }
 
 
-    protected Contributor(Comune comune, TuristaAutenticato turistaAutenticato) {
+    public Contributor(Comune comune, TuristaAutenticato turistaAutenticato) {
         super(turistaAutenticato.getNome(), turistaAutenticato.getCognome(), turistaAutenticato.getDataNascita(), turistaAutenticato.getPassword(), turistaAutenticato.getUsername());
         this.comune = comune;
     }
 
-    protected Contributor(Comune comune, String name, String surname, GregorianCalendar dateBirthday, String password, String username) {
+    public Contributor(Comune comune, String name, String surname, GregorianCalendar dateBirthday, String password, String username) {
         super(name, surname, dateBirthday, password, username);
         this.comune = comune;
     }

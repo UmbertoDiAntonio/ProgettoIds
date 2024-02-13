@@ -1,7 +1,6 @@
 package ids.unicam.controller;
 
 import ids.unicam.models.Service.PoiService;
-import ids.unicam.models.contenuti.ContenutoGenerico;
 import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.MaterialeGenerico;
 import ids.unicam.models.contenuti.PuntoInteresse;
@@ -56,11 +55,7 @@ public class ContenutoController {
         itinerario.getPercorso().remove(puntoInteresse);
     }
 
-    public void eliminaContenuto(ContenutoGenerico contenutoGenerico) {
-        if (contenutoGenerico instanceof PuntoInteresse) {
-            poiService.deleteById(contenutoGenerico.getId());
-        } else if (contenutoGenerico instanceof Itinerario itinerario) {
-            itinerari.remove(itinerario);
-        }
-    }
+
+
+
 }

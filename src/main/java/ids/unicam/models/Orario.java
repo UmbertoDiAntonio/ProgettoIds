@@ -3,8 +3,6 @@ package ids.unicam.models;
 import ids.unicam.utilites.DayOfWeek;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.OneToMany;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;

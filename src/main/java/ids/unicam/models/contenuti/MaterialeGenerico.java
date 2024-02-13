@@ -9,15 +9,17 @@ import jakarta.persistence.*;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="tipo")
 public abstract class MaterialeGenerico {
-    @OneToOne
-    private TuristaAutenticato creatore =null;
-    private Stato stato = Stato.NOT_APPROVED;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "sequenza_materiali")
     @SequenceGenerator(name = "sequenza_materiali", sequenceName = "MATERIALE_SEQ", allocationSize = 1)
     private int id= 0;
+    @OneToOne
+    private TuristaAutenticato creatore =null;
+    private Stato stato = Stato.NOT_APPROVED;
 
+    @JoinColumn(name = "idProprietario")
+    public int idProprietario;
     public MaterialeGenerico() {
 
     }
@@ -48,7 +50,12 @@ public abstract class MaterialeGenerico {
      * Crea un materiale e gli assegna un id random
      * @param creatore l'autore del materiale
      */
-    public MaterialeGenerico(TuristaAutenticato creatore) {
+    public MaterialeGenerico(TuristaAutenticato creatore,PuntoInteresse puntoInteresse) {
+        this.idProprietario=puntoInteresse.getId();
+        this.creatore = creatore;
+    }
+    public MaterialeGenerico(TuristaAutenticato creatore,Contest contest) {
+        this.idProprietario=contest.getId();
         this.creatore = creatore;
     }
 

@@ -114,8 +114,8 @@ public class CreazioneTabelleDatabase {
                         "id INT PRIMARY KEY NOT NULL," +
                         "nome_comune VARCHAR(50) NOT NULL," +
                         "stato BOOLEAN NOT NULL," +
-                        "latitudine DOUBLE NOT NULL," +
-                        "longitudine DOUBLE NOT NULL," +
+                        "latitudine DOUBLE ," +
+                        "longitudine DOUBLE ," +
                         "tag VARCHAR(50)," +
                         "nome VARCHAR(50) NOT NULL," +
                         "orario VARCHAR(50)," +
@@ -166,7 +166,8 @@ public class CreazioneTabelleDatabase {
                 "CREATE TABLE IF NOT EXISTS MATERIALI(" +
                         "id INT PRIMARY KEY NOT NULL," +
                         "stato BOOLEAN NOT NULL," +
-                        "id_creatore INT NOT NULL," +
+                        "creatore_id INT NOT NULL," +
+                        "id_proprietario INT NOT NULL," +
                         "tipo VARCHAR(50) NOT NULL)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
@@ -179,8 +180,8 @@ public class CreazioneTabelleDatabase {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS COMUNI(" +
                         "comune VARCHAR(50) PRIMARY KEY NOT NULL," +
-                        "latitudine DOUBLE NOT NULL," +
-                        "longitudine DOUBLE NOT NULL)";
+                        "latitudine DOUBLE," +
+                        "longitudine DOUBLE )";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {

@@ -1,8 +1,12 @@
 package ids.unicam.models.Service;
 
+import ids.unicam.exception.ContestException;
+import ids.unicam.models.Invito;
 import ids.unicam.models.Repository.TuristaAutenticatoRepository;
 import ids.unicam.models.attori.TuristaAutenticato;
+import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.Foto;
+import ids.unicam.models.contenuti.MaterialeGenerico;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,11 +18,15 @@ import java.util.Optional;
 public class TuristaAutenticatoService  {
     private final TuristaAutenticatoRepository repository;
     private final MaterialeService materialeService;
+    private final ContestService contestService;
+    private final InvitoService invitoService;
 
     @Autowired
-    public TuristaAutenticatoService(TuristaAutenticatoRepository repository, MaterialeService materialeService) {
+    public TuristaAutenticatoService(TuristaAutenticatoRepository repository, MaterialeService materialeService, ContestService contestService, InvitoService invitoService) {
         this.repository = repository;
         this.materialeService = materialeService;
+        this.contestService = contestService;
+        this.invitoService = invitoService;
     }
 
 
@@ -32,9 +40,7 @@ public class TuristaAutenticatoService  {
         return turistaAutenticato;
     }
 
-    public void aggiungiFoto(PuntoInteresse puntoInteresse, Foto foto) {
-        materialeService.aggiungiMateriale(puntoInteresse,foto);
-    }
+
 
 
     public Optional<TuristaAutenticato> findById(int id) {
@@ -59,5 +65,8 @@ public class TuristaAutenticatoService  {
         repository.deleteAll();
     }
 
+    public void accettaInvitoContest(TuristaAutenticato turistaAutenticato, Invito invito){
+        invitoService.accettaInvito(turistaAutenticato,invito);
+    }
 
 }

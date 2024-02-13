@@ -12,7 +12,8 @@ import static ids.unicam.Main.logger;
 
 @Entity
 @Table(name = "Punti_di_Interesse")
-@DiscriminatorColumn(name = "Tipo")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "TIPO")
 public abstract class PuntoInteresse extends ContenutoGenerico {
     @Override
     public String toString() {
@@ -26,9 +27,9 @@ public abstract class PuntoInteresse extends ContenutoGenerico {
     private String nome = "";
 
     @Embedded
-    private Punto pt = new Punto(0, 0);
+    private Punto pt = null;
 
-    @OneToMany
+    @OneToMany(mappedBy = "idProprietario", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<MaterialeGenerico> listaMateriali = new ArrayList<>();
 
     public PuntoInteresse() {

@@ -1,38 +1,51 @@
 package ids.unicam.models.contenuti;
 
-import ids.unicam.controller.ContestController;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
-import ids.unicam.utilites.Stato;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Contest extends ContenutoGenerico {
+public class Contest  {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "sequenza_contenuti")
+    @SequenceGenerator(name = "sequenza_contenuti", sequenceName = "PUNTI_DI_INTERESSE_SEQ", allocationSize = 1)
+    private int id;
+
     private boolean open;
-    @Transient
-    private ContestController controller=null;
     private String obiettivo="";
     @OneToOne
     private Animatore creatore =null;
     @OneToMany
     private final ArrayList<TuristaAutenticato> partecipanti = new ArrayList<>();
-    @OneToMany
-    private final ArrayList<Invito> inviti = new ArrayList<>();
-    @OneToMany
-    private final ArrayList<MaterialeGenerico> materiali = new ArrayList<>();
+    @ElementCollection
+    private final List<String> tags = new ArrayList<>();
     private String nome=null;
+
+    public int getId() {
+        return id;
+    }
+
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void addTags(String tags) {
+        this.tags.add(tags);
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Contest() {
     }
 
-    
+
     public Animatore getCreatore() {
         return creatore;
     }
@@ -42,9 +55,6 @@ public class Contest extends ContenutoGenerico {
     }
 
 
-    public ArrayList<Invito> getInviti() {
-        return inviti;
-    }
     public void setOpen(boolean open) {
         this.open = open;
     }
@@ -54,32 +64,17 @@ public class Contest extends ContenutoGenerico {
     }
 
 
-    public ArrayList<MaterialeGenerico> getMateriali() {
-        return materiali;
-    }
-
     public boolean isOpen() {
         return open;
     }
 
-    
+
     public List<TuristaAutenticato> getPartecipanti() {
         return partecipanti;
     }
 
-
-    
-    public ContestController getContestController() {
-        return controller;
-    }
-
-
-
-    public Contest(String nome, boolean open, ContestController controller, String obiettivo, Animatore creatore) {
-        super(creatore.getComune());
-        setStato(Stato.APPROVED);
+    public Contest(String nome, boolean open,  String obiettivo, Animatore creatore) {
         this.open = open;
-        this.controller = controller;
         this.obiettivo = obiettivo;
         this.creatore = creatore;
         this.nome = nome;

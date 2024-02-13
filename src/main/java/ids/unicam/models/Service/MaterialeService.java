@@ -1,10 +1,10 @@
 package ids.unicam.models.Service;
 
-import ids.unicam.models.Repository.ItinerarioRepository;
 import ids.unicam.models.Repository.MaterialeRepository;
-import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.ContributorAutorizzato;
-import ids.unicam.models.contenuti.Itinerario;
+import ids.unicam.models.attori.TuristaAutenticato;
+import ids.unicam.models.contenuti.ContenutoGenerico;
+import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.MaterialeGenerico;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Stato;
@@ -31,16 +31,17 @@ public class MaterialeService {
     }
 
 
-    public MaterialeGenerico save(Contributor contributor, PuntoInteresse puntoInteresse,MaterialeGenerico materialeGenerico) {
-        if(contributor instanceof ContributorAutorizzato) materialeGenerico.setStato(Stato.APPROVED);
+    public MaterialeGenerico save(TuristaAutenticato caricatore, PuntoInteresse puntoInteresse, MaterialeGenerico materialeGenerico) {
+        if(caricatore instanceof ContributorAutorizzato) materialeGenerico.setStato(Stato.APPROVED);
         poiService.aggiungiMateriale(puntoInteresse,materialeGenerico);//TODO check se si può aggiungere
+        return repository.save(materialeGenerico);
+    }
+    public MaterialeGenerico save(TuristaAutenticato caricatore, MaterialeGenerico materialeGenerico) {
+        if(caricatore instanceof ContributorAutorizzato) materialeGenerico.setStato(Stato.APPROVED);
         return repository.save(materialeGenerico);
     }
 
 
-    public void aggiungiMateriale(PuntoInteresse puntoInteresse, MaterialeGenerico materialeGenerico){
-        poiService.aggiungiMateriale(puntoInteresse,materialeGenerico);
-    }
 
 
     public Optional<MaterialeGenerico> findById(int id) {
@@ -64,4 +65,15 @@ public class MaterialeService {
         repository.deleteAll();
     }
 
+    public void approvaMateriale(MaterialeGenerico materialeGenerico,Stato stato) {
+        //TODo caso di elminazione da gestire
+        materialeGenerico.setStato(stato);
+    }
+
+    public List<MaterialeGenerico> findByWhere(Contest contest) {
+        return repository.findByIdProprietario(contest.getId());
+    }
+    public List<MaterialeGenerico> findByWhere(ContenutoGenerico contenutoGenerico) {
+        return repository.findByIdProprietario(contenutoGenerico.getId());
+    }
 }

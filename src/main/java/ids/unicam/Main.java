@@ -2,7 +2,7 @@ package ids.unicam;
 
 
 import ids.unicam.DataBase.GestoreDatabase;
-import ids.unicam.models.attori.GestorePiattaforma;
+import ids.unicam.models.Service.GestorePiattaformaService;
 import ids.unicam.models.attori.TuristaAutenticato;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,14 +25,11 @@ public class Main implements ApplicationRunner {
 
 
 
-
-    private final GestorePiattaforma gestorePiattaforma;
     private final GestoreDatabase gestoreDatabase;
-    public Main(GestorePiattaforma gestorePiattaforma, GestoreDatabase gestoreDatabase) {
-        this.gestorePiattaforma = gestorePiattaforma;
-
-
+    private final GestorePiattaformaService gestorePiattaformaService;
+    public Main(GestoreDatabase gestoreDatabase, GestorePiattaformaService gestorePiattaformaService) {
         this.gestoreDatabase = gestoreDatabase;
+        this.gestorePiattaformaService = gestorePiattaformaService;
     }
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
@@ -44,19 +41,19 @@ public class Main implements ApplicationRunner {
         logger.warn("this is a warn message");
         logger.error("this is a error message");
         gestoreDatabase.inizializzaDatabase();
-        gestorePiattaforma.getGestoreController().registraTurista("Leonardo", "Compagnucci", new GregorianCalendar(1998, Calendar.JANUARY,1), "UNICAM", "leocompa");
-        gestorePiattaforma.getGestoreController().registraTurista("Andrea", "Compagnucci", new GregorianCalendar(1998, Calendar.JANUARY,1), "UNICAM", "leocompa");
-        gestorePiattaforma.getGestoreController().registraTurista("Umberto", "Di Antonio", new GregorianCalendar(1999,Calendar.NOVEMBER,23), "ciao!", "umber");
+        gestorePiattaformaService.registraTurista("Leonardo", "Compagnucci", new GregorianCalendar(1998, Calendar.JANUARY,1), "UNICAM", "leocompa");
+        gestorePiattaformaService.registraTurista("Andrea", "Compagnucci", new GregorianCalendar(1998, Calendar.JANUARY,1), "UNICAM", "leocompa");
+        gestorePiattaformaService.registraTurista("Umberto", "Di Antonio", new GregorianCalendar(1999,Calendar.NOVEMBER,23), "ciao!", "umber");
         logger.error("this is a error message");
-        gestorePiattaforma.getGestoreController().eliminaTurista(gestorePiattaforma.getGestoreController().prendiUltimoTurista());
-        TuristaAutenticato turistaAutenticato1 = gestorePiattaforma.getGestoreController().cercaTurista(gestorePiattaforma.getGestoreController().prendiUltimoTurista().getId());
+        gestorePiattaformaService.eliminaTurista(gestorePiattaformaService.getTuristi().getLast());
+        TuristaAutenticato turistaAutenticato1 = gestorePiattaformaService.cercaTurista(gestorePiattaformaService.getTuristi().getLast().getId());
         if(turistaAutenticato1 == null){
             System.out.println("ERRORE");
         }else
             System.out.println(turistaAutenticato1.getNome());
-        for(TuristaAutenticato turistaAutenticato : gestorePiattaforma.getGestoreController().trovaTutti())
+        for(TuristaAutenticato turistaAutenticato : gestorePiattaformaService.getTuristi())
             System.out.println(turistaAutenticato.getId());
-        gestorePiattaforma.getGestoreController().eliminaListaTuristi();
+        gestorePiattaformaService.eliminaListaTuristi();
 
     }
 

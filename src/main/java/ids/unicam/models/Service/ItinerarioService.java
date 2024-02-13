@@ -2,7 +2,6 @@ package ids.unicam.models.Service;
 
 import ids.unicam.Comune;
 import ids.unicam.models.Repository.ItinerarioRepository;
-import ids.unicam.models.Repository.PoiRepository;
 import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import org.springframework.beans.factory.annotation.Autowired;
