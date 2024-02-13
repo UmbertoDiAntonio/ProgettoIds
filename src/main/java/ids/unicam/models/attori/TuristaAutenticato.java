@@ -28,13 +28,7 @@ public class TuristaAutenticato extends Turista{
     private GregorianCalendar dataNascita = new GregorianCalendar();
     private String password="";
 
-    @ManyToMany
-    @JoinTable(
-            name = "turista_contest",
-            joinColumns = @JoinColumn(name = "turista_id"),
-            inverseJoinColumns = @JoinColumn(name = "contest_id")
-    )
-    private List<Contest> contests = new ArrayList<>();
+
     @Transient
     private final List<ContenutoGenerico> preferiti = new ArrayList<>();
     @Transient
