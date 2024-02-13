@@ -307,8 +307,9 @@ public class JUnitContenutiTests {
     public void eliminaContenuto() {
 
         Comune comune = comuneController.creaComune("Milano");
+        int numeroPuntiInteresse= comuneService.getPuntiInteresseNelComune(comune.getNome()).size();
         Contributor contributor = gestorePiattaformaService.registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 5), "ciao", "mr");
-        gestorePiattaformaService.registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH, 11), "eroe", "AN2");
+        TuristaAutenticato turistaAutenticato= gestorePiattaformaService.registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH, 11), "eroe", "AN2");
         Contributor contributor2 = gestorePiattaformaService.registraContributor(comune, "Leonardo", "rosso", new GregorianCalendar(2000, GregorianCalendar.MARCH, 11), "esc", "org");
         Contributor contributor3 = gestorePiattaformaService.registraContributor(comune, "Fede", "Verde", new GregorianCalendar(2000, GregorianCalendar.MARCH, 11), "arg", "use");
 
@@ -317,47 +318,52 @@ public class JUnitContenutiTests {
         Animatore animatore = comuneService.getAnimatoriByComune(comune.getNome()).getFirst();
         Curatore curatore = comuneService.getCuratoriByComune(comune.getNome()).getFirst();
 
-        gestorePiattaformaService.registraTurista("aldo", "neri", new GregorianCalendar(2002, 7, 12), "password", "user1234");
-        TuristaAutenticato turista = gestorePiattaformaService.getTuristi().getLast();
+        TuristaAutenticato turista = gestorePiattaformaService.registraTurista("aldo", "neri", new GregorianCalendar(2002, 7, 12), "password", "user1234");
 
 
-        contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "parcheggio centrale", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), TipologiaPuntoInteresse.PARCHEGGIO));
 
-        assertEquals(1, comuneService.getPuntiInteresseNelComune(comune.getNome()).size());
-        curatoreService.valuta(comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast(), Stato.APPROVED);
-        turista.aggiungiPreferito(comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast());
+        PuntoInteresse puntoInteresse= contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "parcheggio centrale", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), TipologiaPuntoInteresse.PARCHEGGIO));
+
+        assertEquals(numeroPuntiInteresse+1, comuneService.getPuntiInteresseNelComune(comune.getNome()).size());
+        curatoreService.valuta(puntoInteresse, Stato.APPROVED);
+        turista.aggiungiPreferito(puntoInteresse);
         assertEquals(1, turista.getPreferiti().size());
-        curatoreService.elimina(comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast());
 
-        assertEquals(0, comuneService.getPuntiInteresseNelComune(comune.getNome()).size());
-        //assertEquals(0, turista.getPreferiti().size());//TODO
+        curatoreService.elimina(puntoInteresse);
 
-        contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "parco", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), TipologiaPuntoInteresse.PARCO));
+        assertEquals(numeroPuntiInteresse, comuneService.getPuntiInteresseNelComune(comune.getNome()).size());
+        assertEquals(0, turista.getPreferiti().size());
 
+        PuntoInteresse puntoInteresse1= contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "parco", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), TipologiaPuntoInteresse.PARCO));
 
-        contributorService.aggiungiItinerario(new Itinerario(comune, "girodeibar", comuneService.getPuntiInteresseNelComune(comune.getNome()).getFirst()));
-        assertEquals(0, itinerarioService.findAllByComune(comune).size());
-        curatoreService.valuta(comuneService.getPuntiInteresseNelComune(comune.getNome()).getFirst(), Stato.toStatus(true));
+        int numeroItinerariComune=itinerarioService.findAllByComune(comune).size();
+        contributorService.aggiungiItinerario(new Itinerario(comune, "girodeibar", puntoInteresse1));
+        assertEquals(numeroItinerariComune, itinerarioService.findAllByComune(comune).size());
+
+        curatoreService.valuta(puntoInteresse1, Stato.toStatus(true));
         Itinerario itinerario2 = contributorService.aggiungiItinerario(new Itinerario(comune, "giro dei bar", comuneService.getPuntiInteresseNelComune(comune.getNome()).getFirst()));
-        assertEquals(1, itinerarioService.findAllByComune(comune).size());
+        assertEquals(numeroPuntiInteresse+1, itinerarioService.findAllByComune(comune).size());
         curatoreService.elimina(itinerario2);
-        assertEquals(0, itinerarioService.findAllByComune(comune).size());
+        assertEquals(numeroPuntiInteresse, itinerarioService.findAllByComune(comune).size());
 
+
+        int numeroContest=contestService.getContestByCreatore(animatore).size();
         animatoreService.creaContest(animatore, "contest", "spiaggia", true);
-        assertEquals(1, contestService.getContestByCreatore(animatore).size());
+        assertEquals(numeroContest+1, contestService.getContestByCreatore(animatore).size());
         curatoreService.elimina(contestService.getContestByCreatore(animatore).getLast());
-        assertEquals(0, contestService.getContestByCreatore(animatore).size());
+        assertEquals(numeroContest, contestService.getContestByCreatore(animatore).size());
 
         Itinerario itinerario3 = contributorService.aggiungiItinerario(new Itinerario(comune, "girodeibar2", comuneService.getPuntiInteresseNelComune(comune.getNome()).getFirst()));
-        assertEquals(1, itinerarioService.findAllByComune(comune).getFirst().getNumeroTappe());
+        assertEquals(1, itinerarioService.findAllByComune(comune).getLast().getNumeroTappe());
         assertTrue(contributorService.aggiungiTappaItinerario(itinerario3, comuneService.getPuntiInteresseNelComune(comune.getNome()).getFirst()));
-        assertEquals(2, itinerarioService.findAllByComune(comune).getFirst().getNumeroTappe());
+        assertEquals(2, itinerarioService.findAllByComune(comune).getLast().getNumeroTappe());
         curatoreService.rimuoviTappa(itinerario3, comuneService.getPuntiInteresseNelComune(comune.getNome()).getFirst());
-        assertEquals(1, itinerarioService.findAllByComune(comune).getFirst().getNumeroTappe());
+        assertEquals(1, itinerarioService.findAllByComune(comune).getLast().getNumeroTappe());
 
-        Foto foto = new Foto(turista, comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast());
 
-        contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "Castello", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), TipologiaPuntoInteresse.MONUMENTO));
+        PuntoInteresse puntoInteresse2= contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "Castello", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), TipologiaPuntoInteresse.MONUMENTO));
+        MaterialeGenerico foto = materialeService.save(turista,new Foto(turista,puntoInteresse2));
+
         curatoreService.valuta(foto, Stato.toStatus(true));
         assertEquals(1, materialeService.findByWhere(comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast()).size());
         curatoreService.elimina(foto);
