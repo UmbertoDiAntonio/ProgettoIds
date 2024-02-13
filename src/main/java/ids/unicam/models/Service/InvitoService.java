@@ -54,7 +54,7 @@ public class InvitoService {
 
     public void accettaInvito(TuristaAutenticato turistaAutenticato,Invito invito){
         for (Invito inv : findByInvitato(turistaAutenticato)) {
-            if (inv.equals(invito)) {
+            if (inv.getId() == invito.getId()) {
                 Contest contest = invito.getContest();
                 contest.getPartecipanti().add(turistaAutenticato);
             }

@@ -44,15 +44,12 @@ public class ContestService {
         repository.deleteAll();
     }
 
-
     public Contest creaContest(Contest contest) {
         return save(contest);
     }
 
-
-
     public List<Contest> getContestByPartecipante(TuristaAutenticato turistaAutenticato){
-        return null;//TODO repository.findContestByPartecipante(turistaAutenticato);
+        return repository.findContestByPartecipantiContains(turistaAutenticato);
     }
     public List<Contest> getContestByCreatore(Animatore animatore){
         return repository.findContestByCreatore(animatore);

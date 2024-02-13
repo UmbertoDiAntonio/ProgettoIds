@@ -2,27 +2,27 @@ package ids.unicam.models;
 
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import org.jetbrains.annotations.NotNull;
 
 
 @Entity
 public class Invito {
     @Id
-    private long id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "sequenza_inviti")
+    @SequenceGenerator(name = "sequenza_inviti", sequenceName = "INVITI_SEQ", allocationSize = 1)
+    private int id;
     @OneToOne
     private Contest contest=null;
     @OneToOne
     private TuristaAutenticato invitato=null;
 
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

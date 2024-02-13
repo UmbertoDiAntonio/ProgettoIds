@@ -67,6 +67,7 @@ public class TuristaAutenticatoService  {
 
     public void accettaInvitoContest(TuristaAutenticato turistaAutenticato, Invito invito){
         invitoService.accettaInvito(turistaAutenticato,invito);
+        repository.save(turistaAutenticato);
     }
 
 

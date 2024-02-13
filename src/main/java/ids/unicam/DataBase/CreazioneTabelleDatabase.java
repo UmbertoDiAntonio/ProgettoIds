@@ -26,6 +26,51 @@ public class CreazioneTabelleDatabase {
         creaTabellaContestPartecipanti(connection);
         creaTabellaItinerariPercorso(connection);
         creaTabellaOrariPuntoInteresse(connection);
+        creaTabellaInvito(connection);
+        creaTabellaTagPuntoInteresse(connection);
+        creaTabellaTagItinerario(connection);
+    }
+
+    private void creaTabellaInvito(@NotNull Connection connection) {
+        String createTableSQL =
+                "CREATE TABLE IF NOT EXISTS INVITO(" +
+                        "id INT PRIMARY KEY AUTO_INCREMENT," +
+                        "contest_id INT," +
+                        "invitato_id INT," +
+                        "FOREIGN KEY (contest_id) REFERENCES CONTEST(id))";
+        try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Invito", e);
+        }
+    }
+
+    private void creaTabellaTagPuntoInteresse(@NotNull Connection connection) {
+        String createTableSQL =
+                "CREATE TABLE IF NOT EXISTS PUNTO_INTERESSE_TAGS(" +
+                        "punto_interesse_id INT," +
+                        "tag VARCHAR(50)," +
+                        "PRIMARY KEY (punto_interesse_id, tag)," +
+                        "FOREIGN KEY (punto_interesse_id) REFERENCES PUNTI_DI_INTERESSE(id))";
+        try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Tag Punto Interesse", e);
+        }
+    }
+
+    private void creaTabellaTagItinerario(@NotNull Connection connection) {
+        String createTableSQL =
+                "CREATE TABLE IF NOT EXISTS ITINERARIO_TAGS(" +
+                        "itinerario_id INT," +
+                        "tag VARCHAR(50)," +
+                        "PRIMARY KEY (itinerario_id, tag)," +
+                        "FOREIGN KEY (itinerario_id) REFERENCES ITINERARI(id))";
+        try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Tag Itinerario", e);
+        }
     }
 
     private void creaTabellaTuristi(@NotNull Connection connection) {

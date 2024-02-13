@@ -1,9 +1,11 @@
 package ids.unicam.models.contenuti;
 
 import ids.unicam.models.attori.TuristaAutenticato;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Entity
+@DiscriminatorValue("foto")
 public class Foto extends MaterialeGenerico {
     public Foto(TuristaAutenticato autore,PuntoInteresse puntoInteresse) {
         super(autore,puntoInteresse);

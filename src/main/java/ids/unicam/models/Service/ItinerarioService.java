@@ -4,6 +4,7 @@ import ids.unicam.Comune;
 import ids.unicam.models.Repository.ItinerarioRepository;
 import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.PuntoInteresse;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class ItinerarioService {
     private final ItinerarioRepository repository;
 
@@ -33,6 +35,7 @@ public class ItinerarioService {
     public boolean aggiungiTappa(Itinerario itinerario, PuntoInteresse puntoInteresse){
         if(itinerario.getComune().equals(puntoInteresse.getComune())){
             itinerario.aggiungiTappaPercorso(puntoInteresse);//TODO non si aggiunge al database
+            save(itinerario);
             return true;
         }
         return false;
@@ -42,7 +45,7 @@ public class ItinerarioService {
             aggiungiTappa(itinerario,puntoInteresse);
     }
     public void rimuoviTappa(Itinerario itinerario,PuntoInteresse puntoInteresse){
-        //TODo
+        //TODO
     }
 
     public Optional<Itinerario> findById(int id) {

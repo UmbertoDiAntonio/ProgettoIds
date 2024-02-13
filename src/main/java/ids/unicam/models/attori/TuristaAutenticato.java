@@ -92,10 +92,19 @@ public class TuristaAutenticato extends Turista{
     }
 
 
-
-
-
-
+    @Override
+    public String toString() {
+        return "TuristaAutenticato{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", username='" + username + '\'' +
+                ", cognome='" + cognome + '\'' +
+                ", dataNascita=" + dataNascita +
+                ", password='" + password + '\'' +
+                ", preferiti=" + preferiti +
+                ", invitiRicevuti=" + invitiRicevuti +
+                '}';
+    }
 
     /**
      * Entra nel contest se è aperto

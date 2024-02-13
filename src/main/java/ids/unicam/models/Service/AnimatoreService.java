@@ -1,5 +1,6 @@
 package ids.unicam.models.Service;
 
+import ids.unicam.exception.ContestException;
 import ids.unicam.models.Invito;
 import ids.unicam.models.Repository.AnimatorereRepository;
 import ids.unicam.models.attori.Animatore;
@@ -13,18 +14,22 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static ids.unicam.Main.logger;
+
 @Service
 public class AnimatoreService {
     private final AnimatorereRepository repository;
     private final ContestService contestService;
     private final InvitoService invitoService;
+    private final MaterialeService materialeService;
 
 
     @Autowired
-    public AnimatoreService(AnimatorereRepository repository, ContestService contestService, InvitoService invitoService) {
+    public AnimatoreService(AnimatorereRepository repository, ContestService contestService, InvitoService invitoService, MaterialeService materialeService) {
         this.repository = repository;
         this.contestService = contestService;
         this.invitoService = invitoService;
+        this.materialeService = materialeService;
     }
 
     public void deleteById(int id) {
@@ -69,14 +74,30 @@ public class AnimatoreService {
     }
 
     public void invitaContest(Animatore animatore, Contest contest, TuristaAutenticato turistaAutenticato){
-        //TODO check se animatore può invitare in quel contest
-        //TODO check se turista può essere invitato nel contest
-        invitoService.save(new Invito(contest,turistaAutenticato));
+        if(!contest.getCreatore().equals(animatore)) {
+            logger.error("L'animatore non e' il creatore del contest.");
+            throw new IllegalStateException("L'animatore non e' il creatore del contest.");
+        }
+        if(contest.getPartecipanti().contains(turistaAutenticato)){
+            logger.error("Il turista autenticato fa gia' parte del contest");
+            throw new ContestException("Il turista autenticato fa gia' parte del contest");
+        }
+        turistaAutenticato.getInvitiRicevuti().add(invitoService.save(new Invito(contest, turistaAutenticato)));
     }
 
     public void approvaMateriale(Animatore animatore, Contest contest, MaterialeGenerico materialeGenerico, Stato stato) {
         //TODO check se animatore può approvare in quel contest
         //TODO check se il materiale è già nello stato
+        if(!contest.getCreatore().equals(animatore)) {
+            logger.error("L'animatore non e' il creatore del contest.");
+            throw new IllegalStateException("L'animatore non e' il creatore del contest.");
+        }
+        if(materialeGenerico.getStato() == stato){
+            logger.warn("il materiale e' gia' nello stato da settare");
+            return;
+        }
+        if(stato == Stato.NOT_APPROVED)
+            materialeService.deleteById(materialeGenerico.getId());
         contestService.approvaMateriale(materialeGenerico,stato);
     }
 }
