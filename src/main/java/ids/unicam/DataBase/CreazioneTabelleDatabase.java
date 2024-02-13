@@ -23,9 +23,10 @@ public class CreazioneTabelleDatabase {
         creaTabellaContest(connection);
         creaTabellaMateriali(connection);
         creaTabellaComuni(connection);
-        creaTabellaTuristiContest(connection);
+        creaTabellaContestPartecipanti(connection);
+        creaTabellaItinerariPercorso(connection);
+        creaTabellaOrariPuntoInteresse(connection);
     }
-
 
     private void creaTabellaTuristi(@NotNull Connection connection) {
         String createTableSQL =
@@ -107,18 +108,52 @@ public class CreazioneTabelleDatabase {
         }
     }
 
-    private void creaTabellaTuristiContest(@NotNull Connection connection) {
+    private void creaTabellaContestPartecipanti(@NotNull Connection connection) {
         String createTableSQL =
-                "CREATE TABLE IF NOT EXISTS TURISTA_CONTEST(" +
-                        "turista_id INT PRIMARY KEY NOT NULL," +
-                        "comune VARCHAR(50) NOT NULL)";
+                "CREATE TABLE IF NOT EXISTS CONTEST_PARTECIPANTI(" +
+                        "contest_id INT NOT NULL," +
+                        "partecipanti_id INT," +
+                        "FOREIGN KEY (contest_id) REFERENCES CONTEST(id)," +
+                        "FOREIGN KEY (partecipanti_id) REFERENCES TURISTI(id))";
+
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella TuristiContest", e);
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Contest Partecipanti", e);
         }
     }
 
+    private void creaTabellaItinerariPercorso(@NotNull Connection connection) {
+        String createTableSQL =
+                "CREATE TABLE IF NOT EXISTS ITINERARI_PERCORSO(" +
+                        "itinerario_id INT," +
+                        "percorso_id INT," +
+                        "FOREIGN KEY (itinerario_id) REFERENCES ITINERARI(id)," +
+                        "FOREIGN KEY (percorso_id) REFERENCES PUNTI_DI_INTERESSE(id))";
+
+        try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Itinerari Percorso", e);
+        }
+    }
+
+    private void creaTabellaOrariPuntoInteresse(@NotNull Connection connection) {
+        String createTableSQL =
+                "CREATE TABLE IF NOT EXISTS PUNTO_INTERESSE_HOURS_MAP(" +
+                        "punto_interesse_id INT," +
+                        "hours_map_key VARCHAR(50)," +
+                        "closing_time TIME," +
+                        "opening_time TIME," +
+                        "PRIMARY KEY (punto_interesse_id, hours_map_key)," +
+                        "FOREIGN KEY (punto_interesse_id) REFERENCES PUNTI_DI_INTERESSE(id))";
+        try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Orari Punto Interesse", e);
+        }
+    }
 
     private void creaTabellaPOI(@NotNull Connection connection) {
         String createTableSQL =

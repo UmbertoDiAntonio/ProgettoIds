@@ -21,7 +21,7 @@ public class Itinerario {
     private int id;
 
     private String nome = "";
-    @OneToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private final List<PuntoInteresse> percorso = new ArrayList<>();
 
     public int getId() {

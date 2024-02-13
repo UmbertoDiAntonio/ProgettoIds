@@ -82,15 +82,15 @@ public class JUnitContenutiTests {
          * Creazione di un Punto di Interesse da parte di un contributor, che di base non è approvato
          */
         {
+            int puntiInteresseComuneIniziali = comuneService.getPuntiInteresseNelComune(comune.getNome()).size();
             Orario orario = new Orario();
             orario.setOrarioApertura(DayOfWeek.MONDAY,LocalTime.of(8,30),LocalTime.of(18,0));
-            assertEquals(0, comuneService.getPuntiInteresseNelComune(comune.getNome()).size());
             PuntoInteresse punto1 = new PuntoInteresse(comune,"bar", new Punto(comune.getPosizione().getLatitudine() + 0.01, comune.getPosizione().getLongitudine() + 0.01), orario, TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE);
             contributorService.aggiungiPuntoInteresse(contributor,punto1);//TODO check se si mette
             
 
-            assertEquals(1, comuneService.getPuntiInteresseNelComune(comune.getNome()).size());
-            assertFalse(comuneService.getPuntiInteresseNelComune(comune.getNome()).getFirst().getStato().asBoolean());
+            assertEquals(puntiInteresseComuneIniziali + 1, comuneService.getPuntiInteresseNelComune(comune.getNome()).size());
+            assertFalse(comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast().getStato().asBoolean());
         }
 
         /*
