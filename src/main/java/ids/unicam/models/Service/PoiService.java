@@ -27,11 +27,9 @@ public class PoiService {
     }
 
 
-    public PuntoInteresse save(Contributor contributor, PuntoInteresse puntoInteresse) {
-        if(contributor instanceof ContributorAutorizzato) puntoInteresse.setStato(Stato.APPROVED);//TODO check coordinate
+    public PuntoInteresse creaPoi(PuntoInteresse puntoInteresse) {
         return repository.save(puntoInteresse);
     }
-
 
 
     public Optional<PuntoInteresse> findById(int id) {

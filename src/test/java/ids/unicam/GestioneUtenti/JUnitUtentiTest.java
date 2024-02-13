@@ -6,8 +6,8 @@ import ids.unicam.models.Ruolo;
 import ids.unicam.models.Service.*;
 import ids.unicam.models.attori.*;
 import ids.unicam.models.contenuti.Foto;
-import ids.unicam.models.contenuti.POIFactory.AttivitaFactory;
 import ids.unicam.models.contenuti.PuntoInteresse;
+import ids.unicam.models.contenuti.TipologiaPuntoInteresse;
 import ids.unicam.utilites.Punto;
 import ids.unicam.utilites.Stato;
 import org.junit.jupiter.api.Test;
@@ -83,10 +83,9 @@ public class JUnitUtentiTest {
         Contributor contributor = gestorePiattaformaService.registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "ciao", "mr");
         gestorePiattaformaService.registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "eroe", "AN2");
         TuristaAutenticato turistaAutenticato = gestorePiattaformaService.getTuristi().getLast();
-        AttivitaFactory attivitaFactory = new AttivitaFactory();
 
         gestorePiattaformaService.promuovi(contributor, Ruolo.ContributorTrusted);
-        PuntoInteresse puntoInteresse = attivitaFactory.creaPoi(comune,"Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015));
+        PuntoInteresse puntoInteresse = new PuntoInteresse(comune,"Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE);
 
         ContributorAutorizzato contributorAutorizzato = gestioneComuneService.getContributorAutorizzatiDelComune(comune.getNome()).getFirst();
         contributorAutorizzatoService.aggiungiPuntoInteresse(contributorAutorizzato, puntoInteresse);
@@ -102,8 +101,7 @@ public class JUnitUtentiTest {
         Contributor contributor = gestorePiattaformaService.registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "ciao", "mr");
         gestorePiattaformaService.promuovi(contributor, Ruolo.Curatore);
         Curatore curatore = gestioneComuneService.getCuratoriDelComune(comune.getNome()).getFirst();
-        AttivitaFactory attivitaFactory = new AttivitaFactory();
-        PuntoInteresse puntoInteresse = attivitaFactory.creaPoi(comune,"Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015));
+        PuntoInteresse puntoInteresse = new PuntoInteresse(comune,"Teatro", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), TipologiaPuntoInteresse.INTRATTENIMENTO);
 
         assertThrows(UnsupportedOperationException.class, () -> curatoreService.condividi(puntoInteresse));
         //TODO test condivisione contenuto
@@ -140,7 +138,7 @@ public class JUnitUtentiTest {
         Comune comune = comuneController.creaComune("Milano");
         Contributor contributor = gestorePiattaformaService.registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "ciao", "mr");
 
-        contributorService.aggiungiPuntoInteresse(contributor,new AttivitaFactory().creaPoi(comune,"Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015)));
+        contributorService.aggiungiPuntoInteresse(contributor,new PuntoInteresse(comune,"parco centrale", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015),TipologiaPuntoInteresse.PARCO));
 
         PuntoInteresse puntoInteresse = gestioneComuneService.getContenuti(comune.getNome()).getFirst();
 
