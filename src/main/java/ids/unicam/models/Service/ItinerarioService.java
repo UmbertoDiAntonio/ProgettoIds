@@ -31,8 +31,11 @@ public class ItinerarioService {
 
 
     public boolean aggiungiTappa(Itinerario itinerario, PuntoInteresse puntoInteresse){
-        itinerario.getPercorso().add(puntoInteresse);//TODO non è la soluzione, va validato che sia nel comune, e poi aggiunto ma non così
-        return true;
+        if(itinerario.getComune().equals(puntoInteresse.getComune())){
+            itinerario.aggiungiTappaPercorso(puntoInteresse);//TODO non si aggiunge al database
+            return true;
+        }
+        return false;
     }
     public void aggiungiTappa(Itinerario itinerario, PuntoInteresse... puntiInteresse){
         for(PuntoInteresse puntoInteresse:puntiInteresse)

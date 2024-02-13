@@ -1,8 +1,11 @@
 package ids.unicam.models.contenuti;
 
+import ids.unicam.exception.ContestException;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.utilites.Stato;
 import jakarta.persistence.*;
+
+import static ids.unicam.Main.logger;
 
 @Entity
 @Table(name = "Materiali")
@@ -55,6 +58,10 @@ public abstract class MaterialeGenerico {
         this.creatore = creatore;
     }
     public MaterialeGenerico(TuristaAutenticato creatore,Contest contest) {
+        if(!contest.getPartecipanti().contains(creatore)) {
+            logger.error("Devi essere iscritto al contest per caricare materiale su di esso");
+            throw new ContestException("Devi essere iscritto al contest per caricare materiale su di esso");
+        }
         this.idProprietario=contest.getId();
         this.creatore = creatore;
     }

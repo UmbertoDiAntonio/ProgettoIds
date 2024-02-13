@@ -5,6 +5,8 @@ import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.utilites.Punto;
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 import static ids.unicam.Main.logger;
 
 
@@ -67,5 +69,23 @@ public class Comune {
             return nomeComune.equalsIgnoreCase(getNome());
         }
         return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Comune comune = (Comune) o;
+
+        if (!nome.equals(comune.nome)) return false;
+        return Objects.equals(posizione, comune.posizione);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = nome.hashCode();
+        result = 31 * result + (posizione != null ? posizione.hashCode() : 0);
+        return result;
     }
 }

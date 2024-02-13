@@ -5,6 +5,7 @@ import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.MaterialeGenerico;
+import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Stato;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,4 +65,6 @@ public class ContestService {
     public List<MaterialeGenerico> getMaterialiContest(Contest contest) {
         return materialeService.findByWhere(contest);
     }
+
+
 }

@@ -19,7 +19,7 @@ public abstract class ContenutoGenerico {
 
     @OneToOne
     @JoinColumn(name = "nome_comune")
-    Comune comune;
+    private Comune comune;
     private Stato stato = Stato.NOT_APPROVED;
 
     @Transient
@@ -63,4 +63,8 @@ public abstract class ContenutoGenerico {
         this.comune=comune;
     }
     public ContenutoGenerico(){}
+
+    public Comune getComune() {
+        return comune;
+    }
 }

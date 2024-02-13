@@ -54,7 +54,5 @@ public class PoiService {
         repository.deleteAll();
     }
 
-    public void aggiungiMateriale(PuntoInteresse puntoInteresse, MaterialeGenerico materialeGenerico) {
-        //TODO
-    }
+
 }

@@ -33,7 +33,6 @@ public class MaterialeService {
 
     public MaterialeGenerico save(TuristaAutenticato caricatore, PuntoInteresse puntoInteresse, MaterialeGenerico materialeGenerico) {
         if(caricatore instanceof ContributorAutorizzato) materialeGenerico.setStato(Stato.APPROVED);
-        poiService.aggiungiMateriale(puntoInteresse,materialeGenerico);//TODO check se si può aggiungere
         return repository.save(materialeGenerico);
     }
     public MaterialeGenerico save(TuristaAutenticato caricatore, MaterialeGenerico materialeGenerico) {

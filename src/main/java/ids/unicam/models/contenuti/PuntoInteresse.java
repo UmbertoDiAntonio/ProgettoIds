@@ -52,7 +52,7 @@ public class PuntoInteresse extends ContenutoGenerico{
         super(comune);
         if (!comune.verificaCoordinateComune(pt)) {
             logger.error("Non si possono punti di interesse fuori dal comune");
-            return;
+            throw new IllegalArgumentException("Posizione Punto di Interesse Fuori dall'area del comune");
         }
         logger.debug("Creato POI " + nome + " in " + pt);
         this.nome = nome;

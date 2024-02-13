@@ -73,10 +73,13 @@ public class Itinerario {
         return nome;
     }
 
-    public Comune getNomeComune(){
+    public Comune getComune(){
         return comune;
     }
 
+    public void aggiungiTappaPercorso(PuntoInteresse puntoInteresse){
+        percorso.add(puntoInteresse);
+    }
 
     public List<PuntoInteresse> getPercorso() {
         return percorso;
