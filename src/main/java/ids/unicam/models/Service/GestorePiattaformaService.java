@@ -110,16 +110,12 @@ public class GestorePiattaformaService {
 
     public TuristaAutenticato registraTurista(String nome, String cognome, GregorianCalendar birthday, String password, String username) {
         TuristaAutenticato nuovoTurista = new TuristaAutenticato(nome, cognome, birthday, password, username);
-        turistaAutenticatoService.save(nuovoTurista);
-        return nuovoTurista;
+        return turistaAutenticatoService.save(nuovoTurista);
     }
 
     public Contributor registraContributor(Comune comune, String nome, String cognome, GregorianCalendar birthday, String password, String username) {
         Contributor contributor = new Contributor(comune, nome, cognome, birthday, password, username);
-        contributorService.save(contributor);
-        return contributor;
-
-        //TODO aggiungere al database
+        return contributorService.save(contributor);
     }
 
 

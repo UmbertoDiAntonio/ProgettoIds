@@ -24,10 +24,6 @@ public class RichiestaOSM {
      * @return il nome del comune a cui appartiene il punto, o null se la connessione è fallita
      */
     public static @Nullable String getComuneDaCoordinate(Punto punto) {
-        if(punto.getLatitudine()==0 && punto.getLongitudine()==0){
-            //TODO capire perche arrivano sti valori
-            return null;
-        }
         try {
             String apiUrl = buildReverseApiUrl(punto);
             String jsonResponse = richiestaHttp(apiUrl);

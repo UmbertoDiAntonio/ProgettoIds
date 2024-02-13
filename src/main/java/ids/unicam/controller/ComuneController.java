@@ -20,9 +20,6 @@ public class  ComuneController {
     }
 
 
-    public @Nullable Comune getComune(String nome){//TODO è una chiamata DB
-        return service.findByNome(nome);
-    }
 
 
 
