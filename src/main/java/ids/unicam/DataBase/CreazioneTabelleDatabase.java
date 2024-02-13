@@ -23,7 +23,7 @@ public class CreazioneTabelleDatabase {
         creaTabellaContest(connection);
         creaTabellaMateriali(connection);
         creaTabellaComuni(connection);
-
+        creaTabellaTuristiContest(connection);
     }
 
 
@@ -92,7 +92,6 @@ public class CreazioneTabelleDatabase {
     }
 
     private void creaTabellaCuratori(@NotNull Connection connection) {
-
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS CURATORI(" +
                         "id INT PRIMARY KEY NOT NULL," +
@@ -107,6 +106,19 @@ public class CreazioneTabelleDatabase {
             logger.error("Impossibile eseguire la QuerySQL creazione tabelel Curatori", e);
         }
     }
+
+    private void creaTabellaTuristiContest(@NotNull Connection connection) {
+        String createTableSQL =
+                "CREATE TABLE IF NOT EXISTS TURISTA_CONTEST(" +
+                        "turista_id INT PRIMARY KEY NOT NULL," +
+                        "comune VARCHAR(50) NOT NULL)";
+        try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella TuristiContest", e);
+        }
+    }
+
 
     private void creaTabellaPOI(@NotNull Connection connection) {
         String createTableSQL =
@@ -152,7 +164,7 @@ public class CreazioneTabelleDatabase {
                         "nome VARCHAR(50) NOT NULL," +
                         "aperto BOOLEAN NOT NULL," +
                         "obiettivo VARCHAR(100) NOT NULL," +
-                        "id_creatore INT NOT NULL," +
+                        "creatore_id INT NOT NULL," +
                         "partecipanti VARCHAR(500) )";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();

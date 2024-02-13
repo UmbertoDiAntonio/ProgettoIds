@@ -15,12 +15,14 @@ public class Contest  {
     @SequenceGenerator(name = "sequenza_contenuti", sequenceName = "PUNTI_DI_INTERESSE_SEQ", allocationSize = 1)
     private int id;
 
+    @Column(name = "Aperto")
     private boolean open;
     private String obiettivo="";
     @OneToOne
     private Animatore creatore =null;
-    @OneToMany
-    private final ArrayList<TuristaAutenticato> partecipanti = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "contests")
+    private List<TuristaAutenticato> partecipanti = new ArrayList<>();
     @ElementCollection
     private final List<String> tags = new ArrayList<>();
     private String nome=null;
