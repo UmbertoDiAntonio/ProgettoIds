@@ -67,7 +67,7 @@ public class ContributorAutorizzatoService{
 
     public PuntoInteresse aggiungiPuntoInteresse(Contributor contributor, PuntoInteresse puntoInteresse){
         puntoInteresse.setStato(Stato.APPROVED);
-        return poiService.save(contributor,puntoInteresse);
+        return poiService.creaPoi(puntoInteresse);
     }
 
     public Itinerario aggiungiItinerario(Itinerario itinerario){

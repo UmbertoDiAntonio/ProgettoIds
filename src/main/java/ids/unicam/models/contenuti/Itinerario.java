@@ -21,7 +21,7 @@ public class Itinerario {
     private int id;
 
     private String nome = "";
-    @OneToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private final List<PuntoInteresse> percorso = new ArrayList<>();
 
     public int getId() {
@@ -37,7 +37,7 @@ public class Itinerario {
 
     @OneToOne
     @JoinColumn(name = "nome_comune")
-    Comune comune;
+    private Comune comune;
 
     @Transient
     private Tempo scadenza;
@@ -73,12 +73,19 @@ public class Itinerario {
         return nome;
     }
 
+    public Comune getNomeComune(){
+        return comune;
+    }
+
 
     public List<PuntoInteresse> getPercorso() {
         return percorso;
     }
 
     public Itinerario(Comune comune, String nome, PuntoInteresse... puntiInteresse) {
+        this.nome = nome;
+        this.comune = comune;
+
         for (PuntoInteresse puntoInteresse : puntiInteresse) {
             if (!comune.verificaCoordinateComune(puntoInteresse.getPt()) || !puntoInteresse.getStato().asBoolean()) {
                 logger.error("Non si possono creare Itinerari con punti non approvati");
@@ -87,7 +94,6 @@ public class Itinerario {
             }
         }
         logger.debug("Creato Itinerario " + nome);
-        this.nome = nome;
         percorso.addAll(Arrays.stream(puntiInteresse).toList());
     }
 }

@@ -1,8 +1,10 @@
 package ids.unicam.models.contenuti;
 
 import ids.unicam.Comune;
+import ids.unicam.models.Orario;
 import ids.unicam.utilites.Punto;
 import jakarta.persistence.*;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,7 @@ import static ids.unicam.Main.logger;
 @Table(name = "Punti_di_Interesse")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "TIPO")
-public abstract class PuntoInteresse extends ContenutoGenerico {
+public class PuntoInteresse extends ContenutoGenerico{
     @Override
     public String toString() {
         return "PuntoInteresse{" +
@@ -22,6 +24,9 @@ public abstract class PuntoInteresse extends ContenutoGenerico {
                 ", pt=" + pt +
                 '}';
     }
+
+    @Embedded
+    private Orario orario;
 
     private String nome = "";
 
@@ -35,12 +40,15 @@ public abstract class PuntoInteresse extends ContenutoGenerico {
     public Punto getPt() {
         return pt;
     }
-    
+
     public String getNome() {
         return nome;
     }
 
-    public PuntoInteresse(Comune comune, String nome, Punto pt) {
+    @Embedded
+    private TipologiaPuntoInteresse tipo;
+
+    public PuntoInteresse(Comune comune, String nome, Punto pt, TipologiaPuntoInteresse tipologiaPuntoInteresse) {
         super(comune);
         if (!comune.verificaCoordinateComune(pt)) {
             logger.error("Non si possono punti di interesse fuori dal comune");
@@ -49,11 +57,33 @@ public abstract class PuntoInteresse extends ContenutoGenerico {
         logger.debug("Creato POI " + nome + " in " + pt);
         this.nome = nome;
         this.pt = pt;
+        this.orario = new Orario();
+        this.tipo = tipologiaPuntoInteresse;
     }
 
-    public abstract String mostraInformazioniDettagliate();
+    public PuntoInteresse(Comune comune, String nome, Punto pt,Orario orario, TipologiaPuntoInteresse tipologiaPuntoInteresse) {
+        super(comune);
+        if (!comune.verificaCoordinateComune(pt)) {
+            logger.error("Non si possono punti di interesse fuori dal comune");
+            return;
+        }
+        logger.debug("Creato POI " + nome + " in " + pt);
+        this.nome = nome;
+        this.pt = pt;
+        this.orario = orario;
+        this.tipo = tipologiaPuntoInteresse;
+    }
 
-    public abstract String mostraInformazioniGeneriche();
+    public String mostraInformazioniDettagliate(){
+        return getNome() + " " + getOrario();
+    };
 
+    public String mostraInformazioniGeneriche(){
+        return getNome();
+    };
+
+    public @Nullable Orario getOrario() {
+        return orario;
+    }
 
 }

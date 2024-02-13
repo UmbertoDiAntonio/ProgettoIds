@@ -28,7 +28,6 @@ public class TuristaAutenticato extends Turista{
     private GregorianCalendar dataNascita = new GregorianCalendar();
     private String password="";
 
-
     @Transient
     private final List<ContenutoGenerico> preferiti = new ArrayList<>();
     @Transient

@@ -23,9 +23,10 @@ public class CreazioneTabelleDatabase {
         creaTabellaContest(connection);
         creaTabellaMateriali(connection);
         creaTabellaComuni(connection);
-        creaTabellaTuristiContest(connection);
+        creaTabellaContestPartecipanti(connection);
+        creaTabellaItinerariPercorso(connection);
+        creaTabellaOrariPuntoInteresse(connection);
     }
-
 
     private void creaTabellaTuristi(@NotNull Connection connection) {
         String createTableSQL =
@@ -38,7 +39,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabelel Turista", e);
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Turista", e);
         }
     }
 
@@ -54,7 +55,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabelel Contributor", e);
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Contributor", e);
         }
 
     }
@@ -71,7 +72,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabelel ContributorAutorizzati", e);
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella ContributorAutorizzati", e);
         }
     }
 
@@ -87,7 +88,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabelel Animatori", e);
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Animatori", e);
         }
     }
 
@@ -103,22 +104,56 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabelel Curatori", e);
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Curatori", e);
         }
     }
 
-    private void creaTabellaTuristiContest(@NotNull Connection connection) {
+    private void creaTabellaContestPartecipanti(@NotNull Connection connection) {
         String createTableSQL =
-                "CREATE TABLE IF NOT EXISTS TURISTA_CONTEST(" +
-                        "turista_id INT PRIMARY KEY NOT NULL," +
-                        "comune VARCHAR(50) NOT NULL)";
+                "CREATE TABLE IF NOT EXISTS CONTEST_PARTECIPANTI(" +
+                        "contest_id INT NOT NULL," +
+                        "partecipanti_id INT," +
+                        "FOREIGN KEY (contest_id) REFERENCES CONTEST(id)," +
+                        "FOREIGN KEY (partecipanti_id) REFERENCES TURISTI(id))";
+
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella TuristiContest", e);
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Contest Partecipanti", e);
         }
     }
 
+    private void creaTabellaItinerariPercorso(@NotNull Connection connection) {
+        String createTableSQL =
+                "CREATE TABLE IF NOT EXISTS ITINERARI_PERCORSO(" +
+                        "itinerario_id INT," +
+                        "percorso_id INT," +
+                        "FOREIGN KEY (itinerario_id) REFERENCES ITINERARI(id)," +
+                        "FOREIGN KEY (percorso_id) REFERENCES PUNTI_DI_INTERESSE(id))";
+
+        try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Itinerari Percorso", e);
+        }
+    }
+
+    private void creaTabellaOrariPuntoInteresse(@NotNull Connection connection) {
+        String createTableSQL =
+                "CREATE TABLE IF NOT EXISTS PUNTO_INTERESSE_HOURS_MAP(" +
+                        "punto_interesse_id INT," +
+                        "hours_map_key VARCHAR(50)," +
+                        "closing_time TIME," +
+                        "opening_time TIME," +
+                        "PRIMARY KEY (punto_interesse_id, hours_map_key)," +
+                        "FOREIGN KEY (punto_interesse_id) REFERENCES PUNTI_DI_INTERESSE(id))";
+        try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Orari Punto Interesse", e);
+        }
+    }
 
     private void creaTabellaPOI(@NotNull Connection connection) {
         String createTableSQL =
@@ -136,7 +171,7 @@ public class CreazioneTabelleDatabase {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabelel POI", e);
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella POI", e);
         }
     }
 
@@ -145,13 +180,12 @@ public class CreazioneTabelleDatabase {
                 "CREATE TABLE IF NOT EXISTS ITINERARI(" +
                         "nome_comune VARCHAR(50) NOT NULL," +
                         "nome VARCHAR(50) NOT NULL,"+
-                        "stato VARCHAR(50)," +
                         "id INT PRIMARY KEY AUTO_INCREMENT)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabelel Itinerari", e);
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Itinerari", e);
         }
     }
 
@@ -159,7 +193,7 @@ public class CreazioneTabelleDatabase {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS CONTEST(" +
                         "id INT PRIMARY KEY NOT NULL," +
-                        "nome_comune VARCHAR(50) NOT NULL," +
+                //        "nome_comune VARCHAR(50) NOT NULL," +
                         "tag VARCHAR(50)," +
                         "nome VARCHAR(50) NOT NULL," +
                         "aperto BOOLEAN NOT NULL," +
@@ -169,7 +203,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabelel Contest", e);
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Contest", e);
         }
     }
 
@@ -184,7 +218,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabelel Materiali", e);
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Materiali", e);
         }
     }
 
@@ -197,7 +231,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabelel Comuni", e);
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Comuni", e);
         }
     }
 }

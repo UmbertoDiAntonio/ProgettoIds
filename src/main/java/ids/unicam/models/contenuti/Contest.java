@@ -21,7 +21,7 @@ public class Contest  {
     @OneToOne
     private Animatore creatore =null;
 
-    @ManyToMany(mappedBy = "contests")
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<TuristaAutenticato> partecipanti = new ArrayList<>();
     @ElementCollection
     private final List<String> tags = new ArrayList<>();
