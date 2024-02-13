@@ -42,8 +42,6 @@ public class MaterialeService {
     }
 
 
-
-
     public Optional<MaterialeGenerico> findById(int id) {
         return repository.findById(id);
     }

@@ -1,5 +1,6 @@
 package ids.unicam.controller;
 
+import ids.unicam.models.Service.MaterialeService;
 import ids.unicam.models.Service.PoiService;
 import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.MaterialeGenerico;
@@ -15,10 +16,12 @@ import java.util.List;
 public class ContenutoController {
     private final PoiService poiService;
     private final ArrayList<Itinerario> itinerari = new ArrayList<>();
+    private final MaterialeService materialeService;
 
     @Autowired
-    public ContenutoController(PoiService poiService) {
+    public ContenutoController(PoiService poiService, MaterialeService materialeService) {
         this.poiService = poiService;
+        this.materialeService = materialeService;
     }
 
     public List<PuntoInteresse> getContenuti() {
@@ -27,16 +30,6 @@ public class ContenutoController {
 
     public ArrayList<Itinerario> getItinerari() {
         return itinerari;
-    }
-
-
-    /**
-     * Aggiunge un materiale a un punto di interesse
-     * @param puntoInteresse il punto di interesse in cui aggiungere il materiale
-     * @param materialeGenerico il materiale
-     */
-    public void aggiungiMateriale(PuntoInteresse puntoInteresse, MaterialeGenerico materialeGenerico) {
-        puntoInteresse.getMateriali().add(materialeGenerico);
     }
 
 

@@ -138,7 +138,7 @@ public class JUnitContenutiTests {
             TuristaAutenticato turistaAutenticato = gestorePiattaformaService.getTuristi().getLast();
             MaterialeGenerico materialeGenerico = new Foto(turistaAutenticato,puntoInteresse);
             contributorAutorizzatoService.aggiungiMateriale(contributorAutorizzato, puntoInteresse, materialeGenerico);
-            assertEquals(1, puntoInteresse.getMateriali().size());
+            assertEquals(1, materialeService.findByWhere(puntoInteresse).size());
         }
 
         /*
@@ -163,10 +163,9 @@ public class JUnitContenutiTests {
             curatoreService.valuta(comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast(), Stato.APPROVED);
             assertTrue(comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast().getStato().asBoolean());
             MaterialeGenerico materialeGenerico1 = new Foto(contributor,comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast());
-            comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast().getMateriali().add(materialeGenerico1);
-            assertFalse(comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast().getMateriali().getFirst().getStato().asBoolean());
-            curatoreService.valuta(comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast().getMateriali().getFirst(), Stato.APPROVED);
-            assertTrue(comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast().getMateriali().getFirst().getStato().asBoolean());
+            assertFalse(materialeService.findByWhere(comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast()).getLast().getStato().asBoolean());
+            curatoreService.valuta(materialeGenerico1, Stato.APPROVED);
+            assertTrue(materialeService.findByWhere(comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast()).getLast().getStato().asBoolean());
             curatore.rimuoviOsservatore(contributor);
             assertEquals(0, curatore.getOsservatori().size());
         }
@@ -357,11 +356,10 @@ public class JUnitContenutiTests {
         Foto foto = new Foto(turista,comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast());
 
         contributorService.aggiungiPuntoInteresse(contributor,attivita1.creaPoi(comune,"Ristorante Stellato", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03)));
-        comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast().getMateriali().add(foto);
         curatoreService.valuta(foto, Stato.toStatus(true));
-        assertEquals(1, comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast().getMateriali().size());
+        assertEquals(1, materialeService.findByWhere(comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast()).size());
         curatoreService.elimina(foto);
-        assertEquals(0, comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast().getMateriali().size());
+        assertEquals(0, materialeService.findByWhere(comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast()).size());
 
 
         //TODO aggiungere eliminazione dai preferiti

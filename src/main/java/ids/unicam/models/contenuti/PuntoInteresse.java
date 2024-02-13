@@ -20,7 +20,6 @@ public abstract class PuntoInteresse extends ContenutoGenerico {
         return "PuntoInteresse{" +
                 "nome='" + nome + '\'' +
                 ", pt=" + pt +
-                ", listaMateriali=" + listaMateriali +
                 '}';
     }
 
@@ -29,8 +28,6 @@ public abstract class PuntoInteresse extends ContenutoGenerico {
     @Embedded
     private Punto pt = null;
 
-    @OneToMany(mappedBy = "idProprietario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private final List<MaterialeGenerico> listaMateriali = new ArrayList<>();
 
     public PuntoInteresse() {
     }
@@ -38,12 +35,7 @@ public abstract class PuntoInteresse extends ContenutoGenerico {
     public Punto getPt() {
         return pt;
     }
-
-    public List<MaterialeGenerico> getMateriali() {
-        return listaMateriali;
-    }
-
-
+    
     public String getNome() {
         return nome;
     }

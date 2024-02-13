@@ -147,15 +147,15 @@ public class JUnitUtentiTest {
         gestorePiattaformaService.registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "eroe", "AN2");
         TuristaAutenticato turistaAutenticato = gestorePiattaformaService.getTuristi().getLast();
 
-        assertEquals(0, puntoInteresse.getMateriali().size());
+        assertEquals(0, materialeService.findByWhere(puntoInteresse).size());
         Foto foto =  new Foto(turistaAutenticato,puntoInteresse);
         //turistaAutenticatoService.aggiungiFoto(puntoInteresse,);
-        assertEquals(1, puntoInteresse.getMateriali().size());
-        assertFalse(puntoInteresse.getMateriali().getFirst().getStato().asBoolean());
+        assertEquals(1, materialeService.findByWhere(puntoInteresse).size());
+        assertFalse(materialeService.findByWhere(puntoInteresse).getFirst().getStato().asBoolean());
         gestorePiattaformaService.promuovi(contributor, Ruolo.Curatore);
         Curatore curatore = gestioneComuneService.getCuratoriDelComune(comune.getNome()).getFirst();
-        curatoreService.valuta(puntoInteresse.getMateriali().getFirst(), Stato.APPROVED);
-        assertTrue(puntoInteresse.getMateriali().getFirst().getStato().asBoolean());
+        curatoreService.valuta(materialeService.findByWhere(puntoInteresse).getFirst(), Stato.APPROVED);
+        assertTrue(materialeService.findByWhere(puntoInteresse).getFirst().getStato().asBoolean());
     }
 
 }
