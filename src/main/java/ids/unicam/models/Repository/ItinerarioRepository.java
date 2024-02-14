@@ -14,8 +14,9 @@ import java.util.List;
 public interface ItinerarioRepository extends JpaRepository<Itinerario,Integer> {
     List<Itinerario> findAllByComune(Comune comune);
 
+    @Query("SELECT Count(i) FROM Itinerario i JOIN  i.percorso Where i.id = :id")
+    Integer countNumeroTappeItinerario(@Param("id") int id);
 
-    @Query("SELECT COUNT(p) FROM Itinerario i JOIN i.percorso p WHERE i.id = :id")
-    int countTappeByItinerario(@Param("id") int id);
-
+    @Query("SELECT i.percorso FROM Itinerario i  Where i.id = :id")
+    List<PuntoInteresse> findTappeByItinerario(@Param("id") int id);
 }
