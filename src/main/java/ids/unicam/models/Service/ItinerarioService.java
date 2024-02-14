@@ -32,7 +32,7 @@ public class ItinerarioService {
         return repository.save(itinerario);
     }
 
-
+@Transactional
     public boolean aggiungiTappa(Itinerario itinerario, PuntoInteresse puntoInteresse){
         if(itinerario.getComune().equals(puntoInteresse.getComune())){
             poiService.save(puntoInteresse);
@@ -79,6 +79,6 @@ public class ItinerarioService {
     }
 
     public int getNumeroTappe(Itinerario itinerario) {
-        return repository.findTappeByItinerario(itinerario.getId()).getId();
+        return repository.countNumeroTappeItinerario(itinerario.getId());
     }
 }

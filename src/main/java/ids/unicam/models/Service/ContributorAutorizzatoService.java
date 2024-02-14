@@ -7,6 +7,7 @@ import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.MaterialeGenerico;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Stato;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -76,5 +77,16 @@ public class ContributorAutorizzatoService{
 
     public MaterialeGenerico aggiungiMateriale(ContributorAutorizzato contributorAutorizzato, PuntoInteresse puntoInteresse, MaterialeGenerico materialeGenerico) {
         return materialeService.save(contributorAutorizzato,puntoInteresse,materialeGenerico);
+    }
+    @Transactional
+    public boolean aggiungiTappaItinerario(Itinerario itinerario,PuntoInteresse puntoInteresse){
+        return itinerarioService.aggiungiTappa(itinerario,puntoInteresse);
+    }
+    @Transactional
+    public void aggiungiTappaItinerario(Itinerario itinerario,PuntoInteresse... puntiInteresse){
+        for(PuntoInteresse puntoInteresse:puntiInteresse) {
+            System.out.println(puntoInteresse.getNome()+" aggiunto");
+            aggiungiTappaItinerario(itinerario, puntoInteresse);
+        }
     }
 }
