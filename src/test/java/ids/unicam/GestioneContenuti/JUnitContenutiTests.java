@@ -200,7 +200,7 @@ public class JUnitContenutiTests {
             Itinerario itinerario1 = contributorAutorizzatoService.aggiungiItinerario(new Itinerario(comune, "girodeibar", puntoInteresse, puntoInteresse2));
 
             assertEquals(numeroItinerariIniziale + 1, itinerarioService.findAllByComune(comune).size());
-            assertEquals(2, itinerario1.getNumeroTappe());
+            assertEquals(2, itinerarioService.getNumeroTappe(itinerario1));
 
             PuntoInteresse nuovoPunto = new PuntoInteresse(comune, "universita'", new Punto(comune.getPosizione().getLatitudine() + 0.014, comune.getPosizione().getLongitudine() + 0.014), TipologiaPuntoInteresse.FORMAZIONE);
             PuntoInteresse nuovoPunto1 = new PuntoInteresse(comune, "universita1'", new Punto(comune.getPosizione().getLatitudine() + 0.014, comune.getPosizione().getLongitudine() + 0.014), TipologiaPuntoInteresse.FORMAZIONE);
@@ -212,10 +212,10 @@ public class JUnitContenutiTests {
             itinerarioService.aggiungiTappa(itinerario1, nuovoPunto);
 
             assertEquals(numeroItinerariIniziale + 1, itinerarioService.findAllByComune(comune).size());
-            assertEquals(3, itinerarioService.findAllByComune(comune).getLast().getNumeroTappe());
+            assertEquals(3, itinerarioService.getNumeroTappe(itinerario1));
             itinerarioService.aggiungiTappa(itinerario1, nuovoPunto1, nuovoPunto2, nuovoPunto3);
             assertEquals(numeroItinerariIniziale + 1, itinerarioService.findAllByComune(comune).size());
-            assertEquals(6, itinerarioService.findAllByComune(comune).getLast().getNumeroTappe());
+            assertEquals(6, itinerarioService.getNumeroTappe(itinerario1));
         }
     }
 
@@ -360,11 +360,11 @@ public class JUnitContenutiTests {
         assertEquals(numeroContest, contestService.getContestByCreatore(animatore).size());
 
         Itinerario itinerario3 = contributorService.aggiungiItinerario(new Itinerario(comune, "girodeibar2", puntoInteresse1));
-        assertEquals(1, itinerarioService.findAllByComune(comune).getLast().getNumeroTappe());
+        assertEquals(1, itinerarioService.getNumeroTappe(itinerario3));
         assertTrue(contributorService.aggiungiTappaItinerario(itinerario3, puntoInteresse1));
-        assertEquals(2, itinerarioService.findAllByComune(comune).getLast().getNumeroTappe());
+        assertEquals(2, itinerarioService.getNumeroTappe(itinerario3));
         curatoreService.rimuoviTappa(curatore,itinerario3, puntoInteresse1);
-        assertEquals(1, itinerarioService.findAllByComune(comune).getLast().getNumeroTappe());
+        assertEquals(1, itinerarioService.getNumeroTappe(itinerario3));
 
 
         PuntoInteresse puntoInteresse2 = contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "Castello", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), TipologiaPuntoInteresse.MONUMENTO));
@@ -372,7 +372,7 @@ public class JUnitContenutiTests {
 
         curatoreService.valuta(foto, Stato.toStatus(true));
         assertEquals(1, materialeService.findByWhere(comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast()).size());
-        curatoreService.elimina(foto);
+        curatoreService.elimina(curatore,foto);
         assertEquals(0, materialeService.findByWhere(comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast()).size());
 
 

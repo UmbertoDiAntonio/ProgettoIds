@@ -48,7 +48,8 @@ public class ItinerarioService {
         }
     }
     public void rimuoviTappa(Itinerario itinerario,PuntoInteresse puntoInteresse){
-        //TODO
+        itinerario.getPercorso().remove(puntoInteresse);
+        save(itinerario);
     }
 
     public Optional<Itinerario> findById(int id) {
@@ -75,5 +76,9 @@ public class ItinerarioService {
 
     public List<Itinerario> findAllByComune(Comune comune) {
         return repository.findAllByComune(comune);
+    }
+
+    public int getNumeroTappe(Itinerario itinerario) {
+        return repository.findTappeByItinerario(itinerario.getId()).getId();
     }
 }

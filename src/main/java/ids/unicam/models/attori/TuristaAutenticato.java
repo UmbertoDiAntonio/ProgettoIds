@@ -20,15 +20,12 @@ public class TuristaAutenticato extends Turista{
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "sequenza_utenti")
     @SequenceGenerator(name = "sequenza_utenti", sequenceName = "users", allocationSize = 1)
     private Integer id;
-
     private String nome ="";
-
     private String username="";
     private String cognome ="";
     @Transient
     private GregorianCalendar dataNascita = new GregorianCalendar();
     private String password="";
-
     @OneToMany(fetch = FetchType.EAGER)
     private final List<PuntoInteresse> preferiti = new ArrayList<>();
     @Transient
