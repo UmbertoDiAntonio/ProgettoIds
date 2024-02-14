@@ -51,17 +51,5 @@ public class Invito {
         this.contest = contest;
         this.invitato = invitato;
     }
-
-    /**
-     * Verifica se l'invito è valido, controlla se il contest è solo su invito e se il turista non è già entrato
-     * @return true se l'invito è valido
-     */
-    public boolean isValid() {
-        if (contest.isOpen()){
-            return false;
-        }
-        //TODO ArrayList<Contest> c1 = contest.getContestController().getContestDelTurista(invitato.getId());
-        return true;//TODO !c1.contains(contest);
-    }
 }
 

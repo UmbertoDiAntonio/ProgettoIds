@@ -16,9 +16,4 @@ public interface MaterialeRepository extends JpaRepository<MaterialeGenerico,Int
 
     List<MaterialeGenerico> findByIdProprietario(int id);
 
-    @Query("select k from MaterialeGenerico p JOIN FETCH PuntoInteresse k where k=:puntoInteresse")
-    Optional<PuntoInteresse> findWhereById(@Param("idPunto") PuntoInteresse puntoInteresse);
-
-    @Query("select k from MaterialeGenerico p JOIN FETCH Contest k where k=:contest")
-    Optional<Contest> findWhereById(@Param("idPunto") Contest contest);
 }

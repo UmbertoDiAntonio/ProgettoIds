@@ -1,5 +1,6 @@
 package ids.unicam.models.Service;
 
+import ids.unicam.models.Invito;
 import ids.unicam.models.Repository.ContestRepository;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
@@ -17,10 +18,13 @@ import java.util.Optional;
 public class ContestService {
     private final ContestRepository repository;
     private final MaterialeService materialeService;
+    private final InvitoService invitoService;
+
     @Autowired
-    public ContestService(ContestRepository repository, MaterialeService materialeService) {
+    public ContestService(ContestRepository repository, MaterialeService materialeService, InvitoService invitoService) {
         this.repository = repository;
         this.materialeService = materialeService;
+        this.invitoService = invitoService;
     }
 
     public void deleteById(int id) {
@@ -48,20 +52,29 @@ public class ContestService {
         return save(contest);
     }
 
-    public List<Contest> getContestByPartecipante(TuristaAutenticato turistaAutenticato){
+    public List<Contest> getContestByPartecipante(TuristaAutenticato turistaAutenticato) {
         return repository.findContestByPartecipantiContains(turistaAutenticato);
     }
-    public List<Contest> getContestByCreatore(Animatore animatore){
+
+    public List<Contest> getContestByCreatore(Animatore animatore) {
         return repository.findContestByCreatore(animatore);
     }
 
-    public void approvaMateriale(MaterialeGenerico materialeGenerico,Stato stato) {
-        materialeService.approvaMateriale(materialeGenerico,stato);
+    public void approvaMateriale(MaterialeGenerico materialeGenerico, Stato stato) {
+        materialeService.approvaMateriale(materialeGenerico, stato);
     }
 
     public List<MaterialeGenerico> getMaterialiContest(Contest contest) {
         return materialeService.findByWhere(contest);
     }
 
+    /**
+     * Verifica se l'invito è valido, controlla se il contest è solo su invito e se il turista non è già entrato
+     *
+     * @return true se l'invito è valido
+     */
+    public boolean isValid(Invito invito) {
+        return invitoService.isValid(invito);
+    }
 
 }

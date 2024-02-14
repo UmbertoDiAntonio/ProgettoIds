@@ -73,10 +73,5 @@ public class MaterialeService {
         return repository.findByIdProprietario(contenutoGenerico.getId());
     }
 
-    public Optional<PuntoInteresse> findWhereById(PuntoInteresse puntoInteresse) {
-        return repository.findWhereById(puntoInteresse);
-    }
-    public Optional<Contest> findWhereById(Contest puntoInteresse) {
-        return repository.findWhereById(puntoInteresse);
-    }
+
 }

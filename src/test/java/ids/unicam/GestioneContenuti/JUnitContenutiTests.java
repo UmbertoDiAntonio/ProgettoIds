@@ -263,7 +263,7 @@ public class JUnitContenutiTests {
             TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.NOVEMBER, 5), "eroe", "AN2");
             animatoreService.invitaContest(animatore, contest, turistaAutenticato);
 
-            assertTrue(turistaAutenticato.getInvitiRicevuti().getLast().isValid());
+            assertTrue(contestService.isValid(turistaAutenticato.getInvitiRicevuti().getLast()));
             turistaAutenticatoService.accettaInvitoContest(turistaAutenticato, turistaAutenticato.getInvitiRicevuti().getLast());
             assertEquals(1, contest.getPartecipanti().size());
             // assertEquals(contestService.getContestByCreatore(animatore).getLast(),
@@ -372,7 +372,7 @@ public class JUnitContenutiTests {
 
         curatoreService.valuta(foto, Stato.toStatus(true));
         assertEquals(1, materialeService.findByWhere(comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast()).size());
-        curatoreService.elimina(foto);
+        curatoreService.elimina(curatore,foto);
         assertEquals(0, materialeService.findByWhere(comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast()).size());
 
 

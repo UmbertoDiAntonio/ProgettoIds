@@ -64,4 +64,8 @@ public class InvitoService {
     private List<Invito> findByInvitato(TuristaAutenticato invitato) {
         return repository.findByInvitato(invitato);
     }
+
+    public boolean isValid(Invito invito) {
+        return !invito.getContest().isOpen() || !invito.getContest().getPartecipanti().contains(invito.getInvitato());
+    }
 }
