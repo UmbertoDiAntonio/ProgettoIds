@@ -4,11 +4,15 @@ import ids.unicam.models.Invito;
 import ids.unicam.models.Repository.InvitoRepository;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
+import jakarta.persistence.Table;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
+import static ids.unicam.Main.logger;
 
 @Service
 public class InvitoService {
@@ -54,14 +58,16 @@ public class InvitoService {
         repository.deleteAll();
     }
 
-    public void accettaInvito(TuristaAutenticato turistaAutenticato,Invito invito){
-        for (Invito inv : findByInvitato(turistaAutenticato)) {
-            if (inv.getId() == invito.getId()) {
-                Contest contest = invito.getContest();
-                contestService.getPartecipanti(contest).add(turistaAutenticato);
-            }
+    @Transactional
+    public void accettaInvito(TuristaAutenticato turistaAutenticato, Invito invito) {
+        if (invito.getInvitato().equals(turistaAutenticato)) {
+            contestService.aggiungiPartecipante(invito.getContest(),turistaAutenticato);
+        }else {
+            logger.error("Non sei Invitato");
         }
+
     }
+
 
     private List<Invito> findByInvitato(TuristaAutenticato invitato) {
         return repository.findByInvitato(invitato);

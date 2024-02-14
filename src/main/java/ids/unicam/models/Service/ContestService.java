@@ -33,11 +33,12 @@ public class ContestService {
     public List<TuristaAutenticato> getPartecipanti(Contest contest) {
         return repository.findPartecipantiByContest(contest.getId());
     }
+
     public void deleteById(int id) {
         repository.deleteById(id);
     }
 
-    private Contest save(Contest contest) {
+    Contest save(Contest contest) {
         return repository.save(contest);
     }
 
@@ -74,8 +75,8 @@ public class ContestService {
         return materialeService.findByWhere(contest);
     }
 
-    public MaterialeGenerico aggiungiMateriale(MaterialeGenerico materialeGenerico, Contest contest, TuristaAutenticato turistaAutenticato){
-        if(!getPartecipanti(contest).contains(turistaAutenticato)) {
+    public MaterialeGenerico aggiungiMateriale(MaterialeGenerico materialeGenerico, Contest contest, TuristaAutenticato turistaAutenticato) {
+        if (!(getPartecipanti(contest).contains(turistaAutenticato))) {
             logger.error("Devi essere iscritto al contest per caricare materiale su di esso");
             throw new ContestException("Devi essere iscritto al contest per caricare materiale su di esso");
         }
@@ -86,10 +87,8 @@ public class ContestService {
 
     @Transactional
     public void aggiungiPartecipante(Contest contest, TuristaAutenticato turistaAutenticato) {
-        Optional<Contest> contest1 = findById(contest.getId());
-        if(contest1.isPresent()){
-            contest1.get().getPartecipanti().add(turistaAutenticato);
-            save(contest1.get());
-        }
+        contest.getPartecipanti().add(turistaAutenticato);
+        save(contest);
     }
 }
+

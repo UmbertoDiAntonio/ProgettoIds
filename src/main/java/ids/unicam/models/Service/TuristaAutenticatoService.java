@@ -63,6 +63,7 @@ public class TuristaAutenticatoService {
         repository.deleteAll();
     }
 
+    @Transactional
     public void accettaInvitoContest(TuristaAutenticato turistaAutenticato, Invito invito) {
         invitoService.accettaInvito(turistaAutenticato, invito);
         repository.save(turistaAutenticato);
@@ -93,6 +94,7 @@ public class TuristaAutenticatoService {
      *
      * @param contest il contest in cui si vuole entrare
      */
+    @Transactional
     public void partecipaAlContest(Contest contest, TuristaAutenticato turistaAutenticato) {
         if (!contest.isOpen()) {
             logger.error("Il contest non è aperto");

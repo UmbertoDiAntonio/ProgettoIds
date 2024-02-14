@@ -251,13 +251,9 @@ public class JUnitContenutiTests {
             assertEquals(numeroContestCreatiDaAnimatore + 1, contestService.getContestByCreatore(animatore).size());
 
             TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH, 11), "eroe", "AN2");
-            for(TuristaAutenticato tur : contestService.getPartecipanti(contest)){
-                System.out.println("Prima " + tur.getId());
-            }
+
             turistaAutenticatoService.partecipaAlContest(contest,turistaAutenticato);
-            for(TuristaAutenticato tur : contestService.getPartecipanti(contest)){
-                System.out.println("Dopo " + tur.getId());
-            }
+
             MaterialeGenerico materialeGenerico = contestService.aggiungiMateriale(new Foto(turistaAutenticato), contest, turistaAutenticato);
 
 
@@ -280,6 +276,7 @@ public class JUnitContenutiTests {
 
             assertTrue(invitoService.isValid(invitoService.getInvitiRicevuti(turistaAutenticato).getLast()));
             turistaAutenticatoService.accettaInvitoContest(turistaAutenticato, invitoService.getInvitiRicevuti(turistaAutenticato).getLast());
+
             assertEquals(1, contestService.getPartecipanti(contest).size());
             // assertEquals(contestService.getContestByCreatore(animatore).getLast(),
             //        contestService.getContestByPartecipante(turistaAutenticato).getLast());
