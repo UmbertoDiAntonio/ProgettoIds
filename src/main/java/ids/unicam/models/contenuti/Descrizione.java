@@ -7,11 +7,8 @@ import jakarta.persistence.Entity;
 @Entity
 @DiscriminatorValue("descrizione")
 public class Descrizione  extends MaterialeGenerico {
-    public Descrizione(TuristaAutenticato autore, PuntoInteresse puntoInteresse) {
-        super(autore,puntoInteresse);
-    }
-    public Descrizione(TuristaAutenticato autore, Contest contest) {
-        super(autore,contest);
+    public Descrizione(TuristaAutenticato autore) {
+        super(autore);
     }
 
     public Descrizione() {

@@ -95,6 +95,7 @@ public class CreazioneTabelleDatabase {
                         "id INT PRIMARY KEY AUTO_INCREMENT," +
                         "nome VARCHAR(50) NOT NULL," +
                         "cognome VARCHAR(50) NOT NULL," +
+                        "data_nascita DATE," +
                         "username VARCHAR(50) NOT NULL," +
                         "password VARCHAR(50) NOT NULL)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
@@ -108,8 +109,8 @@ public class CreazioneTabelleDatabase {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS CONTEST_TAGS(" +
                         "contest_id INT," +
-                        "tag_id INT," +
-                        "PRIMARY KEY (contest_id, tag_id)," +
+                        "tags VARCHAR(50)," +
+                        "PRIMARY KEY (contest_id, tags)," +
                         "FOREIGN KEY (contest_id) REFERENCES contest(id))";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
@@ -124,6 +125,7 @@ public class CreazioneTabelleDatabase {
                 "comune VARCHAR(50) NOT NULL," +
                 "nome VARCHAR(50) NOT NULL," +
                 "cognome VARCHAR(50) NOT NULL," +
+                "data_nascita DATE," +
                 "username VARCHAR(50) NOT NULL," +
                 "password VARCHAR(50) NOT NULL)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
@@ -141,6 +143,7 @@ public class CreazioneTabelleDatabase {
                         "comune VARCHAR(50) NOT NULL," +
                         "nome VARCHAR(50) NOT NULL," +
                         "cognome VARCHAR(50) NOT NULL," +
+                        "data_nascita DATE," +
                         "username VARCHAR(50) NOT NULL," +
                         "password VARCHAR(50) NOT NULL)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
@@ -157,6 +160,7 @@ public class CreazioneTabelleDatabase {
                         "comune VARCHAR(50) NOT NULL," +
                         "nome VARCHAR(50) NOT NULL," +
                         "cognome VARCHAR(50) NOT NULL," +
+                        "data_nascita DATE," +
                         "username VARCHAR(50) NOT NULL," +
                         "password VARCHAR(50) NOT NULL)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
@@ -173,6 +177,7 @@ public class CreazioneTabelleDatabase {
                         "comune VARCHAR(50) NOT NULL," +
                         "nome VARCHAR(50) NOT NULL," +
                         "cognome VARCHAR(50) NOT NULL," +
+                        "data_nascita DATE," +
                         "username VARCHAR(50) NOT NULL," +
                         "password VARCHAR(50) NOT NULL)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {

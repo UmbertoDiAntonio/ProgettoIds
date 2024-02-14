@@ -3,6 +3,7 @@ package ids.unicam.models.Service;
 import ids.unicam.models.Invito;
 import ids.unicam.models.Repository.TuristaAutenticatoRepository;
 import ids.unicam.models.attori.TuristaAutenticato;
+import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
+import static ids.unicam.Main.logger;
 
 @Service
 public class TuristaAutenticatoService {
@@ -83,5 +86,18 @@ public class TuristaAutenticatoService {
 
     public List<PuntoInteresse> findPreferiti(TuristaAutenticato turistaAutenticato){
         return repository.findPreferitiByTurista(turistaAutenticato.getId());
+    }
+
+    /**
+     * Entra nel contest se è aperto
+     *
+     * @param contest il contest in cui si vuole entrare
+     */
+    public void partecipaAlContest(Contest contest, TuristaAutenticato turistaAutenticato) {
+        if (!contest.isOpen()) {
+            logger.error("Il contest non è aperto");
+            return;
+        }
+        contestService.aggiungiPartecipante(contest, turistaAutenticato);
     }
 }

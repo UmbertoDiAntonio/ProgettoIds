@@ -147,7 +147,7 @@ public class JUnitUtentiTest {
 
 
         assertEquals(0, materialeService.findByWhere(puntoInteresse).size());
-        MaterialeGenerico foto = materialeService.save(turistaAutenticato, new Foto(turistaAutenticato,puntoInteresse));
+        MaterialeGenerico foto = poiService.creaMateriale(turistaAutenticato, puntoInteresse, new Foto(turistaAutenticato));
         assertEquals(1, materialeService.findByWhere(puntoInteresse).size());
         assertFalse(puntoInteresse.getStato().asBoolean());
         gestorePiattaformaService.promuovi(contributor, Ruolo.Curatore);

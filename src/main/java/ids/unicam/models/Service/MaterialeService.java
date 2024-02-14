@@ -73,5 +73,8 @@ public class MaterialeService {
         return repository.findByIdProprietario(contenutoGenerico.getId());
     }
 
+    public MaterialeGenerico save(MaterialeGenerico materialeGenerico){
+        return repository.save(materialeGenerico);
+    }
 
 }

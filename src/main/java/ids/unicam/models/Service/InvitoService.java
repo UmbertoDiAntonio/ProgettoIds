@@ -13,10 +13,12 @@ import java.util.Optional;
 @Service
 public class InvitoService {
     private final InvitoRepository repository;
+    private final ContestService contestService;
 
     @Autowired
-    public InvitoService(InvitoRepository repository) {
+    public InvitoService(InvitoRepository repository, ContestService contestService) {
         this.repository = repository;
+        this.contestService = contestService;
     }
 
 
@@ -56,7 +58,7 @@ public class InvitoService {
         for (Invito inv : findByInvitato(turistaAutenticato)) {
             if (inv.getId() == invito.getId()) {
                 Contest contest = invito.getContest();
-                contest.getPartecipanti().add(turistaAutenticato);
+                contestService.getPartecipanti(contest).add(turistaAutenticato);
             }
         }
     }
@@ -66,6 +68,10 @@ public class InvitoService {
     }
 
     public boolean isValid(Invito invito) {
-        return !invito.getContest().isOpen() || !invito.getContest().getPartecipanti().contains(invito.getInvitato());
+        return !invito.getContest().isOpen() || !contestService.getPartecipanti(invito.getContest()).contains(invito.getInvitato());
+    }
+
+    public List<Invito> getInvitiRicevuti(TuristaAutenticato turistaAutenticato) {
+        return repository.findInvitiByTurista(turistaAutenticato.getId());
     }
 }

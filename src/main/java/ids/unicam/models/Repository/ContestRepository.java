@@ -15,4 +15,8 @@ public interface ContestRepository extends JpaRepository<Contest,Integer> {
     List<Contest> findContestByCreatore(Animatore animatore);
 
     List<Contest> findContestByPartecipantiContains(TuristaAutenticato turistaAutenticato);
+
+    @Query("SELECT t FROM Contest c JOIN c.partecipanti p JOIN TuristaAutenticato t on p.id = t.id WHERE c.id = :id ")
+    List<TuristaAutenticato> findPartecipantiByContest(int id);
+
 }

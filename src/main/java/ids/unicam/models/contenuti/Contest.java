@@ -22,7 +22,7 @@ public class Contest  {
     private Animatore creatore =null;
 
     @OneToMany(fetch = FetchType.EAGER)
-    private List<TuristaAutenticato> partecipanti = new ArrayList<>();
+    private final List<TuristaAutenticato> partecipanti = new ArrayList<>();
     @ElementCollection
     private final List<String> tags = new ArrayList<>();
     private String nome=null;
@@ -31,6 +31,9 @@ public class Contest  {
         return id;
     }
 
+    public List<TuristaAutenticato> getPartecipanti() {
+        return partecipanti;
+    }
 
     public List<String> getTags() {
         return tags;
@@ -47,7 +50,6 @@ public class Contest  {
     public Contest() {
     }
 
-
     public Animatore getCreatore() {
         return creatore;
     }
@@ -55,7 +57,6 @@ public class Contest  {
     public String getNome() {
         return nome;
     }
-
 
     public void setOpen(boolean open) {
         this.open = open;
@@ -65,14 +66,8 @@ public class Contest  {
         return obiettivo;
     }
 
-
     public boolean isOpen() {
         return open;
-    }
-
-
-    public List<TuristaAutenticato> getPartecipanti() {
-        return partecipanti;
     }
 
     public Contest(String nome, boolean open,  String obiettivo, Animatore creatore) {

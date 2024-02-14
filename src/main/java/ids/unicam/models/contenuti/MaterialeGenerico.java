@@ -31,6 +31,10 @@ public abstract class MaterialeGenerico {
         return idProprietario;
     }
 
+    public void setIdProprietario(int id){
+        this.idProprietario = id;
+    }
+
     public int getId() {
         return id;
     }
@@ -57,16 +61,7 @@ public abstract class MaterialeGenerico {
      * Crea un materiale e gli assegna un id random
      * @param creatore l'autore del materiale
      */
-    public MaterialeGenerico(TuristaAutenticato creatore,PuntoInteresse puntoInteresse) {
-        this.idProprietario=puntoInteresse.getId();
-        this.creatore = creatore;
-    }
-    public MaterialeGenerico(TuristaAutenticato creatore,Contest contest) {
-        if(!contest.getPartecipanti().contains(creatore)) {
-            logger.error("Devi essere iscritto al contest per caricare materiale su di esso");
-            throw new ContestException("Devi essere iscritto al contest per caricare materiale su di esso");
-        }
-        this.idProprietario=contest.getId();
+    public MaterialeGenerico(TuristaAutenticato creatore) {
         this.creatore = creatore;
     }
 

@@ -7,11 +7,8 @@ import jakarta.persistence.Entity;
 @Entity
 @DiscriminatorValue("foto")
 public class Foto extends MaterialeGenerico {
-    public Foto(TuristaAutenticato autore,PuntoInteresse puntoInteresse) {
-        super(autore,puntoInteresse);
-    }
-    public Foto(TuristaAutenticato autore,Contest contest) {
-        super(autore,contest);
+    public Foto(TuristaAutenticato autore) {
+        super(autore);
     }
 
     public Foto() {    }

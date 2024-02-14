@@ -73,16 +73,16 @@ public class AnimatoreService {
         return contestService.creaContest(new Contest(nomeContest,tipoContest,obiettivo,animatore));
     }
 
-    public void invitaContest(Animatore animatore, Contest contest, TuristaAutenticato turistaAutenticato){
+    public Invito invitaContest(Animatore animatore, Contest contest, TuristaAutenticato turistaAutenticato){
         if(!contest.getCreatore().equals(animatore)) {
             logger.error("L'animatore non e' il creatore del contest.");
             throw new IllegalStateException("L'animatore non e' il creatore del contest.");
         }
-        if(contest.getPartecipanti().contains(turistaAutenticato)){
+        if(contestService.getPartecipanti(contest).contains(turistaAutenticato)){
             logger.error("Il turista autenticato fa gia' parte del contest");
             throw new ContestException("Il turista autenticato fa gia' parte del contest");
         }
-        turistaAutenticato.getInvitiRicevuti().add(invitoService.save(new Invito(contest, turistaAutenticato)));
+        return invitoService.save(new Invito(contest, turistaAutenticato));
     }
 
     public boolean approvaMateriale(Animatore animatore, Contest contest, MaterialeGenerico materialeGenerico, Stato stato) {

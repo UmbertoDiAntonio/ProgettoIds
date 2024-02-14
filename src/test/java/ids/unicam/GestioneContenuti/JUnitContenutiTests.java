@@ -38,9 +38,10 @@ public class JUnitContenutiTests {
     private final MaterialeService materialeService;
     private final ContestService contestService;
     private final GestorePiattaformaService gestorePiattaformaService;
+    private final InvitoService invitoService;
 
     @Autowired
-    public JUnitContenutiTests(ComuneController comuneController, ComuneService comuneService, ContributorService contributorService, ContributorAutorizzatoService contributorAutorizzatoService, CuratoreService curatoreService, AnimatoreService animatoreService, TuristaAutenticatoService turistaAutenticatoService, PoiService poiService, ItinerarioService itinerarioService, MaterialeService materialeService, ContestService contestService, GestorePiattaformaService gestorePiattaformaService) {
+    public JUnitContenutiTests(ComuneController comuneController, ComuneService comuneService, ContributorService contributorService, ContributorAutorizzatoService contributorAutorizzatoService, CuratoreService curatoreService, AnimatoreService animatoreService, TuristaAutenticatoService turistaAutenticatoService, PoiService poiService, ItinerarioService itinerarioService, MaterialeService materialeService, ContestService contestService, GestorePiattaformaService gestorePiattaformaService, InvitoService invitoService) {
         this.comuneController = comuneController;
         this.comuneService = comuneService;
         this.contributorService = contributorService;
@@ -53,6 +54,7 @@ public class JUnitContenutiTests {
         this.materialeService = materialeService;
         this.contestService = contestService;
         this.gestorePiattaformaService = gestorePiattaformaService;
+        this.invitoService = invitoService;
     }
 
 
@@ -133,8 +135,8 @@ public class JUnitContenutiTests {
             contributorAutorizzatoService.aggiungiPuntoInteresse(contributorAutorizzato, puntoInteresse);
 
             TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.FEBRUARY, 3), "eroe", "AN2");
-            MaterialeGenerico materialeGenerico = new Foto(turistaAutenticato, puntoInteresse);
-            contributorAutorizzatoService.aggiungiMateriale(contributorAutorizzato, puntoInteresse, materialeGenerico);
+            MaterialeGenerico materialeGenerico = new Foto(turistaAutenticato);
+            poiService.creaMateriale(contributorAutorizzato, puntoInteresse, materialeGenerico);
             assertEquals(1, materialeService.findByWhere(puntoInteresse).size());
         }
 
@@ -146,6 +148,7 @@ public class JUnitContenutiTests {
          * verifica finale
          */
         {
+            TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.FEBRUARY, 3), "eroe", "AN2");
             Contributor contributor2 = gestorePiattaformaService.registraContributor(comune, "Peppe", "Peppe", new GregorianCalendar(2000, GregorianCalendar.MARCH, 11), "PASS", "user");
             gestorePiattaformaService.promuovi(contributor2, Ruolo.Curatore);
             Curatore curatore = comuneService.getCuratoriByComune(comune.getNome()).getLast();
@@ -161,10 +164,10 @@ public class JUnitContenutiTests {
 
             curatoreService.valuta(puntoInteresse, Stato.APPROVED);
             assertTrue(puntoInteresse.getStato().asBoolean());
-            MaterialeGenerico materialeGenerico1 = new Foto(contributor, puntoInteresse);
+            MaterialeGenerico materialeGenerico1 = new Foto(contributor);
             assertFalse(materialeGenerico1.getStato().asBoolean());
             curatoreService.valuta(materialeGenerico1, Stato.APPROVED);
-            assertTrue(puntoInteresse.getStato().asBoolean());
+            poiService.creaMateriale(turistaAutenticato,puntoInteresse,materialeGenerico1);
             curatore.rimuoviOsservatore(contributor);
             assertEquals(0, curatore.getOsservatori().size());
         }
@@ -242,11 +245,17 @@ public class JUnitContenutiTests {
             assertEquals(numeroContestCreatiDaAnimatore + 1, contestService.getContestByCreatore(animatore).size());
 
             TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH, 11), "eroe", "AN2");
-            turistaAutenticato.partecipaAlContest(contest);
-            MaterialeGenerico materialeGenerico = materialeService.save(turistaAutenticato, new Foto(turistaAutenticato, contest));
+            for(TuristaAutenticato tur : contestService.getPartecipanti(contest)){
+                System.out.println("Prima " + tur.getId());
+            }
+            turistaAutenticatoService.partecipaAlContest(contest,turistaAutenticato);
+            for(TuristaAutenticato tur : contestService.getPartecipanti(contest)){
+                System.out.println("Dopo " + tur.getId());
+            }
+            MaterialeGenerico materialeGenerico = contestService.aggiungiMateriale(new Foto(turistaAutenticato), contest, turistaAutenticato);
 
 
-            assertEquals(1, contest.getPartecipanti().size());
+            assertEquals(1, contestService.getPartecipanti(contest).size());
             assertEquals(1, contestService.getMaterialiContest(contest).size());
         }
 
@@ -263,9 +272,9 @@ public class JUnitContenutiTests {
             TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.NOVEMBER, 5), "eroe", "AN2");
             animatoreService.invitaContest(animatore, contest, turistaAutenticato);
 
-            assertTrue(contestService.isValid(turistaAutenticato.getInvitiRicevuti().getLast()));
-            turistaAutenticatoService.accettaInvitoContest(turistaAutenticato, turistaAutenticato.getInvitiRicevuti().getLast());
-            assertEquals(1, contest.getPartecipanti().size());
+            assertTrue(invitoService.isValid(invitoService.getInvitiRicevuti(turistaAutenticato).getLast()));
+            turistaAutenticatoService.accettaInvitoContest(turistaAutenticato, invitoService.getInvitiRicevuti(turistaAutenticato).getLast());
+            assertEquals(1, contestService.getPartecipanti(contest).size());
             // assertEquals(contestService.getContestByCreatore(animatore).getLast(),
             //        contestService.getContestByPartecipante(turistaAutenticato).getLast());
         }
@@ -289,10 +298,11 @@ public class JUnitContenutiTests {
         Animatore animatore = comuneService.getAnimatoriByComune(comune.getNome()).getFirst();
         Contest contest = animatoreService.creaContest(animatore, "monumento", "Foto più bella", true);
 
-        assertThrows(ContestException.class, () -> new Descrizione(turistaAutenticato, contest));
+        Descrizione descrizione = new Descrizione(turistaAutenticato);
+        assertThrows(ContestException.class, () -> contestService.aggiungiMateriale(descrizione, contest, turistaAutenticato));
 
-        turistaAutenticato.partecipaAlContest(contest);
-        MaterialeGenerico materialeGenerico = materialeService.save(turistaAutenticato, new Descrizione(turistaAutenticato, contest));
+        turistaAutenticatoService.partecipaAlContest(contest, turistaAutenticato);
+        MaterialeGenerico materialeGenerico = contestService.aggiungiMateriale(descrizione, contest,turistaAutenticato);
         assertFalse(materialeGenerico.getStato().asBoolean());
         assertEquals(1, contestService.getMaterialiContest(contest).size());
         assertTrue(animatoreService.approvaMateriale(animatore, contest, materialeGenerico, Stato.APPROVED));
@@ -368,9 +378,11 @@ public class JUnitContenutiTests {
 
 
         PuntoInteresse puntoInteresse2 = contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "Castello", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), TipologiaPuntoInteresse.MONUMENTO));
-        MaterialeGenerico foto = materialeService.save(turista, new Foto(turista, puntoInteresse2));
+        curatoreService.valuta(puntoInteresse2, Stato.APPROVED);
+        MaterialeGenerico foto = new Foto(turistaAutenticato);
+        poiService.creaMateriale(turista,puntoInteresse2,foto);
 
-        curatoreService.valuta(foto, Stato.toStatus(true));
+        curatoreService.valuta(foto, Stato.APPROVED);
         assertEquals(1, materialeService.findByWhere(comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast()).size());
         curatoreService.elimina(curatore,foto);
         assertEquals(0, materialeService.findByWhere(comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast()).size());

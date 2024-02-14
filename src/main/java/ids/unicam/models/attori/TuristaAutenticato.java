@@ -23,20 +23,13 @@ public class TuristaAutenticato extends Turista{
     private String nome ="";
     private String username="";
     private String cognome ="";
-    @Transient
     private GregorianCalendar dataNascita = new GregorianCalendar();
     private String password="";
     @OneToMany(fetch = FetchType.EAGER)
     private final List<PuntoInteresse> preferiti = new ArrayList<>();
-    @Transient
-    private final List<Invito> invitiRicevuti = new ArrayList<>();
 
     public TuristaAutenticato() {
 
-    }
-
-    public List<Invito> getInvitiRicevuti() {
-        return invitiRicevuti;
     }
 
     public String getNome() {
@@ -95,20 +88,7 @@ public class TuristaAutenticato extends Turista{
                 ", dataNascita=" + dataNascita +
                 ", password='" + password + '\'' +
                 ", preferiti=" + preferiti +
-                ", invitiRicevuti=" + invitiRicevuti +
                 '}';
-    }
-
-    /**
-     * Entra nel contest se è aperto
-     *
-     * @param contest il contest in cui si vuole entrare
-     */
-    public void partecipaAlContest(Contest contest) {
-        if (!contest.isOpen()) {
-            return;
-        }
-        contest.getPartecipanti().add(this);
     }
 
     public boolean logOut() {

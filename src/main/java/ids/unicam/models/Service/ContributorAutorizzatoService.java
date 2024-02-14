@@ -16,7 +16,7 @@ import java.util.Optional;
 @Service
 public class ContributorAutorizzatoService{
     private final ContributorAutorizzatoRepository repository;
-    private final  PoiService poiService;
+    private final PoiService poiService;
     private final ItinerarioService itinerarioService;
     private final MaterialeService materialeService;
     @Autowired
@@ -74,7 +74,8 @@ public class ContributorAutorizzatoService{
         return  itinerarioService.save(itinerario);
     }
 
+    //TODO potrebbe essere inutile, eliminare
     public MaterialeGenerico aggiungiMateriale(ContributorAutorizzato contributorAutorizzato, PuntoInteresse puntoInteresse, MaterialeGenerico materialeGenerico) {
-        return materialeService.save(contributorAutorizzato,puntoInteresse,materialeGenerico);
+        return poiService.creaMateriale(contributorAutorizzato,puntoInteresse,materialeGenerico);
     }
 }
