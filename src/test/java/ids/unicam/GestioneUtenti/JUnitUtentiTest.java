@@ -93,7 +93,7 @@ public class JUnitUtentiTest {
         ContributorAutorizzato contributorAutorizzato = gestioneComuneService.getContributorAutorizzatiDelComune(comune.getNome()).getFirst();
         contributorAutorizzatoService.aggiungiPuntoInteresse(contributorAutorizzato, puntoInteresse);
         assertEquals(0, turistaAutenticato.getPreferiti().size());
-        turistaAutenticato.aggiungiPreferito(puntoInteresse);
+        turistaAutenticatoService.aggiungiPreferito(turistaAutenticato,puntoInteresse);
         assertEquals(1, turistaAutenticato.getPreferiti().size());
     }
 

@@ -29,6 +29,7 @@ public class CreazioneTabelleDatabase {
         creaTabellaInvito(connection);
         creaTabellaTagPuntoInteresse(connection);
         creaTabellaTagItinerario(connection);
+        creaTabellaPreferiti(connection);
     }
 
     private void creaTabellaInvito(@NotNull Connection connection) {
@@ -49,8 +50,8 @@ public class CreazioneTabelleDatabase {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS PUNTO_INTERESSE_TAGS(" +
                         "punto_interesse_id INT," +
-                        "tag VARCHAR(50)," +
-                        "PRIMARY KEY (punto_interesse_id, tag)," +
+                        "tags VARCHAR(50)," +
+                        "PRIMARY KEY (punto_interesse_id, tags)," +
                         "FOREIGN KEY (punto_interesse_id) REFERENCES PUNTI_DI_INTERESSE(id))";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
@@ -63,13 +64,27 @@ public class CreazioneTabelleDatabase {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS ITINERARIO_TAGS(" +
                         "itinerario_id INT," +
-                        "tag VARCHAR(50)," +
-                        "PRIMARY KEY (itinerario_id, tag)," +
+                        "tags VARCHAR(50)," +
+                        "PRIMARY KEY (itinerario_id, tags)," +
                         "FOREIGN KEY (itinerario_id) REFERENCES ITINERARI(id))";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.error("Impossibile eseguire la QuerySQL creazione tabella Tag Itinerario", e);
+        }
+    }
+
+    private void creaTabellaPreferiti(@NotNull Connection connection) {
+        String createTableSQL =
+                "CREATE TABLE IF NOT EXISTS TURISTI_PREFERITI(" +
+                        "TURISTA_AUTENTICATO_ID INT," +
+                        "PREFERITI_ID INT," +
+                        "FOREIGN KEY (TURISTA_AUTENTICATO_ID) REFERENCES TURISTI(ID)," +
+                        "FOREIGN KEY (PREFERITI_ID) REFERENCES PUNTI_DI_INTERESSE(ID) ON DELETE CASCADE)";
+        try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Turisti Preferiti", e);
         }
     }
 

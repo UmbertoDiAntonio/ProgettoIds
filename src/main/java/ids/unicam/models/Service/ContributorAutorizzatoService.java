@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import static ids.unicam.Main.logger;
-
 @Service
 public class ContributorAutorizzatoService{
     private final ContributorAutorizzatoRepository repository;
@@ -69,7 +67,7 @@ public class ContributorAutorizzatoService{
 
     public PuntoInteresse aggiungiPuntoInteresse(Contributor contributor, PuntoInteresse puntoInteresse){
         puntoInteresse.setStato(Stato.APPROVED);
-        return poiService.creaPoi(puntoInteresse);
+        return poiService.save(puntoInteresse);
     }
 
     public Itinerario aggiungiItinerario(Itinerario itinerario){

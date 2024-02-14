@@ -17,12 +17,11 @@ import java.util.Optional;
 @Service
 public class MaterialeService {
     private final MaterialeRepository repository;
-    private final PoiService poiService;
+
 
     @Autowired
-    public MaterialeService(MaterialeRepository repository, PoiService poiService) {
+    public MaterialeService(MaterialeRepository repository) {
         this.repository = repository;
-        this.poiService = poiService;
     }
 
 

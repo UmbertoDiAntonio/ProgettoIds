@@ -64,7 +64,7 @@ public class ContributorService {
     }
 
     public PuntoInteresse aggiungiPuntoInteresse(Contributor contributor,PuntoInteresse puntoInteresse){
-        return poiService.creaPoi(puntoInteresse);
+        return poiService.save(puntoInteresse);
     }
 
     public Itinerario aggiungiItinerario(Itinerario itinerario){

@@ -14,8 +14,6 @@ import static ids.unicam.Main.logger;
 
 @Entity
 @Table(name = "Punti_di_Interesse")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "TIPO")
 public class PuntoInteresse extends ContenutoGenerico{
     @Override
     public String toString() {
@@ -44,8 +42,7 @@ public class PuntoInteresse extends ContenutoGenerico{
     public String getNome() {
         return nome;
     }
-
-    @Embedded
+    @Enumerated(EnumType.STRING)
     private TipologiaPuntoInteresse tipo;
 
     public PuntoInteresse(Comune comune, String nome, Punto pt, TipologiaPuntoInteresse tipologiaPuntoInteresse) {

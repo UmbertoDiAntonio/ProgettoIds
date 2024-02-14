@@ -3,6 +3,7 @@ package ids.unicam.models.attori;
 import ids.unicam.models.Invito;
 import ids.unicam.models.contenuti.ContenutoGenerico;
 import ids.unicam.models.contenuti.Contest;
+import ids.unicam.models.contenuti.PuntoInteresse;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -28,8 +29,8 @@ public class TuristaAutenticato extends Turista{
     private GregorianCalendar dataNascita = new GregorianCalendar();
     private String password="";
 
-    @Transient
-    private final List<ContenutoGenerico> preferiti = new ArrayList<>();
+    @OneToMany(fetch = FetchType.EAGER)
+    private final List<PuntoInteresse> preferiti = new ArrayList<>();
     @Transient
     private final List<Invito> invitiRicevuti = new ArrayList<>();
 
@@ -69,13 +70,8 @@ public class TuristaAutenticato extends Turista{
         this.id = id;
     }
 
-    public List<ContenutoGenerico> getPreferiti() {
+    public List<PuntoInteresse> getPreferiti() {
         return preferiti;
-    }
-
-    public void aggiungiPreferito(ContenutoGenerico contenutoGenerico) {
-        if(contenutoGenerico.getStato().asBoolean())
-            preferiti.add(contenutoGenerico);
     }
 
     public TuristaAutenticato(String nome, String cognome, GregorianCalendar dataNascita, String password, String username) {

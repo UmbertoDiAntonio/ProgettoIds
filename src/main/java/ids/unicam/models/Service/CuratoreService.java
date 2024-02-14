@@ -92,7 +92,7 @@ public class CuratoreService {
     }
 
     public void elimina(PuntoInteresse puntoInteresse) {
-        poiService.deleteById(puntoInteresse.getId());
+        poiService.eliminaPuntoInteresse(puntoInteresse.getId());
     }
 
     public void elimina(Itinerario itinerario) {

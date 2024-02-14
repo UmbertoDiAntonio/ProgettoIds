@@ -15,10 +15,11 @@ import java.util.Optional;
 @Transactional
 public class ItinerarioService {
     private final ItinerarioRepository repository;
-
+    private final PoiService poiService;
     @Autowired
-    public ItinerarioService(ItinerarioRepository repository) {
+    public ItinerarioService(ItinerarioRepository repository, PoiService poiService) {
         this.repository = repository;
+        this.poiService = poiService;
     }
 
 
@@ -34,6 +35,7 @@ public class ItinerarioService {
 
     public boolean aggiungiTappa(Itinerario itinerario, PuntoInteresse puntoInteresse){
         if(itinerario.getComune().equals(puntoInteresse.getComune())){
+            poiService.save(puntoInteresse);
             itinerario.aggiungiTappaPercorso(puntoInteresse);//TODO non si aggiunge al database
             save(itinerario);
             return true;
@@ -41,8 +43,9 @@ public class ItinerarioService {
         return false;
     }
     public void aggiungiTappa(Itinerario itinerario, PuntoInteresse... puntiInteresse){
-        for(PuntoInteresse puntoInteresse:puntiInteresse)
-            aggiungiTappa(itinerario,puntoInteresse);
+        for(PuntoInteresse puntoInteresse:puntiInteresse) {
+            aggiungiTappa(itinerario, puntoInteresse);
+        }
     }
     public void rimuoviTappa(Itinerario itinerario,PuntoInteresse puntoInteresse){
         //TODO

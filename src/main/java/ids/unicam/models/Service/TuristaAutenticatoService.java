@@ -1,21 +1,20 @@
 package ids.unicam.models.Service;
 
-import ids.unicam.exception.ContestException;
 import ids.unicam.models.Invito;
 import ids.unicam.models.Repository.TuristaAutenticatoRepository;
 import ids.unicam.models.attori.TuristaAutenticato;
-import ids.unicam.models.contenuti.Contest;
-import ids.unicam.models.contenuti.Foto;
-import ids.unicam.models.contenuti.MaterialeGenerico;
+import ids.unicam.models.contenuti.ContenutoGenerico;
 import ids.unicam.models.contenuti.PuntoInteresse;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class TuristaAutenticatoService  {
+public class TuristaAutenticatoService {
     private final TuristaAutenticatoRepository repository;
     private final MaterialeService materialeService;
     private final ContestService contestService;
@@ -41,8 +40,6 @@ public class TuristaAutenticatoService  {
     }
 
 
-
-
     public Optional<TuristaAutenticato> findById(int id) {
         return repository.findById(id);
     }
@@ -65,10 +62,28 @@ public class TuristaAutenticatoService  {
         repository.deleteAll();
     }
 
-    public void accettaInvitoContest(TuristaAutenticato turistaAutenticato, Invito invito){
-        invitoService.accettaInvito(turistaAutenticato,invito);
+    public void accettaInvitoContest(TuristaAutenticato turistaAutenticato, Invito invito) {
+        invitoService.accettaInvito(turistaAutenticato, invito);
         repository.save(turistaAutenticato);
     }
 
+    @Transactional
+    public void rimuoviPreferito(TuristaAutenticato turistaAutenticato, int id) {
+        turistaAutenticato.getPreferiti().removeIf(puntoInteresse -> puntoInteresse.getId()==id);
+        save(turistaAutenticato);
+    }
 
+    public void aggiungiPreferito(TuristaAutenticato turista, PuntoInteresse puntoInteresse) {
+        if (puntoInteresse.getStato().asBoolean())
+            turista.getPreferiti().add(puntoInteresse);
+        save(turista);
+    }
+
+    public List<TuristaAutenticato> findTuristiConPreferiti() {
+        return repository.findTuristiConPreferiti();
+    }
+
+    public List<PuntoInteresse> findPreferiti(TuristaAutenticato turistaAutenticato){
+        return repository.getPreferiti(turistaAutenticato);
+    }
 }
