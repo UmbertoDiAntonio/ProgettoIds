@@ -79,6 +79,7 @@ public class ItinerarioService {
     }
 
     public int getNumeroTappe(Itinerario itinerario) {
-        return repository.findTappeByItinerario(itinerario.getId()).getId();
+        return repository.countTappeByItinerario(itinerario.getId());
+
     }
 }
