@@ -30,6 +30,7 @@ public class CreazioneTabelleDatabase {
         creaTabellaTagPuntoInteresse(connection);
         creaTabellaTagItinerario(connection);
         creaTabellaPreferiti(connection);
+        creaTabellaTagContest(connection);
     }
 
     private void creaTabellaInvito(@NotNull Connection connection) {
@@ -103,6 +104,19 @@ public class CreazioneTabelleDatabase {
         }
     }
 
+    private void creaTabellaTagContest(@NotNull Connection connection) {
+        String createTableSQL =
+                "CREATE TABLE IF NOT EXISTS CONTEST_TAGS(" +
+                        "contest_id INT," +
+                        "tag_id INT," +
+                        "PRIMARY KEY (contest_id, tag_id)," +
+                        "FOREIGN KEY (contest_id) REFERENCES contest(id))";
+        try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Tag Contest", e);
+        }
+    }
 
     private void creaTabellaContributor(@NotNull Connection connection) {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS CONTRIBUTOR(" +
