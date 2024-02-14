@@ -114,7 +114,7 @@ public class CuratoreService {
 
     public void elimina(Curatore curatore, MaterialeGenerico materialeGenerico) {
         //TODO devo fare un filtro per quelli del comune del Curatore
-        poiService.deleteById(materialeGenerico.getId());
+        materialeService.deleteById(materialeGenerico.getId());
         //TODO  contestService.deleteById(materialeDaEliminare);
     }
 
