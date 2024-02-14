@@ -85,19 +85,17 @@ public class AnimatoreService {
         turistaAutenticato.getInvitiRicevuti().add(invitoService.save(new Invito(contest, turistaAutenticato)));
     }
 
-    public void approvaMateriale(Animatore animatore, Contest contest, MaterialeGenerico materialeGenerico, Stato stato) {
-        //TODO check se animatore può approvare in quel contest
-        //TODO check se il materiale è già nello stato
+    public boolean approvaMateriale(Animatore animatore, Contest contest, MaterialeGenerico materialeGenerico, Stato stato) {
         if(!contest.getCreatore().equals(animatore)) {
-            logger.error("L'animatore non e' il creatore del contest.");
-            throw new IllegalStateException("L'animatore non e' il creatore del contest.");
+            logger.warn(animatore + "  non è autorizzato ad approvare nel contest " + contest);
+            return false;
         }
-        if(materialeGenerico.getStato() == stato){
-            logger.warn("il materiale e' gia' nello stato da settare");
-            return;
+        if(materialeGenerico.getStato()==stato){
+            return true;
         }
         if(stato == Stato.NOT_APPROVED)
             materialeService.deleteById(materialeGenerico.getId());
         contestService.approvaMateriale(materialeGenerico,stato);
+        return true;
     }
 }

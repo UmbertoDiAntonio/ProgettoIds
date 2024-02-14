@@ -14,15 +14,11 @@ import java.util.ArrayList;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Curatore extends ContributorAutorizzato {
     public Curatore() {
-
     }
 
     public Curatore(Contributor contributor) {
         super(contributor);
     }
-
-
-
 
     @Transient
     private final ArrayList<Observer> osservatori = new ArrayList<>();
@@ -47,7 +43,6 @@ public class Curatore extends ContributorAutorizzato {
     }
 
     public void notifica(Stato eventType, MaterialeGenerico materialeGenerico) {
-
         for (Observer listener : osservatori) {
             listener.riceviNotifica(eventType, materialeGenerico);
         }

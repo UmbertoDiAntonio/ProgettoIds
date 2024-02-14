@@ -11,19 +11,23 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static ids.unicam.Main.logger;
+
 @Service
 public class CuratoreService {
     private final CuratoreRepository repository;
     private final PoiService poiService;
     private final ItinerarioService itinerarioService;
     private final MaterialeService materialeService;
+    private final ContestService contestService;
 
     @Autowired
-    public CuratoreService(CuratoreRepository repository, PoiService service, ItinerarioService itinerarioService, MaterialeService materialeService) {
+    public CuratoreService(CuratoreRepository repository, PoiService service, ItinerarioService itinerarioService, MaterialeService materialeService, ContestService contestService) {
         this.repository = repository;
         this.poiService = service;
         this.itinerarioService = itinerarioService;
         this.materialeService = materialeService;
+        this.contestService = contestService;
     }
 
 
@@ -100,7 +104,7 @@ public class CuratoreService {
     }
 
     public void elimina(Contest contest) {
-        //TODO
+        contestService.deleteById(contest.getId());
     }
     public void condividi(ContenutoGenerico contenutoGenerico) {
         throw new UnsupportedOperationException(contenutoGenerico.getId() + "non può ancora essere condiviso");
@@ -108,14 +112,16 @@ public class CuratoreService {
     }
 
 
-    public void elimina(MaterialeGenerico materialeGenerico) {
+    public void elimina(Curatore curatore, MaterialeGenerico materialeGenerico) {
         //TODO devo fare un filtro per quelli del comune del Curatore
         poiService.deleteById(materialeGenerico.getId());
         //TODO  contestService.deleteById(materialeDaEliminare);
     }
 
-    public void rimuoviTappa(Itinerario itinerario, PuntoInteresse tappa) {
-        itinerarioService.rimuoviTappa(itinerario, tappa);//TODO deve essere un itinerario di sua competenza
+    public void rimuoviTappa(Curatore curatore,Itinerario itinerario, PuntoInteresse tappa) {
+        if(!curatore.getComune().equals(itinerario.getComune()))
+            logger.warn(curatore + " non può rimuovere tappe da itinerari esterni al suo comune");
+        itinerarioService.rimuoviTappa(itinerario, tappa);
     }
 }
 

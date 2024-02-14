@@ -48,7 +48,7 @@ public class PuntoInteresse extends ContenutoGenerico{
     public PuntoInteresse(Comune comune, String nome, Punto pt, TipologiaPuntoInteresse tipologiaPuntoInteresse) {
         super(comune);
         if (!comune.verificaCoordinateComune(pt)) {
-            logger.error("Non si possono punti di interesse fuori dal comune");
+            logger.error("Non si possono creare punti di interesse fuori dal comune");
             throw new IllegalArgumentException("Posizione Punto di Interesse Fuori dall'area del comune");
         }
         logger.debug("Creato POI " + nome + " in " + pt);
@@ -61,7 +61,7 @@ public class PuntoInteresse extends ContenutoGenerico{
     public PuntoInteresse(Comune comune, String nome, Punto pt,Orario orario, TipologiaPuntoInteresse tipologiaPuntoInteresse) {
         super(comune);
         if (!comune.verificaCoordinateComune(pt)) {
-            logger.error("Non si possono punti di interesse fuori dal comune");
+            logger.error("Non si possono creare punti di interesse fuori dal comune");
             return;
         }
         logger.debug("Creato POI " + nome + " in " + pt);

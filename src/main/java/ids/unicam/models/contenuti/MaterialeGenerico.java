@@ -22,9 +22,13 @@ public abstract class MaterialeGenerico {
     private Stato stato = Stato.NOT_APPROVED;
 
     @JoinColumn(name = "idProprietario")
-    public int idProprietario;
+    private int idProprietario;
     public MaterialeGenerico() {
 
+    }
+
+    public int getIdProprietario() {
+        return idProprietario;
     }
 
     public int getId() {
