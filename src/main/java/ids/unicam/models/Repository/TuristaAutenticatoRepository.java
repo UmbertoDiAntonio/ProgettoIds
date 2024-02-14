@@ -4,6 +4,7 @@ import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,5 +17,7 @@ public interface TuristaAutenticatoRepository extends JpaRepository<TuristaAuten
     @Query("SELECT DISTINCT t FROM TuristaAutenticato t JOIN FETCH t.preferiti")
     List<TuristaAutenticato> findTuristiConPreferiti();
 
-    List<PuntoInteresse> getPreferiti(TuristaAutenticato turistaAutenticato);
+    @Query("SELECT t.preferiti FROM TuristaAutenticato t WHERE t.id = :idTurista")
+    List<PuntoInteresse> findPreferitiByTurista(@Param("idTurista") int idTurista);
+
 }

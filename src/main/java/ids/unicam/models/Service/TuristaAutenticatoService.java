@@ -3,13 +3,11 @@ package ids.unicam.models.Service;
 import ids.unicam.models.Invito;
 import ids.unicam.models.Repository.TuristaAutenticatoRepository;
 import ids.unicam.models.attori.TuristaAutenticato;
-import ids.unicam.models.contenuti.ContenutoGenerico;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -84,6 +82,6 @@ public class TuristaAutenticatoService {
     }
 
     public List<PuntoInteresse> findPreferiti(TuristaAutenticato turistaAutenticato){
-        return repository.getPreferiti(turistaAutenticato);
+        return repository.findPreferitiByTurista(turistaAutenticato.getId());
     }
 }

@@ -323,23 +323,23 @@ public class JUnitContenutiTests {
 
 
         PuntoInteresse puntoInteresse = contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "parcheggio centrale", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), TipologiaPuntoInteresse.PARCHEGGIO));
-        PuntoInteresse puntoInteresse2 = contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "parcheggio centrale sotto", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), TipologiaPuntoInteresse.PARCHEGGIO));
+        PuntoInteresse puntoInt2 = contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "parcheggio centrale sotto", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), TipologiaPuntoInteresse.PARCHEGGIO));
 
         assertEquals(numeroPuntiInteresse + 2, comuneService.getPuntiInteresseNelComune(comune.getNome()).size());
         curatoreService.valuta(puntoInteresse, Stato.APPROVED);
-        curatoreService.valuta(puntoInteresse2, Stato.APPROVED);
+        curatoreService.valuta(puntoInt2, Stato.APPROVED);
 
         turistaAutenticatoService.aggiungiPreferito(turista, puntoInteresse);
-        turistaAutenticatoService.aggiungiPreferito(turista, puntoInteresse2);
+        turistaAutenticatoService.aggiungiPreferito(turista, puntoInt2);
 
-        assertEquals(2, turista.getPreferiti().size());
+        assertEquals(2, turistaAutenticatoService.findPreferiti(turista).size());
 
         curatoreService.elimina(puntoInteresse);
 
         assertEquals(numeroPuntiInteresse+1, comuneService.getPuntiInteresseNelComune(comune.getNome()).size());
 
-        assertEquals(1, turista.getPreferiti().size());
-    }/*
+        assertEquals(1, turistaAutenticatoService.findPreferiti(turista).size());
+
         PuntoInteresse puntoInteresse1 = contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "parco", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), TipologiaPuntoInteresse.PARCO));
 
         int numeroItinerariComune = itinerarioService.findAllByComune(comune).size();
@@ -378,7 +378,7 @@ public class JUnitContenutiTests {
 
         //TODO aggiungere eliminazione dai preferiti
     }
-    */
+
 
     /*
      * Test per modificare la scadenza di un contentuto
