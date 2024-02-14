@@ -60,6 +60,7 @@ public class InvitoService {
 
     @Transactional
     public void accettaInvito(TuristaAutenticato turistaAutenticato, Invito invito) {
+        //TODO isValid?
         if (invito.getInvitato().equals(turistaAutenticato)) {
             contestService.aggiungiPartecipante(invito.getContest(),turistaAutenticato);
         }else {

@@ -137,23 +137,25 @@ public class JUnitUtentiTest {
 
     @Test
     public void aggiungiFoto() {
-
         Comune comune = comuneController.creaComune("Milano");
         Contributor contributor = gestorePiattaformaService.registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "ciao", "mr");
 
         PuntoInteresse puntoInteresse = contributorService.aggiungiPuntoInteresse(contributor,new PuntoInteresse(comune,"parco centrale", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015),TipologiaPuntoInteresse.PARCO));
-
+        gestorePiattaformaService.promuovi(contributor, Ruolo.Curatore);
+        Curatore curatore = gestioneComuneService.getCuratoriDelComune(comune.getNome()).getLast();
+        curatoreService.valuta(puntoInteresse,Stato.APPROVED);
+        assertTrue(puntoInteresse.getStato().asBoolean());
         TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "eroe", "AN2");
 
 
         assertEquals(0, materialeService.findByWhere(puntoInteresse).size());
         MaterialeGenerico foto = poiService.creaMateriale(turistaAutenticato, puntoInteresse, new Foto(turistaAutenticato));
         assertEquals(1, materialeService.findByWhere(puntoInteresse).size());
-        assertFalse(puntoInteresse.getStato().asBoolean());
-        gestorePiattaformaService.promuovi(contributor, Ruolo.Curatore);
-        Curatore curatore = gestioneComuneService.getCuratoriDelComune(comune.getNome()).getLast();
-        curatoreService.valuta(puntoInteresse, Stato.APPROVED);
-        assertTrue(puntoInteresse.getStato().asBoolean());
+        assertFalse(foto.getStato().asBoolean());
+        curatoreService.valuta(foto,Stato.APPROVED);
+        assertTrue(foto.getStato().asBoolean());
+
+
     }
 
 }
