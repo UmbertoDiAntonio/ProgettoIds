@@ -1,6 +1,8 @@
 package ids.unicam.models.Service;
 
+import ids.unicam.models.Expirable;
 import ids.unicam.models.Repository.PoiRepository;
+import ids.unicam.models.Taggable;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.ContributorAutorizzato;
 import ids.unicam.models.attori.TuristaAutenticato;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static ids.unicam.Main.logger;
 
@@ -79,7 +82,14 @@ public class PoiService {
     }
 
 
+    @Transactional
     public List<PuntoInteresse> findAll() {
+        List<PuntoInteresse> list = repository.findAll();
+        for (PuntoInteresse puntoInteresse : list) {
+            if (puntoInteresse.isExpired()) {
+                repository.deleteById(puntoInteresse.getId());
+            }
+        }
         return repository.findAll();
     }
 
@@ -98,22 +108,23 @@ public class PoiService {
 
 
     @Transactional
-    public void aggiungiTag(PuntoInteresse puntoInteresse, Tag tag) {
-        tagService.aggiungiTag(puntoInteresse, tag);
-        if (getTags(puntoInteresse).contains(tag)) {
+    public <T extends Taggable & Expirable> void aggiungiTag(T content, Tag tag) {
+        if (content.getTags().contains(tag)) {
             logger.warn("Tag già aggiunto");
             return;
         }
-        if (!puntoInteresse.isExpired())
-            puntoInteresse.getTags().add(tag);
-        save(puntoInteresse);
+        if (!content.isExpired())
+            tagService.aggiungiTag(content, tag);
+
+        if (content instanceof PuntoInteresse puntoInteresse)
+            save(puntoInteresse);
     }
 
     public List<PuntoInteresse> findByTag(Tag tag) {
         return repository.findByTagsValoreContaining(tag.getValore());
     }
 
-    public List<Tag> getTags(PuntoInteresse puntoInteresse) {
+    public List<Tag> getTags(PuntoInteresse puntoInteresse) {8
         return repository.getTags(puntoInteresse.getId());
     }
 }

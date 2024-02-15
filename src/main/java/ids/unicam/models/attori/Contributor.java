@@ -1,15 +1,12 @@
 package ids.unicam.models.attori;
 
 import ids.unicam.Comune;
-import ids.unicam.models.Tempo;
-import ids.unicam.models.contenuti.ContenutoGenerico;
 import ids.unicam.models.contenuti.MaterialeGenerico;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Observer;
 import ids.unicam.utilites.Stato;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.util.GregorianCalendar;
 
 @Entity
@@ -42,16 +39,7 @@ public class Contributor extends TuristaAutenticato implements Observer {
 
 
 
-    /**
-     * @param contenutoGenerico il Contenuto di cui stiamo modificando la scadenza
-     * @param giorni            la nuova scadenza
-     */
-    //TODO completar metodo
-    public void aggiungiScadenzaContenuto(ContenutoGenerico contenutoGenerico, Tempo giorni) {
-        contenutoGenerico.setExpireDate(LocalDate.of(12,11,12));
-        throw new UnsupportedOperationException();
 
-    }
 
     @Override
     public void riceviNotifica(Stato eventType, PuntoInteresse puntoInteresse) {

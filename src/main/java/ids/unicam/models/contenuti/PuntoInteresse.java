@@ -1,7 +1,9 @@
 package ids.unicam.models.contenuti;
 
 import ids.unicam.Comune;
+import ids.unicam.models.Expirable;
 import ids.unicam.models.Orario;
+import ids.unicam.models.Taggable;
 import ids.unicam.utilites.Punto;
 import jakarta.persistence.*;
 import org.jetbrains.annotations.Nullable;
@@ -14,7 +16,7 @@ import static ids.unicam.Main.logger;
 @Entity
 @Table(name = "Punti_di_Interesse")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class PuntoInteresse extends ContenutoGenerico{
+public class PuntoInteresse extends ContenutoGenerico implements Taggable, Expirable {
     @Override
     public String toString() {
         return "PuntoInteresse{" +
@@ -39,7 +41,7 @@ public class PuntoInteresse extends ContenutoGenerico{
         return pt;
     }
 
-    public String getNome() {
+    public String getNomeContest() {
         return nome;
     }
     @Enumerated(EnumType.STRING)
@@ -72,11 +74,11 @@ public class PuntoInteresse extends ContenutoGenerico{
     }
 
     public String mostraInformazioniDettagliate(){
-        return getNome() + " " + getOrario();
+        return getNomeContest() + " " + getOrario();
     };
 
     public String mostraInformazioniGeneriche(){
-        return getNome();
+        return getNomeContest();
     };
 
     public @Nullable Orario getOrario() {
@@ -105,5 +107,10 @@ public class PuntoInteresse extends ContenutoGenerico{
         result = 31 * result + (pt != null ? pt.hashCode() : 0);
         result = 31 * result + tipo.hashCode();
         return result;
+    }
+
+    @Override
+    public void addTag(Tag tag) {
+        this.getTags().add(tag);
     }
 }

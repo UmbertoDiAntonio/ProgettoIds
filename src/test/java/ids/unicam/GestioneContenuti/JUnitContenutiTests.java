@@ -1,12 +1,10 @@
 package ids.unicam.GestioneContenuti;
 
 import ids.unicam.Comune;
-import ids.unicam.controller.ComuneController;
 import ids.unicam.exception.ContestException;
 import ids.unicam.models.Orario;
 import ids.unicam.models.Ruolo;
 import ids.unicam.models.Service.*;
-import ids.unicam.models.Tempo;
 import ids.unicam.models.attori.*;
 import ids.unicam.models.contenuti.*;
 import ids.unicam.utilites.DayOfWeek;
@@ -17,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.GregorianCalendar;
 
@@ -40,7 +39,7 @@ public class JUnitContenutiTests {
     private final InvitoService invitoService;
 
     @Autowired
-    public JUnitContenutiTests( ComuneService comuneService, ContributorService contributorService, ContributorAutorizzatoService contributorAutorizzatoService, CuratoreService curatoreService, AnimatoreService animatoreService, TuristaAutenticatoService turistaAutenticatoService, PoiService poiService, ItinerarioService itinerarioService, MaterialeService materialeService, ContestService contestService, GestorePiattaformaService gestorePiattaformaService, InvitoService invitoService) {
+    public JUnitContenutiTests(ComuneService comuneService, ContributorService contributorService, ContributorAutorizzatoService contributorAutorizzatoService, CuratoreService curatoreService, AnimatoreService animatoreService, TuristaAutenticatoService turistaAutenticatoService, PoiService poiService, ItinerarioService itinerarioService, MaterialeService materialeService, ContestService contestService, GestorePiattaformaService gestorePiattaformaService, InvitoService invitoService) {
         this.comuneService = comuneService;
         this.contributorService = contributorService;
         this.contributorAutorizzatoService = contributorAutorizzatoService;
@@ -165,7 +164,7 @@ public class JUnitContenutiTests {
             MaterialeGenerico materialeGenerico1 = new Foto(contributor);
             assertFalse(materialeGenerico1.getStato().asBoolean());
             curatoreService.valuta(materialeGenerico1, Stato.APPROVED);
-            poiService.creaMateriale(turistaAutenticato,puntoInteresse,materialeGenerico1);
+            poiService.creaMateriale(turistaAutenticato, puntoInteresse, materialeGenerico1);
             curatore.rimuoviOsservatore(contributor);
             assertEquals(0, curatore.getOsservatori().size());
         }
@@ -209,7 +208,7 @@ public class JUnitContenutiTests {
 
             contributorAutorizzatoService.aggiungiPuntoInteresse(contributorAutorizzato, nuovoPunto);
 
-            contributorAutorizzatoService.aggiungiTappaItinerario(itinerario1,nuovoPunto1);
+            contributorAutorizzatoService.aggiungiTappaItinerario(itinerario1, nuovoPunto1);
             //itinerarioService.aggiungiTappa(itinerario1, nuovoPunto);
 
             assertEquals(numeroItinerariIniziale + 1, itinerarioService.findAllByComune(comune).size());
@@ -248,7 +247,7 @@ public class JUnitContenutiTests {
 
             TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH, 11), "eroe", "AN2");
 
-            turistaAutenticatoService.partecipaAlContest(contest,turistaAutenticato);
+            turistaAutenticatoService.partecipaAlContest(contest, turistaAutenticato);
 
             MaterialeGenerico materialeGenerico = contestService.aggiungiMateriale(new Foto(turistaAutenticato), contest, turistaAutenticato);
 
@@ -301,7 +300,7 @@ public class JUnitContenutiTests {
         assertThrows(ContestException.class, () -> contestService.aggiungiMateriale(descrizione, contest, turistaAutenticato));
 
         turistaAutenticatoService.partecipaAlContest(contest, turistaAutenticato);
-        MaterialeGenerico materialeGenerico = contestService.aggiungiMateriale(descrizione, contest,turistaAutenticato);
+        MaterialeGenerico materialeGenerico = contestService.aggiungiMateriale(descrizione, contest, turistaAutenticato);
         assertFalse(materialeGenerico.getStato().asBoolean());
         assertEquals(1, contestService.getMaterialiContest(contest).size());
         assertTrue(animatoreService.approvaMateriale(animatore, contest, materialeGenerico, Stato.APPROVED));
@@ -372,7 +371,7 @@ public class JUnitContenutiTests {
         assertEquals(1, itinerarioService.getNumeroTappe(itinerario3));
         assertTrue(contributorService.aggiungiTappaItinerario(itinerario3, puntoInteresse1));
         assertEquals(2, itinerarioService.getNumeroTappe(itinerario3));
-        curatoreService.rimuoviTappa(curatore,itinerario3, puntoInteresse1);
+        curatoreService.rimuoviTappa(curatore, itinerario3, puntoInteresse1);
         assertEquals(1, itinerarioService.getNumeroTappe(itinerario3));
 
 
@@ -381,9 +380,9 @@ public class JUnitContenutiTests {
         MaterialeGenerico foto = new Foto(turista);
         curatoreService.valuta(foto, Stato.APPROVED);
 
-        poiService.creaMateriale(turista,puntoInteresse2,foto);
+        poiService.creaMateriale(turista, puntoInteresse2, foto);
         assertEquals(1, materialeService.findByWhere(puntoInteresse2).size());
-        curatoreService.elimina(curatore,foto);
+        curatoreService.elimina(curatore, foto);
         assertEquals(0, materialeService.findByWhere(puntoInteresse2).size());
 
     }
@@ -396,15 +395,17 @@ public class JUnitContenutiTests {
     @Test
     @Order(6)
     public void modificaScadenzaContenuto() {
-
         Comune comune = comuneService.creaComune("Milano");
         Contributor contributor = gestorePiattaformaService.registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 11), "ciao", "mr");
-
+        int numPoi=poiService.findAll().size();
         PuntoInteresse puntoInteresse = new PuntoInteresse(comune, "Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE);
-
         contributorService.aggiungiPuntoInteresse(contributor, puntoInteresse);
+        assertEquals(numPoi+1,poiService.findAll().size());
+        assertEquals(LocalDate.MAX, puntoInteresse.getExpireDate());
 
-        assertThrows(UnsupportedOperationException.class, () -> contributor.aggiungiScadenzaContenuto(puntoInteresse, new Tempo()));
-        //TODO test modifica scadenza
+
+        contributorService.modificaScandenza(puntoInteresse, LocalDate.of(2024, 2, 1));
+        assertEquals(LocalDate.of(2024, 2, 1),puntoInteresse.getExpireDate());
+        assertEquals(numPoi,poiService.findAll().size());
     }
 }

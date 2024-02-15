@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,8 +87,12 @@ public class ContributorAutorizzatoService{
     @Transactional
     public void aggiungiTappaItinerario(Itinerario itinerario,PuntoInteresse... puntiInteresse){
         for(PuntoInteresse puntoInteresse:puntiInteresse) {
-            System.out.println(puntoInteresse.getNome()+" aggiunto");
+            System.out.println(puntoInteresse.getNomeContest()+" aggiunto");
             aggiungiTappaItinerario(itinerario, puntoInteresse);
         }
+    }
+
+    public void modificaScandenza(PuntoInteresse puntoInteresse, LocalDate expireDate) {
+        puntoInteresse.setExpireDate(expireDate);
     }
 }

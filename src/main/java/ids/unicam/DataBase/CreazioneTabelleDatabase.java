@@ -225,6 +225,7 @@ public class CreazioneTabelleDatabase {
                 "CREATE TABLE IF NOT EXISTS ITINERARI_PERCORSO(" +
                         "itinerario_id INT," +
                         "percorso_id INT," +
+                        "PRIMARY KEY (itinerario_id,percorso_id),"+
                         "FOREIGN KEY (itinerario_id) REFERENCES ITINERARI(id)," +
                         "FOREIGN KEY (percorso_id) REFERENCES PUNTI_DI_INTERESSE(id))";
 
@@ -260,9 +261,7 @@ public class CreazioneTabelleDatabase {
                         "stato BOOLEAN NOT NULL," +
                         "latitudine DOUBLE ," +
                         "longitudine DOUBLE ," +
-                        "tag VARCHAR(50)," +
                         "nome VARCHAR(50) NOT NULL," +
-                        "orario VARCHAR(50)," +
                         "tipo VARCHAR(50) NOT NULL," +
                         "EXPIRE_DATE DATE)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
@@ -293,14 +292,13 @@ public class CreazioneTabelleDatabase {
                 "CREATE TABLE IF NOT EXISTS CONTEST(" +
                         "id INT PRIMARY KEY NOT NULL," +
                         "nome_comune VARCHAR(50) NOT NULL," +
-                        "tag VARCHAR(50)," +
+                        "nome_contest VARCHAR(50) NOT NULL," +
                         "nome VARCHAR(50) NOT NULL," +
                         "latitudine DOUBLE ," +
                         "longitudine DOUBLE ," +
                         "aperto BOOLEAN NOT NULL," +
                         "obiettivo VARCHAR(100) NOT NULL," +
                         "creatore_id INT NOT NULL," +
-                        "partecipanti VARCHAR(500),"+
                         "stato BOOLEAN NOT NULL," +
                         "tipo VARCHAR(50) NOT NULL," +
                         "EXPIRE_DATE DATE)";

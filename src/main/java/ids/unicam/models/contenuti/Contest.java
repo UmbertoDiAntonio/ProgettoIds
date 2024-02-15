@@ -1,16 +1,16 @@
 package ids.unicam.models.contenuti;
 
+import ids.unicam.models.Expirable;
+import ids.unicam.models.Taggable;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
-public class Contest extends PuntoInteresse {
+public class Contest extends PuntoInteresse implements Taggable, Expirable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "sequenza_contenuti")
     @SequenceGenerator(name = "sequenza_contenuti", sequenceName = "PUNTI_DI_INTERESSE_SEQ", allocationSize = 1)
@@ -24,9 +24,8 @@ public class Contest extends PuntoInteresse {
 
     @OneToMany(fetch = FetchType.EAGER)
     private final List<TuristaAutenticato> partecipanti = new ArrayList<>();
-    @ElementCollection
-    private final Set<String> tags = new HashSet<>();
-    private String nome=null;
+
+    private String nomeContest =null;
 
     public int getId() {
         return id;
@@ -36,13 +35,8 @@ public class Contest extends PuntoInteresse {
         return partecipanti;
     }
 
-    public void addTags(String tags) {
-        this.tags.add(tags);
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+
 
     public Contest() {
     }
@@ -51,8 +45,8 @@ public class Contest extends PuntoInteresse {
         return creatore;
     }
 
-    public String getNome() {
-        return nome;
+    public String getNomeContest() {
+        return nomeContest;
     }
 
     public void setOpen(boolean open) {
@@ -67,12 +61,12 @@ public class Contest extends PuntoInteresse {
         return open;
     }
 
-    public Contest(String nome, boolean open,  String obiettivo, Animatore creatore) {
-        super(creatore.getComune(), nome, creatore.getComune().getPosizione(), TipologiaPuntoInteresse.CONTEST);
+    public Contest(String nomeContest, boolean open, String obiettivo, Animatore creatore) {
+        super(creatore.getComune(), nomeContest, creatore.getComune().getPosizione(), TipologiaPuntoInteresse.CONTEST);
         this.open = open;
         this.obiettivo = obiettivo;
         this.creatore = creatore;
-        this.nome = nome;
+        this.nomeContest = nomeContest;
     }
 
 

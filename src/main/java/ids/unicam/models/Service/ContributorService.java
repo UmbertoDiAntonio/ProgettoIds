@@ -7,6 +7,7 @@ import ids.unicam.models.contenuti.PuntoInteresse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,5 +73,10 @@ public class ContributorService {
     }
     public boolean aggiungiTappaItinerario(Itinerario itinerario,PuntoInteresse puntoInteresse){
         return itinerarioService.aggiungiTappa(itinerario,puntoInteresse);
+    }
+
+    public void modificaScandenza(PuntoInteresse puntoInteresse, LocalDate expireDate) {
+        puntoInteresse.setExpireDate(expireDate);
+        poiService.save(puntoInteresse);
     }
 }

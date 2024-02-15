@@ -4,7 +4,6 @@ import ids.unicam.models.Repository.MaterialeRepository;
 import ids.unicam.models.attori.ContributorAutorizzato;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.ContenutoGenerico;
-import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.MaterialeGenerico;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Stato;
@@ -66,9 +65,7 @@ public class MaterialeService {
         materialeGenerico.setStato(stato);
     }
 
-    public List<MaterialeGenerico> findByWhere(Contest contest) {
-        return repository.findByIdProprietario(contest.getId());
-    }
+
     public List<MaterialeGenerico> findByWhere(ContenutoGenerico contenutoGenerico) {
         return repository.findByIdProprietario(contenutoGenerico.getId());
     }
