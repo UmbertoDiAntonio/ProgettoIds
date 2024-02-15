@@ -20,6 +20,19 @@ public class GestoreDatabase {
         this.modificaTabelleDatabase = modificaTabelleDatabase;
     }
 
+    public void eliminaTabelleDB(){
+        try (Connection connection = getConnessioneDatabase().connessioneAlDatabase()) {
+            if(connection==null){
+                logger.error("Impossibile connettersi al Database");
+                return;
+            }
+            getCreazioneTabelleDatabase().eliminaTabelle(connection);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     public void inizializzaDatabase(){
         try (Connection connection = getConnessioneDatabase().connessioneAlDatabase()) {
             if(connection==null){

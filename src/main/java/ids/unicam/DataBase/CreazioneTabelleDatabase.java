@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 import static ids.unicam.Main.logger;
 
@@ -32,6 +33,29 @@ public class CreazioneTabelleDatabase {
         creaTabellaTagItinerario(connection);
         creaTabellaPreferiti(connection);
         creaTabellaTagContest(connection);
+    }
+
+    public void eliminaTabelle(@NotNull Connection connection) {
+        String[] tableNames = {
+                "CONTEST_TAGS", "TURISTI_PREFERITI", "ITINERARIO_TAGS",
+                "PUNTI_DI_INTERESSE_TAGS", "TAG", "INVITO",
+                "PUNTO_INTERESSE_HOURS_MAP", "ITINERARI_PERCORSO",
+                "CONTEST_PARTECIPANTI", "COMUNI", "MATERIALI",
+                "CONTEST", "ITINERARI", "PUNTI_DI_INTERESSE",
+                "CURATORI", "ANIMATORI", "CONTRIBUTOR_AUTORIZZATI",
+                "CONTRIBUTOR", "TURISTI"
+        };
+        for (String table : tableNames) {
+
+            String dropTableSQL = "DROP TABLE IF EXISTS " + table;
+            try (PreparedStatement statement = connection.prepareStatement(dropTableSQL)) {
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                logger.error("Impossibile eseguire la QuerySQL elimina tabelle " + table, e);
+            }
+        }
+
+
     }
 
     private void creaTabellaInvito(@NotNull Connection connection) {
@@ -70,7 +94,7 @@ public class CreazioneTabelleDatabase {
                         "punto_interesse_id INT," +
                         "tags_id INT," +
                         "PRIMARY KEY (id,punto_interesse_id, tags_id)," +
-                        "FOREIGN KEY (tags_id) REFERENCES TAG(id),"+
+                        "FOREIGN KEY (tags_id) REFERENCES TAG(id)," +
                         "FOREIGN KEY (punto_interesse_id) REFERENCES PUNTI_DI_INTERESSE(id))";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
@@ -225,7 +249,7 @@ public class CreazioneTabelleDatabase {
                 "CREATE TABLE IF NOT EXISTS ITINERARI_PERCORSO(" +
                         "itinerario_id INT," +
                         "percorso_id INT," +
-                        "PRIMARY KEY (itinerario_id,percorso_id),"+
+                        "PRIMARY KEY (itinerario_id,percorso_id)," +
                         "FOREIGN KEY (itinerario_id) REFERENCES ITINERARI(id)," +
                         "FOREIGN KEY (percorso_id) REFERENCES PUNTI_DI_INTERESSE(id))";
 
@@ -276,7 +300,7 @@ public class CreazioneTabelleDatabase {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS ITINERARI(" +
                         "nome_comune VARCHAR(50) NOT NULL," +
-                        "nome VARCHAR(50) NOT NULL,"+
+                        "nome VARCHAR(50) NOT NULL," +
                         "EXPIRE_DATE DATE," +
                         "id INT PRIMARY KEY AUTO_INCREMENT)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {

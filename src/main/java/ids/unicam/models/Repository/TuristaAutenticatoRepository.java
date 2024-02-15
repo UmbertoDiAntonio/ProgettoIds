@@ -23,4 +23,6 @@ public interface TuristaAutenticatoRepository extends JpaRepository<TuristaAuten
 
     Optional<TuristaAutenticato> findByUsername(String username);
 
+    @Query("SELECT COUNT(*) FROM TuristaAutenticato t WHERE t.username=:username ")
+    Integer countUsername(String username);
 }

@@ -1,7 +1,6 @@
 package ids.unicam.models.Service;
 
 import ids.unicam.Comune;
-import ids.unicam.exception.RegistrazioneException;
 import ids.unicam.models.Ruolo;
 import ids.unicam.models.attori.*;
 import org.jetbrains.annotations.NotNull;
@@ -12,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import static ids.unicam.Main.logger;
+
 @Service
 public class GestorePiattaformaService {
     private final AnimatoreService animatoreService;
@@ -19,49 +20,48 @@ public class GestorePiattaformaService {
     private final ContributorAutorizzatoService contributorAutorizzatoService;
     private final CuratoreService curatoreService;
     private final TuristaAutenticatoService turistaAutenticatoService;
+    private final TuristaService turistaService;
 
     @Autowired
     public GestorePiattaformaService(AnimatoreService animatoreService,
                                      ContributorService contributorService,
                                      ContributorAutorizzatoService contributorAutorizzatoService,
-                                     CuratoreService curatoreService, TuristaAutenticatoService turistaAutenticatoService) {
+                                     CuratoreService curatoreService,
+                                     TuristaAutenticatoService turistaAutenticatoService,
+                                     TuristaService turistaService) {
         this.animatoreService = animatoreService;
         this.contributorService = contributorService;
         this.contributorAutorizzatoService = contributorAutorizzatoService;
         this.curatoreService = curatoreService;
         this.turistaAutenticatoService = turistaAutenticatoService;
+        this.turistaService = turistaService;
     }
 
 
-    public void promuovi(Contributor contributor, Ruolo ruolo){
-        cambiaRuolo(contributor,ruolo);
+    public TuristaAutenticato promuovi(Contributor contributor, Ruolo ruolo) {
+        return cambiaRuolo(contributor, ruolo);
     }
+
     /**
      * Modifica il ruolo di un contributor all'interno del comune
      *
      * @param contributor il contributor a cui cambiare ruolo
      * @param ruolo       il nuovo ruolo
      */
-    private void cambiaRuolo(Contributor contributor, @NotNull Ruolo ruolo) {
+    private TuristaAutenticato cambiaRuolo(Contributor contributor, @NotNull Ruolo ruolo) {
         Comune comune = contributor.getComune();
-        switch (ruolo) {
-            case Curatore -> {
-                curatoreService.save(new Curatore(contributor));
-                rimuoviVecchioRuolo(contributor);
+        rimuoviVecchioRuolo(contributor);
+
+        return switch (ruolo) {
+            case TURISTA -> {
+                logger.error("Non puoi tornare un turista");
+                yield null;
             }
-            case Animatore -> {
-                animatoreService.save(new Animatore(contributor));
-                rimuoviVecchioRuolo(contributor);
-            }
-            case ContributorTrusted -> {
-                contributorAutorizzatoService.save(new ContributorAutorizzato(contributor));
-                rimuoviVecchioRuolo(contributor);
-            }
-            default -> {
-                contributorService.save(new Contributor(comune, contributor));
-                rimuoviVecchioRuolo(contributor);
-            }
-        }
+            case CURATORE -> curatoreService.save(new Curatore(contributor));
+            case ANIMATORE -> animatoreService.save(new Animatore(contributor));
+            case CONTRIBUTOR_AUTORIZZATO -> contributorAutorizzatoService.save(new ContributorAutorizzato(contributor));
+            case CONTRIBUTOR -> contributorService.save(new Contributor(comune, contributor));
+        };
 
     }
 
@@ -77,7 +77,7 @@ public class GestorePiattaformaService {
         }
     }
 
-    public List<TuristaAutenticato> getTuristi(){
+    public List<TuristaAutenticato> getTuristi() {
         return turistaAutenticatoService.findAll();
     }
 
@@ -95,25 +95,42 @@ public class GestorePiattaformaService {
     }
 
 
-    public void registra(Comune comune, int tipo, String nome, String cognome, GregorianCalendar birthday, String password, String username) {
-        switch (tipo) {
-            case 0:
-                registraTurista(nome, cognome, birthday, password, username);
-                break;
-            case 1:
-                registraContributor(comune, nome, cognome, birthday, password, username);
-                break;
-            default:
-                throw new RegistrazioneException("Il tipo di registrazione richiesta non è valido");
+    public TuristaAutenticato registra(@Nullable Comune comune, Ruolo ruolo, String nome, String cognome, GregorianCalendar birthday, String password, String username) {
+        if (ruolo != Ruolo.TURISTA && comune == null) {
+            logger.error("Il comune non puo' essere nullo, registrazione >= Contributor");
+            throw new RuntimeException("Il comune non puo' essere nullo, registrazione >= Contributor");
         }
+        if (!password.matches("^(?=.*[A-Z])(?=.*[@#$%^&+=])(?=.*[0-9])(?=.*[a-zA-Z]).{6,}$")) {
+            logger.error("Password non valida");
+            throw new IllegalArgumentException("Password non valida");
+            //TODO messaggio da parte dell'interfaccia
+        }
+        if (!username.matches("^.{5,}$")) {
+            logger.error("Username non valido");
+            throw new IllegalArgumentException("Username non valido");
+            //TODO messaggio da parte dell'interfaccia
+        }
+        if (!turistaAutenticatoService.isUsernameUnique(username)) {
+            logger.error("Username già esistente");
+            throw new IllegalArgumentException("Username già esistente");
+            //TODO messaggio da parte dell'interfaccia
+        }
+        return switch (ruolo) {
+            case TURISTA -> registraTurista(nome, cognome, birthday, password, username);
+            case CONTRIBUTOR -> registraContributor(comune, nome, cognome, birthday, password, username);
+            case CURATORE, ANIMATORE, CONTRIBUTOR_AUTORIZZATO -> {
+                Contributor contributor = registraContributor(comune, nome, cognome, birthday, password, username);
+                yield promuovi(contributor, ruolo);
+            }
+        };
     }
 
-    public TuristaAutenticato registraTurista(String nome, String cognome, GregorianCalendar birthday, String password, String username) {
+    private TuristaAutenticato registraTurista(String nome, String cognome, GregorianCalendar birthday, String password, String username) {
         TuristaAutenticato nuovoTurista = new TuristaAutenticato(nome, cognome, birthday, password, username);
         return turistaAutenticatoService.save(nuovoTurista);
     }
 
-    public Contributor registraContributor(Comune comune, String nome, String cognome, GregorianCalendar birthday, String password, String username) {
+    private Contributor registraContributor(Comune comune, String nome, String cognome, GregorianCalendar birthday, String password, String username) {
         Contributor contributor = new Contributor(comune, nome, cognome, birthday, password, username);
         return contributorService.save(contributor);
     }

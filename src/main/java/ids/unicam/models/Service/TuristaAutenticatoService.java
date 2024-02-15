@@ -114,4 +114,8 @@ public class TuristaAutenticatoService {
         Optional<TuristaAutenticato> turista = findTuristaByUsername(username);
         return turista.map(turistaAutenticato -> turistaAutenticato.getPassword().equals(password)).orElse(true);
     }
+
+    public boolean isUsernameUnique(String username) {
+        return repository.countUsername(username)==0;
+    }
 }

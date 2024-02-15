@@ -35,4 +35,6 @@ public class TuristaService {
             return turistaAutenticatoService.findTuristaByUsername(username);
         return Optional.empty();
     }
+
+
 }
