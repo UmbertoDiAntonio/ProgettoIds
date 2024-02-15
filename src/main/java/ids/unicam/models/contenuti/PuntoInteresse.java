@@ -8,12 +8,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static ids.unicam.Main.logger;
 
 
 @Entity
 @Table(name = "Punti_di_Interesse")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class PuntoInteresse extends ContenutoGenerico{
     @Override
     public String toString() {
@@ -83,4 +85,27 @@ public class PuntoInteresse extends ContenutoGenerico{
         return orario;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        PuntoInteresse that = (PuntoInteresse) o;
+
+        if (!Objects.equals(orario, that.orario)) return false;
+        if (!Objects.equals(nome, that.nome)) return false;
+        if (!Objects.equals(pt, that.pt)) return false;
+        return tipo == that.tipo;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (orario != null ? orario.hashCode() : 0);
+        result = 31 * result + (nome != null ? nome.hashCode() : 0);
+        result = 31 * result + (pt != null ? pt.hashCode() : 0);
+        result = 31 * result + tipo.hashCode();
+        return result;
+    }
 }

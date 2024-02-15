@@ -76,8 +76,6 @@ public class PoiService {
     }
 
 
-
-
     public Optional<PuntoInteresse> findById(int id) {
         return repository.findById(id);
     }
@@ -103,20 +101,14 @@ public class PoiService {
 
     @Transactional
     public void aggiungiTag(PuntoInteresse puntoInteresse, Tag tag) {
-        tagService.aggiungiTag(puntoInteresse,tag);
-        System.out.println("A " + puntoInteresse.getTags());
-        System.out.println("B "+getTags(puntoInteresse));
-        if(getTags(puntoInteresse).contains(tag)){
+        tagService.aggiungiTag(puntoInteresse, tag);
+        if (getTags(puntoInteresse).contains(tag)) {
             logger.warn("Tag già aggiunto");
             return;
         }
         if (!puntoInteresse.isExpired())
             puntoInteresse.getTags().add(tag);
-        System.out.println("C " + puntoInteresse.getTags());
-        System.out.println("D "+getTags(puntoInteresse));
         save(puntoInteresse);
-        System.out.println("E " + puntoInteresse.getTags());
-        System.out.println("F "+getTags(puntoInteresse));
     }
 
     public List<PuntoInteresse> findByTag(Tag tag) {

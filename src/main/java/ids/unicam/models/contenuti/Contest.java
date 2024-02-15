@@ -6,10 +6,12 @@ import ids.unicam.models.attori.TuristaAutenticato;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-public class Contest  {
+public class Contest extends PuntoInteresse {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "sequenza_contenuti")
     @SequenceGenerator(name = "sequenza_contenuti", sequenceName = "PUNTI_DI_INTERESSE_SEQ", allocationSize = 1)
@@ -24,7 +26,7 @@ public class Contest  {
     @OneToMany(fetch = FetchType.EAGER)
     private final List<TuristaAutenticato> partecipanti = new ArrayList<>();
     @ElementCollection
-    private final List<String> tags = new ArrayList<>();
+    private final Set<String> tags = new HashSet<>();
     private String nome=null;
 
     public int getId() {
@@ -33,10 +35,6 @@ public class Contest  {
 
     public List<TuristaAutenticato> getPartecipanti() {
         return partecipanti;
-    }
-
-    public List<String> getTags() {
-        return tags;
     }
 
     public void addTags(String tags) {
@@ -71,11 +69,14 @@ public class Contest  {
     }
 
     public Contest(String nome, boolean open,  String obiettivo, Animatore creatore) {
+        super(creatore.getComune(), nome, creatore.getComune().getPosizione(), TipologiaPuntoInteresse.CONTEST);
         this.open = open;
         this.obiettivo = obiettivo;
         this.creatore = creatore;
         this.nome = nome;
     }
+
+
 
 
 

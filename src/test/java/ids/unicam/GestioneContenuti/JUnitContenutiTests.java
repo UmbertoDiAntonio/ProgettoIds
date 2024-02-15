@@ -279,7 +279,7 @@ public class JUnitContenutiTests {
 
             assertEquals(1, contestService.getPartecipanti(contest).size());
             // assertEquals(contestService.getContestByCreatore(animatore).getLast(),
-            //        contestService.getContestByPartecipante(turistaAutenticato).getLast());
+            // contestService.getContestByPartecipante(turistaAutenticato).getLast());
         }
     }
 
@@ -382,16 +382,14 @@ public class JUnitContenutiTests {
 
         PuntoInteresse puntoInteresse2 = contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "Castello", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), TipologiaPuntoInteresse.MONUMENTO));
         curatoreService.valuta(puntoInteresse2, Stato.APPROVED);
-        MaterialeGenerico foto = new Foto(turistaAutenticato);
-        poiService.creaMateriale(turista,puntoInteresse2,foto);
-
+        MaterialeGenerico foto = new Foto(turista);
         curatoreService.valuta(foto, Stato.APPROVED);
-        assertEquals(1, materialeService.findByWhere(comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast()).size());
+
+        poiService.creaMateriale(turista,puntoInteresse2,foto);
+        assertEquals(1, materialeService.findByWhere(puntoInteresse2).size());
         curatoreService.elimina(curatore,foto);
-        assertEquals(0, materialeService.findByWhere(comuneService.getPuntiInteresseNelComune(comune.getNome()).getLast()).size());
+        assertEquals(0, materialeService.findByWhere(puntoInteresse2).size());
 
-
-        //TODO aggiungere eliminazione dai preferiti
     }
 
 

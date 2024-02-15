@@ -32,7 +32,6 @@ public class CreazioneTabelleDatabase {
         creaTabellaTagItinerario(connection);
         creaTabellaPreferiti(connection);
         creaTabellaTagContest(connection);
-
     }
 
     private void creaTabellaInvito(@NotNull Connection connection) {
@@ -49,22 +48,6 @@ public class CreazioneTabelleDatabase {
         }
     }
 
-    private void creaTabellaTagPuntoInteresse(@NotNull Connection connection) {
-        String createTableSQL =
-                "CREATE TABLE IF NOT EXISTS PUNTI_DI_INTERESSE_TAGS(" +
-                        "id INT AUTO_INCREMENT," +
-                        "punto_interesse_id INT," +
-                        "tags_id INT," +
-                        "PRIMARY KEY (id,punto_interesse_id, tags_id)," +
-                        "FOREIGN KEY (punto_interesse_id) REFERENCES PUNTI_DI_INTERESSE(id)," +
-                        "FOREIGN KEY (tags_id) REFERENCES TAG(id))";
-        try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella Tag Punto Interesse", e);
-        }
-    }
-
     private void creaTabellaTag(@NotNull Connection connection) {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS TAG(" +
@@ -73,6 +56,22 @@ public class CreazioneTabelleDatabase {
                         "PUNTO_ID INT NOT NULL," +
                         "FOREIGN KEY (PUNTO_ID) REFERENCES PUNTI_DI_INTERESSE(ID) ON DELETE CASCADE," +
                         "PRIMARY KEY (id))";
+        try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Tag Punto Interesse", e);
+        }
+    }
+
+    private void creaTabellaTagPuntoInteresse(@NotNull Connection connection) {
+        String createTableSQL =
+                "CREATE TABLE IF NOT EXISTS PUNTI_DI_INTERESSE_TAGS(" +
+                        "id INT AUTO_INCREMENT," +
+                        "punto_interesse_id INT," +
+                        "tags_id INT," +
+                        "PRIMARY KEY (id,punto_interesse_id, tags_id)," +
+                        "FOREIGN KEY (tags_id) REFERENCES TAG(id),"+
+                        "FOREIGN KEY (punto_interesse_id) REFERENCES PUNTI_DI_INTERESSE(id))";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -278,7 +277,7 @@ public class CreazioneTabelleDatabase {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS ITINERARI(" +
                         "nome_comune VARCHAR(50) NOT NULL," +
-                        "nome VARCHAR(50) NOT NULL," +
+                        "nome VARCHAR(50) NOT NULL,"+
                         "EXPIRE_DATE DATE," +
                         "id INT PRIMARY KEY AUTO_INCREMENT)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
@@ -293,13 +292,18 @@ public class CreazioneTabelleDatabase {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS CONTEST(" +
                         "id INT PRIMARY KEY NOT NULL," +
-                        //        "nome_comune VARCHAR(50) NOT NULL," +
+                        "nome_comune VARCHAR(50) NOT NULL," +
                         "tag VARCHAR(50)," +
                         "nome VARCHAR(50) NOT NULL," +
+                        "latitudine DOUBLE ," +
+                        "longitudine DOUBLE ," +
                         "aperto BOOLEAN NOT NULL," +
                         "obiettivo VARCHAR(100) NOT NULL," +
                         "creatore_id INT NOT NULL," +
-                        "partecipanti VARCHAR(500) )";
+                        "partecipanti VARCHAR(500),"+
+                        "stato BOOLEAN NOT NULL," +
+                        "tipo VARCHAR(50) NOT NULL," +
+                        "EXPIRE_DATE DATE)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
