@@ -86,10 +86,13 @@ public class CuratoreService {
      * notifica i subscriber
      *
      * @param materialeGenerico il materiale che si vuole valutare
-     * @param approvato         approvato o non approvato
+     * @param stato         approvato o non approvato
      */
-    public void valuta(MaterialeGenerico materialeGenerico, Stato approvato) {//TODO
-        materialeGenerico.setStato(approvato);
+    public void valuta(MaterialeGenerico materialeGenerico, Stato stato) {
+        if(!stato.asBoolean()){
+            materialeService.deleteById(materialeGenerico.getId());
+        }
+        materialeGenerico.setStato(stato);
         //TODO notifica(approvato, materialeGenerico);
     }
 

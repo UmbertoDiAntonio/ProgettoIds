@@ -61,7 +61,6 @@ public class MaterialeService {
     }
 
     public void approvaMateriale(MaterialeGenerico materialeGenerico,Stato stato) {
-        //TODo caso di elminazione da gestire
         materialeGenerico.setStato(stato);
     }
 
