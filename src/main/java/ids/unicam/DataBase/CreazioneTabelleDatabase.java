@@ -27,10 +27,12 @@ public class CreazioneTabelleDatabase {
         creaTabellaItinerariPercorso(connection);
         creaTabellaOrariPuntoInteresse(connection);
         creaTabellaInvito(connection);
+        creaTabellaTag(connection);
         creaTabellaTagPuntoInteresse(connection);
         creaTabellaTagItinerario(connection);
         creaTabellaPreferiti(connection);
         creaTabellaTagContest(connection);
+
     }
 
     private void creaTabellaInvito(@NotNull Connection connection) {
@@ -49,12 +51,28 @@ public class CreazioneTabelleDatabase {
 
     private void creaTabellaTagPuntoInteresse(@NotNull Connection connection) {
         String createTableSQL =
-                "CREATE TABLE IF NOT EXISTS PUNTO_INTERESSE_TAGS(" +
+                "CREATE TABLE IF NOT EXISTS PUNTI_DI_INTERESSE_TAGS(" +
                         "id INT AUTO_INCREMENT," +
                         "punto_interesse_id INT," +
-                        "tags VARCHAR(50)," +
-                        "PRIMARY KEY (id,punto_interesse_id, tags)," +
-                        "FOREIGN KEY (punto_interesse_id) REFERENCES PUNTI_DI_INTERESSE(id))";
+                        "tags_id INT," +
+                        "PRIMARY KEY (id,punto_interesse_id, tags_id)," +
+                        "FOREIGN KEY (punto_interesse_id) REFERENCES PUNTI_DI_INTERESSE(id)," +
+                        "FOREIGN KEY (tags_id) REFERENCES TAG(id))";
+        try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Tag Punto Interesse", e);
+        }
+    }
+
+    private void creaTabellaTag(@NotNull Connection connection) {
+        String createTableSQL =
+                "CREATE TABLE IF NOT EXISTS TAG(" +
+                        "id INT AUTO_INCREMENT," +
+                        "VALORE VARCHAR(50)," +
+                        "PUNTO_ID INT NOT NULL," +
+                        "FOREIGN KEY (PUNTO_ID) REFERENCES PUNTI_DI_INTERESSE(ID) ON DELETE CASCADE," +
+                        "PRIMARY KEY (id))";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -260,7 +278,7 @@ public class CreazioneTabelleDatabase {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS ITINERARI(" +
                         "nome_comune VARCHAR(50) NOT NULL," +
-                        "nome VARCHAR(50) NOT NULL,"+
+                        "nome VARCHAR(50) NOT NULL," +
                         "EXPIRE_DATE DATE," +
                         "id INT PRIMARY KEY AUTO_INCREMENT)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
@@ -275,7 +293,7 @@ public class CreazioneTabelleDatabase {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS CONTEST(" +
                         "id INT PRIMARY KEY NOT NULL," +
-                //        "nome_comune VARCHAR(50) NOT NULL," +
+                        //        "nome_comune VARCHAR(50) NOT NULL," +
                         "tag VARCHAR(50)," +
                         "nome VARCHAR(50) NOT NULL," +
                         "aperto BOOLEAN NOT NULL," +

@@ -6,11 +6,13 @@ import ids.unicam.models.attori.ContributorAutorizzato;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.MaterialeGenerico;
 import ids.unicam.models.contenuti.PuntoInteresse;
+import ids.unicam.models.contenuti.Tag;
 import ids.unicam.utilites.Stato;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -22,12 +24,14 @@ public class PoiService {
     private final PoiRepository repository;
     private final TuristaAutenticatoService turistaAutenticatoService;
     private final MaterialeService materialeService;
+    private final TagService tagService;
 
     @Autowired
-    public PoiService(PoiRepository repository, TuristaAutenticatoService turistaAutenticatoService, MaterialeService materialeService) {
+    public PoiService(PoiRepository repository, TuristaAutenticatoService turistaAutenticatoService, MaterialeService materialeService, TagService tagService) {
         this.repository = repository;
         this.turistaAutenticatoService = turistaAutenticatoService;
         this.materialeService = materialeService;
+        this.tagService = tagService;
     }
 
 
@@ -66,9 +70,12 @@ public class PoiService {
     }
 
 
+    @Transactional
     public PuntoInteresse save(PuntoInteresse puntoInteresse) {
         return repository.save(puntoInteresse);
     }
+
+
 
 
     public Optional<PuntoInteresse> findById(int id) {
@@ -94,22 +101,29 @@ public class PoiService {
     }
 
 
-    public void aggiungiTag(PuntoInteresse puntoInteresse, String tag) {
+    @Transactional
+    public void aggiungiTag(PuntoInteresse puntoInteresse, Tag tag) {
+        tagService.aggiungiTag(puntoInteresse,tag);
+        System.out.println("A " + puntoInteresse.getTags());
+        System.out.println("B "+getTags(puntoInteresse));
         if(getTags(puntoInteresse).contains(tag)){
             logger.warn("Tag già aggiunto");
             return;
         }
         if (!puntoInteresse.isExpired())
             puntoInteresse.getTags().add(tag);
-
+        System.out.println("C " + puntoInteresse.getTags());
+        System.out.println("D "+getTags(puntoInteresse));
         save(puntoInteresse);
+        System.out.println("E " + puntoInteresse.getTags());
+        System.out.println("F "+getTags(puntoInteresse));
     }
 
-    public List<PuntoInteresse> findByTag(String tag) {
-        return repository.findByTagsContaining(tag);
+    public List<PuntoInteresse> findByTag(Tag tag) {
+        return repository.findByTagsValoreContaining(tag.getValore());
     }
 
-    public List<String> getTags(PuntoInteresse puntoInteresse) {
+    public List<Tag> getTags(PuntoInteresse puntoInteresse) {
         return repository.getTags(puntoInteresse.getId());
     }
 }

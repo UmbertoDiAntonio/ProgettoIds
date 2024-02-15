@@ -77,7 +77,7 @@ public class CuratoreService {
         puntoInteresse.setStato(approvato);
         if (approvato == Stato.NOT_APPROVED)
             poiService.deleteById(puntoInteresse.getId());
-        poiService.save(puntoInteresse);
+        //poiService.save(puntoInteresse);
         //TODO notifica(approvato, puntoInteresse);
     }
 

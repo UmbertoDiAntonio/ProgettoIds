@@ -5,10 +5,7 @@ import ids.unicam.controller.ComuneController;
 import ids.unicam.models.Ruolo;
 import ids.unicam.models.Service.*;
 import ids.unicam.models.attori.*;
-import ids.unicam.models.contenuti.Foto;
-import ids.unicam.models.contenuti.MaterialeGenerico;
-import ids.unicam.models.contenuti.PuntoInteresse;
-import ids.unicam.models.contenuti.TipologiaPuntoInteresse;
+import ids.unicam.models.contenuti.*;
 import ids.unicam.utilites.Punto;
 import ids.unicam.utilites.Stato;
 import org.junit.jupiter.api.Test;
@@ -115,9 +112,6 @@ public class JUnitUtentiTest {
     @Test
     public void metodoCercaTurista() {
         Turista turista = new Turista();
-        int numeroTagEdicolaIniziale = poiService.findByTag("Edicola").size();
-
-        assertEquals(0, poiService.findByTag("empty").size());
 
         Comune comune = comuneService.creaComune("Milano");
         Contributor contributor = gestorePiattaformaService.registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "ciao", "mr");
@@ -128,21 +122,32 @@ public class JUnitUtentiTest {
 
         PuntoInteresse puntoInteresse = new PuntoInteresse(comune, "Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE);
 
-        contributorService.aggiungiPuntoInteresse(contributor, puntoInteresse);
-        System.out.println("1 - "+poiService.getTags(puntoInteresse).size());
-        poiService.aggiungiTag(puntoInteresse, "Edicola");
-        System.out.println("2 - "+poiService.getTags(puntoInteresse).size());
-        assertEquals(numeroTagEdicolaIniziale + 1, poiService.findByTag("Edicola").size());
-        System.out.println("3 - "+poiService.getTags(puntoInteresse).size());
-        curatoreService.valuta(puntoInteresse, Stato.APPROVED); //TODO l'approvazione del punto duplica i suoi tag
-        System.out.println("4 - "+poiService.getTags(puntoInteresse).size());
-        poiService.aggiungiTag(puntoInteresse, "Tabaccheria"); //TODO l'aggiunto di un altro tag duplica i tag precedenti
-        System.out.println("5 - "+poiService.getTags(puntoInteresse).size());
-        assertEquals(numeroTagEdicolaIniziale + 1, poiService.findByTag("Edicola").size());
-        System.out.println("6 - "+poiService.getTags(puntoInteresse).size());
-        assertEquals(List.of("Edicola", "Tabaccheria"), poiService.getTags(puntoInteresse));
-        System.out.println("7 - "+poiService.getTags(puntoInteresse).size());  //TODO non ci arriviamo
 
+        int numeroTagEdicolaIniziale = poiService.findByTag(new Tag("Edicola",puntoInteresse)).size();
+
+        contributorService.aggiungiPuntoInteresse(contributor, puntoInteresse);
+
+        poiService.aggiungiTag(puntoInteresse, new Tag("Edicola",puntoInteresse));
+        assertEquals(numeroTagEdicolaIniziale + 1, poiService.findByTag(new Tag("Edicola",puntoInteresse)).size());
+
+        curatoreService.valuta(puntoInteresse, Stato.APPROVED);
+
+
+        poiService.aggiungiTag(puntoInteresse, new Tag("Tabaccheria",puntoInteresse));
+
+        assertEquals(numeroTagEdicolaIniziale + 1, poiService.findByTag(new Tag("Edicola",puntoInteresse)).size());
+
+        assertEquals("Edicola", poiService.getTags(puntoInteresse).getFirst().getValore());
+        assertEquals("Tabaccheria", poiService.getTags(puntoInteresse).getLast().getValore());
+
+
+        poiService.aggiungiTag(puntoInteresse, new Tag("Bar",puntoInteresse));
+
+        assertEquals(numeroTagEdicolaIniziale + 1, poiService.findByTag(new Tag("Edicola",puntoInteresse)).size());
+
+        assertEquals("Edicola", poiService.getTags(puntoInteresse).getFirst().getValore());
+        assertEquals("Tabaccheria", poiService.getTags(puntoInteresse).get(1).getValore());
+        assertEquals("Bar", poiService.getTags(puntoInteresse).getLast().getValore());
 
     }
 

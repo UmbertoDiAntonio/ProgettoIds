@@ -23,8 +23,8 @@ public abstract class ContenutoGenerico {
     private Comune comune;
     private Stato stato = Stato.NOT_APPROVED;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> tags = new ArrayList<>();
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Tag> tags = new ArrayList<>();
 
     private LocalDate expireDate = LocalDate.MAX;
     public boolean isExpired() {
@@ -52,8 +52,11 @@ public abstract class ContenutoGenerico {
     }
 
 
-    public List<String> getTags() {
+    public List<Tag> getTags() {
         return tags;
+    }
+    public void resetTags(){
+        this.tags=new ArrayList<>();
     }
 
     public ContenutoGenerico(Comune comune) {
