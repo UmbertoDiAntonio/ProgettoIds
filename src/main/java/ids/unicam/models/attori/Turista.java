@@ -6,20 +6,6 @@ import java.util.ArrayList;
 
 
 public class Turista {
-    public ArrayList<PuntoInteresse> search(String searchedTags){/*
-        ComuneController comuneController = ComuneController.getInstance();
-        ArrayList<Comune> comuni = comuneController.listaComuni;
-        ArrayList<PuntoInteresse> result=new ArrayList<>();
-        for(Comune comune:comuni){
-            for(PuntoInteresse puntoInteresse:comune.getContenutoController().getContenuti()){
-                if(puntoInteresse.getStato().asBoolean() && puntoInteresse.getTags().contains(searchedTags)){
-                    result.add(puntoInteresse);
-                }
-            }
-        }*///TODO
-        return null;
-    }
-
     public void report(PuntoInteresse puntoInteresse){
         throw new UnsupportedOperationException();
         //TODO segnala un contenuto al Curatore

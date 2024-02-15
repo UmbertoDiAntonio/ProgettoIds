@@ -4,6 +4,7 @@ import ids.unicam.models.Repository.ContributorRepository;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.PuntoInteresse;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,6 +72,7 @@ public class ContributorService {
     public Itinerario aggiungiItinerario(Itinerario itinerario){
         return  itinerarioService.save(itinerario);
     }
+    @Transactional
     public boolean aggiungiTappaItinerario(Itinerario itinerario,PuntoInteresse puntoInteresse){
         return itinerarioService.aggiungiTappa(itinerario,puntoInteresse);
     }

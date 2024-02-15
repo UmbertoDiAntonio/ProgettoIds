@@ -16,6 +16,7 @@ import java.util.Optional;
 public class ItinerarioService {
     private final ItinerarioRepository repository;
     private final PoiService poiService;
+
     @Autowired
     public ItinerarioService(ItinerarioRepository repository, PoiService poiService) {
         this.repository = repository;
@@ -32,22 +33,24 @@ public class ItinerarioService {
         return repository.save(itinerario);
     }
 
-@Transactional
-    public boolean aggiungiTappa(Itinerario itinerario, PuntoInteresse puntoInteresse){
-        if(itinerario.getComune().equals(puntoInteresse.getComune())){
+    @Transactional
+    public boolean aggiungiTappa(Itinerario itinerario, PuntoInteresse puntoInteresse) {
+        if (itinerario.getComune().equals(puntoInteresse.getComune())) {
             poiService.save(puntoInteresse);
-            itinerario.aggiungiTappaPercorso(puntoInteresse);//TODO non si aggiunge al database
+            itinerario.aggiungiTappaPercorso(puntoInteresse);
             save(itinerario);
             return true;
         }
         return false;
     }
-    public void aggiungiTappa(Itinerario itinerario, PuntoInteresse... puntiInteresse){
-        for(PuntoInteresse puntoInteresse:puntiInteresse) {
+
+    public void aggiungiTappa(Itinerario itinerario, PuntoInteresse... puntiInteresse) {
+        for (PuntoInteresse puntoInteresse : puntiInteresse) {
             aggiungiTappa(itinerario, puntoInteresse);
         }
     }
-    public void rimuoviTappa(Itinerario itinerario,PuntoInteresse puntoInteresse){
+
+    public void rimuoviTappa(Itinerario itinerario, PuntoInteresse puntoInteresse) {
         itinerario.getPercorso().remove(puntoInteresse);
         save(itinerario);
     }

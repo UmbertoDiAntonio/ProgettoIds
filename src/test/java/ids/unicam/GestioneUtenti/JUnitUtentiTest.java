@@ -1,7 +1,6 @@
 package ids.unicam.GestioneUtenti;
 
 import ids.unicam.Comune;
-import ids.unicam.controller.ComuneController;
 import ids.unicam.models.Ruolo;
 import ids.unicam.models.Service.*;
 import ids.unicam.models.attori.*;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

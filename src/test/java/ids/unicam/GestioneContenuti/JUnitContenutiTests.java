@@ -23,8 +23,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class JUnitContenutiTests {
-
-
     private final ComuneService comuneService;
     private final ContributorService contributorService;
     private final ContributorAutorizzatoService contributorAutorizzatoService;
@@ -214,11 +212,11 @@ public class JUnitContenutiTests {
             assertEquals(numeroItinerariIniziale + 1, itinerarioService.findAllByComune(comune).size());
             assertEquals(3, itinerarioService.getNumeroTappe(itinerario1));
 
-            contributorAutorizzatoService.aggiungiTappaItinerario(itinerario1, nuovoPunto1, nuovoPunto2, nuovoPunto3);
+            contributorAutorizzatoService.aggiungiTappaItinerario(itinerario1,  nuovoPunto2, nuovoPunto3);
             //itinerarioService.aggiungiTappa(itinerario1, nuovoPunto1, nuovoPunto2, nuovoPunto3);
             assertEquals(numeroItinerariIniziale + 1, itinerarioService.findAllByComune(comune).size());
 
-            assertEquals(6, itinerarioService.getNumeroTappe(itinerario1));
+            assertEquals(5, itinerarioService.getNumeroTappe(itinerario1));
 
         }
     }
@@ -369,7 +367,7 @@ public class JUnitContenutiTests {
 
         Itinerario itinerario3 = contributorService.aggiungiItinerario(new Itinerario(comune, "girodeibar2", puntoInteresse1));
         assertEquals(1, itinerarioService.getNumeroTappe(itinerario3));
-        assertTrue(contributorService.aggiungiTappaItinerario(itinerario3, puntoInteresse1));
+        assertTrue(contributorService.aggiungiTappaItinerario(itinerario3, puntoInt2));
         assertEquals(2, itinerarioService.getNumeroTappe(itinerario3));
         curatoreService.rimuoviTappa(curatore, itinerario3, puntoInteresse1);
         assertEquals(1, itinerarioService.getNumeroTappe(itinerario3));

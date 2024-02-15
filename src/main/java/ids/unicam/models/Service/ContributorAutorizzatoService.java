@@ -87,7 +87,6 @@ public class ContributorAutorizzatoService{
     @Transactional
     public void aggiungiTappaItinerario(Itinerario itinerario,PuntoInteresse... puntiInteresse){
         for(PuntoInteresse puntoInteresse:puntiInteresse) {
-            System.out.println(puntoInteresse.getNomeContest()+" aggiunto");
             aggiungiTappaItinerario(itinerario, puntoInteresse);
         }
     }

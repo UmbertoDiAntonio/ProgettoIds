@@ -124,7 +124,7 @@ public class PoiService {
         return repository.findByTagsValoreContaining(tag.getValore());
     }
 
-    public List<Tag> getTags(PuntoInteresse puntoInteresse) {8
+    public List<Tag> getTags(PuntoInteresse puntoInteresse) {
         return repository.getTags(puntoInteresse.getId());
     }
 }

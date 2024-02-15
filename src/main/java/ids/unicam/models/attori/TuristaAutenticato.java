@@ -54,9 +54,6 @@ public class TuristaAutenticato extends Turista{
         return id;
     }
 
-    void setId(Integer id) {
-        this.id = id;
-    }
 
     public List<PuntoInteresse> getPreferiti() {
         return preferiti;
@@ -68,12 +65,9 @@ public class TuristaAutenticato extends Turista{
         this.dataNascita = dataNascita;
         this.password = password;
         this.username = username;
-        save();
     }
 
-    private void save() {
-        //TODO
-    }
+
 
 
     @Override
