@@ -58,13 +58,13 @@ public class InvitoService {
 
     @Transactional
     public void accettaInvito(TuristaAutenticato turistaAutenticato, Invito invito) {
-        //TODO isValid?
-        if (invito.getInvitato().equals(turistaAutenticato)) {
-            contestService.aggiungiPartecipante(invito.getContest(),turistaAutenticato);
-        }else {
-            logger.error("Non sei Invitato");
-        }
-
+        if(isValid(invito)) {
+            if (invito.getInvitato().equals(turistaAutenticato)) {
+                contestService.aggiungiPartecipante(invito.getContest(), turistaAutenticato);
+            } else {
+                logger.error("Non sei Invitato");
+            }
+        }logger.warn("Invito non valido");
     }
 
 
