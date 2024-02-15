@@ -8,14 +8,9 @@ import ids.unicam.models.attori.*;
 import ids.unicam.models.contenuti.*;
 import ids.unicam.utilites.Punto;
 import ids.unicam.utilites.Stato;
-import org.aspectj.lang.annotation.Before;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.event.annotation.BeforeTestClass;
-import org.springframework.test.context.event.annotation.BeforeTestExecution;
-import org.springframework.test.context.event.annotation.BeforeTestMethod;
 
 import java.util.GregorianCalendar;
 

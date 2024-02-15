@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static ids.unicam.Main.logger;
-
 
 @Entity
 @Table(name = "Itinerari")

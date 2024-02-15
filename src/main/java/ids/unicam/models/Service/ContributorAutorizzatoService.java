@@ -5,7 +5,6 @@ import ids.unicam.models.Repository.ContributorAutorizzatoRepository;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.ContributorAutorizzato;
 import ids.unicam.models.contenuti.Itinerario;
-import ids.unicam.models.contenuti.MaterialeGenerico;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Stato;
 import jakarta.transaction.Transactional;
