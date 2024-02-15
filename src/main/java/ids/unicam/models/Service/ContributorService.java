@@ -1,5 +1,6 @@
 package ids.unicam.models.Service;
 
+import ids.unicam.Comune;
 import ids.unicam.models.Repository.ContributorRepository;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.contenuti.Itinerario;
@@ -69,8 +70,8 @@ public class ContributorService {
         return poiService.save(puntoInteresse);
     }
 
-    public Itinerario aggiungiItinerario(Itinerario itinerario){
-        return  itinerarioService.save(itinerario);
+    public Itinerario aggiungiItinerario(Comune comune, String nome, PuntoInteresse... puntoInteresse){
+        return  itinerarioService.creaItinerario(comune, nome, puntoInteresse );
     }
     @Transactional
     public boolean aggiungiTappaItinerario(Itinerario itinerario,PuntoInteresse puntoInteresse){

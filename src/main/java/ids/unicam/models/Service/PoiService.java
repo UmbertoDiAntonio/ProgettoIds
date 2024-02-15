@@ -72,7 +72,7 @@ public class PoiService {
 
 
     @Transactional
-    public PuntoInteresse save(PuntoInteresse puntoInteresse) {
+    protected PuntoInteresse save(PuntoInteresse puntoInteresse) {
         return repository.save(puntoInteresse);
     }
 
@@ -120,7 +120,7 @@ public class PoiService {
             save(puntoInteresse);
     }
 
-    public List<PuntoInteresse> findByTag(Tag tag) {
+    public List<Taggable> findByTag(Tag tag) {
         return repository.findByTagsValoreContaining(tag.getValore());
     }
 

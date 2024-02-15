@@ -1,5 +1,6 @@
 package ids.unicam.models.Service;
 
+import ids.unicam.Comune;
 import ids.unicam.models.Repository.ContributorAutorizzatoRepository;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.ContributorAutorizzato;
@@ -72,8 +73,8 @@ public class ContributorAutorizzatoService{
         return poiService.save(puntoInteresse);
     }
 
-    public Itinerario aggiungiItinerario(Itinerario itinerario){
-        return  itinerarioService.save(itinerario);
+    public Itinerario aggiungiItinerario(Comune comune, String nome, PuntoInteresse... puntoInteresses){
+        return  itinerarioService.creaItinerario(comune,nome,puntoInteresses);
     }
 
     //TODO potrebbe essere inutile, eliminare
