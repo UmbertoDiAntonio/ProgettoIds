@@ -3,7 +3,6 @@ package ids.unicam.models.Repository;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.models.contenuti.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 

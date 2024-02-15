@@ -1,7 +1,6 @@
 package ids.unicam.models.contenuti;
 
 import ids.unicam.Comune;
-import ids.unicam.models.Tempo;
 import ids.unicam.utilites.Stato;
 import jakarta.persistence.*;
 

@@ -1,6 +1,5 @@
 package ids.unicam.models.Service;
 
-import ids.unicam.models.Repository.PoiRepository;
 import ids.unicam.models.Repository.TagRepository;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.models.contenuti.Tag;

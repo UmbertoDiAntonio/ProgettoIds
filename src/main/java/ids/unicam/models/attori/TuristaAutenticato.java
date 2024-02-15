@@ -1,8 +1,5 @@
 package ids.unicam.models.attori;
 
-import ids.unicam.models.Invito;
-import ids.unicam.models.contenuti.ContenutoGenerico;
-import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import jakarta.persistence.*;
 

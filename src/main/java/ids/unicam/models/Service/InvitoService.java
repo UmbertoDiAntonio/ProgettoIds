@@ -3,8 +3,6 @@ package ids.unicam.models.Service;
 import ids.unicam.models.Invito;
 import ids.unicam.models.Repository.InvitoRepository;
 import ids.unicam.models.attori.TuristaAutenticato;
-import ids.unicam.models.contenuti.Contest;
-import jakarta.persistence.Table;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

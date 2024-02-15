@@ -3,7 +3,6 @@ package ids.unicam;
 
 import ids.unicam.DataBase.GestoreDatabase;
 import ids.unicam.models.Service.GestorePiattaformaService;
-import ids.unicam.models.attori.TuristaAutenticato;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
@@ -13,9 +12,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 @RestController
 @SpringBootApplication

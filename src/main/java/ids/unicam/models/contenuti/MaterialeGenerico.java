@@ -1,11 +1,8 @@
 package ids.unicam.models.contenuti;
 
-import ids.unicam.exception.ContestException;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.utilites.Stato;
 import jakarta.persistence.*;
-
-import static ids.unicam.Main.logger;
 
 @Entity
 @Table(name = "Materiali")

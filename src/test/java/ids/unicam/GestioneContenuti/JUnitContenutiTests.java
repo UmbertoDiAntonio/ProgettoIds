@@ -26,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class JUnitContenutiTests {
 
 
-    private final ComuneController comuneController;
     private final ComuneService comuneService;
     private final ContributorService contributorService;
     private final ContributorAutorizzatoService contributorAutorizzatoService;
@@ -41,8 +40,7 @@ public class JUnitContenutiTests {
     private final InvitoService invitoService;
 
     @Autowired
-    public JUnitContenutiTests(ComuneController comuneController, ComuneService comuneService, ContributorService contributorService, ContributorAutorizzatoService contributorAutorizzatoService, CuratoreService curatoreService, AnimatoreService animatoreService, TuristaAutenticatoService turistaAutenticatoService, PoiService poiService, ItinerarioService itinerarioService, MaterialeService materialeService, ContestService contestService, GestorePiattaformaService gestorePiattaformaService, InvitoService invitoService) {
-        this.comuneController = comuneController;
+    public JUnitContenutiTests( ComuneService comuneService, ContributorService contributorService, ContributorAutorizzatoService contributorAutorizzatoService, CuratoreService curatoreService, AnimatoreService animatoreService, TuristaAutenticatoService turistaAutenticatoService, PoiService poiService, ItinerarioService itinerarioService, MaterialeService materialeService, ContestService contestService, GestorePiattaformaService gestorePiattaformaService, InvitoService invitoService) {
         this.comuneService = comuneService;
         this.contributorService = contributorService;
         this.contributorAutorizzatoService = contributorAutorizzatoService;
@@ -171,7 +169,6 @@ public class JUnitContenutiTests {
             curatore.rimuoviOsservatore(contributor);
             assertEquals(0, curatore.getOsservatori().size());
         }
-
     }
 
     /*

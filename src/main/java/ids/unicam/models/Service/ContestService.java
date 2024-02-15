@@ -1,13 +1,11 @@
 package ids.unicam.models.Service;
 
 import ids.unicam.exception.ContestException;
-import ids.unicam.models.Invito;
 import ids.unicam.models.Repository.ContestRepository;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.MaterialeGenerico;
-import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.utilites.Stato;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

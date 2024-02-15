@@ -1,6 +1,5 @@
 package ids.unicam.models.contenuti;
 
-import ids.unicam.models.Invito;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import jakarta.persistence.*;
