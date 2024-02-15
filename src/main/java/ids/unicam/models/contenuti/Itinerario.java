@@ -90,15 +90,6 @@ public class Itinerario {
     public Itinerario(Comune comune, String nome, PuntoInteresse... puntiInteresse) {
         this.nome = nome;
         this.comune = comune;
-
-        for (PuntoInteresse puntoInteresse : puntiInteresse) {
-            if (!comune.verificaCoordinateComune(puntoInteresse.getPt()) || !puntoInteresse.getStato().asBoolean()) {
-                logger.error("Non si possono creare Itinerari con punti non approvati");
-                return;
-                //TODO
-            }
-        }
-        logger.debug("Creato Itinerario " + nome);
         percorso.addAll(Arrays.stream(puntiInteresse).toList());
     }
 }

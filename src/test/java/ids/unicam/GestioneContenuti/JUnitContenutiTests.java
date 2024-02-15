@@ -194,7 +194,7 @@ public class JUnitContenutiTests {
             contributorAutorizzatoService.aggiungiPuntoInteresse(contributorAutorizzato, puntoInteresse);
             contributorAutorizzatoService.aggiungiPuntoInteresse(contributorAutorizzato, puntoInteresse2);
 
-            Itinerario itinerario1 = contributorAutorizzatoService.aggiungiItinerario(new Itinerario(comune, "girodeibar", puntoInteresse, puntoInteresse2));
+            Itinerario itinerario1 = contributorAutorizzatoService.aggiungiItinerario(comune, "girodeibar", puntoInteresse, puntoInteresse2);
 
             assertEquals(numeroItinerariIniziale + 1, itinerarioService.findAllByComune(comune).size());
             assertEquals(2, itinerarioService.getNumeroTappe(itinerario1));
@@ -349,14 +349,14 @@ public class JUnitContenutiTests {
         PuntoInteresse puntoInteresse1 = contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "parco", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), TipologiaPuntoInteresse.PARCO));
 
         int numeroItinerariComune = itinerarioService.findAllByComune(comune).size();
-        contributorService.aggiungiItinerario(new Itinerario(comune, "girodeibar", puntoInteresse1));
-        assertEquals(numeroItinerariComune + 1, itinerarioService.findAllByComune(comune).size());
+        assertThrows(IllegalArgumentException.class, () -> contributorService.aggiungiItinerario(comune, "girodeibar", puntoInteresse1));
+        assertEquals(numeroItinerariComune, itinerarioService.findAllByComune(comune).size());
 
         curatoreService.valuta(puntoInteresse1, Stato.toStatus(true));
-        Itinerario itinerario2 = contributorService.aggiungiItinerario(new Itinerario(comune, "giro dei bar", comuneService.getPuntiInteresseNelComune(comune.getNome()).getFirst()));
-        assertEquals(numeroItinerariComune + 2, itinerarioService.findAllByComune(comune).size());
-        curatoreService.elimina(itinerario2);
+        Itinerario itinerario2 = contributorService.aggiungiItinerario(comune, "giro dei bar", comuneService.getPuntiInteresseNelComune(comune.getNome()).getFirst());
         assertEquals(numeroItinerariComune + 1, itinerarioService.findAllByComune(comune).size());
+        curatoreService.elimina(itinerario2);
+        assertEquals(numeroItinerariComune, itinerarioService.findAllByComune(comune).size());
 
 
         int numeroContest = contestService.getContestByCreatore(animatore).size();
@@ -365,7 +365,7 @@ public class JUnitContenutiTests {
         curatoreService.elimina(contestService.getContestByCreatore(animatore).getLast());
         assertEquals(numeroContest, contestService.getContestByCreatore(animatore).size());
 
-        Itinerario itinerario3 = contributorService.aggiungiItinerario(new Itinerario(comune, "girodeibar2", puntoInteresse1));
+        Itinerario itinerario3 = contributorService.aggiungiItinerario(comune, "girodeibar2", puntoInteresse1);
         assertEquals(1, itinerarioService.getNumeroTappe(itinerario3));
         assertTrue(contributorService.aggiungiTappaItinerario(itinerario3, puntoInt2));
         assertEquals(2, itinerarioService.getNumeroTappe(itinerario3));

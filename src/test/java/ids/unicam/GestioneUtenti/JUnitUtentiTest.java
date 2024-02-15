@@ -28,9 +28,10 @@ public class JUnitUtentiTest {
     private final MaterialeService materialeService;
     private final TuristaAutenticatoService turistaAutenticatoService;
     private final GestorePiattaformaService gestorePiattaformaService;
+    private final TuristaService turistaService;
 
     @Autowired
-    public JUnitUtentiTest(ComuneService comuneService, GestioneComuneService gestioneComuneService, ContributorService contributorService, ContributorAutorizzatoService contributorAutorizzatoService, CuratoreService curatoreService, AnimatoreService animatoreService, PoiService poiService, ItinerarioService itinerarioService, MaterialeService materialeService, TuristaAutenticatoService turistaAutenticatoService, GestorePiattaformaService gestorePiattaformaService) {
+    public JUnitUtentiTest(ComuneService comuneService, GestioneComuneService gestioneComuneService, ContributorService contributorService, ContributorAutorizzatoService contributorAutorizzatoService, CuratoreService curatoreService, AnimatoreService animatoreService, PoiService poiService, ItinerarioService itinerarioService, MaterialeService materialeService, TuristaAutenticatoService turistaAutenticatoService, GestorePiattaformaService gestorePiattaformaService, TuristaService turistaService) {
         this.comuneService = comuneService;
         this.gestioneComuneService = gestioneComuneService;
         this.contributorService = contributorService;
@@ -42,6 +43,7 @@ public class JUnitUtentiTest {
         this.materialeService = materialeService;
         this.turistaAutenticatoService = turistaAutenticatoService;
         this.gestorePiattaformaService = gestorePiattaformaService;
+        this.turistaService = turistaService;
     }
 
     @Test
@@ -121,19 +123,19 @@ public class JUnitUtentiTest {
         PuntoInteresse puntoInteresse = new PuntoInteresse(comune, "Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE);
 
 
-        int numeroTagEdicolaIniziale = poiService.findByTag(new Tag("Edicola",puntoInteresse)).size();
+        int numeroTagEdicolaIniziale = turistaService.findByTag(new Tag("Edicola",puntoInteresse)).size();
 
         contributorService.aggiungiPuntoInteresse(contributor, puntoInteresse);
 
         poiService.aggiungiTag(puntoInteresse, new Tag("Edicola",puntoInteresse));
-        assertEquals(numeroTagEdicolaIniziale + 1, poiService.findByTag(new Tag("Edicola",puntoInteresse)).size());
+        assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag(new Tag("Edicola",puntoInteresse)).size());
 
         curatoreService.valuta(puntoInteresse, Stato.APPROVED);
 
 
         poiService.aggiungiTag(puntoInteresse, new Tag("Tabaccheria",puntoInteresse));
 
-        assertEquals(numeroTagEdicolaIniziale + 1, poiService.findByTag(new Tag("Edicola",puntoInteresse)).size());
+        assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag(new Tag("Edicola",puntoInteresse)).size());
 
         assertEquals("Edicola", poiService.getTags(puntoInteresse).getFirst().getValore());
         assertEquals("Tabaccheria", poiService.getTags(puntoInteresse).getLast().getValore());
@@ -141,7 +143,7 @@ public class JUnitUtentiTest {
 
         poiService.aggiungiTag(puntoInteresse, new Tag("Bar",puntoInteresse));
 
-        assertEquals(numeroTagEdicolaIniziale + 1, poiService.findByTag(new Tag("Edicola",puntoInteresse)).size());
+        assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag(new Tag("Edicola",puntoInteresse)).size());
 
         assertEquals("Edicola", poiService.getTags(puntoInteresse).getFirst().getValore());
         assertEquals("Tabaccheria", poiService.getTags(puntoInteresse).get(1).getValore());

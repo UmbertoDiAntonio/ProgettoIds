@@ -106,5 +106,12 @@ public class TuristaAutenticatoService {
     }
 
 
+    public Optional<TuristaAutenticato> findTuristaByUsername(String username) {
+        return repository.findByUsername(username);
+    }
 
+    public boolean verificaPassword(String password, String username) {
+        Optional<TuristaAutenticato> turista = findTuristaByUsername(username);
+        return turista.map(turistaAutenticato -> turistaAutenticato.getPassword().equals(password)).orElse(true);
+    }
 }

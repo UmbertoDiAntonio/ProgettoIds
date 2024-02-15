@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static ids.unicam.Main.logger;
+
 @Service
 @Transactional
 public class ItinerarioService {
@@ -83,5 +85,15 @@ public class ItinerarioService {
 
     public int getNumeroTappe(Itinerario itinerario) {
         return repository.countNumeroTappeItinerario(itinerario.getId());
+    }
+
+    public Itinerario creaItinerario(Comune comune, String nome, PuntoInteresse... puntiInteresse){
+        for (PuntoInteresse puntoInteresse : puntiInteresse) {
+            if (!comune.verificaCoordinateComune(puntoInteresse.getPt()) || !puntoInteresse.getStato().asBoolean()) {
+                logger.error("Non si possono creare Itinerari con punti non approvati");
+                throw new IllegalArgumentException("Non si possono creare Itinerari con punti non approvati");
+            }
+        }
+        return save(new Itinerario(comune, nome, puntiInteresse));
     }
 }

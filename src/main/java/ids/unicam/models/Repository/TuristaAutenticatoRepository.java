@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TuristaAutenticatoRepository extends JpaRepository<TuristaAutenticato,Integer> {
@@ -19,5 +20,7 @@ public interface TuristaAutenticatoRepository extends JpaRepository<TuristaAuten
 
     @Query("SELECT t.preferiti FROM TuristaAutenticato t WHERE t.id = :idTurista")
     List<PuntoInteresse> findPreferitiByTurista(@Param("idTurista") int idTurista);
+
+    Optional<TuristaAutenticato> findByUsername(String username);
 
 }
