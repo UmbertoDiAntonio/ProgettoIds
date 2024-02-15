@@ -107,7 +107,7 @@ public class JUnitContenutiTests {
 
             PuntoInteresse punto2 = (new PuntoInteresse(comune, "bar2", new Punto(comune.getPosizione().getLatitudine() + 0.02, comune.getPosizione().getLongitudine() + 0.02), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE));
 
-            contributorAutorizzatoService.aggiungiPuntoInteresse(contributorAutorizzato, punto2);//TODO check e true
+            contributorAutorizzatoService.aggiungiPuntoInteresse(contributorAutorizzato, punto2);
             //il problema qui è avere 2 istanze diverse del Controller
             assertEquals(puntiInteresseComuneIniziali + 1, comuneService.getPuntiInteresseNelComune(comune.getNome()).size());
             assertTrue(punto2.getStato().asBoolean());

@@ -77,10 +77,6 @@ public class ContributorAutorizzatoService{
         return  itinerarioService.creaItinerario(comune,nome,puntoInteresses);
     }
 
-    //TODO potrebbe essere inutile, eliminare
-    public MaterialeGenerico aggiungiMateriale(ContributorAutorizzato contributorAutorizzato, PuntoInteresse puntoInteresse, MaterialeGenerico materialeGenerico) {
-        return poiService.creaMateriale(contributorAutorizzato,puntoInteresse,materialeGenerico);
-    }
     @Transactional
     public boolean aggiungiTappaItinerario(Itinerario itinerario,PuntoInteresse puntoInteresse){
         return itinerarioService.aggiungiTappa(itinerario,puntoInteresse);

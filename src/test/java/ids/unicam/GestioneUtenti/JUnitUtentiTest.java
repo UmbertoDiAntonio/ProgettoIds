@@ -124,7 +124,7 @@ public class JUnitUtentiTest {
 
     @Test
     public void metodoCercaTurista() {
-        Turista turista = new Turista(); //TODO, il cerca è stato dato al poiService, ma potrebbe dover essere di un Turista
+        Turista turista = new Turista();
 
         Comune comune = comuneService.creaComune("Milano");
         TuristaAutenticato turista1 = gestorePiattaformaService.registra(comune, Ruolo.CONTRIBUTOR, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "7Unic@", "user7");
