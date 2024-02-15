@@ -4,6 +4,7 @@ import ids.unicam.models.Invito;
 import ids.unicam.models.Repository.TuristaAutenticatoRepository;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
+import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,12 @@ public class TuristaAutenticatoService {
     private final TuristaAutenticatoRepository repository;
     private final MaterialeService materialeService;
     private final ContestService contestService;
+
     private final InvitoService invitoService;
 
+
     @Autowired
-    public TuristaAutenticatoService(TuristaAutenticatoRepository repository, MaterialeService materialeService, ContestService contestService, InvitoService invitoService) {
+    public TuristaAutenticatoService(TuristaAutenticatoRepository repository, MaterialeService materialeService, ContestService contestService,  InvitoService invitoService) {
         this.repository = repository;
         this.materialeService = materialeService;
         this.contestService = contestService;
@@ -102,4 +105,7 @@ public class TuristaAutenticatoService {
         }
         contestService.aggiungiPartecipante(contest, turistaAutenticato);
     }
+
+
+
 }

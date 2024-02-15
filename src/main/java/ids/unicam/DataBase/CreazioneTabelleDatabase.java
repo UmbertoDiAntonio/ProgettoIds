@@ -50,9 +50,10 @@ public class CreazioneTabelleDatabase {
     private void creaTabellaTagPuntoInteresse(@NotNull Connection connection) {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS PUNTO_INTERESSE_TAGS(" +
+                        "id INT AUTO_INCREMENT," +
                         "punto_interesse_id INT," +
                         "tags VARCHAR(50)," +
-                        "PRIMARY KEY (punto_interesse_id, tags)," +
+                        "PRIMARY KEY (id,punto_interesse_id, tags)," +
                         "FOREIGN KEY (punto_interesse_id) REFERENCES PUNTI_DI_INTERESSE(id))";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
@@ -245,7 +246,8 @@ public class CreazioneTabelleDatabase {
                         "tag VARCHAR(50)," +
                         "nome VARCHAR(50) NOT NULL," +
                         "orario VARCHAR(50)," +
-                        "tipo VARCHAR(50) NOT NULL)";
+                        "tipo VARCHAR(50) NOT NULL," +
+                        "EXPIRE_DATE DATE)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
 
@@ -259,6 +261,7 @@ public class CreazioneTabelleDatabase {
                 "CREATE TABLE IF NOT EXISTS ITINERARI(" +
                         "nome_comune VARCHAR(50) NOT NULL," +
                         "nome VARCHAR(50) NOT NULL,"+
+                        "EXPIRE_DATE DATE," +
                         "id INT PRIMARY KEY AUTO_INCREMENT)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();

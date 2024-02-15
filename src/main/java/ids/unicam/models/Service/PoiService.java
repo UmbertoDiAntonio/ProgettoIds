@@ -42,24 +42,24 @@ public class PoiService {
 
         // Rileva l'eliminazione e aggiorna le liste di preferiti dei turisti
         List<TuristaAutenticato> turisti = turistaAutenticatoService.findTuristiConPreferiti();
-       for (TuristaAutenticato turista : turisti) {
+        for (TuristaAutenticato turista : turisti) {
             turistaAutenticatoService.rimuoviPreferito(turista, idPuntoInteresse);
 
         }
     }
 
-    public MaterialeGenerico creaMateriale(TuristaAutenticato turistaAutenticato, PuntoInteresse puntoInteresse, MaterialeGenerico materialeGenerico){
-        if(turistaAutenticato instanceof Contributor contributor){
-            if(!contributor.getComune().equals(puntoInteresse.getComune())){
+    public MaterialeGenerico creaMateriale(TuristaAutenticato turistaAutenticato, PuntoInteresse puntoInteresse, MaterialeGenerico materialeGenerico) {
+        if (turistaAutenticato instanceof Contributor contributor) {
+            if (!contributor.getComune().equals(puntoInteresse.getComune())) {
                 logger.error("il contributor cerca di caricare il materiale fuori dal suo comune");
                 throw new IllegalStateException("il contributor cerca di caricare il materiale fuori dal suo comune");
             }
         }
-        if(!puntoInteresse.getStato().asBoolean()){
+        if (!puntoInteresse.getStato().asBoolean()) {
             logger.error("il contributor cerca di caricare il materiale su un punto di interesse non approvato");
             throw new IllegalStateException("il contributor cerca di caricare il materiale su un punto di interesse non approvato");
         }
-        if(turistaAutenticato instanceof ContributorAutorizzato)
+        if (turistaAutenticato instanceof ContributorAutorizzato)
             materialeGenerico.setStato(Stato.APPROVED);
         materialeGenerico.setIdProprietario(puntoInteresse.getId());
         return materialeService.save(materialeGenerico);
@@ -94,4 +94,22 @@ public class PoiService {
     }
 
 
+    public void aggiungiTag(PuntoInteresse puntoInteresse, String tag) {
+        if(getTags(puntoInteresse).contains(tag)){
+            logger.warn("Tag già aggiunto");
+            return;
+        }
+        if (!puntoInteresse.isExpired())
+            puntoInteresse.getTags().add(tag);
+
+        save(puntoInteresse);
+    }
+
+    public List<PuntoInteresse> findByTag(String tag) {
+        return repository.findByTagsContaining(tag);
+    }
+
+    public List<String> getTags(PuntoInteresse puntoInteresse) {
+        return repository.getTags(puntoInteresse.getId());
+    }
 }

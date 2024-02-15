@@ -49,6 +49,10 @@ public class ComuneService {
         return comune;
     }
 
+    public Comune creaComune(String nomeComune){
+        return save(new Comune(nomeComune));
+    }
+
     public Optional<Comune> findById(int id) {
         return comuneRepository.findById(id);
     }
@@ -57,8 +61,6 @@ public class ComuneService {
     public List<Comune> findAll() {
         return comuneRepository.findAll();
     }
-
-
 
     public void deleteAll() {
         comuneRepository.deleteAll();

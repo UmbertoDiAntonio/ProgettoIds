@@ -16,12 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class JUnitUtentiTest {
-    private final ComuneController comuneController;
+    private final ComuneService comuneService;
     private final GestioneComuneService gestioneComuneService;
     private final ContributorService contributorService;
     private final ContributorAutorizzatoService contributorAutorizzatoService;
@@ -32,9 +33,10 @@ public class JUnitUtentiTest {
     private final MaterialeService materialeService;
     private final TuristaAutenticatoService turistaAutenticatoService;
     private final GestorePiattaformaService gestorePiattaformaService;
+
     @Autowired
-    public JUnitUtentiTest(ComuneController comuneController, GestioneComuneService gestioneComuneService, ContributorService contributorService, ContributorAutorizzatoService contributorAutorizzatoService, CuratoreService curatoreService, AnimatoreService animatoreService, PoiService poiService, ItinerarioService itinerarioService, MaterialeService materialeService, TuristaAutenticatoService turistaAutenticatoService, GestorePiattaformaService gestorePiattaformaService) {
-        this.comuneController = comuneController;
+    public JUnitUtentiTest(ComuneService comuneService, GestioneComuneService gestioneComuneService, ContributorService contributorService, ContributorAutorizzatoService contributorAutorizzatoService, CuratoreService curatoreService, AnimatoreService animatoreService, PoiService poiService, ItinerarioService itinerarioService, MaterialeService materialeService, TuristaAutenticatoService turistaAutenticatoService, GestorePiattaformaService gestorePiattaformaService) {
+        this.comuneService = comuneService;
         this.gestioneComuneService = gestioneComuneService;
         this.contributorService = contributorService;
         this.contributorAutorizzatoService = contributorAutorizzatoService;
@@ -50,31 +52,31 @@ public class JUnitUtentiTest {
     @Test
     public void generazioneUtenti() {
 
-        Comune comune = comuneController.creaComune("nome");
+        Comune comune = comuneService.creaComune("nome");
 
-        int numeroContributor=gestioneComuneService.getContributorDelComune(comune.getNome()).size();
-        int numeroContributorAutorizzati=gestioneComuneService.getContributorAutorizzatiDelComune(comune.getNome()).size();
-        int numeroCuratori=gestioneComuneService.getCuratoriDelComune(comune.getNome()).size();
+        int numeroContributor = gestioneComuneService.getContributorDelComune(comune.getNome()).size();
+        int numeroContributorAutorizzati = gestioneComuneService.getContributorAutorizzatiDelComune(comune.getNome()).size();
+        int numeroCuratori = gestioneComuneService.getCuratoriDelComune(comune.getNome()).size();
 
         gestorePiattaformaService.registraTurista("Mario", "Rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "pass", "user");
         gestorePiattaformaService.registraTurista("Paolo", "Giallo", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "pass", "user");
         gestorePiattaformaService.registraContributor(comune, "Giuseppe", "Oro", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "PASS", "user");
 
-        assertEquals(numeroContributor+1, gestioneComuneService.getContributorDelComune(comune.getNome()).size());
+        assertEquals(numeroContributor + 1, gestioneComuneService.getContributorDelComune(comune.getNome()).size());
 
 
         gestorePiattaformaService.promuovi(gestioneComuneService.getContributorDelComune(comune.getNome()).getFirst(), Ruolo.Curatore);
-        assertEquals(numeroContributor+1, gestioneComuneService.getContributorDelComune(comune.getNome()).size());
-        assertEquals(numeroCuratori+1, gestioneComuneService.getCuratoriDelComune(comune.getNome()).size());
+        assertEquals(numeroContributor + 1, gestioneComuneService.getContributorDelComune(comune.getNome()).size());
+        assertEquals(numeroCuratori + 1, gestioneComuneService.getCuratoriDelComune(comune.getNome()).size());
 
         gestorePiattaformaService.promuovi(gestioneComuneService.getCuratoriDelComune(comune.getNome()).getFirst(), Ruolo.Contributor);
 
-        assertEquals(numeroContributor+1, gestioneComuneService.getContributorDelComune(comune.getNome()).size());
+        assertEquals(numeroContributor + 1, gestioneComuneService.getContributorDelComune(comune.getNome()).size());
         assertEquals(numeroCuratori, gestioneComuneService.getCuratoriDelComune(comune.getNome()).size());
 
         gestorePiattaformaService.promuovi(gestioneComuneService.getContributorDelComune(comune.getNome()).getFirst(), Ruolo.ContributorTrusted);
 
-        assertEquals(numeroContributorAutorizzati+1, gestioneComuneService.getContributorAutorizzatiDelComune(comune.getNome()).size());
+        assertEquals(numeroContributorAutorizzati + 1, gestioneComuneService.getContributorAutorizzatiDelComune(comune.getNome()).size());
         assertEquals(numeroCuratori, gestioneComuneService.getCuratoriDelComune(comune.getNome()).size());
 
     }
@@ -82,29 +84,29 @@ public class JUnitUtentiTest {
     @Test
     public void aggiungiPreferito() {
 
-        Comune comune = comuneController.creaComune("Milano");
+        Comune comune = comuneService.creaComune("Milano");
 
         Contributor contributor = gestorePiattaformaService.registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "ciao", "mr");
-        TuristaAutenticato turistaAutenticato =gestorePiattaformaService.registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "eroe", "AN2");
+        TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "eroe", "AN2");
 
         gestorePiattaformaService.promuovi(contributor, Ruolo.ContributorTrusted);
-        PuntoInteresse puntoInteresse = new PuntoInteresse(comune,"Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE);
+        PuntoInteresse puntoInteresse = new PuntoInteresse(comune, "Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE);
 
         ContributorAutorizzato contributorAutorizzato = gestioneComuneService.getContributorAutorizzatiDelComune(comune.getNome()).getFirst();
         contributorAutorizzatoService.aggiungiPuntoInteresse(contributorAutorizzato, puntoInteresse);
         assertEquals(0, turistaAutenticato.getPreferiti().size());
-        turistaAutenticatoService.aggiungiPreferito(turistaAutenticato,puntoInteresse);
+        turistaAutenticatoService.aggiungiPreferito(turistaAutenticato, puntoInteresse);
         assertEquals(1, turistaAutenticato.getPreferiti().size());
     }
 
     @Test
     public void condividiContenuto() {
 
-        Comune comune = comuneController.creaComune("Milano");
+        Comune comune = comuneService.creaComune("Milano");
         Contributor contributor = gestorePiattaformaService.registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "ciao", "mr");
         gestorePiattaformaService.promuovi(contributor, Ruolo.Curatore);
         Curatore curatore = gestioneComuneService.getCuratoriDelComune(comune.getNome()).getFirst();
-        PuntoInteresse puntoInteresse = new PuntoInteresse(comune,"Teatro", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), TipologiaPuntoInteresse.INTRATTENIMENTO);
+        PuntoInteresse puntoInteresse = new PuntoInteresse(comune, "Teatro", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), TipologiaPuntoInteresse.INTRATTENIMENTO);
 
         assertThrows(UnsupportedOperationException.class, () -> curatoreService.condividi(puntoInteresse));
         //TODO test condivisione contenuto
@@ -113,37 +115,46 @@ public class JUnitUtentiTest {
     @Test
     public void metodoCercaTurista() {
         Turista turista = new Turista();
-        /*//TODO fixes
-        assertEquals(0,turista.search("empty").size());
+        int numeroTagEdicolaIniziale = poiService.findByTag("Edicola").size();
 
-        
-        Comune comune = comuneController.creaComune("Milano");
-        Contributor contributor = gestorePiattaformaService.registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH,17), "ciao", "mr");
+        assertEquals(0, poiService.findByTag("empty").size());
 
-        gestorePiattaformaService.promuovi(contributor, Ruolo.Curatore);
+        Comune comune = comuneService.creaComune("Milano");
+        Contributor contributor = gestorePiattaformaService.registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "ciao", "mr");
+        Contributor contributor2 = gestorePiattaformaService.registraContributor(comune, "mirco", "blu", new GregorianCalendar(2002, GregorianCalendar.MAY, 15), "ciao", "mr");
 
-        AttivitaFactory attivitaFactory = new AttivitaFactory();
-        PuntoInteresse puntoInteresse = attivitaFactory.creaPoi("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015));
-        puntoInteresse.aggiungiTag("Edicola");
-        contributor.aggiungiPuntoInteresse(puntoInteresse);
-        Curatore curatore=gestioneComuneService.getCuratoriDelComune(comune.getNome()).getFirst();
-        assertEquals(0,turista.search("Edicola").size());
-        curatore.valuta(puntoInteresse, Stato.APPROVED);
-        assertEquals(1,turista.search("Edicola").size());
+        gestorePiattaformaService.promuovi(contributor2, Ruolo.Curatore);
+        Curatore curatore = comuneService.getCuratoriByComune(comune.getNome()).getLast();
+
+        PuntoInteresse puntoInteresse = new PuntoInteresse(comune, "Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE);
+
+        contributorService.aggiungiPuntoInteresse(contributor, puntoInteresse);
+        System.out.println("1 - "+poiService.getTags(puntoInteresse).size());
+        poiService.aggiungiTag(puntoInteresse, "Edicola");
+        System.out.println("2 - "+poiService.getTags(puntoInteresse).size());
+        assertEquals(numeroTagEdicolaIniziale + 1, poiService.findByTag("Edicola").size());
+        System.out.println("3 - "+poiService.getTags(puntoInteresse).size());
+        curatoreService.valuta(puntoInteresse, Stato.APPROVED); //TODO l'approvazione del punto duplica i suoi tag
+        System.out.println("4 - "+poiService.getTags(puntoInteresse).size());
+        poiService.aggiungiTag(puntoInteresse, "Tabaccheria"); //TODO l'aggiunto di un altro tag duplica i tag precedenti
+        System.out.println("5 - "+poiService.getTags(puntoInteresse).size());
+        assertEquals(numeroTagEdicolaIniziale + 1, poiService.findByTag("Edicola").size());
+        System.out.println("6 - "+poiService.getTags(puntoInteresse).size());
+        assertEquals(List.of("Edicola", "Tabaccheria"), poiService.getTags(puntoInteresse));
+        System.out.println("7 - "+poiService.getTags(puntoInteresse).size());  //TODO non ci arriviamo
 
 
-         */
     }
 
     @Test
     public void aggiungiFoto() {
-        Comune comune = comuneController.creaComune("Milano");
+        Comune comune = comuneService.creaComune("Milano");
         Contributor contributor = gestorePiattaformaService.registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "ciao", "mr");
 
-        PuntoInteresse puntoInteresse = contributorService.aggiungiPuntoInteresse(contributor,new PuntoInteresse(comune,"parco centrale", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015),TipologiaPuntoInteresse.PARCO));
+        PuntoInteresse puntoInteresse = contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "parco centrale", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), TipologiaPuntoInteresse.PARCO));
         gestorePiattaformaService.promuovi(contributor, Ruolo.Curatore);
         Curatore curatore = gestioneComuneService.getCuratoriDelComune(comune.getNome()).getLast();
-        curatoreService.valuta(puntoInteresse,Stato.APPROVED);
+        curatoreService.valuta(puntoInteresse, Stato.APPROVED);
         assertTrue(puntoInteresse.getStato().asBoolean());
         TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "eroe", "AN2");
 
@@ -152,7 +163,7 @@ public class JUnitUtentiTest {
         MaterialeGenerico foto = poiService.creaMateriale(turistaAutenticato, puntoInteresse, new Foto(turistaAutenticato));
         assertEquals(1, materialeService.findByWhere(puntoInteresse).size());
         assertFalse(foto.getStato().asBoolean());
-        curatoreService.valuta(foto,Stato.APPROVED);
+        curatoreService.valuta(foto, Stato.APPROVED);
         assertTrue(foto.getStato().asBoolean());
 
 

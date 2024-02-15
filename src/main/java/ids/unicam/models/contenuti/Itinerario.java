@@ -4,6 +4,7 @@ import ids.unicam.Comune;
 import ids.unicam.models.Tempo;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -39,17 +40,19 @@ public class Itinerario {
     @JoinColumn(name = "nome_comune")
     private Comune comune;
 
-    @Transient
-    private Tempo scadenza;
+
     @ElementCollection
     private List<String> tags = new ArrayList<>();
-
-    public void setScadenza(Tempo scadenza) {
-        this.scadenza = scadenza;
+    private LocalDate expireDate = LocalDate.MAX;
+    public boolean isExpired() {
+        return LocalDate.now().isAfter(expireDate);
+    }
+    public void setExpireDate(LocalDate expireDate) {
+        this.expireDate = expireDate;
     }
 
-    public Tempo getScadenza() {
-        return scadenza;
+    public LocalDate getExpireDate() {
+        return expireDate;
     }
 
 
@@ -73,11 +76,11 @@ public class Itinerario {
         return nome;
     }
 
-    public Comune getComune(){
+    public Comune getComune() {
         return comune;
     }
 
-    public void aggiungiTappaPercorso(PuntoInteresse puntoInteresse){
+    public void aggiungiTappaPercorso(PuntoInteresse puntoInteresse) {
         percorso.add(puntoInteresse);
     }
 

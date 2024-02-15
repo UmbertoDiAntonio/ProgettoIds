@@ -5,6 +5,7 @@ import ids.unicam.models.Tempo;
 import ids.unicam.utilites.Stato;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,17 +23,20 @@ public abstract class ContenutoGenerico {
     private Comune comune;
     private Stato stato = Stato.NOT_APPROVED;
 
-    @Transient
-    private Tempo scadenza;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> tags = new ArrayList<>();
 
-    public void setScadenza(Tempo scadenza) {
-        this.scadenza = scadenza;
+    private LocalDate expireDate = LocalDate.MAX;
+    public boolean isExpired() {
+        return LocalDate.now().isAfter(expireDate);
     }
 
-    public Tempo getScadenza() {
-        return scadenza;
+    public void setExpireDate(LocalDate expireDate) {
+        this.expireDate = expireDate;
+    }
+
+    public LocalDate getExpireDate() {
+        return expireDate;
     }
 
     public int getId() {
@@ -47,16 +51,9 @@ public abstract class ContenutoGenerico {
         this.stato = approved;
     }
 
+
     public List<String> getTags() {
         return tags;
-    }
-
-    public void setTags(List<String> tags){
-        this.tags = tags;
-    }
-
-    public void aggiungiTag(String tag) {
-        tags.add(tag);
     }
 
     public ContenutoGenerico(Comune comune) {

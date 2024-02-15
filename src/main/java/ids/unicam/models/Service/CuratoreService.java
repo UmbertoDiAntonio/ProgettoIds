@@ -4,6 +4,7 @@ import ids.unicam.models.Repository.CuratoreRepository;
 import ids.unicam.models.attori.Curatore;
 import ids.unicam.models.contenuti.*;
 import ids.unicam.utilites.Stato;
+import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,11 +72,12 @@ public class CuratoreService {
      * @param puntoInteresse il punto di interesse che si vuole valutare
      * @param approvato      stato punto di interesse: approvato/non approvato
      */
+    @Transactional
     public void valuta(@NotNull PuntoInteresse puntoInteresse, Stato approvato) {
         puntoInteresse.setStato(approvato);
         if (approvato == Stato.NOT_APPROVED)
             poiService.deleteById(puntoInteresse.getId());
-
+        poiService.save(puntoInteresse);
         //TODO notifica(approvato, puntoInteresse);
     }
 

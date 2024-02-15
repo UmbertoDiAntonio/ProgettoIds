@@ -9,6 +9,7 @@ import ids.unicam.utilites.Observer;
 import ids.unicam.utilites.Stato;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.GregorianCalendar;
 
 @Entity
@@ -47,7 +48,7 @@ public class Contributor extends TuristaAutenticato implements Observer {
      */
     //TODO completar metodo
     public void aggiungiScadenzaContenuto(ContenutoGenerico contenutoGenerico, Tempo giorni) {
-        contenutoGenerico.setScadenza(giorni);
+        contenutoGenerico.setExpireDate(LocalDate.of(12,11,12));
         throw new UnsupportedOperationException();
 
     }

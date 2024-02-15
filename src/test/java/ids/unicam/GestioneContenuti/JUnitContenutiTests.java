@@ -78,7 +78,7 @@ public class JUnitContenutiTests {
     @Test
     @Order(1)
     public void testPoi() {
-        Comune comune = comuneController.creaComune("Milano");
+        Comune comune = comuneService.creaComune("Milano");
         Contributor contributor = gestorePiattaformaService.registraContributor(comune, "Mario", "Rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "pass", "user");
 
         /*
@@ -180,7 +180,7 @@ public class JUnitContenutiTests {
     @Test
     @Order(2)
     public void testItinerario() {
-        Comune comune = comuneController.creaComune("Milano");
+        Comune comune = comuneService.creaComune("Milano");
 
         /*
          * Creazione di un itenerario, aggiunta di una tappa e test.
@@ -235,7 +235,7 @@ public class JUnitContenutiTests {
     @Test
     @Order(3)
     public void testContest() {
-        Comune comune = comuneController.creaComune("Milano");
+        Comune comune = comuneService.creaComune("Milano");
 
         Contributor contributor = gestorePiattaformaService.registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.APRIL, 7), "ciao", "mr");
         gestorePiattaformaService.promuovi(contributor, Ruolo.Animatore);
@@ -292,7 +292,7 @@ public class JUnitContenutiTests {
     @Test
     @Order(4)
     public void approvaMaterialeByAnimatore() {
-        Comune comune = comuneController.creaComune("Milano");
+        Comune comune = comuneService.creaComune("Milano");
         Contributor contributor = gestorePiattaformaService.registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.OCTOBER, 1), "ciao", "mr");
         TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.DECEMBER, 3), "eroe", "AN2");
 
@@ -320,7 +320,7 @@ public class JUnitContenutiTests {
     @Order(5)
     public void eliminaContenuto() {
 
-        Comune comune = comuneController.creaComune("Milano");
+        Comune comune = comuneService.creaComune("Milano");
         int numeroPuntiInteresse = comuneService.getPuntiInteresseNelComune(comune.getNome()).size();
         Contributor contributor = gestorePiattaformaService.registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 5), "ciao", "mr");
         TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH, 11), "eroe", "AN2");
@@ -403,7 +403,7 @@ public class JUnitContenutiTests {
     @Order(6)
     public void modificaScadenzaContenuto() {
 
-        Comune comune = comuneController.creaComune("Milano");
+        Comune comune = comuneService.creaComune("Milano");
         Contributor contributor = gestorePiattaformaService.registraContributor(comune, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 11), "ciao", "mr");
 
         PuntoInteresse puntoInteresse = new PuntoInteresse(comune, "Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE);
