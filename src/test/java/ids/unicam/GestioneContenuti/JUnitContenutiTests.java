@@ -201,7 +201,7 @@ public class JUnitContenutiTests {
             contributorAutorizzatoService.aggiungiPuntoInteresse(contributorAutorizzato, puntoInteresse2);
 
             Itinerario itinerario1 = contributorAutorizzatoService.aggiungiItinerario(new Itinerario(comune, "girodeibar", puntoInteresse, puntoInteresse2));
-            System.out.println(" - "+itinerarioService.getNumeroTappe(itinerario1));
+
             assertEquals(numeroItinerariIniziale + 1, itinerarioService.findAllByComune(comune).size());
             assertEquals(2, itinerarioService.getNumeroTappe(itinerario1));
 
@@ -213,7 +213,6 @@ public class JUnitContenutiTests {
             contributorAutorizzatoService.aggiungiPuntoInteresse(contributorAutorizzato, nuovoPunto);
 
             contributorAutorizzatoService.aggiungiTappaItinerario(itinerario1,nuovoPunto1);
-            System.out.println(" - "+itinerarioService.getNumeroTappe(itinerario1));
             //itinerarioService.aggiungiTappa(itinerario1, nuovoPunto);
 
             assertEquals(numeroItinerariIniziale + 1, itinerarioService.findAllByComune(comune).size());
@@ -222,7 +221,7 @@ public class JUnitContenutiTests {
             contributorAutorizzatoService.aggiungiTappaItinerario(itinerario1, nuovoPunto1, nuovoPunto2, nuovoPunto3);
             //itinerarioService.aggiungiTappa(itinerario1, nuovoPunto1, nuovoPunto2, nuovoPunto3);
             assertEquals(numeroItinerariIniziale + 1, itinerarioService.findAllByComune(comune).size());
-            System.out.println(" - "+itinerarioService.getNumeroTappe(itinerario1));
+
             assertEquals(6, itinerarioService.getNumeroTappe(itinerario1));
 
         }
