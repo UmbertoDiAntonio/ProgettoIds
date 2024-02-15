@@ -118,9 +118,14 @@ public class CuratoreService {
 
 
     public void elimina(Curatore curatore, MaterialeGenerico materialeGenerico) {
-        //TODO devo fare un filtro per quelli del comune del Curatore
+        Optional<PuntoInteresse> oPoi = poiService.findById(materialeGenerico.getIdProprietario());
+        if(oPoi.isPresent()){
+            if(!oPoi.get().getComune().equals(curatore.getComune())){
+                logger.error(curatore+" non può eliminare materiali fuori dal suo comune ");
+                return;
+            }
+        }
         materialeService.deleteById(materialeGenerico.getId());
-        //TODO  contestService.deleteById(materialeDaEliminare);
     }
 
     public void rimuoviTappa(Curatore curatore,Itinerario itinerario, PuntoInteresse tappa) {
