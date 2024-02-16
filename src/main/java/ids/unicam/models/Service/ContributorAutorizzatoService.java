@@ -69,8 +69,8 @@ public class ContributorAutorizzatoService{
     }
 
     public PuntoInteresse aggiungiPuntoInteresse(Contributor contributor, PuntoInteresse puntoInteresse){
-        if (contributor.getComune().equals(puntoInteresse.getComune())) {
-            logger.error(contributor + " non può creare punti di interesse fuori dal suo comune");
+        if (!contributor.getComune().equals(puntoInteresse.getComune())) {
+            logger.error(contributor.getNome() + " non puo' creare punti di interesse fuori dal suo comune");
             throw new UnsupportedOperationException(contributor + " non può creare punti di interesse fuori dal suo comune");
         }
         puntoInteresse.setStato(Stato.APPROVED);

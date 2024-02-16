@@ -171,7 +171,6 @@ public class CuratoreService {
     }
 
     public List<Contributor> getOsservatori(Curatore curatore) {
-        System.out.println("GET "+repository.findOsservatoriByCuratore(curatore.getId()));
         return repository.findOsservatoriByCuratore(curatore.getId());
     }
     public int getNumeroOsservatori(Curatore curatore){

@@ -119,9 +119,11 @@ public class JUnitContenutiTests {
         {
             int puntiInteresseComuneIniziali = comuneService.getPuntiInteresseNelComune(comune.getNome()).size();
             Comune comune2 = comuneService.creaComune("Roma");
-            ContributorAutorizzato contributorAutorizzato = comuneService.getContributorAutorizzatiByComune(comune2.getNome()).getLast();
+            TuristaAutenticato turistaTemp2 = gestorePiattaformaService.registra(comune2, Ruolo.CONTRIBUTOR_AUTORIZZATO,  "Mario", "Rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "1Unica@", "user19");
+            if(!(turistaTemp2 instanceof ContributorAutorizzato contributorAutorizzato))
+                throw new IllegalArgumentException("errore");
             assertThrows(IllegalArgumentException.class, () -> new PuntoInteresse(comune, "chiesa", new Punto(comune.getPosizione().getLatitudine() + 2, comune.getPosizione().getLongitudine() + 2), TipologiaPuntoInteresse.LUOGO_DI_CULTO));
-            PuntoInteresse puntoInteresse= new PuntoInteresse(comune, "chiesa", new Punto(comune.getPosizione().getLatitudine() + 0.2, comune.getPosizione().getLongitudine() + 0.2), TipologiaPuntoInteresse.LUOGO_DI_CULTO);
+            PuntoInteresse puntoInteresse= new PuntoInteresse(comune, "chiesa", new Punto(comune.getPosizione().getLatitudine() + 0.02, comune.getPosizione().getLongitudine() + 0.02), TipologiaPuntoInteresse.LUOGO_DI_CULTO);
             assertThrows(UnsupportedOperationException.class,()-> contributorAutorizzatoService.aggiungiPuntoInteresse(contributorAutorizzato,puntoInteresse));
             assertEquals(puntiInteresseComuneIniziali,comuneService.getPuntiInteresseNelComune(comune.getNome()).size());
         }
