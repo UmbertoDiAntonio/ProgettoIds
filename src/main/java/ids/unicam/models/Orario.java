@@ -12,7 +12,7 @@ import java.util.Map;
 @Component
 public class Orario {
     @ElementCollection
-    private Map<DayOfWeek, OrarioApertura> hoursMap;
+    private final Map<DayOfWeek, OrarioApertura> hoursMap;
 
     public Orario() {
         hoursMap = new HashMap<>();

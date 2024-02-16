@@ -1,6 +1,5 @@
 package ids.unicam.models.Service;
 
-import ids.unicam.models.Expirable;
 import ids.unicam.models.Repository.PoiRepository;
 import ids.unicam.models.Taggable;
 import ids.unicam.models.attori.Contributor;
@@ -9,7 +8,6 @@ import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.MaterialeGenerico;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.models.contenuti.Tag;
-import ids.unicam.utilites.Punto;
 import ids.unicam.utilites.Stato;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

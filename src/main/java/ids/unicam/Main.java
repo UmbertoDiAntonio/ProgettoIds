@@ -2,7 +2,6 @@ package ids.unicam;
 
 
 import ids.unicam.DataBase.GestoreDatabase;
-import ids.unicam.models.Service.GestorePiattaformaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
@@ -21,11 +20,9 @@ public class Main implements ApplicationRunner {
 
 
     private final GestoreDatabase gestoreDatabase;
-    private final GestorePiattaformaService gestorePiattaformaService;
 
-    public Main(GestoreDatabase gestoreDatabase, GestorePiattaformaService gestorePiattaformaService) {
+    public Main(GestoreDatabase gestoreDatabase) {
         this.gestoreDatabase = gestoreDatabase;
-        this.gestorePiattaformaService = gestorePiattaformaService;
     }
 
     public static void main(String[] args) {

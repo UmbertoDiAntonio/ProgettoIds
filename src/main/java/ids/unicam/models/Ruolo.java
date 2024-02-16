@@ -8,6 +8,6 @@ public enum Ruolo {
     TURISTA,
     CONTRIBUTOR_AUTORIZZATO,
     ANIMATORE,
-    CURATORE;
+    CURATORE
 
 }

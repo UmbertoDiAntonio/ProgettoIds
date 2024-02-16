@@ -3,6 +3,7 @@ package ids.unicam.GestioneContenuti;
 import ids.unicam.Comune;
 import ids.unicam.DataBase.GestoreDatabase;
 import ids.unicam.exception.ContestException;
+import ids.unicam.models.Invito;
 import ids.unicam.models.Orario;
 import ids.unicam.models.Ruolo;
 import ids.unicam.models.Service.*;
@@ -36,7 +37,6 @@ public class JUnitContenutiTests {
     private final ContestService contestService;
     private final GestorePiattaformaService gestorePiattaformaService;
     private final InvitoService invitoService;
-    private final GestoreDatabase gestoreDatabase;
 
     @Autowired
     public JUnitContenutiTests(ComuneService comuneService, ContributorService contributorService, ContributorAutorizzatoService contributorAutorizzatoService, CuratoreService curatoreService, AnimatoreService animatoreService, TuristaAutenticatoService turistaAutenticatoService, PoiService poiService, ItinerarioService itinerarioService, MaterialeService materialeService, ContestService contestService, GestorePiattaformaService gestorePiattaformaService, InvitoService invitoService, GestoreDatabase gestoreDatabase) {
@@ -52,7 +52,6 @@ public class JUnitContenutiTests {
         this.contestService = contestService;
         this.gestorePiattaformaService = gestorePiattaformaService;
         this.invitoService = invitoService;
-        this.gestoreDatabase = gestoreDatabase;
         gestoreDatabase.eliminaTabelleDB();
         gestoreDatabase.inizializzaDatabase();
     }
@@ -119,10 +118,12 @@ public class JUnitContenutiTests {
          */
         {
             int puntiInteresseComuneIniziali = comuneService.getPuntiInteresseNelComune(comune.getNome()).size();
-
-            ContributorAutorizzato contributorAutorizzato = comuneService.getContributorAutorizzatiByComune(comune.getNome()).getLast();
+            Comune comune2 = comuneService.creaComune("Roma");
+            ContributorAutorizzato contributorAutorizzato = comuneService.getContributorAutorizzatiByComune(comune2.getNome()).getLast();
             assertThrows(IllegalArgumentException.class, () -> new PuntoInteresse(comune, "chiesa", new Punto(comune.getPosizione().getLatitudine() + 2, comune.getPosizione().getLongitudine() + 2), TipologiaPuntoInteresse.LUOGO_DI_CULTO));
-
+            PuntoInteresse puntoInteresse= new PuntoInteresse(comune, "chiesa", new Punto(comune.getPosizione().getLatitudine() + 0.2, comune.getPosizione().getLongitudine() + 0.2), TipologiaPuntoInteresse.LUOGO_DI_CULTO);
+            assertThrows(UnsupportedOperationException.class,()-> contributorAutorizzatoService.aggiungiPuntoInteresse(contributorAutorizzato,puntoInteresse));
+            assertEquals(puntiInteresseComuneIniziali,comuneService.getPuntiInteresseNelComune(comune.getNome()).size());
         }
 
         /*
@@ -266,7 +267,7 @@ public class JUnitContenutiTests {
 
             turistaAutenticatoService.partecipaAlContest(contest, turistaAutenticato);
 
-            MaterialeGenerico materialeGenerico = contestService.aggiungiMateriale(new Foto(turistaAutenticato), contest, turistaAutenticato);
+            contestService.aggiungiMateriale(new Foto(turistaAutenticato), contest, turistaAutenticato);
 
 
             assertEquals(1, contestService.getPartecipanti(contest).size());
@@ -284,9 +285,9 @@ public class JUnitContenutiTests {
             assertEquals(numeroContestCreatiDaAnimatore + 2, contestService.getContestByCreatore(animatore).size());
 
             TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registra(null, Ruolo.TURISTA, "andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.NOVEMBER, 5), "8Unica@", "user8");
-            animatoreService.invitaContest(animatore, contest, turistaAutenticato);
+            Invito invito=animatoreService.invitaContest(animatore, contest, turistaAutenticato);
 
-            assertTrue(invitoService.isValid(invitoService.getInvitiRicevuti(turistaAutenticato).getLast()));
+            assertTrue(invitoService.isValid(invito));
             turistaAutenticatoService.accettaInvitoContest(turistaAutenticato, invitoService.getInvitiRicevuti(turistaAutenticato).getLast());
 
             assertEquals(1, contestService.getPartecipanti(contest).size());

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import static ids.unicam.Main.logger;
 
@@ -20,21 +19,18 @@ public class GestorePiattaformaService {
     private final ContributorAutorizzatoService contributorAutorizzatoService;
     private final CuratoreService curatoreService;
     private final TuristaAutenticatoService turistaAutenticatoService;
-    private final TuristaService turistaService;
 
     @Autowired
     public GestorePiattaformaService(AnimatoreService animatoreService,
                                      ContributorService contributorService,
                                      ContributorAutorizzatoService contributorAutorizzatoService,
                                      CuratoreService curatoreService,
-                                     TuristaAutenticatoService turistaAutenticatoService,
-                                     TuristaService turistaService) {
+                                     TuristaAutenticatoService turistaAutenticatoService) {
         this.animatoreService = animatoreService;
         this.contributorService = contributorService;
         this.contributorAutorizzatoService = contributorAutorizzatoService;
         this.curatoreService = curatoreService;
         this.turistaAutenticatoService = turistaAutenticatoService;
-        this.turistaService = turistaService;
     }
 
 
@@ -71,28 +67,12 @@ public class GestorePiattaformaService {
             case ContributorAutorizzato contributorAutorizzato ->
                     contributorAutorizzatoService.deleteById(contributorAutorizzato.getId());
             case Animatore animatore -> animatoreService.deleteById(animatore.getId());
-            case Contributor contributor1 -> {
-                contributorService.deleteById(contributor1.getId());
-            }
+            case Contributor contributor1 -> contributorService.deleteById(contributor1.getId());
         }
     }
 
-    public List<TuristaAutenticato> getTuristi() {
-        return turistaAutenticatoService.findAll();
-    }
 
 
-    public void eliminaTurista(TuristaAutenticato turistaAutenticato) {
-        turistaAutenticatoService.deleteById(turistaAutenticato.getId());
-    }
-
-    public void eliminaListaTuristi() {
-        turistaAutenticatoService.deleteAll();
-    }
-
-    public @Nullable TuristaAutenticato cercaTurista(int id) {
-        return turistaAutenticatoService.findById(id).orElse(null);
-    }
 
 
     public TuristaAutenticato registra(@Nullable Comune comune, Ruolo ruolo, String nome, String cognome, GregorianCalendar birthday, String password, String username) {

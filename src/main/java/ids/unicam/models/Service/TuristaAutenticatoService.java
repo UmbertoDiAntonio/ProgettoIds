@@ -17,16 +17,14 @@ import static ids.unicam.Main.logger;
 @Service
 public class TuristaAutenticatoService {
     private final TuristaAutenticatoRepository repository;
-    private final MaterialeService materialeService;
     private final ContestService contestService;
 
     private final InvitoService invitoService;
 
 
     @Autowired
-    public TuristaAutenticatoService(TuristaAutenticatoRepository repository, MaterialeService materialeService, ContestService contestService,  InvitoService invitoService) {
+    public TuristaAutenticatoService(TuristaAutenticatoRepository repository,ContestService contestService,  InvitoService invitoService) {
         this.repository = repository;
-        this.materialeService = materialeService;
         this.contestService = contestService;
         this.invitoService = invitoService;
     }

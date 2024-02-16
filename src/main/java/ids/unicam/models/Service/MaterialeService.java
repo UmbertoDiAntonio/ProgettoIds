@@ -29,10 +29,6 @@ public class MaterialeService {
     }
 
 
-    public MaterialeGenerico save(TuristaAutenticato caricatore, PuntoInteresse puntoInteresse, MaterialeGenerico materialeGenerico) {
-        if(caricatore instanceof ContributorAutorizzato) materialeGenerico.setStato(Stato.APPROVED);
-        return repository.save(materialeGenerico);
-    }
     public MaterialeGenerico save(TuristaAutenticato caricatore, MaterialeGenerico materialeGenerico) {
         if(caricatore instanceof ContributorAutorizzato) materialeGenerico.setStato(Stato.APPROVED);
         return repository.save(materialeGenerico);

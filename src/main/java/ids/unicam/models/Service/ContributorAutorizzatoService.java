@@ -15,11 +15,14 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static ids.unicam.Main.logger;
+
 @Service
 public class ContributorAutorizzatoService{
     private final ContributorAutorizzatoRepository repository;
     private final PoiService poiService;
     private final ItinerarioService itinerarioService;
+
     @Autowired
     public ContributorAutorizzatoService(ContributorAutorizzatoRepository repository, PoiService poiService, ItinerarioService itinerarioService) {
         this.repository = repository;
@@ -66,6 +69,10 @@ public class ContributorAutorizzatoService{
     }
 
     public PuntoInteresse aggiungiPuntoInteresse(Contributor contributor, PuntoInteresse puntoInteresse){
+        if (contributor.getComune().equals(puntoInteresse.getComune())) {
+            logger.error(contributor + " non può creare punti di interesse fuori dal suo comune");
+            throw new UnsupportedOperationException(contributor + " non può creare punti di interesse fuori dal suo comune");
+        }
         puntoInteresse.setStato(Stato.APPROVED);
         return poiService.save(puntoInteresse);
     }
