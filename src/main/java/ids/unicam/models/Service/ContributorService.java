@@ -84,7 +84,7 @@ public class ContributorService {
         return itinerarioService.aggiungiTappa(itinerario, puntoInteresse);
     }
 
-    public void modificaScandenza(PuntoInteresse puntoInteresse, LocalDate expireDate) {
+    public void modificaScadenza(PuntoInteresse puntoInteresse, LocalDate expireDate) {
         puntoInteresse.setExpireDate(expireDate);
         poiService.save(puntoInteresse);
     }

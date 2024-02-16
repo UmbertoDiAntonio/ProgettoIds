@@ -228,7 +228,7 @@ public class JUnitContenutiTests {
 
             contributorAutorizzatoService.aggiungiPuntoInteresse(contributorAutorizzato, nuovoPunto);
 
-            contributorAutorizzatoService.aggiungiTappaItinerario(itinerario1, nuovoPunto1);
+            assertTrue(contributorAutorizzatoService.aggiungiTappaItinerario(itinerario1, nuovoPunto1));
             //itinerarioService.aggiungiTappa(itinerario1, nuovoPunto);
 
             assertEquals(numeroItinerariIniziale + 1, itinerarioService.findAllByComune(comune).size());
@@ -430,7 +430,7 @@ public class JUnitContenutiTests {
         assertEquals(LocalDate.MAX, puntoInteresse.getExpireDate());
 
 
-        contributorService.modificaScandenza(puntoInteresse, LocalDate.of(2024, 2, 1));
+        contributorService.modificaScadenza(puntoInteresse, LocalDate.of(2024, 2, 1));
         assertEquals(LocalDate.of(2024, 2, 1),puntoInteresse.getExpireDate());
         assertEquals(numPoi,poiService.findAll().size());
     }

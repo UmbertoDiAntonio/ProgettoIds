@@ -68,7 +68,7 @@ public class InvitoService {
     }
 
 
-    private List<Invito> findByInvitato(TuristaAutenticato invitato) {
+    public List<Invito> findByInvitato(TuristaAutenticato invitato) {
         return repository.findByInvitato(invitato);
     }
 

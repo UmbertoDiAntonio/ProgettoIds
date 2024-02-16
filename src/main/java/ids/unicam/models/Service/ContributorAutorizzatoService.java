@@ -68,17 +68,17 @@ public class ContributorAutorizzatoService{
         return repository.findByComuneNome(nomeComune);
     }
 
-    public PuntoInteresse aggiungiPuntoInteresse(Contributor contributor, PuntoInteresse puntoInteresse){
+    public void aggiungiPuntoInteresse(Contributor contributor, PuntoInteresse puntoInteresse){
         if (!contributor.getComune().equals(puntoInteresse.getComune())) {
             logger.error(contributor.getNome() + " non puo' creare punti di interesse fuori dal suo comune");
             throw new UnsupportedOperationException(contributor + " non può creare punti di interesse fuori dal suo comune");
         }
         puntoInteresse.setStato(Stato.APPROVED);
-        return poiService.save(puntoInteresse);
+        poiService.save(puntoInteresse);
     }
 
-    public Itinerario aggiungiItinerario(Comune comune, String nome, PuntoInteresse... puntoInteresses){
-        return  itinerarioService.creaItinerario(comune,nome,puntoInteresses);
+    public Itinerario aggiungiItinerario(Comune comune, String nome, PuntoInteresse... puntiInteresse){
+        return  itinerarioService.creaItinerario(comune,nome,puntiInteresse);
     }
 
     @Transactional
@@ -92,7 +92,7 @@ public class ContributorAutorizzatoService{
         }
     }
 
-    public void modificaScandenza(PuntoInteresse puntoInteresse, LocalDate expireDate) {
+    public void modificaScadenza(PuntoInteresse puntoInteresse, LocalDate expireDate) {
         puntoInteresse.setExpireDate(expireDate);
     }
 }
