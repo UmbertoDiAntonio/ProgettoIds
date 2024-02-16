@@ -75,11 +75,11 @@ public class PuntoInteresse extends ContenutoGenerico implements Taggable, Expir
 
     public String mostraInformazioniDettagliate(){
         return getNomeContest() + " " + getOrario();
-    };
+    }
 
     public String mostraInformazioniGeneriche(){
         return getNomeContest();
-    };
+    }
 
     public @Nullable Orario getOrario() {
         return orario;

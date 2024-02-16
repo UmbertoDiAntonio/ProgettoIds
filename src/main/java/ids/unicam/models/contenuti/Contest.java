@@ -11,10 +11,6 @@ import java.util.List;
 
 @Entity
 public class Contest extends PuntoInteresse implements Taggable, Expirable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "sequenza_contenuti")
-    @SequenceGenerator(name = "sequenza_contenuti", sequenceName = "PUNTI_DI_INTERESSE_SEQ", allocationSize = 1)
-    private int id;
 
     @Column(name = "Aperto")
     private boolean open;
@@ -27,16 +23,9 @@ public class Contest extends PuntoInteresse implements Taggable, Expirable {
 
     private String nomeContest =null;
 
-    public int getId() {
-        return id;
-    }
-
     public List<TuristaAutenticato> getPartecipanti() {
         return partecipanti;
     }
-
-
-
 
     public Contest() {
     }

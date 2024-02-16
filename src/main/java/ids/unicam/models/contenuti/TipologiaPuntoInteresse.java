@@ -11,7 +11,7 @@ public enum TipologiaPuntoInteresse {
     PARCHEGGIO,
     FORMAZIONE,
     INTRATTENIMENTO,
-    CONTEST;
+    CONTEST
 
 
 }

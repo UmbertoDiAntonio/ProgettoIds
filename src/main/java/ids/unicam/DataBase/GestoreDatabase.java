@@ -12,12 +12,10 @@ import static ids.unicam.Main.logger;
 public class GestoreDatabase {
     private final ConnessioneDatabase connessioneDatabase;
     private final CreazioneTabelleDatabase creazioneTabelleDatabase;
-    private final ModificaTabelleDatabase modificaTabelleDatabase;
     @Autowired
-    public GestoreDatabase(ConnessioneDatabase connessioneDatabase, CreazioneTabelleDatabase creazioneTabelleDatabase, ModificaTabelleDatabase modificaTabelleDatabase) {
+    public GestoreDatabase(ConnessioneDatabase connessioneDatabase, CreazioneTabelleDatabase creazioneTabelleDatabase) {
         this.connessioneDatabase = connessioneDatabase;
         this.creazioneTabelleDatabase = creazioneTabelleDatabase;
-        this.modificaTabelleDatabase = modificaTabelleDatabase;
     }
 
     public void eliminaTabelleDB(){
@@ -53,7 +51,4 @@ public class GestoreDatabase {
         return creazioneTabelleDatabase;
     }
 
-    private ModificaTabelleDatabase getModificaTabelleDatabase() {
-        return modificaTabelleDatabase;
-    }
 }

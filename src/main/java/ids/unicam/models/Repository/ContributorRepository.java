@@ -12,10 +12,10 @@ import java.util.List;
 @Repository
 public interface ContributorRepository extends JpaRepository<Contributor,Integer> {
     @Query("SELECT e FROM Contributor e ORDER BY e.id DESC LIMIT 1")
-    public Contributor getLast();
+    Contributor getLast();
 
     @Query("SELECT e FROM Contributor e ORDER BY e.id ASC LIMIT 1")
-    public Contributor getFirst();
+    Contributor getFirst();
 
     List<Contributor> findByCognome(String cognome);
     List<Contributor> findByNome(String nome);

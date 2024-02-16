@@ -24,30 +24,25 @@ public class JUnitUtentiTest {
     private final ContributorService contributorService;
     private final ContributorAutorizzatoService contributorAutorizzatoService;
     private final CuratoreService curatoreService;
-    private final AnimatoreService animatoreService;
     private final PoiService poiService;
-    private final ItinerarioService itinerarioService;
     private final MaterialeService materialeService;
     private final TuristaAutenticatoService turistaAutenticatoService;
     private final GestorePiattaformaService gestorePiattaformaService;
     private final TuristaService turistaService;
-    private final GestoreDatabase gestoreDatabase;
+
 
     @Autowired
-    public JUnitUtentiTest(ComuneService comuneService, GestioneComuneService gestioneComuneService, ContributorService contributorService, ContributorAutorizzatoService contributorAutorizzatoService, CuratoreService curatoreService, AnimatoreService animatoreService, PoiService poiService, ItinerarioService itinerarioService, MaterialeService materialeService, TuristaAutenticatoService turistaAutenticatoService, GestorePiattaformaService gestorePiattaformaService, TuristaService turistaService, GestoreDatabase gestoreDatabase) {
+    public JUnitUtentiTest(ComuneService comuneService, GestioneComuneService gestioneComuneService, ContributorService contributorService, ContributorAutorizzatoService contributorAutorizzatoService, CuratoreService curatoreService, PoiService poiService, MaterialeService materialeService, TuristaAutenticatoService turistaAutenticatoService, GestorePiattaformaService gestorePiattaformaService, TuristaService turistaService, GestoreDatabase gestoreDatabase) {
         this.comuneService = comuneService;
         this.gestioneComuneService = gestioneComuneService;
         this.contributorService = contributorService;
         this.contributorAutorizzatoService = contributorAutorizzatoService;
         this.curatoreService = curatoreService;
-        this.animatoreService = animatoreService;
         this.poiService = poiService;
-        this.itinerarioService = itinerarioService;
         this.materialeService = materialeService;
         this.turistaAutenticatoService = turistaAutenticatoService;
         this.gestorePiattaformaService = gestorePiattaformaService;
         this.turistaService = turistaService;
-        this.gestoreDatabase = gestoreDatabase;
         gestoreDatabase.eliminaTabelleDB();
         gestoreDatabase.inizializzaDatabase();
     }
@@ -61,9 +56,9 @@ public class JUnitUtentiTest {
         int numeroContributorAutorizzati = gestioneComuneService.getContributorAutorizzatiDelComune(comune.getNome()).size();
         int numeroCuratori = gestioneComuneService.getCuratoriDelComune(comune.getNome()).size();
 
-        gestorePiattaformaService.registra(null, Ruolo.TURISTA, "Mario", "Rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "1Unic@", "user1");
-        gestorePiattaformaService.registra(null, Ruolo.TURISTA, "Paolo", "Giallo", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "2Unic@", "user2");
-        gestorePiattaformaService.registra(comune, Ruolo.CONTRIBUTOR, "Giuseppe", "Oro", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "3Unic@", "user3");
+        gestorePiattaformaService.registra(null, Ruolo.TURISTA, "Mario", "Rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "1Unico@", "user1");
+        gestorePiattaformaService.registra(null, Ruolo.TURISTA, "Paolo", "Giallo", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "2Unico@", "user2");
+        gestorePiattaformaService.registra(comune, Ruolo.CONTRIBUTOR, "Giuseppe", "Oro", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "3Unico@", "user3");
 
         assertEquals(numeroContributor + 1, gestioneComuneService.getContributorDelComune(comune.getNome()).size());
 
@@ -89,10 +84,10 @@ public class JUnitUtentiTest {
 
         Comune comune = comuneService.creaComune("Milano");
 
-        TuristaAutenticato turista = gestorePiattaformaService.registra(comune, Ruolo.CONTRIBUTOR, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "4Unic@", "user4");
+        TuristaAutenticato turista = gestorePiattaformaService.registra(comune, Ruolo.CONTRIBUTOR, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "4Unico@", "user4");
         if(!(turista instanceof Contributor contributor))
             throw new IllegalArgumentException("errore");
-        TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registra(null, Ruolo.TURISTA, "andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "5Unic@", "user5");
+        TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registra(null, Ruolo.TURISTA, "andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "5Unico@", "user5");
 
         gestorePiattaformaService.promuovi(contributor, Ruolo.CONTRIBUTOR_AUTORIZZATO);
         PuntoInteresse puntoInteresse = new PuntoInteresse(comune, "Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE);
@@ -108,7 +103,7 @@ public class JUnitUtentiTest {
     public void condividiContenuto() {
 
         Comune comune = comuneService.creaComune("Milano");
-        TuristaAutenticato turista = gestorePiattaformaService.registra(comune, Ruolo.CURATORE, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "6Unic@", "user6");
+        TuristaAutenticato turista = gestorePiattaformaService.registra(comune, Ruolo.CURATORE, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "6Unico@", "user6");
         if(!(turista instanceof Curatore curatore))
             throw new IllegalArgumentException("errore");
         PuntoInteresse puntoInteresse = new PuntoInteresse(comune, "Teatro", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), TipologiaPuntoInteresse.INTRATTENIMENTO);
@@ -119,15 +114,14 @@ public class JUnitUtentiTest {
 
     @Test
     public void metodoCercaTurista() {
-        Turista turista = new Turista();
 
         Comune comune = comuneService.creaComune("Milano");
-        TuristaAutenticato turista1 = gestorePiattaformaService.registra(comune, Ruolo.CONTRIBUTOR, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "7Unic@", "user7");
+        TuristaAutenticato turista1 = gestorePiattaformaService.registra(comune, Ruolo.CONTRIBUTOR, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "7Unico@", "user7");
         if(!(turista1 instanceof Contributor contributor))
             throw new IllegalArgumentException("errore");
 
 
-        TuristaAutenticato turista2 = gestorePiattaformaService.registra(comune, Ruolo.CURATORE, "mirco", "blu", new GregorianCalendar(2002, GregorianCalendar.MAY, 15), "8Unic@", "user8");
+        TuristaAutenticato turista2 = gestorePiattaformaService.registra(comune, Ruolo.CURATORE, "mirco", "blu", new GregorianCalendar(2002, GregorianCalendar.MAY, 15), "8Unico@", "user8");
         if(!(turista2 instanceof Curatore curatore))
             throw new IllegalArgumentException("errore");
 
@@ -166,7 +160,7 @@ public class JUnitUtentiTest {
     public void aggiungiFoto() {
         Comune comune = comuneService.creaComune("Milano");
 
-        TuristaAutenticato turista = gestorePiattaformaService.registra(comune, Ruolo.CONTRIBUTOR, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "9Unic@", "user9");
+        TuristaAutenticato turista = gestorePiattaformaService.registra(comune, Ruolo.CONTRIBUTOR, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "9Unico@", "user9");
         if(!(turista instanceof Contributor contributor))
             throw new IllegalArgumentException("errore");
 
@@ -175,7 +169,7 @@ public class JUnitUtentiTest {
         Curatore curatore = gestioneComuneService.getCuratoriDelComune(comune.getNome()).getLast();
         curatoreService.valuta(curatore,puntoInteresse, Stato.APPROVED);
         assertTrue(puntoInteresse.getStato().asBoolean());
-        TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registra(null, Ruolo.TURISTA, "andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "10Unic@", "user10");
+        TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registra(null, Ruolo.TURISTA, "andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "10Unico@", "user10");
 
 
         assertEquals(0, materialeService.findByWhere(puntoInteresse).size());

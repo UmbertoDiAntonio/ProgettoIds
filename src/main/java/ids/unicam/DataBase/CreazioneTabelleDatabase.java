@@ -73,6 +73,7 @@ public class CreazioneTabelleDatabase {
             logger.error("Impossibile eseguire la QuerySQL creazione tabella Invito", e);
         }
     }
+
     private void creaTabellaInvito(@NotNull Connection connection) {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS INVITO(" +

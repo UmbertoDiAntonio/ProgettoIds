@@ -2,7 +2,7 @@ package ids.unicam.models.Service;
 
 import ids.unicam.exception.ContestException;
 import ids.unicam.models.Invito;
-import ids.unicam.models.Repository.AnimatorereRepository;
+import ids.unicam.models.Repository.AnimatoreRepository;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
@@ -18,14 +18,14 @@ import static ids.unicam.Main.logger;
 
 @Service
 public class AnimatoreService {
-    private final AnimatorereRepository repository;
+    private final AnimatoreRepository repository;
     private final ContestService contestService;
     private final InvitoService invitoService;
     private final MaterialeService materialeService;
 
 
     @Autowired
-    public AnimatoreService(AnimatorereRepository repository, ContestService contestService, InvitoService invitoService, MaterialeService materialeService) {
+    public AnimatoreService(AnimatoreRepository repository, ContestService contestService, InvitoService invitoService, MaterialeService materialeService) {
         this.repository = repository;
         this.contestService = contestService;
         this.invitoService = invitoService;

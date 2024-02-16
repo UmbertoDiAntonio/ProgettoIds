@@ -23,7 +23,6 @@ public abstract class MaterialeGenerico {
     public MaterialeGenerico() {
 
     }
-
     public int getIdProprietario() {
         return idProprietario;
     }

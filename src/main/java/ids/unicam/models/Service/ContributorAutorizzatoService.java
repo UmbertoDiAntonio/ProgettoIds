@@ -20,13 +20,11 @@ public class ContributorAutorizzatoService{
     private final ContributorAutorizzatoRepository repository;
     private final PoiService poiService;
     private final ItinerarioService itinerarioService;
-    private final MaterialeService materialeService;
     @Autowired
-    public ContributorAutorizzatoService(ContributorAutorizzatoRepository repository, PoiService poiService, ItinerarioService itinerarioService, MaterialeService materialeService) {
+    public ContributorAutorizzatoService(ContributorAutorizzatoRepository repository, PoiService poiService, ItinerarioService itinerarioService) {
         this.repository = repository;
         this.poiService = poiService;
         this.itinerarioService = itinerarioService;
-        this.materialeService = materialeService;
     }
     public void deleteById(int id) {
         repository.deleteById(id);
