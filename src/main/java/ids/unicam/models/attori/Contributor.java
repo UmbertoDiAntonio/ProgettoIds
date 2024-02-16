@@ -1,10 +1,10 @@
 package ids.unicam.models.attori;
 
-import ids.unicam.Comune;
+import ids.unicam.models.Comune;
 import ids.unicam.models.contenuti.MaterialeGenerico;
 import ids.unicam.models.contenuti.PuntoInteresse;
-import ids.unicam.utilites.Observer;
-import ids.unicam.utilites.Stato;
+import ids.unicam.models.Observer;
+import ids.unicam.models.Stato;
 import jakarta.persistence.*;
 
 import java.util.GregorianCalendar;

@@ -1,7 +1,7 @@
 package ids.unicam.models.contenuti;
 
 import ids.unicam.models.attori.TuristaAutenticato;
-import ids.unicam.utilites.Stato;
+import ids.unicam.models.Stato;
 import jakarta.persistence.*;
 
 @Entity

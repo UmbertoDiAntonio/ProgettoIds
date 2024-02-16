@@ -1,10 +1,10 @@
 package ids.unicam.models.contenuti;
 
-import ids.unicam.Comune;
+import ids.unicam.models.Comune;
 import ids.unicam.models.Expirable;
 import ids.unicam.models.Orario;
 import ids.unicam.models.Taggable;
-import ids.unicam.utilites.Punto;
+import ids.unicam.models.Punto;
 import jakarta.persistence.*;
 import org.jetbrains.annotations.Nullable;
 

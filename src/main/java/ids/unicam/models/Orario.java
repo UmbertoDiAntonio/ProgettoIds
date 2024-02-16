@@ -1,6 +1,5 @@
 package ids.unicam.models;
 
-import ids.unicam.utilites.DayOfWeek;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embeddable;
 import org.springframework.stereotype.Component;

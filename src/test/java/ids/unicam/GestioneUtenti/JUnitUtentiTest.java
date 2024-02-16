@@ -1,13 +1,14 @@
 package ids.unicam.GestioneUtenti;
 
-import ids.unicam.Comune;
+import ids.unicam.models.Comune;
 import ids.unicam.DataBase.GestoreDatabase;
+import ids.unicam.Service.*;
 import ids.unicam.models.Ruolo;
 import ids.unicam.models.Service.*;
 import ids.unicam.models.attori.*;
 import ids.unicam.models.contenuti.*;
-import ids.unicam.utilites.Punto;
-import ids.unicam.utilites.Stato;
+import ids.unicam.models.Punto;
+import ids.unicam.models.Stato;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

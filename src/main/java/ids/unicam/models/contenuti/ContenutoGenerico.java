@@ -1,9 +1,9 @@
 package ids.unicam.models.contenuti;
 
-import ids.unicam.Comune;
+import ids.unicam.models.Comune;
 import ids.unicam.models.Expirable;
 import ids.unicam.models.Taggable;
-import ids.unicam.utilites.Stato;
+import ids.unicam.models.Stato;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
