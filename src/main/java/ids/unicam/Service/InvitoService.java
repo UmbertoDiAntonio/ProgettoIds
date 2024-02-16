@@ -1,8 +1,8 @@
 package ids.unicam.Service;
 
-import ids.unicam.models.Invito;
 import ids.unicam.DataBase.Repository.InvitoRepository;
-import ids.unicam.models.attori.TuristaAutenticato;
+import ids.unicam.models.Invito;
+import ids.unicam.models.users.TuristaAutenticato;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,13 +58,14 @@ public class InvitoService {
 
     @Transactional
     public void accettaInvito(TuristaAutenticato turistaAutenticato, Invito invito) {
-        if(isValid(invito)) {
+        if (isValid(invito)) {
             if (invito.getInvitato().equals(turistaAutenticato)) {
                 contestService.aggiungiPartecipante(invito.getContest(), turistaAutenticato);
             } else {
                 logger.error("Non sei Invitato");
             }
-        }logger.warn("Invito non valido");
+        } else
+            logger.warn("Invito non valido");
     }
 
 

@@ -1,9 +1,7 @@
 package ids.unicam.models.contenuti;
 
 import ids.unicam.models.Comune;
-import ids.unicam.models.Expirable;
-import ids.unicam.models.Taggable;
-import ids.unicam.models.Stato;
+import ids.unicam.models.contenuti.puntiInteresse.Tag;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -25,7 +23,7 @@ public abstract class ContenutoGenerico implements Taggable, Expirable {
     private Stato stato = Stato.NOT_APPROVED;
 
     @OneToMany(fetch = FetchType.EAGER)
-    private Set<Tag> tags = new HashSet<>();
+    private final Set<Tag> tags = new HashSet<>();
 
     private LocalDate expireDate = LocalDate.MAX;
 

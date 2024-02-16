@@ -1,6 +1,6 @@
-package ids.unicam.models;
+package ids.unicam.models.contenuti;
 
-import ids.unicam.models.contenuti.Tag;
+import ids.unicam.models.contenuti.puntiInteresse.Tag;
 
 import java.util.Set;
 

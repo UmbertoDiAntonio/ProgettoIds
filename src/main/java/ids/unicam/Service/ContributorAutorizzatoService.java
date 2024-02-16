@@ -1,12 +1,12 @@
 package ids.unicam.Service;
 
-import ids.unicam.models.Comune;
 import ids.unicam.DataBase.Repository.ContributorAutorizzatoRepository;
-import ids.unicam.models.attori.Contributor;
-import ids.unicam.models.attori.ContributorAutorizzato;
+import ids.unicam.models.Comune;
 import ids.unicam.models.contenuti.Itinerario;
-import ids.unicam.models.contenuti.PuntoInteresse;
-import ids.unicam.models.Stato;
+import ids.unicam.models.contenuti.Stato;
+import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
+import ids.unicam.models.users.organizzazioneComune.Contributor;
+import ids.unicam.models.users.organizzazioneComune.ContributorAutorizzato;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

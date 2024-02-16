@@ -1,8 +1,12 @@
 package ids.unicam.Service;
 
 import ids.unicam.models.Comune;
-import ids.unicam.models.Ruolo;
-import ids.unicam.models.attori.*;
+import ids.unicam.models.users.Ruolo;
+import ids.unicam.models.users.TuristaAutenticato;
+import ids.unicam.models.users.organizzazioneComune.Animatore;
+import ids.unicam.models.users.organizzazioneComune.Contributor;
+import ids.unicam.models.users.organizzazioneComune.ContributorAutorizzato;
+import ids.unicam.models.users.organizzazioneComune.Curatore;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;

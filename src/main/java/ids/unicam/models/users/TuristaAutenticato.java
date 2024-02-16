@@ -1,6 +1,6 @@
-package ids.unicam.models.attori;
+package ids.unicam.models.users;
 
-import ids.unicam.models.contenuti.PuntoInteresse;
+import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.Objects;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @DiscriminatorColumn(name = "TIPO")
 @DiscriminatorValue("TuristaAutenticato")
-public class TuristaAutenticato extends Turista{
+public class TuristaAutenticato extends Turista {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "sequenza_utenti")
     @SequenceGenerator(name = "sequenza_utenti", sequenceName = "users", allocationSize = 1)

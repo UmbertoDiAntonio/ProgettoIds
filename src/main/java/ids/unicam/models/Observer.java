@@ -1,7 +1,8 @@
 package ids.unicam.models;
 
-import ids.unicam.models.contenuti.MaterialeGenerico;
-import ids.unicam.models.contenuti.PuntoInteresse;
+import ids.unicam.models.contenuti.Stato;
+import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
+import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 
 
 public interface Observer {

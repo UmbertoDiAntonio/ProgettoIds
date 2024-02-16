@@ -1,14 +1,14 @@
 package ids.unicam.Service;
 
 import ids.unicam.DataBase.Repository.PoiRepository;
-import ids.unicam.models.Taggable;
-import ids.unicam.models.attori.Contributor;
-import ids.unicam.models.attori.ContributorAutorizzato;
-import ids.unicam.models.attori.TuristaAutenticato;
-import ids.unicam.models.contenuti.MaterialeGenerico;
-import ids.unicam.models.contenuti.PuntoInteresse;
-import ids.unicam.models.contenuti.Tag;
-import ids.unicam.models.Stato;
+import ids.unicam.models.contenuti.Stato;
+import ids.unicam.models.contenuti.Taggable;
+import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
+import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
+import ids.unicam.models.contenuti.puntiInteresse.Tag;
+import ids.unicam.models.users.TuristaAutenticato;
+import ids.unicam.models.users.organizzazioneComune.Contributor;
+import ids.unicam.models.users.organizzazioneComune.ContributorAutorizzato;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

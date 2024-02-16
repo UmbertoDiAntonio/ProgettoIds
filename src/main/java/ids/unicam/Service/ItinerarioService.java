@@ -1,9 +1,9 @@
 package ids.unicam.Service;
 
-import ids.unicam.models.Comune;
 import ids.unicam.DataBase.Repository.ItinerarioRepository;
+import ids.unicam.models.Comune;
 import ids.unicam.models.contenuti.Itinerario;
-import ids.unicam.models.contenuti.PuntoInteresse;
+import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

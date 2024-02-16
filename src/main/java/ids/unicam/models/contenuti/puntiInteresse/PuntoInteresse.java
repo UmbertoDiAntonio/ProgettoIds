@@ -1,10 +1,10 @@
-package ids.unicam.models.contenuti;
+package ids.unicam.models.contenuti.puntiInteresse;
 
 import ids.unicam.models.Comune;
-import ids.unicam.models.Expirable;
-import ids.unicam.models.Orario;
-import ids.unicam.models.Taggable;
-import ids.unicam.models.Punto;
+import ids.unicam.models.contenuti.ContenutoGenerico;
+import ids.unicam.models.contenuti.Expirable;
+import ids.unicam.models.contenuti.Punto;
+import ids.unicam.models.contenuti.Taggable;
 import jakarta.persistence.*;
 import org.jetbrains.annotations.Nullable;
 

@@ -1,11 +1,15 @@
 package ids.unicam.Service;
 
 import ids.unicam.DataBase.Repository.CuratoreRepository;
-import ids.unicam.models.attori.Contributor;
-import ids.unicam.models.attori.Curatore;
-import ids.unicam.models.contenuti.*;
 import ids.unicam.models.Observer;
-import ids.unicam.models.Stato;
+import ids.unicam.models.contenuti.ContenutoGenerico;
+import ids.unicam.models.contenuti.Itinerario;
+import ids.unicam.models.contenuti.Stato;
+import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
+import ids.unicam.models.contenuti.puntiInteresse.Contest;
+import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
+import ids.unicam.models.users.organizzazioneComune.Contributor;
+import ids.unicam.models.users.organizzazioneComune.Curatore;
 import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;

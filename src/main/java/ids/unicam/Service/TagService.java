@@ -1,8 +1,8 @@
 package ids.unicam.Service;
 
 import ids.unicam.DataBase.Repository.TagRepository;
-import ids.unicam.models.Taggable;
-import ids.unicam.models.contenuti.Tag;
+import ids.unicam.models.contenuti.Taggable;
+import ids.unicam.models.contenuti.puntiInteresse.Tag;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

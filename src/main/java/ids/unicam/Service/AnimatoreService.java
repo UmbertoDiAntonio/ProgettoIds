@@ -1,13 +1,13 @@
 package ids.unicam.Service;
 
+import ids.unicam.DataBase.Repository.AnimatoreRepository;
 import ids.unicam.exception.ContestException;
 import ids.unicam.models.Invito;
-import ids.unicam.DataBase.Repository.AnimatoreRepository;
-import ids.unicam.models.attori.Animatore;
-import ids.unicam.models.attori.TuristaAutenticato;
-import ids.unicam.models.contenuti.Contest;
-import ids.unicam.models.contenuti.MaterialeGenerico;
-import ids.unicam.models.Stato;
+import ids.unicam.models.contenuti.Stato;
+import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
+import ids.unicam.models.contenuti.puntiInteresse.Contest;
+import ids.unicam.models.users.TuristaAutenticato;
+import ids.unicam.models.users.organizzazioneComune.Animatore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

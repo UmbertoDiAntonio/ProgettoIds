@@ -1,14 +1,20 @@
 package ids.unicam.GestioneUtenti;
 
-import ids.unicam.models.Comune;
 import ids.unicam.DataBase.GestoreDatabase;
 import ids.unicam.Service.*;
-import ids.unicam.models.Ruolo;
-import ids.unicam.models.Service.*;
-import ids.unicam.models.attori.*;
-import ids.unicam.models.contenuti.*;
-import ids.unicam.models.Punto;
-import ids.unicam.models.Stato;
+import ids.unicam.models.Comune;
+import ids.unicam.models.contenuti.Punto;
+import ids.unicam.models.contenuti.Stato;
+import ids.unicam.models.contenuti.materiali.Foto;
+import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
+import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
+import ids.unicam.models.contenuti.puntiInteresse.Tag;
+import ids.unicam.models.contenuti.puntiInteresse.TipologiaPuntoInteresse;
+import ids.unicam.models.users.Ruolo;
+import ids.unicam.models.users.TuristaAutenticato;
+import ids.unicam.models.users.organizzazioneComune.Contributor;
+import ids.unicam.models.users.organizzazioneComune.ContributorAutorizzato;
+import ids.unicam.models.users.organizzazioneComune.Curatore;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

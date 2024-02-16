@@ -1,10 +1,10 @@
 package ids.unicam.Service;
 
-import ids.unicam.models.attori.Animatore;
-import ids.unicam.models.attori.Contributor;
-import ids.unicam.models.attori.ContributorAutorizzato;
-import ids.unicam.models.attori.Curatore;
-import ids.unicam.models.contenuti.PuntoInteresse;
+import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
+import ids.unicam.models.users.organizzazioneComune.Animatore;
+import ids.unicam.models.users.organizzazioneComune.Contributor;
+import ids.unicam.models.users.organizzazioneComune.ContributorAutorizzato;
+import ids.unicam.models.users.organizzazioneComune.Curatore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

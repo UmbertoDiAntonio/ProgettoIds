@@ -1,9 +1,9 @@
-package ids.unicam.models.contenuti;
+package ids.unicam.models.contenuti.puntiInteresse;
 
-import ids.unicam.models.Expirable;
-import ids.unicam.models.Taggable;
-import ids.unicam.models.attori.Animatore;
-import ids.unicam.models.attori.TuristaAutenticato;
+import ids.unicam.models.contenuti.Expirable;
+import ids.unicam.models.contenuti.Taggable;
+import ids.unicam.models.users.TuristaAutenticato;
+import ids.unicam.models.users.organizzazioneComune.Animatore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;

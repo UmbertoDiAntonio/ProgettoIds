@@ -1,9 +1,9 @@
 package ids.unicam.Service;
 
-import ids.unicam.models.Taggable;
-import ids.unicam.models.attori.TuristaAutenticato;
-import ids.unicam.models.contenuti.PuntoInteresse;
-import ids.unicam.models.contenuti.Tag;
+import ids.unicam.models.contenuti.Taggable;
+import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
+import ids.unicam.models.contenuti.puntiInteresse.Tag;
+import ids.unicam.models.users.TuristaAutenticato;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

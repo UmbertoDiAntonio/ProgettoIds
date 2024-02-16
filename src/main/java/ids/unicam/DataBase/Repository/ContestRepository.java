@@ -1,8 +1,8 @@
 package ids.unicam.DataBase.Repository;
 
-import ids.unicam.models.attori.Animatore;
-import ids.unicam.models.attori.TuristaAutenticato;
-import ids.unicam.models.contenuti.Contest;
+import ids.unicam.models.contenuti.puntiInteresse.Contest;
+import ids.unicam.models.users.TuristaAutenticato;
+import ids.unicam.models.users.organizzazioneComune.Animatore;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

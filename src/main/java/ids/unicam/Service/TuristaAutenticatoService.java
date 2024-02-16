@@ -1,10 +1,10 @@
 package ids.unicam.Service;
 
-import ids.unicam.models.Invito;
 import ids.unicam.DataBase.Repository.TuristaAutenticatoRepository;
-import ids.unicam.models.attori.TuristaAutenticato;
-import ids.unicam.models.contenuti.Contest;
-import ids.unicam.models.contenuti.PuntoInteresse;
+import ids.unicam.models.Invito;
+import ids.unicam.models.contenuti.puntiInteresse.Contest;
+import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
+import ids.unicam.models.users.TuristaAutenticato;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
