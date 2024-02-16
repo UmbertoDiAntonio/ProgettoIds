@@ -140,15 +140,22 @@ public class CuratoreService {
 
     @Transactional
     public void aggiungiOsservatore(Curatore curatore, Contributor osservatore) {
+        if(curatore.getOsservatori().contains(osservatore)) {
+            logger.error(osservatore+" stai già seguendo questo curatore");
+            return;
+        }
         curatore.getOsservatori().add(osservatore);
+        deleteById(curatore.getId());
         save(curatore);
+
+
     }
 
 
     @Transactional
     public void rimuoviOsservatore(Curatore curatore, Contributor osservatore) {
-        curatore.rimuoviOsservatore(osservatore);
-        repository.update(curatore.getId(),curatore.getOsservatori());
+        curatore.getOsservatori().remove(osservatore);
+        deleteById(curatore.getId());
         save(curatore);
     }
 
@@ -165,7 +172,11 @@ public class CuratoreService {
     }
 
     public List<Contributor> getOsservatori(Curatore curatore) {
+        System.out.println("GET "+repository.findOsservatoriByCuratore(curatore.getId()));
         return repository.findOsservatoriByCuratore(curatore.getId());
+    }
+    public int getNumeroOsservatori(Curatore curatore){
+        return repository.countNumeroOsservatori(curatore.getId());
     }
 }
 

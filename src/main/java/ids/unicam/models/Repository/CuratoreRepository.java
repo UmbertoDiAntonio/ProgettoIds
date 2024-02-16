@@ -6,6 +6,7 @@ import ids.unicam.models.attori.Curatore;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,8 +23,7 @@ public interface CuratoreRepository  extends JpaRepository<Curatore,Integer> {
 
     @Query("select c.osservatori from Curatore c where c.id = :idCuratore")
     List<Contributor> findOsservatoriByCuratore(int idCuratore);
+    @Query("SELECT Count(c) FROM Curatore c JOIN  c.osservatori  Where c.id = :idCuratore")
+    Integer countNumeroOsservatori( int idCuratore);
 
-    @Modifying
-    @Query("update Curatore c SET c.osservatori =:osservatori WHERE c.id= :idCuratore ")
-    void update(int idCuratore,List<Contributor> osservatori);
 }

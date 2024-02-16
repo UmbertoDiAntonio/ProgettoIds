@@ -88,4 +88,12 @@ public class Comune {
         result = 31 * result + (posizione != null ? posizione.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Comune{" +
+                "nome='" + nome + '\'' +
+                ", posizione=" + posizione +
+                '}';
+    }
 }

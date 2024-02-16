@@ -160,14 +160,21 @@ public class JUnitContenutiTests {
             PuntoInteresse puntoInteresse = contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "Accademia", new Punto(comune.getPosizione().getLatitudine() + 0.01, comune.getPosizione().getLongitudine() + 0.01), orarioAccademia, TipologiaPuntoInteresse.CENTRO_SPORTIVO));
 
             assertFalse(puntoInteresse.getStato().asBoolean());
-            TuristaAutenticato turistaTemp2 = gestorePiattaformaService.registra(comune, Ruolo.CONTRIBUTOR,  "Peppe", "Peppe", new GregorianCalendar(2000, GregorianCalendar.MARCH, 11), "4Unica@", "user44");
+            TuristaAutenticato turistaTemp2 = gestorePiattaformaService.registra(comune, Ruolo.CONTRIBUTOR,  "Peppe", "Paol", new GregorianCalendar(2000, GregorianCalendar.MARCH, 11), "4Unica@", "user44");
             if(!(turistaTemp2 instanceof Contributor contributor1))
+                throw new IllegalArgumentException("errore");
+            TuristaAutenticato turistaTemp3 = gestorePiattaformaService.registra(comune, Ruolo.CONTRIBUTOR,  "Pietro", "Pier", new GregorianCalendar(2000, GregorianCalendar.MARCH, 11), "4Unica@", "user45");
+            if(!(turistaTemp3 instanceof Contributor contributor2))
                 throw new IllegalArgumentException("errore");
 
             int numeroOsservatori=curatoreService.getOsservatori(curatore).size();
             curatoreService.aggiungiOsservatore(curatore,contributor1);
+            assertEquals(numeroOsservatori+1, curatoreService.getNumeroOsservatori(curatore));
 
-            assertEquals(numeroOsservatori+1, curatoreService.getOsservatori(curatore).size());
+            curatoreService.aggiungiOsservatore(curatore,contributor2);
+            assertEquals(numeroOsservatori+2, curatoreService.getNumeroOsservatori(curatore));
+
+
 
             curatoreService.valuta(curatore,puntoInteresse, Stato.APPROVED);
             assertTrue(puntoInteresse.getStato().asBoolean());
@@ -176,7 +183,7 @@ public class JUnitContenutiTests {
             curatoreService.valuta(curatore,materialeGenerico1, Stato.APPROVED);
             poiService.creaMateriale(turistaAutenticato, puntoInteresse, materialeGenerico1);
             curatoreService.rimuoviOsservatore(curatore,contributor1);
-            assertEquals(numeroOsservatori, curatoreService.getOsservatori(curatore).size());
+            assertEquals(numeroOsservatori+1, curatoreService.getNumeroOsservatori(curatore));
         }
     }
 

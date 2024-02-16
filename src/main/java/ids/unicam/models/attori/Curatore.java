@@ -37,7 +37,5 @@ public class Curatore extends ContributorAutorizzato {
                 '}';
     }
 
-    public void rimuoviOsservatore(Contributor osservatore) {
-        osservatori.remove(osservatore);
-    }
+
 }
