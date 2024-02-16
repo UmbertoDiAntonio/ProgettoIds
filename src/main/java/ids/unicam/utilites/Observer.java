@@ -2,6 +2,8 @@ package ids.unicam.utilites;
 
 import ids.unicam.models.contenuti.MaterialeGenerico;
 import ids.unicam.models.contenuti.PuntoInteresse;
+import jakarta.persistence.Entity;
+
 
 
 public interface Observer {

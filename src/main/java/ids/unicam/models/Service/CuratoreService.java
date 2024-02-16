@@ -1,14 +1,17 @@
 package ids.unicam.models.Service;
 
 import ids.unicam.models.Repository.CuratoreRepository;
+import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.Curatore;
 import ids.unicam.models.contenuti.*;
+import ids.unicam.utilites.Observer;
 import ids.unicam.utilites.Stato;
 import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,8 +41,7 @@ public class CuratoreService {
 
 
     public Curatore save(Curatore curatore) {
-        curatore = repository.save(curatore);
-        return curatore;
+        return repository.save(curatore);
     }
 
 
@@ -70,15 +72,15 @@ public class CuratoreService {
      * notifica i subscriber
      *
      * @param puntoInteresse il punto di interesse che si vuole valutare
-     * @param approvato      stato punto di interesse: approvato/non approvato
+     * @param stato          stato punto di interesse: approvato/non approvato
      */
     @Transactional
-    public void valuta(@NotNull PuntoInteresse puntoInteresse, Stato approvato) {
-        puntoInteresse.setStato(approvato);
-        if (approvato == Stato.NOT_APPROVED)
+    public void valuta(Curatore curatore, @NotNull PuntoInteresse puntoInteresse, Stato stato) {
+        puntoInteresse.setStato(stato);
+        if (stato == Stato.NOT_APPROVED)
             poiService.deleteById(puntoInteresse.getId());
         //poiService.save(puntoInteresse);
-        //TODO notifica(approvato, puntoInteresse);
+        notifica(stato, curatore, puntoInteresse);
     }
 
     /**
@@ -86,14 +88,14 @@ public class CuratoreService {
      * notifica i subscriber
      *
      * @param materialeGenerico il materiale che si vuole valutare
-     * @param stato         approvato o non approvato
+     * @param stato             approvato o non approvato
      */
-    public void valuta(MaterialeGenerico materialeGenerico, Stato stato) {
-        if(!stato.asBoolean()){
+    public void valuta(Curatore curatore, MaterialeGenerico materialeGenerico, Stato stato) {
+        if (!stato.asBoolean()) {
             materialeService.deleteById(materialeGenerico.getId());
         }
         materialeGenerico.setStato(stato);
-        //TODO notifica(approvato, materialeGenerico);
+        notifica(stato, curatore, materialeGenerico);
     }
 
     public List<Curatore> findByNomeComune(String nomeComune) {
@@ -111,6 +113,7 @@ public class CuratoreService {
     public void elimina(Contest contest) {
         contestService.deleteById(contest.getId());
     }
+
     public void condividi(ContenutoGenerico contenutoGenerico) {
         throw new UnsupportedOperationException(contenutoGenerico.getId() + "non può ancora essere condiviso");
         //TODO
@@ -119,19 +122,50 @@ public class CuratoreService {
 
     public void elimina(Curatore curatore, MaterialeGenerico materialeGenerico) {
         Optional<PuntoInteresse> oPoi = poiService.findById(materialeGenerico.getIdProprietario());
-        if(oPoi.isPresent()){
-            if(!oPoi.get().getComune().equals(curatore.getComune())){
-                logger.error(curatore+" non può eliminare materiali fuori dal suo comune ");
+        if (oPoi.isPresent()) {
+            if (!oPoi.get().getComune().equals(curatore.getComune())) {
+                logger.error(curatore + " non può eliminare materiali fuori dal suo comune ");
                 return;
             }
         }
         materialeService.deleteById(materialeGenerico.getId());
     }
 
-    public void rimuoviTappa(Curatore curatore,Itinerario itinerario, PuntoInteresse tappa) {
-        if(!curatore.getComune().equals(itinerario.getComune()))
+    public void rimuoviTappa(Curatore curatore, Itinerario itinerario, PuntoInteresse tappa) {
+        if (!curatore.getComune().equals(itinerario.getComune()))
             logger.warn(curatore + " non può rimuovere tappe da itinerari esterni al suo comune");
         itinerarioService.rimuoviTappa(itinerario, tappa);
+    }
+
+
+    @Transactional
+    public void aggiungiOsservatore(Curatore curatore, Contributor osservatore) {
+        curatore.getOsservatori().add(osservatore);
+        save(curatore);
+    }
+
+
+    @Transactional
+    public void rimuoviOsservatore(Curatore curatore, Contributor osservatore) {
+        curatore.rimuoviOsservatore(osservatore);
+        repository.update(curatore.getId(),curatore.getOsservatori());
+        save(curatore);
+    }
+
+    private void notifica(Stato eventType, Curatore curatore, PuntoInteresse puntoInteresse) {
+        for (Observer listener : curatore.getOsservatori()) {
+            listener.riceviNotifica(eventType, puntoInteresse);
+        }
+    }
+
+    private void notifica(Stato eventType, Curatore curatore, MaterialeGenerico materialeGenerico) {
+        for (Observer listener : curatore.getOsservatori()) {
+            listener.riceviNotifica(eventType, materialeGenerico);
+        }
+    }
+
+    public List<Contributor> getOsservatori(Curatore curatore) {
+        return repository.findOsservatoriByCuratore(curatore.getId());
     }
 }
 

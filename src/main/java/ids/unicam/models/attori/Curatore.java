@@ -1,12 +1,9 @@
 package ids.unicam.models.attori;
 
-import ids.unicam.models.contenuti.MaterialeGenerico;
-import ids.unicam.models.contenuti.PuntoInteresse;
-import ids.unicam.utilites.Observer;
-import ids.unicam.utilites.Stato;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -20,33 +17,16 @@ public class Curatore extends ContributorAutorizzato {
         super(contributor);
     }
 
-    @Transient
-    private final ArrayList<Observer> osservatori = new ArrayList<>();
-
-    public void aggiungiOsservatore(Observer osservatore) {
-        osservatori.add(osservatore);
-    }
-
-    public void rimuoviOsservatore(Observer osservatore) {
-        osservatori.remove(osservatore);
-    }
-
-    public void notifica(Stato eventType, PuntoInteresse puntoInteresse) {
-        for (Observer listener : osservatori) {
-            listener.riceviNotifica(eventType, puntoInteresse);
-        }
-    }
+    @OneToMany(fetch = FetchType.EAGER)
+    private final List<Contributor> osservatori = new ArrayList<>();
 
 
-    public ArrayList<Observer> getOsservatori() {
+
+    public List<Contributor> getOsservatori() {
         return osservatori;
     }
 
-    public void notifica(Stato eventType, MaterialeGenerico materialeGenerico) {
-        for (Observer listener : osservatori) {
-            listener.riceviNotifica(eventType, materialeGenerico);
-        }
-    }
+
 
 
     @Override
@@ -55,5 +35,9 @@ public class Curatore extends ContributorAutorizzato {
                 "comune=" + getComune() +
                 ", nome=" + getNome() + ", id=" + getId() +
                 '}';
+    }
+
+    public void rimuoviOsservatore(Contributor osservatore) {
+        osservatori.remove(osservatore);
     }
 }

@@ -32,11 +32,12 @@ public class CreazioneTabelleDatabase {
         creaTabellaTagItinerario(connection);
         creaTabellaPreferiti(connection);
         creaTabellaTagContest(connection);
+        creaTabellaOsservatori(connection);
     }
 
     public void eliminaTabelle(@NotNull Connection connection) {
         String[] tableNames = {
-                "CONTEST_TAGS", "TURISTI_PREFERITI", "ITINERARIO_TAGS",
+                "CURATORI_OSSERVATORI","CONTEST_TAGS", "TURISTI_PREFERITI", "ITINERARIO_TAGS",
                 "PUNTI_DI_INTERESSE_TAGS", "TAG", "INVITO",
                 "PUNTO_INTERESSE_HOURS_MAP", "ITINERARI_PERCORSO",
                 "CONTEST_PARTECIPANTI", "COMUNI", "MATERIALI",
@@ -57,6 +58,21 @@ public class CreazioneTabelleDatabase {
 
     }
 
+    private void creaTabellaOsservatori(@NotNull Connection connection){
+
+        String createTableSQL =
+                "CREATE TABLE IF NOT EXISTS CURATORI_OSSERVATORI(" +
+                        "CURATORE_ID INT," +
+                        "OSSERVATORI_ID INT," +
+                        "PRIMARY KEY(CURATORE_ID, OSSERVATORI_ID)," +
+                        "FOREIGN KEY (CURATORE_ID) REFERENCES CURATORI(id) ON DELETE CASCADE," +
+                        "FOREIGN KEY (OSSERVATORI_ID) REFERENCES CONTRIBUTOR(id) ON DELETE CASCADE)";
+        try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Invito", e);
+        }
+    }
     private void creaTabellaInvito(@NotNull Connection connection) {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS INVITO(" +

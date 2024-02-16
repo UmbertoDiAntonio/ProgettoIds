@@ -1,8 +1,10 @@
 package ids.unicam.models.Repository;
 
 import ids.unicam.Comune;
+import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.Curatore;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -17,4 +19,11 @@ public interface CuratoreRepository  extends JpaRepository<Curatore,Integer> {
     List<Curatore> findByComune(Comune comune);
     @Query("SELECT c FROM Curatore c WHERE c.comune.nome = :nome_comune")
     List<Curatore> findCuratoreByComuneNome(String nome_comune);
+
+    @Query("select c.osservatori from Curatore c where c.id = :idCuratore")
+    List<Contributor> findOsservatoriByCuratore(int idCuratore);
+
+    @Modifying
+    @Query("update Curatore c SET c.osservatori =:osservatori WHERE c.id= :idCuratore ")
+    void update(int idCuratore,List<Contributor> osservatori);
 }

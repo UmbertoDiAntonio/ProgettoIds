@@ -9,6 +9,7 @@ import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.MaterialeGenerico;
 import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.models.contenuti.Tag;
+import ids.unicam.utilites.Punto;
 import ids.unicam.utilites.Stato;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,16 +108,15 @@ public class PoiService {
 
 
     @Transactional
-    public <T extends Taggable & Expirable> void aggiungiTag(T content, Tag tag) {
-        if (content.getTags().contains(tag)) {
+    public void aggiungiTag(PuntoInteresse puntoInteresse, Tag tag) {
+        if(tagService.haveTag(puntoInteresse,tag)) {
             logger.warn("Tag già aggiunto");
             return;
         }
-        if (!content.isExpired())
-            tagService.aggiungiTag(content, tag);
+        if (!puntoInteresse.isExpired())
+            tagService.aggiungiTag(puntoInteresse, tag);
 
-        if (content instanceof PuntoInteresse puntoInteresse)
-            save(puntoInteresse);
+        save(puntoInteresse);
     }
 
     public List<Taggable> findByTag(Tag tag) {

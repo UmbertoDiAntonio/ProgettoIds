@@ -141,7 +141,7 @@ public class JUnitUtentiTest {
         poiService.aggiungiTag(puntoInteresse, new Tag("Edicola",puntoInteresse));
         assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag(new Tag("Edicola",puntoInteresse)).size());
 
-        curatoreService.valuta(puntoInteresse, Stato.APPROVED);
+        curatoreService.valuta(curatore,puntoInteresse, Stato.APPROVED);
 
 
         poiService.aggiungiTag(puntoInteresse, new Tag("Tabaccheria",puntoInteresse));
@@ -173,7 +173,7 @@ public class JUnitUtentiTest {
         PuntoInteresse puntoInteresse = contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "parco centrale", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), TipologiaPuntoInteresse.PARCO));
         gestorePiattaformaService.promuovi(contributor, Ruolo.CURATORE);
         Curatore curatore = gestioneComuneService.getCuratoriDelComune(comune.getNome()).getLast();
-        curatoreService.valuta(puntoInteresse, Stato.APPROVED);
+        curatoreService.valuta(curatore,puntoInteresse, Stato.APPROVED);
         assertTrue(puntoInteresse.getStato().asBoolean());
         TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registra(null, Ruolo.TURISTA, "andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "10Unic@", "user10");
 
@@ -182,7 +182,7 @@ public class JUnitUtentiTest {
         MaterialeGenerico foto = poiService.creaMateriale(turistaAutenticato, puntoInteresse, new Foto(turistaAutenticato));
         assertEquals(1, materialeService.findByWhere(puntoInteresse).size());
         assertFalse(foto.getStato().asBoolean());
-        curatoreService.valuta(foto, Stato.APPROVED);
+        curatoreService.valuta(curatore,foto, Stato.APPROVED);
         assertTrue(foto.getStato().asBoolean());
 
 

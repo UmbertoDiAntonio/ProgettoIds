@@ -2,9 +2,12 @@ package ids.unicam.models.Service;
 
 import ids.unicam.models.Repository.TagRepository;
 import ids.unicam.models.Taggable;
+import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.models.contenuti.Tag;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
+import static ids.unicam.Main.logger;
 
 @Service
 public class TagService {
@@ -20,8 +23,12 @@ public class TagService {
     }
 
     @Transactional
-    public void aggiungiTag(Taggable item, Tag tag) {
-        item.addTag(tag);
+    public void aggiungiTag(Taggable taggableObject, Tag tag) {
+        taggableObject.addTag(tag);
         save(tag);
+    }
+
+    public boolean haveTag(Taggable taggableObject,Tag tag) {
+        return taggableObject.getTags().contains(tag);
     }
 }

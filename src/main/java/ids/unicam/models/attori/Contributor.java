@@ -12,7 +12,7 @@ import java.util.GregorianCalendar;
 @Entity
 @DiscriminatorValue("Contributor")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Contributor extends TuristaAutenticato implements Observer {
+public class Contributor extends TuristaAutenticato implements Observer  {
     @OneToOne
     @JoinColumn(name = "comune")
     private Comune comune = null;
@@ -37,10 +37,6 @@ public class Contributor extends TuristaAutenticato implements Observer {
         this.comune = comune;
     }
 
-
-
-
-
     @Override
     public void riceviNotifica(Stato eventType, PuntoInteresse puntoInteresse) {
         switch (eventType) {
@@ -61,6 +57,9 @@ public class Contributor extends TuristaAutenticato implements Observer {
         }
     }
 
+
+
+
     @Override
     public String toString() {
         return "Contributor{" +
@@ -68,4 +67,6 @@ public class Contributor extends TuristaAutenticato implements Observer {
                 ", nome=" +getNome()+", id="+getId()+
                 '}';
     }
+
+
 }
