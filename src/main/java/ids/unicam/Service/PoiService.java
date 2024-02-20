@@ -11,15 +11,15 @@ import java.util.List;
 
 public interface PoiService {
     @Transactional
-    public void eliminaPuntoInteresse(int idPuntoInteresse) ;
+    void eliminaPuntoInteresse(int idPuntoInteresse) ;
 
     void aggiungiMateriale(TuristaAutenticato turistaAutenticato, PuntoInteresse puntoInteresse, MaterialeGenerico materialeGenerico) ;
 
     @Transactional
-    public List<PuntoInteresse> findActive() ;
+    List<PuntoInteresse> findActive() ;
 
     @Transactional
-    public void aggiungiTag(PuntoInteresse puntoInteresse, Tag tag) ;
+    void aggiungiTag(PuntoInteresse puntoInteresse, Tag tag) ;
 
     List<Taggable> findByTag(Tag tag);
 

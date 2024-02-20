@@ -1,4 +1,4 @@
-package ids.unicam.models.contenuti;
+package ids.unicam.models;
 
 public interface Expirable {
     boolean isExpired();

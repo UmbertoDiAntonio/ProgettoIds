@@ -1,4 +1,4 @@
-package ids.unicam.models.users.organizzazioneComune;
+package ids.unicam.models.attori;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;

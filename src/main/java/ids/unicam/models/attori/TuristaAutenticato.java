@@ -1,4 +1,4 @@
-package ids.unicam.models.users;
+package ids.unicam.models.attori;
 
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.persistence.*;

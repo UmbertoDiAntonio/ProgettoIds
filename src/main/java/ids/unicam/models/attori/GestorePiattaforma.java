@@ -1,4 +1,4 @@
-package ids.unicam.models.users;
+package ids.unicam.models.attori;
 
 import org.springframework.stereotype.Component;
 
