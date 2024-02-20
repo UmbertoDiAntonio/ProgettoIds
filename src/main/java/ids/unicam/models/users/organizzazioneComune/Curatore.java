@@ -1,4 +1,4 @@
-package ids.unicam.models.attori;
+package ids.unicam.models.users.organizzazioneComune;
 
 import jakarta.persistence.*;
 
