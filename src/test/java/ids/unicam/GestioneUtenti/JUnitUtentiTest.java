@@ -180,8 +180,12 @@ public class JUnitUtentiTest {
         assertFalse(foto.getStato().asBoolean());
         curatoreServiceImpl.valuta(curatore,foto, Stato.APPROVATO);
         assertTrue(foto.getStato().asBoolean());
+    }
 
+    @Test
+    public void segnalaContenuto(){
 
     }
+
 
 }
