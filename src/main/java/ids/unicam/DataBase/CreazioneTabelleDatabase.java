@@ -39,7 +39,7 @@ public class CreazioneTabelleDatabase {
 
     public void eliminaTabelle(@NotNull Connection connection) {
         String[] tableNames = {
-                "CONTEST_LISTA_MATERIALI", "PUNTI_DI_INTERESSE_LISTA_MATERIALI, CURATORI_OSSERVATORI","CONTEST_TAGS",
+                "CONTEST_LISTA_MATERIALI", "PUNTI_DI_INTERESSE_LISTA_MATERIALI", "CURATORI_OSSERVATORI","CONTEST_TAGS",
                 "TURISTI_PREFERITI", "ITINERARIO_TAGS", "PUNTI_DI_INTERESSE_TAGS", "TAG", "INVITO",
                 "PUNTO_INTERESSE_HOURS_MAP", "ITINERARI_PERCORSO",
                 "CONTEST_PARTECIPANTI", "COMUNI", "MATERIALI",
