@@ -2,6 +2,7 @@ package ids.unicam.models;
 
 import ids.unicam.OSM.RichiestaOSM;
 import ids.unicam.exception.ConnessioneFallitaException;
+import ids.unicam.models.contenuti.Punto;
 import jakarta.persistence.*;
 
 import java.util.Objects;

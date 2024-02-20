@@ -1,7 +1,7 @@
 package ids.unicam.DataBase.Repository;
 
 import ids.unicam.models.Comune;
-import ids.unicam.models.attori.Contributor;
+import ids.unicam.models.users.organizzazioneComune.Contributor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

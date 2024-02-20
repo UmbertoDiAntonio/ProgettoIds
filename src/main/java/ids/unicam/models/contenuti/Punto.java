@@ -1,4 +1,4 @@
-package ids.unicam.models;
+package ids.unicam.models.contenuti;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
