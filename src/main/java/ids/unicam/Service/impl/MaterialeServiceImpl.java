@@ -2,8 +2,6 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.MaterialeRepository;
 import ids.unicam.Service.MaterialeService;
-import ids.unicam.models.attori.ContributorAutorizzato;
-import ids.unicam.models.contenuti.Contenitore;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +27,8 @@ public class MaterialeServiceImpl implements MaterialeService {
     }
 
 
-    @Override
-    public MaterialeGenerico salvaMateriale(MaterialeGenerico materialeGenerico) {
+
+    public MaterialeGenerico save(MaterialeGenerico materialeGenerico) {
         return repository.save(materialeGenerico);
     }
 

@@ -58,7 +58,6 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
         repository.deleteAll();
     }
 
-    @Override
     public TuristaAutenticato save(TuristaAutenticato turistaAutenticato) {
         turistaAutenticato = repository.save(turistaAutenticato);
         return turistaAutenticato;
@@ -85,7 +84,6 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
         save(turista);
     }
 
-    @Override
     public List<TuristaAutenticato> findTuristiConPreferiti() {
         return repository.findTuristiConPreferiti();
     }

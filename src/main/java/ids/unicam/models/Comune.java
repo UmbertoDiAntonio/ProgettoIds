@@ -3,6 +3,9 @@ package ids.unicam.models;
 import ids.unicam.OSM.RichiestaOSM;
 import ids.unicam.exception.ConnessioneFallitaException;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.Contract;
 
 import java.util.Objects;
 
@@ -11,27 +14,20 @@ import static ids.unicam.Main.logger;
 
 @Entity
 @Table(name = "COMUNI")
+@NoArgsConstructor
 public class Comune {
+    @Getter
     @Id
     @Column(name = "comune")
     private String nome = "";
     @Embedded
     private Punto posizione;
 
-
-    public Comune() {
-
-    }
-
-
+    @Contract("-> new")
     public Punto getPosizione() {
-        return posizione;
+        return posizione.clone();
     }
 
-
-    public String getNome() {
-        return nome;
-    }
 
     /**
      * @param nome Nome del Comune
@@ -39,8 +35,6 @@ public class Comune {
      * @throws RuntimeException         se non è possibile raggiungere il sistema OSM
      */
     public Comune(String nome) {
-
-        //      ComuneController.getInstance().listaComuni.add(this);
         try {
             this.posizione = RichiestaOSM.getCoordinateDaComune(nome);
             if (posizione == null) {

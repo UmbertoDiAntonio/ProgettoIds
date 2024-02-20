@@ -5,7 +5,6 @@ import ids.unicam.Service.ContestService;
 import ids.unicam.exception.ContestException;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
-import ids.unicam.models.contenuti.Contenitore;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
@@ -78,7 +77,7 @@ public class ContestServiceImpl implements ContestService {
             throw new ContestException("Devi essere iscritto al contest per caricare materiale su di esso");
         }
         contest.addMateriale(materialeGenerico);
-        materialeServiceImpl.salvaMateriale(materialeGenerico);
+        materialeServiceImpl.save(materialeGenerico);
         save(contest);
     }
 

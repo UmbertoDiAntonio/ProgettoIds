@@ -10,6 +10,7 @@ import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.Contract;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +39,13 @@ public class PuntoInteresse extends ContenutoGenerico implements Contenitore, Ta
     @Getter
     private String nome = "";
 
-    @Getter
     @Embedded
     private Punto pt = null;
+
+    @Contract("-> new")
+    public Punto getPt() {
+        return pt.clone();
+    }
 
     @OneToMany(fetch = FetchType.EAGER)
     private List<MaterialeGenerico> listaMateriali = new ArrayList<>();

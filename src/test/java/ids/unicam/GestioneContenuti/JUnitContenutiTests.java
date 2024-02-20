@@ -371,7 +371,7 @@ public class JUnitContenutiTests {
 
         assertEquals(2, turistaAutenticatoService.findPreferiti(turista).size());
 
-        curatoreServiceImpl.elimina(puntoInteresse);
+        curatoreServiceImpl.elimina(curatore,puntoInteresse);
 
         assertEquals(numeroPuntiInteresse + 1, comuneService.getPuntiInteresseNelComune(comune.getNome()).size());
 
@@ -386,14 +386,14 @@ public class JUnitContenutiTests {
         curatoreServiceImpl.valuta(curatore,puntoInteresse1, Stato.toStatus(true));
         Itinerario itinerario2 = contributorService.aggiungiItinerario(comune, "giro dei bar", puntoInteresse1);
         assertEquals(numeroItinerariComune + 1, itinerarioService.findAllByComune(comune).size());
-        curatoreServiceImpl.elimina(itinerario2);
+        curatoreServiceImpl.elimina(curatore,itinerario2);
         assertEquals(numeroItinerariComune, itinerarioService.findAllByComune(comune).size());
 
 
         int numeroContest = contestService.getContestByCreatore(animatore).size();
         animatoreServiceImpl.creaContest(animatore, "contest", "spiaggia", true);
         assertEquals(numeroContest + 1, contestService.getContestByCreatore(animatore).size());
-        curatoreServiceImpl.elimina(contestService.getContestByCreatore(animatore).getLast());
+        curatoreServiceImpl.elimina(curatore,contestService.getContestByCreatore(animatore).getLast());
         assertEquals(numeroContest, contestService.getContestByCreatore(animatore).size());
 
         Itinerario itinerario3 = contributorService.aggiungiItinerario(comune, "girodeibar2", puntoInteresse1);

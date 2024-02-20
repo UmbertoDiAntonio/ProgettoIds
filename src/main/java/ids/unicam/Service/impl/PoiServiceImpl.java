@@ -5,7 +5,6 @@ import ids.unicam.Service.PoiService;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.ContributorAutorizzato;
 import ids.unicam.models.attori.TuristaAutenticato;
-import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.Taggable;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
@@ -70,7 +69,7 @@ public class PoiServiceImpl implements PoiService {
         if (turistaAutenticato instanceof ContributorAutorizzato)
             materialeGenerico.setStato(Stato.APPROVATO);
         puntoInteresse.addMateriale(materialeGenerico);
-        materialeServiceImpl.salvaMateriale(materialeGenerico);
+        materialeServiceImpl.save(materialeGenerico);
         save(puntoInteresse);
     }
 

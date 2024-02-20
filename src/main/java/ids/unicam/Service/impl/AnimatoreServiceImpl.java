@@ -1,6 +1,7 @@
 package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.AnimatoreRepository;
+import ids.unicam.Service.AnimatoreService;
 import ids.unicam.exception.ContestException;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.Animatore;
@@ -17,7 +18,7 @@ import java.util.Optional;
 import static ids.unicam.Main.logger;
 
 @Service
-public class AnimatoreServiceImpl {
+public class AnimatoreServiceImpl implements AnimatoreService {
     private final AnimatoreRepository repository;
     private final ContestServiceImpl contestServiceImpl;
     private final InvitoServiceImpl invitoServiceImpl;
@@ -69,10 +70,12 @@ public class AnimatoreServiceImpl {
         return repository.findByComuneNome(nomeComune);
     }
 
+    @Override
     public Contest creaContest(Animatore animatore,String nomeContest,String obiettivo,boolean tipoContest){
         return contestServiceImpl.creaContest(new Contest(nomeContest,tipoContest,obiettivo,animatore));
     }
 
+    @Override
     public Invito invitaContest(Animatore animatore, Contest contest, TuristaAutenticato turistaAutenticato){
         if(!contest.getCreatore().equals(animatore)) {
             logger.error("L'animatore non e' il creatore del contest.");
@@ -85,6 +88,7 @@ public class AnimatoreServiceImpl {
         return invitoServiceImpl.save(new Invito(contest, turistaAutenticato));
     }
 
+    @Override
     public boolean approvaMateriale(Animatore animatore, Contest contest, MaterialeGenerico materialeGenerico, Stato stato) {
         if(!contest.getCreatore().equals(animatore)) {
             logger.warn(animatore + "  non è autorizzato ad approvare nel contest " + contest);

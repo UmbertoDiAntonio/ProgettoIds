@@ -58,7 +58,7 @@ public class RichiestaOSM {
             double latitudine = firstElement.path("lat").asDouble();
             double longitudine = firstElement.path("lon").asDouble();
 
-            return new Punto(latitudine, longitudine);
+            return (new Punto(latitudine, longitudine));
         } catch (IOException e) {
             logger.error("Connessione a OSM Fallita");
             throw new ConnessioneFallitaException("La connessione non è riuscita");

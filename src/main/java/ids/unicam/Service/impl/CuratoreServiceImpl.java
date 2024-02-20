@@ -1,6 +1,8 @@
 package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.CuratoreRepository;
+import ids.unicam.Service.CuratoreService;
+import ids.unicam.models.Comune;
 import ids.unicam.models.Observer;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.Curatore;
@@ -21,22 +23,20 @@ import java.util.Optional;
 import static ids.unicam.Main.logger;
 
 @Service
-public class CuratoreServiceImpl {
+public class CuratoreServiceImpl implements CuratoreService {
     private final CuratoreRepository repository;
     private final PoiServiceImpl poiServiceImpl;
     private final ItinerarioServiceImpl itinerarioServiceImpl;
     private final MaterialeServiceImpl materialeServiceImpl;
     private final ContestServiceImpl contestServiceImpl;
-    private final ContenitoreServiceImpl contenitoreService;
 
     @Autowired
-    public CuratoreServiceImpl(CuratoreRepository repository, PoiServiceImpl service, ItinerarioServiceImpl itinerarioServiceImpl, MaterialeServiceImpl materialeServiceImpl, ContestServiceImpl contestServiceImpl, ContenitoreServiceImpl contenitoreService) {
+    public CuratoreServiceImpl(CuratoreRepository repository, PoiServiceImpl service, ItinerarioServiceImpl itinerarioServiceImpl, MaterialeServiceImpl materialeServiceImpl, ContestServiceImpl contestServiceImpl) {
         this.repository = repository;
         this.poiServiceImpl = service;
         this.itinerarioServiceImpl = itinerarioServiceImpl;
         this.materialeServiceImpl = materialeServiceImpl;
         this.contestServiceImpl = contestServiceImpl;
-        this.contenitoreService = contenitoreService;
     }
 
 
@@ -72,6 +72,10 @@ public class CuratoreServiceImpl {
         repository.deleteAll();
     }
 
+    public List<Curatore> findByNomeComune(String nomeComune) {
+        return repository.findCuratoreByComuneNome(nomeComune);
+    }
+
     /**
      * Valuta un punto di interesse, in caso di non approvazione lo rimuove dalla lista dei contenuti nel controller del comune associato,
      * notifica i subscriber
@@ -79,6 +83,7 @@ public class CuratoreServiceImpl {
      * @param puntoInteresse il punto di interesse che si vuole valutare
      * @param stato          stato punto di interesse: approvato/non approvato
      */
+    @Override
     @Transactional
     public void valuta(Curatore curatore, @NotNull PuntoInteresse puntoInteresse, Stato stato) {
         puntoInteresse.setStato(stato);
@@ -95,6 +100,7 @@ public class CuratoreServiceImpl {
      * @param materialeGenerico il materiale che si vuole valutare
      * @param stato             approvato o non approvato
      */
+    @Override
     public void valuta(Curatore curatore, MaterialeGenerico materialeGenerico, Stato stato) {
         if (!stato.asBoolean()) {
             materialeServiceImpl.deleteById(materialeGenerico.getId());
@@ -103,41 +109,55 @@ public class CuratoreServiceImpl {
         notifica(stato, curatore, materialeGenerico);
     }
 
-    public List<Curatore> findByNomeComune(String nomeComune) {
-        return repository.findCuratoreByComuneNome(nomeComune);
+    private boolean controllaSeInComune(Curatore curatore, Comune comune) {
+        return comune.equals(curatore.getComune());
     }
 
-    public void elimina(PuntoInteresse puntoInteresse) {
-        poiServiceImpl.eliminaPuntoInteresse(puntoInteresse.getId());
-    }
-
-    public void elimina(Itinerario itinerario) {
-        itinerarioServiceImpl.deleteById(itinerario.getId());
-    }
-
-    public void elimina(Contest contest) {
-        contestServiceImpl.deleteById(contest.getId());
-    }
-
-    public void condividi(ContenutoGenerico contenutoGenerico) {
-        throw new UnsupportedOperationException(contenutoGenerico.getId() + "non può ancora essere condiviso");
-        //TODO
+    @Override
+    public void elimina(Curatore curatore, PuntoInteresse puntoInteresse) {
+        if (controllaSeInComune(curatore, puntoInteresse.getComune())) {
+            poiServiceImpl.eliminaPuntoInteresse(puntoInteresse.getId());
+        }
     }
 
 
+    @Override
+    public void elimina(Curatore curatore, Itinerario itinerario) {
+        if (controllaSeInComune(curatore, itinerario.getComune())) {
+            itinerarioServiceImpl.deleteById(itinerario.getId());
+        }
+    }
+
+    @Override
+    public void elimina(Curatore curatore, Contest contest) {
+        if (controllaSeInComune(curatore, contest.getComune())) {
+            contestServiceImpl.deleteById(contest.getId());
+        }
+    }
+
+    @Override
     @Transactional
     public void elimina(Curatore curatore, MaterialeGenerico materialeGenerico) {
         List<PuntoInteresse> listPuntoInteresse = poiServiceImpl.findActive();
-        for(PuntoInteresse puntoInteresse : listPuntoInteresse){
+        for (PuntoInteresse puntoInteresse : listPuntoInteresse) {
             if (!puntoInteresse.getComune().equals(curatore.getComune())) {
                 logger.error(curatore + " non può eliminare materiali fuori dal suo comune ");
                 return;
             }
-            contenitoreService.rimuoviMateriale(puntoInteresse,materialeGenerico);
+            puntoInteresse.rimuoviMateriale(materialeGenerico);
+            poiServiceImpl.save(puntoInteresse);
         }
         materialeServiceImpl.deleteById(materialeGenerico.getId());
     }
 
+    @Override
+    public void condividi(Curatore curatore,ContenutoGenerico contenutoGenerico) {
+        throw new UnsupportedOperationException(contenutoGenerico.getId() + "non può ancora essere condiviso da "+curatore);
+        //TODO
+    }
+
+
+    @Override
     public void rimuoviTappa(Curatore curatore, Itinerario itinerario, PuntoInteresse tappa) {
         if (!curatore.getComune().equals(itinerario.getComune()))
             logger.warn(curatore + " non può rimuovere tappe da itinerari esterni al suo comune");
@@ -147,8 +167,8 @@ public class CuratoreServiceImpl {
 
     @Transactional
     public void aggiungiOsservatore(Curatore curatore, Contributor osservatore) {
-        if(curatore.getOsservatori().contains(osservatore)) {
-            logger.error(osservatore+" stai già seguendo questo curatore");
+        if (curatore.getOsservatori().contains(osservatore)) {
+            logger.error(osservatore + " stai già seguendo questo curatore");
             return;
         }
         curatore.getOsservatori().add(osservatore);
@@ -181,7 +201,8 @@ public class CuratoreServiceImpl {
     public List<Contributor> getOsservatori(Curatore curatore) {
         return repository.findOsservatoriByCuratore(curatore.getId());
     }
-    public int getNumeroOsservatori(Curatore curatore){
+
+    public int getNumeroOsservatori(Curatore curatore) {
         return repository.countNumeroOsservatori(curatore.getId());
     }
 }

@@ -1,6 +1,7 @@
 package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.ContributorAutorizzatoRepository;
+import ids.unicam.Service.ContributorAutorizzatoService;
 import ids.unicam.models.Comune;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.ContributorAutorizzato;
@@ -18,7 +19,7 @@ import java.util.Optional;
 import static ids.unicam.Main.logger;
 
 @Service
-public class ContributorAutorizzatoServiceImpl {
+public class ContributorAutorizzatoServiceImpl implements ContributorAutorizzatoService {
     private final ContributorAutorizzatoRepository repository;
     private final PoiServiceImpl poiServiceImpl;
     private final ItinerarioServiceImpl itinerarioServiceImpl;
@@ -29,6 +30,7 @@ public class ContributorAutorizzatoServiceImpl {
         this.poiServiceImpl = poiServiceImpl;
         this.itinerarioServiceImpl = itinerarioServiceImpl;
     }
+
     public void deleteById(int id) {
         repository.deleteById(id);
     }
@@ -38,7 +40,6 @@ public class ContributorAutorizzatoServiceImpl {
         contributorAutorizzato = repository.save(contributorAutorizzato);
         return contributorAutorizzato;
     }
-
 
 
     public Optional<ContributorAutorizzato> findById(int id) {
@@ -68,7 +69,8 @@ public class ContributorAutorizzatoServiceImpl {
         return repository.findByComuneNome(nomeComune);
     }
 
-    public void aggiungiPuntoInteresse(Contributor contributor, PuntoInteresse puntoInteresse){
+    @Override
+    public void aggiungiPuntoInteresse(Contributor contributor, PuntoInteresse puntoInteresse) {
         if (!contributor.getComune().equals(puntoInteresse.getComune())) {
             logger.error(contributor.getNome() + " non puo' creare punti di interesse fuori dal suo comune");
             throw new UnsupportedOperationException(contributor + " non può creare punti di interesse fuori dal suo comune");
@@ -77,21 +79,26 @@ public class ContributorAutorizzatoServiceImpl {
         poiServiceImpl.save(puntoInteresse);
     }
 
-    public Itinerario aggiungiItinerario(Comune comune, String nome, PuntoInteresse... puntiInteresse){
-        return  itinerarioServiceImpl.creaItinerario(comune,nome,puntiInteresse);
+    @Override
+    public Itinerario aggiungiItinerario(Comune comune, String nome, PuntoInteresse... puntiInteresse) {
+        return itinerarioServiceImpl.creaItinerario(comune, nome, puntiInteresse);
     }
 
+    @Override
     @Transactional
-    public boolean aggiungiTappaItinerario(Itinerario itinerario,PuntoInteresse puntoInteresse){
-        return itinerarioServiceImpl.aggiungiTappa(itinerario,puntoInteresse);
+    public boolean aggiungiTappaItinerario(Itinerario itinerario, PuntoInteresse puntoInteresse) {
+        return itinerarioServiceImpl.aggiungiTappa(itinerario, puntoInteresse);
     }
+
+    @Override
     @Transactional
-    public void aggiungiTappaItinerario(Itinerario itinerario,PuntoInteresse... puntiInteresse){
-        for(PuntoInteresse puntoInteresse:puntiInteresse) {
+    public void aggiungiTappaItinerario(Itinerario itinerario, PuntoInteresse... puntiInteresse) {
+        for (PuntoInteresse puntoInteresse : puntiInteresse) {
             aggiungiTappaItinerario(itinerario, puntoInteresse);
         }
     }
 
+    @Override
     public void modificaScadenza(PuntoInteresse puntoInteresse, LocalDate expireDate) {
         puntoInteresse.setExpireDate(expireDate);
     }

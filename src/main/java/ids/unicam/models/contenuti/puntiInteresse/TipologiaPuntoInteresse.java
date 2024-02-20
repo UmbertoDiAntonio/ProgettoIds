@@ -10,8 +10,7 @@ public enum TipologiaPuntoInteresse {
     SALUTE_E_BENESSERE,
     PARCHEGGIO,
     FORMAZIONE,
-    INTRATTENIMENTO,
-    CONTEST
+    INTRATTENIMENTO
 
 
 }

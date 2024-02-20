@@ -109,7 +109,7 @@ public class JUnitUtentiTest {
             throw new IllegalArgumentException("errore");
         PuntoInteresse puntoInteresse = new PuntoInteresse(comune, "Teatro", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), TipologiaPuntoInteresse.INTRATTENIMENTO);
 
-        assertThrows(UnsupportedOperationException.class, () -> curatoreServiceImpl.condividi(puntoInteresse));
+        assertThrows(UnsupportedOperationException.class, () -> curatoreServiceImpl.condividi(curatore, puntoInteresse));
         //TODO test condivisione contenuto
     }
 

@@ -21,7 +21,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 public class Contest implements Contenitore, Taggable, Expirable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenza_contenuti")
     @SequenceGenerator(name = "sequenza_contenuti", sequenceName = "PUNTI_DI_INTERESSE_SEQ", allocationSize = 1)
@@ -53,7 +52,7 @@ public class Contest implements Contenitore, Taggable, Expirable {
     private String nomeContest =null;
 
     @OneToMany
-    private List<MaterialeGenerico> listaMateriali = new ArrayList<>();
+    private final List<MaterialeGenerico> listaMateriali = new ArrayList<>();
 
     @OneToOne
     @Setter
