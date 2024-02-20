@@ -38,13 +38,12 @@ public class JUnitContenutiTests {
     private final TuristaAutenticatoServiceImpl turistaAutenticatoService;
     private final PoiServiceImpl poiService;
     private final ItinerarioServiceImpl itinerarioService;
-    private final MaterialeServiceImpl materialeService;
     private final ContestServiceImpl contestService;
     private final GestorePiattaformaServiceImpl gestorePiattaformaService;
     private final InvitoServiceImpl invitoService;
 
     @Autowired
-    public JUnitContenutiTests(ComuneServiceImpl comuneService, ContributorServiceImpl contributorService, ContributorAutorizzatoServiceImpl contributorAutorizzatoServiceImpl, CuratoreServiceImpl curatoreServiceImpl, AnimatoreServiceImpl animatoreServiceImpl, TuristaAutenticatoServiceImpl turistaAutenticatoService, PoiServiceImpl poiService, ItinerarioServiceImpl itinerarioService, MaterialeServiceImpl materialeService, ContestServiceImpl contestService, GestorePiattaformaServiceImpl gestorePiattaformaService, InvitoServiceImpl invitoService, GestoreDatabase gestoreDatabase) {
+    public JUnitContenutiTests(ComuneServiceImpl comuneService, ContributorServiceImpl contributorService, ContributorAutorizzatoServiceImpl contributorAutorizzatoServiceImpl, CuratoreServiceImpl curatoreServiceImpl, AnimatoreServiceImpl animatoreServiceImpl, TuristaAutenticatoServiceImpl turistaAutenticatoService, PoiServiceImpl poiService, ItinerarioServiceImpl itinerarioService, ContestServiceImpl contestService, GestorePiattaformaServiceImpl gestorePiattaformaService, InvitoServiceImpl invitoService, GestoreDatabase gestoreDatabase) {
         this.comuneService = comuneService;
         this.contributorService = contributorService;
         this.contributorAutorizzatoServiceImpl = contributorAutorizzatoServiceImpl;
@@ -53,7 +52,6 @@ public class JUnitContenutiTests {
         this.turistaAutenticatoService = turistaAutenticatoService;
         this.poiService = poiService;
         this.itinerarioService = itinerarioService;
-        this.materialeService = materialeService;
         this.contestService = contestService;
         this.gestorePiattaformaService = gestorePiattaformaService;
         this.invitoService = invitoService;
@@ -93,7 +91,7 @@ public class JUnitContenutiTests {
             int puntiInteresseComuneIniziali = comuneService.getPuntiInteresseNelComune(comune.getNome()).size();
             Orario orario = new Orario();
             orario.setOrarioApertura(DayOfWeek.MONDAY, LocalTime.of(8, 30), LocalTime.of(18, 0));
-            PuntoInteresse punto1 = new PuntoInteresse(comune, "bar", new Punto(comune.getPosizione().getLatitudine() + 0.01, comune.getPosizione().getLongitudine() + 0.01), orario, TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE);
+            PuntoInteresse punto1 = new PuntoInteresse(comune, "bar", new Punto(comune.getPosizione().getLatitudine() + 0.01, comune.getPosizione().getLongitudine() + 0.01), orario, TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributor);
             contributorService.aggiungiPuntoInteresse(contributor, punto1);
 
             assertEquals(puntiInteresseComuneIniziali + 1, comuneService.getPuntiInteresseNelComune(comune.getNome()).size());
@@ -109,7 +107,7 @@ public class JUnitContenutiTests {
             ContributorAutorizzato contributorAutorizzato = comuneService.getContributorAutorizzatiDelComune(comune.getNome()).getLast();
             int puntiInteresseComuneIniziali = comuneService.getPuntiInteresseNelComune(comune.getNome()).size();
 
-            PuntoInteresse punto2 = (new PuntoInteresse(comune, "bar2", new Punto(comune.getPosizione().getLatitudine() + 0.02, comune.getPosizione().getLongitudine() + 0.02), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE));
+            PuntoInteresse punto2 = (new PuntoInteresse(comune, "bar2", new Punto(comune.getPosizione().getLatitudine() + 0.02, comune.getPosizione().getLongitudine() + 0.02), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributorAutorizzato));
 
             contributorAutorizzatoServiceImpl.aggiungiPuntoInteresse(contributorAutorizzato, punto2);
             //il problema qui è avere 2 istanze diverse del Controller
@@ -127,8 +125,8 @@ public class JUnitContenutiTests {
             TuristaAutenticato turistaTemp2 = gestorePiattaformaService.registra(comune2, Ruolo.CONTRIBUTOR_AUTORIZZATO,  "Mario", "Rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "1Unica@", "user19");
             if(!(turistaTemp2 instanceof ContributorAutorizzato contributorAutorizzato))
                 throw new IllegalArgumentException("errore");
-            assertThrows(IllegalArgumentException.class, () -> new PuntoInteresse(comune, "chiesa", new Punto(comune.getPosizione().getLatitudine() + 2, comune.getPosizione().getLongitudine() + 2), TipologiaPuntoInteresse.LUOGO_DI_CULTO));
-            PuntoInteresse puntoInteresse= new PuntoInteresse(comune, "chiesa", new Punto(comune.getPosizione().getLatitudine() + 0.02, comune.getPosizione().getLongitudine() + 0.02), TipologiaPuntoInteresse.LUOGO_DI_CULTO);
+            assertThrows(IllegalArgumentException.class, () -> new PuntoInteresse(comune, "chiesa", new Punto(comune.getPosizione().getLatitudine() + 2, comune.getPosizione().getLongitudine() + 2), TipologiaPuntoInteresse.LUOGO_DI_CULTO, contributorAutorizzato));
+            PuntoInteresse puntoInteresse= new PuntoInteresse(comune, "chiesa", new Punto(comune.getPosizione().getLatitudine() + 0.02, comune.getPosizione().getLongitudine() + 0.02), TipologiaPuntoInteresse.LUOGO_DI_CULTO, contributorAutorizzato);
             assertThrows(UnsupportedOperationException.class,()-> contributorAutorizzatoServiceImpl.aggiungiPuntoInteresse(contributorAutorizzato,puntoInteresse));
             assertEquals(puntiInteresseComuneIniziali,comuneService.getPuntiInteresseNelComune(comune.getNome()).size());
         }
@@ -140,7 +138,7 @@ public class JUnitContenutiTests {
          */
         {
             ContributorAutorizzato contributorAutorizzato = comuneService.getContributorAutorizzatiDelComune(comune.getNome()).getFirst();
-            PuntoInteresse puntoInteresse = new PuntoInteresse(comune, "Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE);
+            PuntoInteresse puntoInteresse = new PuntoInteresse(comune, "Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributorAutorizzato);
             contributorAutorizzatoServiceImpl.aggiungiPuntoInteresse(contributorAutorizzato, puntoInteresse);
 
             TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registra(null, Ruolo.TURISTA, "andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.FEBRUARY, 3), "2Unica@", "user2");
@@ -165,7 +163,7 @@ public class JUnitContenutiTests {
             Orario orarioAccademia = new Orario();
             orarioAccademia.setOrarioApertura(DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(18, 0));
 
-            PuntoInteresse puntoInteresse = contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "Accademia", new Punto(comune.getPosizione().getLatitudine() + 0.01, comune.getPosizione().getLongitudine() + 0.01), orarioAccademia, TipologiaPuntoInteresse.CENTRO_SPORTIVO));
+            PuntoInteresse puntoInteresse = contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "Accademia", new Punto(comune.getPosizione().getLatitudine() + 0.01, comune.getPosizione().getLongitudine() + 0.01), orarioAccademia, TipologiaPuntoInteresse.CENTRO_SPORTIVO, contributor));
 
             assertFalse(puntoInteresse.getStato().asBoolean());
             TuristaAutenticato turistaTemp2 = gestorePiattaformaService.registra(comune, Ruolo.CONTRIBUTOR,  "Peppe", "Paol", new GregorianCalendar(2000, GregorianCalendar.MARCH, 11), "4Unica@", "user44");
@@ -214,8 +212,8 @@ public class JUnitContenutiTests {
             if(!(turistaTemp instanceof ContributorAutorizzato contributorAutorizzato))
                 throw new IllegalArgumentException("errore");
 
-            PuntoInteresse puntoInteresse = new PuntoInteresse(comune, "farmacia", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), TipologiaPuntoInteresse.SALUTE_E_BENESSERE);
-            PuntoInteresse puntoInteresse2 = new PuntoInteresse(comune, "centro Commerciale", new Punto(comune.getPosizione().getLatitudine() - 0.02, comune.getPosizione().getLongitudine() - 0.02), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE);
+            PuntoInteresse puntoInteresse = new PuntoInteresse(comune, "farmacia", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), TipologiaPuntoInteresse.SALUTE_E_BENESSERE, contributorAutorizzato);
+            PuntoInteresse puntoInteresse2 = new PuntoInteresse(comune, "centro Commerciale", new Punto(comune.getPosizione().getLatitudine() - 0.02, comune.getPosizione().getLongitudine() - 0.02), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributorAutorizzato);
 
 
             contributorAutorizzatoServiceImpl.aggiungiPuntoInteresse(contributorAutorizzato, puntoInteresse);
@@ -226,10 +224,10 @@ public class JUnitContenutiTests {
             assertEquals(numeroItinerariIniziale + 1, itinerarioService.findAllByComune(comune).size());
             assertEquals(2, itinerarioService.getNumeroTappe(itinerario1));
 
-            PuntoInteresse nuovoPunto = new PuntoInteresse(comune, "universita'", new Punto(comune.getPosizione().getLatitudine() + 0.014, comune.getPosizione().getLongitudine() + 0.014), TipologiaPuntoInteresse.FORMAZIONE);
-            PuntoInteresse nuovoPunto1 = new PuntoInteresse(comune, "universita1'", new Punto(comune.getPosizione().getLatitudine() + 0.014, comune.getPosizione().getLongitudine() + 0.014), TipologiaPuntoInteresse.FORMAZIONE);
-            PuntoInteresse nuovoPunto2 = new PuntoInteresse(comune, "universita2'", new Punto(comune.getPosizione().getLatitudine() + 0.014, comune.getPosizione().getLongitudine() + 0.014), TipologiaPuntoInteresse.FORMAZIONE);
-            PuntoInteresse nuovoPunto3 = new PuntoInteresse(comune, "universita3'", new Punto(comune.getPosizione().getLatitudine() + 0.014, comune.getPosizione().getLongitudine() + 0.014), TipologiaPuntoInteresse.FORMAZIONE);
+            PuntoInteresse nuovoPunto = new PuntoInteresse(comune, "universita'", new Punto(comune.getPosizione().getLatitudine() + 0.014, comune.getPosizione().getLongitudine() + 0.014), TipologiaPuntoInteresse.FORMAZIONE,contributorAutorizzato);
+            PuntoInteresse nuovoPunto1 = new PuntoInteresse(comune, "universita1'", new Punto(comune.getPosizione().getLatitudine() + 0.014, comune.getPosizione().getLongitudine() + 0.014), TipologiaPuntoInteresse.FORMAZIONE,contributorAutorizzato);
+            PuntoInteresse nuovoPunto2 = new PuntoInteresse(comune, "universita2'", new Punto(comune.getPosizione().getLatitudine() + 0.014, comune.getPosizione().getLongitudine() + 0.014), TipologiaPuntoInteresse.FORMAZIONE,contributorAutorizzato);
+            PuntoInteresse nuovoPunto3 = new PuntoInteresse(comune, "universita3'", new Punto(comune.getPosizione().getLatitudine() + 0.014, comune.getPosizione().getLongitudine() + 0.014), TipologiaPuntoInteresse.FORMAZIONE,contributorAutorizzato);
 
             contributorAutorizzatoServiceImpl.aggiungiPuntoInteresse(contributorAutorizzato, nuovoPunto);
 
@@ -359,8 +357,8 @@ public class JUnitContenutiTests {
 
         TuristaAutenticato turista = gestorePiattaformaService.registra(null, Ruolo.TURISTA, "aldo", "neri", new GregorianCalendar(2002, GregorianCalendar.NOVEMBER, 12), "14Unica@", "user14");
 
-        PuntoInteresse puntoInteresse = contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "parcheggio centrale", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), TipologiaPuntoInteresse.PARCHEGGIO));
-        PuntoInteresse puntoInt2 = contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "parcheggio centrale sotto", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), TipologiaPuntoInteresse.PARCHEGGIO));
+        PuntoInteresse puntoInteresse = contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "parcheggio centrale", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), TipologiaPuntoInteresse.PARCHEGGIO, contributor));
+        PuntoInteresse puntoInt2 = contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "parcheggio centrale sotto", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), TipologiaPuntoInteresse.PARCHEGGIO, contributor));
 
         assertEquals(numeroPuntiInteresse + 2, comuneService.getPuntiInteresseNelComune(comune.getNome()).size());
         curatoreServiceImpl.valuta(curatore,puntoInteresse, Stato.APPROVATO);
@@ -377,7 +375,7 @@ public class JUnitContenutiTests {
 
         assertEquals(1, turistaAutenticatoService.findPreferiti(turista).size());
 
-        PuntoInteresse puntoInteresse1 = contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "parco", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), TipologiaPuntoInteresse.PARCO));
+        PuntoInteresse puntoInteresse1 = contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "parco", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), TipologiaPuntoInteresse.PARCO, contributor));
 
         int numeroItinerariComune = itinerarioService.findAllByComune(comune).size();
         assertThrows(IllegalArgumentException.class, () -> contributorService.aggiungiItinerario(comune, "girodeibar", puntoInteresse1));
@@ -404,7 +402,7 @@ public class JUnitContenutiTests {
         assertEquals(1, itinerarioService.getNumeroTappe(itinerario3));
 
 
-        PuntoInteresse puntoInteresse2 = contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "Castello", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), TipologiaPuntoInteresse.MONUMENTO));
+        PuntoInteresse puntoInteresse2 = contributorService.aggiungiPuntoInteresse(contributor, new PuntoInteresse(comune, "Castello", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), TipologiaPuntoInteresse.MONUMENTO, contributor));
         curatoreServiceImpl.valuta(curatore,puntoInteresse2, Stato.APPROVATO);
         MaterialeGenerico foto = new Foto(turista);
         curatoreServiceImpl.valuta(curatore,foto, Stato.APPROVATO);
@@ -430,7 +428,7 @@ public class JUnitContenutiTests {
             throw new IllegalArgumentException("errore");
 
         int numPoi=poiService.findActive().size();
-        PuntoInteresse puntoInteresse = new PuntoInteresse(comune, "Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE);
+        PuntoInteresse puntoInteresse = new PuntoInteresse(comune, "Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributor);
         contributorService.aggiungiPuntoInteresse(contributor, puntoInteresse);
         assertEquals(numPoi+1,poiService.findActive().size());
         assertEquals(LocalDate.MAX, puntoInteresse.getExpireDate());

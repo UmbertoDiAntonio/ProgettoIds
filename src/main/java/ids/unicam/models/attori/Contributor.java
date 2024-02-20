@@ -1,6 +1,7 @@
 package ids.unicam.models.attori;
 
 import ids.unicam.models.Comune;
+import ids.unicam.models.Notifica;
 import ids.unicam.models.Observer;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
@@ -12,7 +13,7 @@ import java.util.GregorianCalendar;
 @Entity
 @DiscriminatorValue("Contributor")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Contributor extends TuristaAutenticato implements Observer  {
+public class Contributor extends TuristaAutenticato  {
     @OneToOne
     @JoinColumn(name = "comune")
     private Comune comune = null;
@@ -37,25 +38,7 @@ public class Contributor extends TuristaAutenticato implements Observer  {
         this.comune = comune;
     }
 
-    @Override
-    public void riceviNotifica(Stato eventType, PuntoInteresse puntoInteresse) {
-        switch (eventType) {
-            case APPROVATO ->
-                    System.out.println("Il tuo " + puntoInteresse.mostraInformazioniGeneriche() + " e' stato approvato");
-            case NON_APPROVATO ->
-                    System.out.println("Il tuo " + puntoInteresse.mostraInformazioniGeneriche() + " non e' stato approvato");
-        }
-    }
 
-    @Override
-    public void riceviNotifica(Stato eventType, MaterialeGenerico materialeGenerico) {
-        switch (eventType) {
-            case APPROVATO ->
-                    System.out.println("Il tuo contenuto relativo al punto di interesse " + materialeGenerico.get() + " e' stato approvato");
-            case NON_APPROVATO ->
-                    System.out.println("Il tuo contenuto relativo al punto di interesse " + materialeGenerico.get() + " non e' stato approvato");
-        }
-    }
 
 
 

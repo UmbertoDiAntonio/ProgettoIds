@@ -25,4 +25,5 @@ public interface ComuneService {
     @Nullable Comune getComuneByNome(String nomeComune);
 
     List<PuntoInteresse> getPuntiInteresseNelComune(String nomeComune);
+
 }

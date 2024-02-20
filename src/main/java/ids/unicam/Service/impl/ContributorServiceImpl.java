@@ -3,6 +3,8 @@ package ids.unicam.Service.impl;
 import ids.unicam.DataBase.Repository.ContributorRepository;
 import ids.unicam.Service.ContributorService;
 import ids.unicam.models.Comune;
+import ids.unicam.models.Notifica;
+import ids.unicam.models.Observer;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.Stato;
@@ -18,16 +20,19 @@ import java.util.Optional;
 import static ids.unicam.Main.logger;
 
 @Service
-public class ContributorServiceImpl implements ContributorService {
+public class ContributorServiceImpl implements ContributorService, Observer {
     private final ContributorRepository repository;
     private final PoiServiceImpl poiServiceImpl;
     private final ItinerarioServiceImpl itinerarioServiceImpl;
+    private final NotificaServiceImpl notificaServiceImpl;
 
     @Autowired
-    public ContributorServiceImpl(ContributorRepository repository, PoiServiceImpl poiServiceImpl, ItinerarioServiceImpl itinerarioServiceImpl) {
+    public ContributorServiceImpl(ContributorRepository repository, PoiServiceImpl poiServiceImpl,
+                                  ItinerarioServiceImpl itinerarioServiceImpl, NotificaServiceImpl notificaServiceImpl) {
         this.repository = repository;
         this.poiServiceImpl = poiServiceImpl;
         this.itinerarioServiceImpl = itinerarioServiceImpl;
+        this.notificaServiceImpl = notificaServiceImpl;
     }
 
     public List<Contributor> findByNomeComune(String nomeComune) {
@@ -92,4 +97,10 @@ public class ContributorServiceImpl implements ContributorService {
         puntoInteresse.setExpireDate(expireDate);
         poiServiceImpl.save(puntoInteresse);
     }
+
+    @Override
+    public List<Notifica> riceviNotifiche(Contributor contributor) {
+        return notificaServiceImpl.getNotifiche(contributor);
+    }
+
 }

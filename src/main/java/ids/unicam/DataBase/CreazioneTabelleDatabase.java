@@ -35,14 +35,15 @@ public class CreazioneTabelleDatabase {
         creaTabellaOsservatori(connection);
         creaTabellaListaMaterialiPuntoInteresse(connection);
         creaTabellaListaMaterialiContest(connection);
+        creaTabellaNotifica(connection);
     }
 
     public void eliminaTabelle(@NotNull Connection connection) {
         String[] tableNames = {
-                "CONTEST_LISTA_MATERIALI", "PUNTI_DI_INTERESSE_LISTA_MATERIALI", "CURATORI_OSSERVATORI","CONTEST_TAGS",
-                "TURISTI_PREFERITI", "ITINERARIO_TAGS", "PUNTI_DI_INTERESSE_TAGS", "TAG", "INVITO",
-                "PUNTO_INTERESSE_HOURS_MAP", "ITINERARI_PERCORSO",
-                "CONTEST_PARTECIPANTI", "COMUNI", "MATERIALI",
+                "NOTIFICA", "CONTEST_LISTA_MATERIALI", "PUNTI_DI_INTERESSE_LISTA_MATERIALI",
+                "CURATORI_OSSERVATORI", "CONTEST_TAGS", "TURISTI_PREFERITI", "ITINERARIO_TAGS",
+                "PUNTI_DI_INTERESSE_TAGS", "TAG", "INVITO", "PUNTO_INTERESSE_HOURS_MAP",
+                "ITINERARI_PERCORSO", "CONTEST_PARTECIPANTI", "COMUNI", "MATERIALI",
                 "CONTEST", "ITINERARI", "PUNTI_DI_INTERESSE",
                 "CURATORI", "ANIMATORI", "CONTRIBUTOR_AUTORIZZATI",
                 "CONTRIBUTOR", "TURISTI"
@@ -244,6 +245,24 @@ public class CreazioneTabelleDatabase {
         }
     }
 
+    private void creaTabellaNotifica(@NotNull Connection connection) {
+        String createTableSQL =
+                "CREATE TABLE IF NOT EXISTS NOTIFICA(" +
+                        "id INT PRIMARY KEY NOT NULL," +
+                        "data DATE," +
+                        "descrizione VARCHAR(255),"+
+                        "ricevente_id INT," +
+                        "segnalatore_id INT,"+
+                        "titolo VARCHAR(100),"+
+                        "FOREIGN KEY (ricevente_id) REFERENCES CONTRIBUTOR(id),"+
+                        "FOREIGN KEY (segnalatore_id) REFERENCES TURISTI(id))";
+        try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Notifica", e);
+        }
+    }
+
     private void creaTabellaAnimatori(@NotNull Connection connection) {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS ANIMATORI(" +
@@ -336,6 +355,7 @@ public class CreazioneTabelleDatabase {
                         "longitudine DOUBLE ," +
                         "nome VARCHAR(50) NOT NULL," +
                         "tipo VARCHAR(50) NOT NULL," +
+                        "creatore_id INT NOT NULL,"+
                         "EXPIRE_DATE DATE)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();

@@ -3,6 +3,7 @@ package ids.unicam.models.contenuti.puntiInteresse;
 import ids.unicam.models.Comune;
 import ids.unicam.models.Expirable;
 import ids.unicam.models.Punto;
+import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.contenuti.Contenitore;
 import ids.unicam.models.contenuti.ContenutoGenerico;
 import ids.unicam.models.contenuti.Taggable;
@@ -42,6 +43,10 @@ public class PuntoInteresse extends ContenutoGenerico implements Contenitore, Ta
     @Embedded
     private Punto pt = null;
 
+    @Getter
+    @OneToOne
+    private Contributor creatore = null;
+
     @Contract("-> new")
     public Punto getPt() {
         return pt.clone();
@@ -54,7 +59,7 @@ public class PuntoInteresse extends ContenutoGenerico implements Contenitore, Ta
     @Getter
     private TipologiaPuntoInteresse tipo;
 
-    public PuntoInteresse(Comune comune, String nome, Punto pt, TipologiaPuntoInteresse tipologiaPuntoInteresse) {
+    public PuntoInteresse(Comune comune, String nome, Punto pt, TipologiaPuntoInteresse tipologiaPuntoInteresse, Contributor creatore) {
         super(comune);
         if (!comune.verificaCoordinateComune(pt)) {
             logger.error("Non si possono creare punti di interesse fuori dal comune");
@@ -65,9 +70,11 @@ public class PuntoInteresse extends ContenutoGenerico implements Contenitore, Ta
         this.pt = pt;
         this.orario = new Orario();
         this.tipo = tipologiaPuntoInteresse;
+        this.creatore = creatore;
     }
 
-    public PuntoInteresse(Comune comune, String nome, Punto pt,Orario orario, TipologiaPuntoInteresse tipologiaPuntoInteresse) {
+    public PuntoInteresse(Comune comune, String nome, Punto pt,Orario orario, TipologiaPuntoInteresse tipologiaPuntoInteresse,
+                          Contributor creatore) {
         super(comune);
         if (!comune.verificaCoordinateComune(pt)) {
             logger.error("Non si possono creare punti di interesse fuori dal comune");
@@ -78,6 +85,7 @@ public class PuntoInteresse extends ContenutoGenerico implements Contenitore, Ta
         this.pt = pt;
         this.orario = orario;
         this.tipo = tipologiaPuntoInteresse;
+        this.creatore = creatore;
     }
 
     public String mostraInformazioniDettagliate(){
@@ -92,22 +100,22 @@ public class PuntoInteresse extends ContenutoGenerico implements Contenitore, Ta
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
 
         PuntoInteresse that = (PuntoInteresse) o;
 
         if (!Objects.equals(orario, that.orario)) return false;
         if (!Objects.equals(nome, that.nome)) return false;
         if (!Objects.equals(pt, that.pt)) return false;
+        if (!creatore.equals(that.creatore)) return false;
         return tipo == that.tipo;
     }
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (orario != null ? orario.hashCode() : 0);
+        int result = orario != null ? orario.hashCode() : 0;
         result = 31 * result + (nome != null ? nome.hashCode() : 0);
         result = 31 * result + (pt != null ? pt.hashCode() : 0);
+        result = 31 * result + creatore.hashCode();
         result = 31 * result + tipo.hashCode();
         return result;
     }

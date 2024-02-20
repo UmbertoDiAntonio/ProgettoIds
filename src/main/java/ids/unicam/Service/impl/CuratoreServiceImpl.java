@@ -3,6 +3,7 @@ package ids.unicam.Service.impl;
 import ids.unicam.DataBase.Repository.CuratoreRepository;
 import ids.unicam.Service.CuratoreService;
 import ids.unicam.models.Comune;
+import ids.unicam.models.Notifica;
 import ids.unicam.models.Observer;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.Curatore;
@@ -29,14 +30,18 @@ public class CuratoreServiceImpl implements CuratoreService {
     private final ItinerarioServiceImpl itinerarioServiceImpl;
     private final MaterialeServiceImpl materialeServiceImpl;
     private final ContestServiceImpl contestServiceImpl;
+    private final NotificaServiceImpl notificaServiceImpl;
 
     @Autowired
-    public CuratoreServiceImpl(CuratoreRepository repository, PoiServiceImpl service, ItinerarioServiceImpl itinerarioServiceImpl, MaterialeServiceImpl materialeServiceImpl, ContestServiceImpl contestServiceImpl) {
+    public CuratoreServiceImpl(CuratoreRepository repository, PoiServiceImpl service, ItinerarioServiceImpl itinerarioServiceImpl,
+                               MaterialeServiceImpl materialeServiceImpl, ContestServiceImpl contestServiceImpl,
+                               NotificaServiceImpl notificaServiceImpl) {
         this.repository = repository;
         this.poiServiceImpl = service;
         this.itinerarioServiceImpl = itinerarioServiceImpl;
         this.materialeServiceImpl = materialeServiceImpl;
         this.contestServiceImpl = contestServiceImpl;
+        this.notificaServiceImpl = notificaServiceImpl;
     }
 
 
@@ -89,8 +94,9 @@ public class CuratoreServiceImpl implements CuratoreService {
         puntoInteresse.setStato(stato);
         if (stato == Stato.NON_APPROVATO)
             poiServiceImpl.deleteById(puntoInteresse.getId());
-        //poiService.save(puntoInteresse);
-        notifica(stato, curatore, puntoInteresse);
+        else poiServiceImpl.save(puntoInteresse);
+
+        Notifica notifica = notificaServiceImpl.creaNotifica(curatore, puntoInteresse, stato);
     }
 
     /**
@@ -102,11 +108,12 @@ public class CuratoreServiceImpl implements CuratoreService {
      */
     @Override
     public void valuta(Curatore curatore, MaterialeGenerico materialeGenerico, Stato stato) {
-        if (!stato.asBoolean()) {
-            materialeServiceImpl.deleteById(materialeGenerico.getId());
-        }
         materialeGenerico.setStato(stato);
-        notifica(stato, curatore, materialeGenerico);
+        if (stato == Stato.NON_APPROVATO)
+            materialeServiceImpl.deleteById(materialeGenerico.getId());
+        else materialeServiceImpl.save(materialeGenerico);
+
+        Notifica notifica = notificaServiceImpl.creaNotifica(curatore, materialeGenerico, stato);
     }
 
     private boolean controllaSeInComune(Curatore curatore, Comune comune) {
@@ -174,8 +181,6 @@ public class CuratoreServiceImpl implements CuratoreService {
         curatore.getOsservatori().add(osservatore);
         deleteById(curatore.getId());
         save(curatore);
-
-
     }
 
 
@@ -186,18 +191,6 @@ public class CuratoreServiceImpl implements CuratoreService {
         save(curatore);
     }
 
-    private void notifica(Stato eventType, Curatore curatore, PuntoInteresse puntoInteresse) {
-        for (Observer listener : curatore.getOsservatori()) {
-            listener.riceviNotifica(eventType, puntoInteresse);
-        }
-    }
-
-    private void notifica(Stato eventType, Curatore curatore, MaterialeGenerico materialeGenerico) {
-        for (Observer listener : curatore.getOsservatori()) {
-            listener.riceviNotifica(eventType, materialeGenerico);
-        }
-    }
-
     public List<Contributor> getOsservatori(Curatore curatore) {
         return repository.findOsservatoriByCuratore(curatore.getId());
     }
@@ -205,5 +198,7 @@ public class CuratoreServiceImpl implements CuratoreService {
     public int getNumeroOsservatori(Curatore curatore) {
         return repository.countNumeroOsservatori(curatore.getId());
     }
+
+
 }
 
