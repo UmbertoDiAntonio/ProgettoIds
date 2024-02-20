@@ -1,4 +1,4 @@
-package ids.unicam.models;
+package ids.unicam.models.contenuti.puntiInteresse;
 
 public enum DayOfWeek {
         MONDAY,

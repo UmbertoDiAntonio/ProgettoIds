@@ -1,22 +1,28 @@
-package ids.unicam.models.contenuti;
+package ids.unicam.models.contenuti.puntiInteresse;
 
 import ids.unicam.models.Comune;
 import ids.unicam.models.Expirable;
-import ids.unicam.models.Orario;
-import ids.unicam.models.Taggable;
 import ids.unicam.models.Punto;
+import ids.unicam.models.contenuti.Contenitore;
+import ids.unicam.models.contenuti.ContenutoGenerico;
+import ids.unicam.models.contenuti.Taggable;
+import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import jakarta.persistence.*;
-import org.jetbrains.annotations.Nullable;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static ids.unicam.Main.logger;
 
 
+@NoArgsConstructor
 @Entity
 @Table(name = "Punti_di_Interesse")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class PuntoInteresse extends ContenutoGenerico implements Taggable, Expirable {
+public class PuntoInteresse extends ContenutoGenerico implements Contenitore, Taggable, Expirable {
     @Override
     public String toString() {
         return "PuntoInteresse{" +
@@ -26,25 +32,21 @@ public class PuntoInteresse extends ContenutoGenerico implements Taggable, Expir
     }
 
     @Embedded
+    @Getter
     private Orario orario;
 
+    @Getter
     private String nome = "";
 
+    @Getter
     @Embedded
     private Punto pt = null;
 
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<MaterialeGenerico> listaMateriali = new ArrayList<>();
 
-    public PuntoInteresse() {
-    }
-
-    public Punto getPt() {
-        return pt;
-    }
-
-    public String getNomeContest() {
-        return nome;
-    }
     @Enumerated(EnumType.STRING)
+    @Getter
     private TipologiaPuntoInteresse tipo;
 
     public PuntoInteresse(Comune comune, String nome, Punto pt, TipologiaPuntoInteresse tipologiaPuntoInteresse) {
@@ -74,15 +76,11 @@ public class PuntoInteresse extends ContenutoGenerico implements Taggable, Expir
     }
 
     public String mostraInformazioniDettagliate(){
-        return getNomeContest() + " " + getOrario();
+        return getNome() + " " + getOrario();
     }
 
     public String mostraInformazioniGeneriche(){
-        return getNomeContest();
-    }
-
-    public @Nullable Orario getOrario() {
-        return orario;
+        return getNome();
     }
 
     @Override
@@ -112,5 +110,21 @@ public class PuntoInteresse extends ContenutoGenerico implements Taggable, Expir
     @Override
     public void addTag(Tag tag) {
         this.getTags().add(tag);
+    }
+
+    @Override
+    public List<MaterialeGenerico> getMateriali() {
+        return listaMateriali;
+    }
+
+    @Override
+    public void addMateriale(MaterialeGenerico materialeGenerico) {
+        if(materialeGenerico != null)
+            listaMateriali.add(materialeGenerico);
+    }
+
+    @Override
+    public void rimuoviMateriale(MaterialeGenerico materialeGenerico) {
+        listaMateriali.remove(materialeGenerico);
     }
 }

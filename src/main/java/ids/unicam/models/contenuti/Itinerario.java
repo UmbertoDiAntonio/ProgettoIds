@@ -1,6 +1,7 @@
 package ids.unicam.models.contenuti;
 
 import ids.unicam.models.Comune;
+import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;

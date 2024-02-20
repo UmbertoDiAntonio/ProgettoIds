@@ -1,6 +1,6 @@
 package ids.unicam.models.attori;
 
-import ids.unicam.models.contenuti.PuntoInteresse;
+import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;

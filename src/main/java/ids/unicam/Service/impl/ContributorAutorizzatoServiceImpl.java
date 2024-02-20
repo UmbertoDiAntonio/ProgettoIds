@@ -1,12 +1,12 @@
-package ids.unicam.Service;
+package ids.unicam.Service.impl;
 
-import ids.unicam.models.Comune;
 import ids.unicam.DataBase.Repository.ContributorAutorizzatoRepository;
+import ids.unicam.models.Comune;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.ContributorAutorizzato;
 import ids.unicam.models.contenuti.Itinerario;
-import ids.unicam.models.contenuti.PuntoInteresse;
-import ids.unicam.models.Stato;
+import ids.unicam.models.contenuti.Stato;
+import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,16 +18,16 @@ import java.util.Optional;
 import static ids.unicam.Main.logger;
 
 @Service
-public class ContributorAutorizzatoService{
+public class ContributorAutorizzatoServiceImpl {
     private final ContributorAutorizzatoRepository repository;
-    private final PoiService poiService;
-    private final ItinerarioService itinerarioService;
+    private final PoiServiceImpl poiServiceImpl;
+    private final ItinerarioServiceImpl itinerarioServiceImpl;
 
     @Autowired
-    public ContributorAutorizzatoService(ContributorAutorizzatoRepository repository, PoiService poiService, ItinerarioService itinerarioService) {
+    public ContributorAutorizzatoServiceImpl(ContributorAutorizzatoRepository repository, PoiServiceImpl poiServiceImpl, ItinerarioServiceImpl itinerarioServiceImpl) {
         this.repository = repository;
-        this.poiService = poiService;
-        this.itinerarioService = itinerarioService;
+        this.poiServiceImpl = poiServiceImpl;
+        this.itinerarioServiceImpl = itinerarioServiceImpl;
     }
     public void deleteById(int id) {
         repository.deleteById(id);
@@ -73,17 +73,17 @@ public class ContributorAutorizzatoService{
             logger.error(contributor.getNome() + " non puo' creare punti di interesse fuori dal suo comune");
             throw new UnsupportedOperationException(contributor + " non può creare punti di interesse fuori dal suo comune");
         }
-        puntoInteresse.setStato(Stato.APPROVED);
-        poiService.save(puntoInteresse);
+        puntoInteresse.setStato(Stato.APPROVATO);
+        poiServiceImpl.save(puntoInteresse);
     }
 
     public Itinerario aggiungiItinerario(Comune comune, String nome, PuntoInteresse... puntiInteresse){
-        return  itinerarioService.creaItinerario(comune,nome,puntiInteresse);
+        return  itinerarioServiceImpl.creaItinerario(comune,nome,puntiInteresse);
     }
 
     @Transactional
     public boolean aggiungiTappaItinerario(Itinerario itinerario,PuntoInteresse puntoInteresse){
-        return itinerarioService.aggiungiTappa(itinerario,puntoInteresse);
+        return itinerarioServiceImpl.aggiungiTappa(itinerario,puntoInteresse);
     }
     @Transactional
     public void aggiungiTappaItinerario(Itinerario itinerario,PuntoInteresse... puntiInteresse){

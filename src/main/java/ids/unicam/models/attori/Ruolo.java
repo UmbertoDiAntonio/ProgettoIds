@@ -1,4 +1,4 @@
-package ids.unicam.models;
+package ids.unicam.models.attori;
 
 /**
  * Gradi di un Contributor all'interno del Comune

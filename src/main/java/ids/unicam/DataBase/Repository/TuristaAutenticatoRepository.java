@@ -1,7 +1,7 @@
 package ids.unicam.DataBase.Repository;
 
 import ids.unicam.models.attori.TuristaAutenticato;
-import ids.unicam.models.contenuti.PuntoInteresse;
+import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

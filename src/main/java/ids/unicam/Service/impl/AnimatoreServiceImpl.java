@@ -1,13 +1,13 @@
-package ids.unicam.Service;
+package ids.unicam.Service.impl;
 
+import ids.unicam.DataBase.Repository.AnimatoreRepository;
 import ids.unicam.exception.ContestException;
 import ids.unicam.models.Invito;
-import ids.unicam.DataBase.Repository.AnimatoreRepository;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
-import ids.unicam.models.contenuti.MaterialeGenerico;
-import ids.unicam.models.Stato;
+import ids.unicam.models.contenuti.Stato;
+import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,19 +17,19 @@ import java.util.Optional;
 import static ids.unicam.Main.logger;
 
 @Service
-public class AnimatoreService {
+public class AnimatoreServiceImpl {
     private final AnimatoreRepository repository;
-    private final ContestService contestService;
-    private final InvitoService invitoService;
-    private final MaterialeService materialeService;
+    private final ContestServiceImpl contestServiceImpl;
+    private final InvitoServiceImpl invitoServiceImpl;
+    private final MaterialeServiceImpl materialeServiceImpl;
 
 
     @Autowired
-    public AnimatoreService(AnimatoreRepository repository, ContestService contestService, InvitoService invitoService, MaterialeService materialeService) {
+    public AnimatoreServiceImpl(AnimatoreRepository repository, ContestServiceImpl contestServiceImpl, InvitoServiceImpl invitoServiceImpl, MaterialeServiceImpl materialeServiceImpl) {
         this.repository = repository;
-        this.contestService = contestService;
-        this.invitoService = invitoService;
-        this.materialeService = materialeService;
+        this.contestServiceImpl = contestServiceImpl;
+        this.invitoServiceImpl = invitoServiceImpl;
+        this.materialeServiceImpl = materialeServiceImpl;
     }
 
     public void deleteById(int id) {
@@ -70,7 +70,7 @@ public class AnimatoreService {
     }
 
     public Contest creaContest(Animatore animatore,String nomeContest,String obiettivo,boolean tipoContest){
-        return contestService.creaContest(new Contest(nomeContest,tipoContest,obiettivo,animatore));
+        return contestServiceImpl.creaContest(new Contest(nomeContest,tipoContest,obiettivo,animatore));
     }
 
     public Invito invitaContest(Animatore animatore, Contest contest, TuristaAutenticato turistaAutenticato){
@@ -78,11 +78,11 @@ public class AnimatoreService {
             logger.error("L'animatore non e' il creatore del contest.");
             throw new IllegalStateException("L'animatore non e' il creatore del contest.");
         }
-        if(contestService.getPartecipanti(contest).contains(turistaAutenticato)){
+        if(contestServiceImpl.getPartecipanti(contest).contains(turistaAutenticato)){
             logger.error("Il turista autenticato fa gia' parte del contest");
             throw new ContestException("Il turista autenticato fa gia' parte del contest");
         }
-        return invitoService.save(new Invito(contest, turistaAutenticato));
+        return invitoServiceImpl.save(new Invito(contest, turistaAutenticato));
     }
 
     public boolean approvaMateriale(Animatore animatore, Contest contest, MaterialeGenerico materialeGenerico, Stato stato) {
@@ -93,9 +93,9 @@ public class AnimatoreService {
         if(materialeGenerico.getStato()==stato){
             return true;
         }
-        if(stato == Stato.NOT_APPROVED)
-            materialeService.deleteById(materialeGenerico.getId());
-        contestService.approvaMateriale(materialeGenerico,stato);
+        if(stato == Stato.NON_APPROVATO)
+            materialeServiceImpl.deleteById(materialeGenerico.getId());
+        contestServiceImpl.approvaMateriale(materialeGenerico,stato);
         return true;
     }
 }

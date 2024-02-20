@@ -1,10 +1,10 @@
 package ids.unicam.models.attori;
 
 import ids.unicam.models.Comune;
-import ids.unicam.models.contenuti.MaterialeGenerico;
-import ids.unicam.models.contenuti.PuntoInteresse;
 import ids.unicam.models.Observer;
-import ids.unicam.models.Stato;
+import ids.unicam.models.contenuti.Stato;
+import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
+import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.persistence.*;
 
 import java.util.GregorianCalendar;
@@ -40,9 +40,9 @@ public class Contributor extends TuristaAutenticato implements Observer  {
     @Override
     public void riceviNotifica(Stato eventType, PuntoInteresse puntoInteresse) {
         switch (eventType) {
-            case APPROVED ->
+            case APPROVATO ->
                     System.out.println("Il tuo " + puntoInteresse.mostraInformazioniGeneriche() + " e' stato approvato");
-            case NOT_APPROVED ->
+            case NON_APPROVATO ->
                     System.out.println("Il tuo " + puntoInteresse.mostraInformazioniGeneriche() + " non e' stato approvato");
         }
     }
@@ -50,9 +50,9 @@ public class Contributor extends TuristaAutenticato implements Observer  {
     @Override
     public void riceviNotifica(Stato eventType, MaterialeGenerico materialeGenerico) {
         switch (eventType) {
-            case APPROVED ->
+            case APPROVATO ->
                     System.out.println("Il tuo contenuto relativo al punto di interesse " + materialeGenerico.get() + " e' stato approvato");
-            case NOT_APPROVED ->
+            case NON_APPROVATO ->
                     System.out.println("Il tuo contenuto relativo al punto di interesse " + materialeGenerico.get() + " non e' stato approvato");
         }
     }

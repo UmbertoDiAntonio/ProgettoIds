@@ -1,4 +1,4 @@
-package ids.unicam.models.contenuti;
+package ids.unicam.models.contenuti.puntiInteresse;
 
 import jakarta.persistence.*;
 

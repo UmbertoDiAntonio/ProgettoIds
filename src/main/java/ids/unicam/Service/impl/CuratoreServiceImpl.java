@@ -1,11 +1,15 @@
-package ids.unicam.Service;
+package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.CuratoreRepository;
+import ids.unicam.models.Observer;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.Curatore;
-import ids.unicam.models.contenuti.*;
-import ids.unicam.models.Observer;
-import ids.unicam.models.Stato;
+import ids.unicam.models.contenuti.ContenutoGenerico;
+import ids.unicam.models.contenuti.Contest;
+import ids.unicam.models.contenuti.Itinerario;
+import ids.unicam.models.contenuti.Stato;
+import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
+import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,20 +21,22 @@ import java.util.Optional;
 import static ids.unicam.Main.logger;
 
 @Service
-public class CuratoreService {
+public class CuratoreServiceImpl {
     private final CuratoreRepository repository;
-    private final PoiService poiService;
-    private final ItinerarioService itinerarioService;
-    private final MaterialeService materialeService;
-    private final ContestService contestService;
+    private final PoiServiceImpl poiServiceImpl;
+    private final ItinerarioServiceImpl itinerarioServiceImpl;
+    private final MaterialeServiceImpl materialeServiceImpl;
+    private final ContestServiceImpl contestServiceImpl;
+    private final ContenitoreServiceImpl contenitoreService;
 
     @Autowired
-    public CuratoreService(CuratoreRepository repository, PoiService service, ItinerarioService itinerarioService, MaterialeService materialeService, ContestService contestService) {
+    public CuratoreServiceImpl(CuratoreRepository repository, PoiServiceImpl service, ItinerarioServiceImpl itinerarioServiceImpl, MaterialeServiceImpl materialeServiceImpl, ContestServiceImpl contestServiceImpl, ContenitoreServiceImpl contenitoreService) {
         this.repository = repository;
-        this.poiService = service;
-        this.itinerarioService = itinerarioService;
-        this.materialeService = materialeService;
-        this.contestService = contestService;
+        this.poiServiceImpl = service;
+        this.itinerarioServiceImpl = itinerarioServiceImpl;
+        this.materialeServiceImpl = materialeServiceImpl;
+        this.contestServiceImpl = contestServiceImpl;
+        this.contenitoreService = contenitoreService;
     }
 
 
@@ -76,8 +82,8 @@ public class CuratoreService {
     @Transactional
     public void valuta(Curatore curatore, @NotNull PuntoInteresse puntoInteresse, Stato stato) {
         puntoInteresse.setStato(stato);
-        if (stato == Stato.NOT_APPROVED)
-            poiService.deleteById(puntoInteresse.getId());
+        if (stato == Stato.NON_APPROVATO)
+            poiServiceImpl.deleteById(puntoInteresse.getId());
         //poiService.save(puntoInteresse);
         notifica(stato, curatore, puntoInteresse);
     }
@@ -91,7 +97,7 @@ public class CuratoreService {
      */
     public void valuta(Curatore curatore, MaterialeGenerico materialeGenerico, Stato stato) {
         if (!stato.asBoolean()) {
-            materialeService.deleteById(materialeGenerico.getId());
+            materialeServiceImpl.deleteById(materialeGenerico.getId());
         }
         materialeGenerico.setStato(stato);
         notifica(stato, curatore, materialeGenerico);
@@ -102,15 +108,15 @@ public class CuratoreService {
     }
 
     public void elimina(PuntoInteresse puntoInteresse) {
-        poiService.eliminaPuntoInteresse(puntoInteresse.getId());
+        poiServiceImpl.eliminaPuntoInteresse(puntoInteresse.getId());
     }
 
     public void elimina(Itinerario itinerario) {
-        itinerarioService.deleteById(itinerario.getId());
+        itinerarioServiceImpl.deleteById(itinerario.getId());
     }
 
     public void elimina(Contest contest) {
-        contestService.deleteById(contest.getId());
+        contestServiceImpl.deleteById(contest.getId());
     }
 
     public void condividi(ContenutoGenerico contenutoGenerico) {
@@ -119,21 +125,23 @@ public class CuratoreService {
     }
 
 
+    @Transactional
     public void elimina(Curatore curatore, MaterialeGenerico materialeGenerico) {
-        Optional<PuntoInteresse> oPoi = poiService.findById(materialeGenerico.getIdProprietario());
-        if (oPoi.isPresent()) {
-            if (!oPoi.get().getComune().equals(curatore.getComune())) {
+        List<PuntoInteresse> listPuntoInteresse = poiServiceImpl.findActive();
+        for(PuntoInteresse puntoInteresse : listPuntoInteresse){
+            if (!puntoInteresse.getComune().equals(curatore.getComune())) {
                 logger.error(curatore + " non può eliminare materiali fuori dal suo comune ");
                 return;
             }
+            contenitoreService.rimuoviMateriale(puntoInteresse,materialeGenerico);
         }
-        materialeService.deleteById(materialeGenerico.getId());
+        materialeServiceImpl.deleteById(materialeGenerico.getId());
     }
 
     public void rimuoviTappa(Curatore curatore, Itinerario itinerario, PuntoInteresse tappa) {
         if (!curatore.getComune().equals(itinerario.getComune()))
             logger.warn(curatore + " non può rimuovere tappe da itinerari esterni al suo comune");
-        itinerarioService.rimuoviTappa(itinerario, tappa);
+        itinerarioServiceImpl.rimuoviTappa(itinerario, tappa);
     }
 
 

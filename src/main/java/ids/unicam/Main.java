@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @SpringBootApplication
-@ComponentScan(basePackages = {"ids.unicam.DataBase", "ids.unicam.models.attori", "ids.unicam.models.Service", "ids.unicam.models.Repository", "ids.unicam.controller"})
+@ComponentScan(basePackages = {"ids.unicam.DataBase", "ids.unicam.models.attori", "ids.unicam.Service", "ids.unicam.DataBase.Repository", "ids.unicam.controller"})
 public class Main implements ApplicationRunner {
     public static final Logger logger = LoggerFactory.getLogger(Main.class);
 

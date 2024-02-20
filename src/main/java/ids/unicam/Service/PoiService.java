@@ -1,127 +1,27 @@
 package ids.unicam.Service;
 
-import ids.unicam.DataBase.Repository.PoiRepository;
-import ids.unicam.models.Taggable;
-import ids.unicam.models.attori.Contributor;
-import ids.unicam.models.attori.ContributorAutorizzato;
 import ids.unicam.models.attori.TuristaAutenticato;
-import ids.unicam.models.contenuti.MaterialeGenerico;
-import ids.unicam.models.contenuti.PuntoInteresse;
-import ids.unicam.models.contenuti.Tag;
-import ids.unicam.models.Stato;
+import ids.unicam.models.contenuti.Taggable;
+import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
+import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
+import ids.unicam.models.contenuti.puntiInteresse.Tag;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
-import static ids.unicam.Main.logger;
+public interface PoiService {
+    @Transactional
+    public void eliminaPuntoInteresse(int idPuntoInteresse) ;
 
-@Service
-public class PoiService {
-    private final PoiRepository repository;
-    private final TuristaAutenticatoService turistaAutenticatoService;
-    private final MaterialeService materialeService;
-    private final TagService tagService;
-
-    @Autowired
-    public PoiService(PoiRepository repository, TuristaAutenticatoService turistaAutenticatoService, MaterialeService materialeService, TagService tagService) {
-        this.repository = repository;
-        this.turistaAutenticatoService = turistaAutenticatoService;
-        this.materialeService = materialeService;
-        this.tagService = tagService;
-    }
-
-
-    public void deleteById(int id) {
-        repository.deleteById(id);
-    }
+    void aggiungiMateriale(TuristaAutenticato turistaAutenticato, PuntoInteresse puntoInteresse, MaterialeGenerico materialeGenerico) ;
 
     @Transactional
-    public void eliminaPuntoInteresse(int idPuntoInteresse) {
-        // Elimina il PuntoInteresse dal database
-        repository.deleteById(idPuntoInteresse);
-
-        // Rileva l'eliminazione e aggiorna le liste di preferiti dei turisti
-        List<TuristaAutenticato> turisti = turistaAutenticatoService.findTuristiConPreferiti();
-        for (TuristaAutenticato turista : turisti) {
-            turistaAutenticatoService.rimuoviPreferito(turista, idPuntoInteresse);
-
-        }
-    }
-
-    public MaterialeGenerico creaMateriale(TuristaAutenticato turistaAutenticato, PuntoInteresse puntoInteresse, MaterialeGenerico materialeGenerico) {
-        if (turistaAutenticato instanceof Contributor contributor) {
-            if (!contributor.getComune().equals(puntoInteresse.getComune())) {
-                logger.error("il contributor cerca di caricare il materiale fuori dal suo comune");
-                throw new IllegalStateException("il contributor cerca di caricare il materiale fuori dal suo comune");
-            }
-        }
-        if (!puntoInteresse.getStato().asBoolean()) {
-            logger.error("il contributor cerca di caricare il materiale su un punto di interesse non approvato");
-            throw new IllegalStateException("il contributor cerca di caricare il materiale su un punto di interesse non approvato");
-        }
-        if (turistaAutenticato instanceof ContributorAutorizzato)
-            materialeGenerico.setStato(Stato.APPROVED);
-        materialeGenerico.setIdProprietario(puntoInteresse.getId());
-        return materialeService.save(materialeGenerico);
-    }
-
+    public List<PuntoInteresse> findActive() ;
 
     @Transactional
-    protected PuntoInteresse save(PuntoInteresse puntoInteresse) {
-        return repository.save(puntoInteresse);
-    }
+    public void aggiungiTag(PuntoInteresse puntoInteresse, Tag tag) ;
 
+    List<Taggable> findByTag(Tag tag);
 
-    public Optional<PuntoInteresse> findById(int id) {
-        return repository.findById(id);
-    }
-
-
-    @Transactional
-    public List<PuntoInteresse> findAll() {
-        List<PuntoInteresse> list = repository.findAll();
-        for (PuntoInteresse puntoInteresse : list) {
-            if (puntoInteresse.isExpired()) {
-                repository.deleteById(puntoInteresse.getId());
-            }
-        }
-        return repository.findAll();
-    }
-
-    public PuntoInteresse getLast() {
-        return repository.findAll().getLast();
-    }
-
-    public PuntoInteresse getFirst() {
-        return repository.findAll().getFirst();
-    }
-
-
-    public void deleteAll() {
-        repository.deleteAll();
-    }
-
-
-    @Transactional
-    public void aggiungiTag(PuntoInteresse puntoInteresse, Tag tag) {
-        if(tagService.haveTag(puntoInteresse,tag)) {
-            logger.warn("Tag già aggiunto");
-            return;
-        }
-        if (!puntoInteresse.isExpired())
-            tagService.aggiungiTag(puntoInteresse, tag);
-
-        save(puntoInteresse);
-    }
-
-    public List<Taggable> findByTag(Tag tag) {
-        return repository.findByTagsValoreContaining(tag.getValore());
-    }
-
-    public List<Tag> getTags(PuntoInteresse puntoInteresse) {
-        return repository.getTags(puntoInteresse.getId());
-    }
+    List<Tag> getTags(PuntoInteresse puntoInteresse);
 }

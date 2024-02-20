@@ -1,92 +1,27 @@
 package ids.unicam.Service;
 
-import ids.unicam.exception.ContestException;
-import ids.unicam.DataBase.Repository.ContestRepository;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
-import ids.unicam.models.contenuti.MaterialeGenerico;
-import ids.unicam.models.Stato;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import ids.unicam.models.contenuti.Stato;
+import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 
 import java.util.List;
-import java.util.Optional;
 
-import static ids.unicam.Main.logger;
+public interface ContestService {
+    List<TuristaAutenticato> getPartecipanti(Contest contest);
 
-@Service
-public class ContestService {
-    private final ContestRepository repository;
-    private final MaterialeService materialeService;
+    Contest creaContest(Contest contest);
 
-    @Autowired
-    public ContestService(ContestRepository repository, MaterialeService materialeService) {
-        this.repository = repository;
-        this.materialeService = materialeService;
+    List<Contest> getContestByPartecipante(TuristaAutenticato turistaAutenticato);
 
-    }
+    List<Contest> getContestByCreatore(Animatore animatore);
 
-    public List<TuristaAutenticato> getPartecipanti(Contest contest) {
-        return repository.findPartecipantiByContest(contest.getId());
-    }
+    void approvaMateriale(MaterialeGenerico materialeGenerico, Stato stato);
 
-    public void deleteById(int id) {
-        repository.deleteById(id);
-    }
+    List<MaterialeGenerico> getMaterialiContest(Contest contest);
 
-    Contest save(Contest contest) {
-        return repository.save(contest);
-    }
+    void aggiungiMateriale(MaterialeGenerico materialeGenerico, Contest contest, TuristaAutenticato turistaAutenticato);
 
-    public Optional<Contest> findById(int id) {
-        return repository.findById(id);
-    }
-
-    public List<Contest> findAll() {
-        return repository.findAll();
-    }
-
-
-    public void deleteAll() {
-        repository.deleteAll();
-    }
-
-    public Contest creaContest(Contest contest) {
-        return save(contest);
-    }
-
-    public List<Contest> getContestByPartecipante(TuristaAutenticato turistaAutenticato) {
-        return repository.findContestByPartecipantiContains(turistaAutenticato);
-    }
-
-    public List<Contest> getContestByCreatore(Animatore animatore) {
-        return repository.findContestByCreatore(animatore);
-    }
-
-    public void approvaMateriale(MaterialeGenerico materialeGenerico, Stato stato) {
-        materialeService.approvaMateriale(materialeGenerico, stato);
-    }
-
-    public List<MaterialeGenerico> getMaterialiContest(Contest contest) {
-        return materialeService.findByWhere(contest);
-    }
-
-    public MaterialeGenerico aggiungiMateriale(MaterialeGenerico materialeGenerico, Contest contest, TuristaAutenticato turistaAutenticato) {
-        if (!(getPartecipanti(contest).contains(turistaAutenticato))) {
-            logger.error("Devi essere iscritto al contest per caricare materiale su di esso");
-            throw new ContestException("Devi essere iscritto al contest per caricare materiale su di esso");
-        }
-        materialeGenerico.setIdProprietario(contest.getId());
-        return materialeService.save(materialeGenerico);
-    }
-
-
-    @Transactional
-    public void aggiungiPartecipante(Contest contest, TuristaAutenticato turistaAutenticato) {
-        contest.getPartecipanti().add(turistaAutenticato);
-        save(contest);
-    }
+    void aggiungiPartecipante(Contest contest, TuristaAutenticato turistaAutenticato);
 }
-

@@ -33,12 +33,14 @@ public class CreazioneTabelleDatabase {
         creaTabellaPreferiti(connection);
         creaTabellaTagContest(connection);
         creaTabellaOsservatori(connection);
+        creaTabellaListaMaterialiPuntoInteresse(connection);
+        creaTabellaListaMaterialiContest(connection);
     }
 
     public void eliminaTabelle(@NotNull Connection connection) {
         String[] tableNames = {
-                "CURATORI_OSSERVATORI","CONTEST_TAGS", "TURISTI_PREFERITI", "ITINERARIO_TAGS",
-                "PUNTI_DI_INTERESSE_TAGS", "TAG", "INVITO",
+                "CONTEST_LISTA_MATERIALI", "PUNTI_DI_INTERESSE_LISTA_MATERIALI, CURATORI_OSSERVATORI","CONTEST_TAGS",
+                "TURISTI_PREFERITI", "ITINERARIO_TAGS", "PUNTI_DI_INTERESSE_TAGS", "TAG", "INVITO",
                 "PUNTO_INTERESSE_HOURS_MAP", "ITINERARI_PERCORSO",
                 "CONTEST_PARTECIPANTI", "COMUNI", "MATERIALI",
                 "CONTEST", "ITINERARI", "PUNTI_DI_INTERESSE",
@@ -57,6 +59,36 @@ public class CreazioneTabelleDatabase {
 
 
     }
+    private void creaTabellaListaMaterialiPuntoInteresse(@NotNull Connection connection){
+
+        String createTableSQL =
+                "CREATE TABLE IF NOT EXISTS PUNTI_DI_INTERESSE_LISTA_MATERIALI(" +
+                        "id INT AUTO_INCREMENT PRIMARY KEY," +
+                        "punto_interesse_id INT," +
+                        " lista_materiali_id INT," +
+                        "FOREIGN KEY (punto_interesse_id) REFERENCES PUNTI_DI_INTERESSE(id) ON DELETE CASCADE)";
+        try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Lista Materiali Punto Interesse", e);
+        }
+    }
+
+    private void creaTabellaListaMaterialiContest(@NotNull Connection connection){
+
+        String createTableSQL =
+                "CREATE TABLE IF NOT EXISTS CONTEST_LISTA_MATERIALI(" +
+                        "contest_id INT," +
+                        "lista_materiali_id INT," +
+                        "PRIMARY KEY (contest_id, lista_materiali_id)," +
+                        "FOREIGN KEY (contest_id) REFERENCES CONTEST(id) ON DELETE CASCADE,"+
+                        "FOREIGN KEY (lista_materiali_id) REFERENCES MATERIALI(id) ON DELETE CASCADE)";
+        try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Lista Materiali Punto Interesse", e);
+        }
+    }
 
     private void creaTabellaOsservatori(@NotNull Connection connection){
 
@@ -70,7 +102,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella Invito", e);
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Osservatori", e);
         }
     }
 
@@ -168,6 +200,7 @@ public class CreazioneTabelleDatabase {
                 "CREATE TABLE IF NOT EXISTS CONTEST_TAGS(" +
                         "contest_id INT," +
                         "tags VARCHAR(50)," +
+                        "tags_id INT," +
                         "PRIMARY KEY (contest_id, tags)," +
                         "FOREIGN KEY (contest_id) REFERENCES contest(id))";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
@@ -332,15 +365,13 @@ public class CreazioneTabelleDatabase {
                 "CREATE TABLE IF NOT EXISTS CONTEST(" +
                         "id INT PRIMARY KEY NOT NULL," +
                         "nome_comune VARCHAR(50) NOT NULL," +
-                        "nome_contest VARCHAR(50) NOT NULL," +
                         "nome VARCHAR(50) NOT NULL," +
                         "latitudine DOUBLE ," +
                         "longitudine DOUBLE ," +
                         "aperto BOOLEAN NOT NULL," +
                         "obiettivo VARCHAR(100) NOT NULL," +
                         "creatore_id INT NOT NULL," +
-                        "stato BOOLEAN NOT NULL," +
-                        "tipo VARCHAR(50) NOT NULL," +
+                        "Materiale_Vincitore_id INT,"+
                         "EXPIRE_DATE DATE)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
@@ -355,7 +386,6 @@ public class CreazioneTabelleDatabase {
                         "id INT PRIMARY KEY NOT NULL," +
                         "stato BOOLEAN NOT NULL," +
                         "creatore_id INT NOT NULL," +
-                        "id_proprietario INT NOT NULL," +
                         "tipo VARCHAR(50) NOT NULL)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
