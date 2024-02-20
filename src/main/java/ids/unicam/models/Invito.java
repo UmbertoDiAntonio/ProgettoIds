@@ -1,7 +1,7 @@
 package ids.unicam.models;
 
-import ids.unicam.models.attori.TuristaAutenticato;
-import ids.unicam.models.contenuti.Contest;
+import ids.unicam.models.contenuti.puntiInteresse.Contest;
+import ids.unicam.models.users.TuristaAutenticato;
 import jakarta.persistence.*;
 import org.jetbrains.annotations.NotNull;
 
