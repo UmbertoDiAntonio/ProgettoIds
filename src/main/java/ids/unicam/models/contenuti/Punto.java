@@ -1,4 +1,4 @@
-package ids.unicam.models;
+package ids.unicam.models.contenuti;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
