@@ -1,10 +1,10 @@
 package ids.unicam.Service.impl;
 
-import ids.unicam.models.contenuti.Notifica2;
 import ids.unicam.DataBase.Repository.NotificaRepository;
-import ids.unicam.models.Notifica;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.Curatore;
+import ids.unicam.models.attori.TuristaAutenticato;
+import ids.unicam.models.contenuti.Notifica;
 import ids.unicam.models.contenuti.NotificaBuilder;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
@@ -29,31 +29,31 @@ public class NotificaServiceImpl {
     }
 
     public Notifica creaNotifica(@NotNull Curatore curatore, PuntoInteresse puntoInteresse, @NotNull Stato stato) {
-        if(turistaAutenticatoService.findById(puntoInteresse.getCreatore().getUsername()).isEmpty()) {
+        if (turistaAutenticatoService.findById(puntoInteresse.getCreatore().getUsername()).isEmpty()) {
             logger.warn("il creatore non esiste piu'.");
             return null;
         }
-        return notificaRepository.save(new Notifica("Valutazione: " + puntoInteresse.getNome(),
-                curatore.getUsername() + " " + (stato.asBoolean() ? "ha approvato " : "non ha approvato ") +
-                        "il " + puntoInteresse.getNome(), puntoInteresse.getCreatore()));
+        return notificaRepository.save(new NotificaBuilder().withTitolo("Valutazione: " + puntoInteresse.getNome())
+                .withDescrizione(curatore.getUsername() + " " + (stato.asBoolean() ? "ha approvato " : "non ha approvato ") +
+                        "il " + puntoInteresse.getNome())
+                .withRicevente(puntoInteresse.getCreatore()).build());
     }
 
     public Notifica creaNotifica(Curatore curatore, MaterialeGenerico materialeGenerico, Stato stato) {
-        if(turistaAutenticatoService.findById(materialeGenerico.getCreatore().getUsername()).isEmpty()) {
+        if (turistaAutenticatoService.findById(materialeGenerico.getCreatore().getUsername()).isEmpty()) {
             logger.warn("il creatore non esiste piu'.");
             return null;
         }
-        return notificaRepository.save(new Notifica("Valutazione del materiale creato da: " + materialeGenerico.getCreatore().getUsername(),
-                curatore.getUsername() + " " + (stato.asBoolean() ? "ha approvato " : "non ha approvato ") +
-                        "il materiale con id " + materialeGenerico.getId(), materialeGenerico.getCreatore()));
+        return notificaRepository.save(new NotificaBuilder()
+                .withTitolo("Valutazione del materiale creato da: " + materialeGenerico.getCreatore().getUsername())
+                .withDescrizione(curatore.getUsername() + " " + (stato.asBoolean() ? "ha approvato " : "non ha approvato ") +
+                        "il materiale con id " + materialeGenerico.getId())
+                .withRicevente(materialeGenerico.getCreatore()).build());
     }
 
-    public List<Notifica> getNotifiche(Contributor contributor) {
-        return notificaRepository.findByRicevente(contributor);
+    public List<Notifica> getNotifiche(TuristaAutenticato turistaAutenticato) {
+        return notificaRepository.findByRicevente(turistaAutenticato);
     }
 
-    public Notifica2 creaNotifica() {
-        return new NotificaBuilder().withTitolo("titolo").withDescrizione("Desc").build();
-    }
 
 }

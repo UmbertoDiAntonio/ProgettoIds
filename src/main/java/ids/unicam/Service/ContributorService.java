@@ -1,7 +1,6 @@
 package ids.unicam.Service;
 
 import ids.unicam.models.Comune;
-import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 

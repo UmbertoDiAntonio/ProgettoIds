@@ -29,6 +29,7 @@ public class ContestServiceImpl implements ContestService {
 
     }
 
+
     public void deleteById(int id) {
         repository.deleteById(id);
     }
@@ -91,6 +92,12 @@ public class ContestServiceImpl implements ContestService {
     @Transactional
     public void aggiungiPartecipante(Contest contest, TuristaAutenticato turistaAutenticato) {
         contest.getPartecipanti().add(turistaAutenticato);
+        save(contest);
+    }
+
+    @Override
+    public void setVincitoreContest(Contest contest, MaterialeGenerico materialeGenerico) {
+        contest.setMaterialeVincitore(materialeGenerico);
         save(contest);
     }
 

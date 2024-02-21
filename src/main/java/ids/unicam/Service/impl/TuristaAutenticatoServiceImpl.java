@@ -19,7 +19,6 @@ import static ids.unicam.Main.logger;
 public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService {
     private final TuristaAutenticatoRepository repository;
     private final ContestServiceImpl contestServiceImpl;
-
     private final InvitoServiceImpl invitoServiceImpl;
 
 
@@ -124,4 +123,5 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
     public boolean isUsernameUnique(String username) {
         return repository.countUsername(username) == 0;
     }
+
 }

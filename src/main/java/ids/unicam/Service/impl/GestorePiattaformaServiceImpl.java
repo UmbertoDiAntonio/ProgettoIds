@@ -1,7 +1,6 @@
 package ids.unicam.Service.impl;
 
 import ids.unicam.Service.GestorePiattaformaService;
-import ids.unicam.Service.PoiService;
 import ids.unicam.models.Comune;
 import ids.unicam.models.attori.*;
 import jakarta.transaction.Transactional;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.GregorianCalendar;
-import java.util.Objects;
 
 import static ids.unicam.Main.logger;
 

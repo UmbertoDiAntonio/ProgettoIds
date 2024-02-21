@@ -162,10 +162,7 @@ public class JUnitUtentiTest {
         if (!(turista instanceof Contributor contributor))
             throw new IllegalArgumentException("errore");
 
-        PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse("parco centrale", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), TipologiaPuntoInteresse.PARCO, contributor)
-        ; //TODO
-        //gestorePiattaformaService.cambiaRuolo(contributor, Ruolo.CURATORE);
-        //Curatore curatore = comuneService.getCuratoriDelComune(comune.getNome()).getLast();
+        PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse("parco centrale", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), TipologiaPuntoInteresse.PARCO, contributor);
 
         TuristaAutenticato turist2 = gestorePiattaformaService.registra(comune, Ruolo.CURATORE, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "9Unico@", "user99");
         if (!(turist2 instanceof Curatore curatore1))

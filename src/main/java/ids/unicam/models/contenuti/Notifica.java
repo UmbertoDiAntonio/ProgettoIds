@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Notifica2 {
+public class Notifica {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenza_report")
@@ -25,7 +25,7 @@ public class Notifica2 {
     private LocalDateTime data;
 
     // Costruttore privato per il Builder
-    Notifica2(String titolo, String descrizione, TuristaAutenticato ricevente) {
+    Notifica(String titolo, String descrizione, TuristaAutenticato ricevente) {
         this.titolo = titolo;
         this.descrizione = descrizione;
         this.data = LocalDateTime.now();

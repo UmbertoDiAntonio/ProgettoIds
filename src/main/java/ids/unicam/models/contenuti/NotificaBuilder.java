@@ -24,11 +24,11 @@ public class NotificaBuilder {
         return this;
     }
 
-    public Notifica2 build() {
+    public Notifica build() {
         if (titolo == null || titolo.isBlank() || descrizione == null || descrizione.isBlank()) {
             throw new IllegalArgumentException("Titolo o descrizione sono vuoti");
         }
         //TODO validare ricevente
-        return new Notifica2(titolo, descrizione, ricevente);
+        return new Notifica(titolo, descrizione, ricevente);
     }
 }

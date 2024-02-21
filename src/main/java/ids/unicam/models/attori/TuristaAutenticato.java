@@ -2,7 +2,6 @@ package ids.unicam.models.attori;
 
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.persistence.*;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;

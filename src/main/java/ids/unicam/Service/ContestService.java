@@ -24,4 +24,6 @@ public interface ContestService {
     void aggiungiMateriale(MaterialeGenerico materialeGenerico, Contest contest, TuristaAutenticato turistaAutenticato);
 
     void aggiungiPartecipante(Contest contest, TuristaAutenticato turistaAutenticato);
+
+    void setVincitoreContest(Contest contest,  MaterialeGenerico materialeGenerico);
 }

@@ -46,7 +46,7 @@ public class PoiServiceImpl implements PoiService {
     @Override
     public @Nullable PuntoInteresse creaPuntoInteresse(String nomePoi, Punto centroComune, Orario orario, TipologiaPuntoInteresse tipo, Contributor creatore) {
         try {
-            PuntoInteresse punto = new PuntoInteresse(creatore.getComune(), nomePoi, centroComune,orario, tipo, creatore);//TODO orario
+            PuntoInteresse punto = new PuntoInteresse(creatore.getComune(), nomePoi, centroComune,orario, tipo, creatore);
             return save(punto);
         }catch (IllegalArgumentException e){
             logger.error("Verifica coordinate");
