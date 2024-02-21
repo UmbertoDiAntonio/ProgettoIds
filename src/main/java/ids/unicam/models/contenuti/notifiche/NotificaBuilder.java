@@ -1,7 +1,6 @@
 package ids.unicam.models.contenuti.notifiche;
 
 import ids.unicam.models.attori.TuristaAutenticato;
-import org.jetbrains.annotations.NotNull;
 
 public class NotificaBuilder {
     private String titolo;

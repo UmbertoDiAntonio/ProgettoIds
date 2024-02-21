@@ -2,18 +2,14 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.PoiRepository;
 import ids.unicam.Service.PoiService;
-import ids.unicam.models.DTO.RichiestaCreazionePoiDTO;
-import ids.unicam.models.Punto;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.ContributorAutorizzato;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.Taggable;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
-import ids.unicam.models.contenuti.puntiInteresse.Orario;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import ids.unicam.models.contenuti.puntiInteresse.Tag;
-import ids.unicam.models.contenuti.puntiInteresse.TipologiaPuntoInteresse;
 import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;

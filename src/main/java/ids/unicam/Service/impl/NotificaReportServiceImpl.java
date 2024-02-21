@@ -1,7 +1,6 @@
 package ids.unicam.Service.impl;
 
 import ids.unicam.models.contenuti.notifiche.NotificaBuilder;
-import ids.unicam.models.contenuti.notifiche.TipologiaNotifiche;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import org.springframework.stereotype.Service;
 

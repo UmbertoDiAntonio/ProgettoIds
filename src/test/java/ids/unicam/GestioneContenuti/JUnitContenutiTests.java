@@ -106,7 +106,7 @@ public class JUnitContenutiTests {
          * Creazione di un Punto di Interesse da parte di un contributorTrusted, che di base è approvato
          */
         {
-            TuristaAutenticato nuovo = gestorePiattaformaService.cambiaRuolo(contributor, Ruolo.CONTRIBUTOR_AUTORIZZATO);
+            gestorePiattaformaService.cambiaRuolo(contributor, Ruolo.CONTRIBUTOR_AUTORIZZATO);
             ContributorAutorizzato contributorAutorizzato = comuneService.getContributorAutorizzatiDelComune(comune.getNome()).getLast();
             int puntiInteresseComuneIniziali = comuneService.getPuntiInteresseNelComune(comune.getNome()).size();
 

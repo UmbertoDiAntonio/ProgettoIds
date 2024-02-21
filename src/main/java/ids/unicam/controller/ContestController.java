@@ -2,12 +2,9 @@ package ids.unicam.controller;
 
 
 import ids.unicam.Service.ContestService;
-import ids.unicam.models.Comune;
-import ids.unicam.models.DTO.RichiestaCreazioneComuneDTO;
 import ids.unicam.models.DTO.RichiestaCreazioneContestDTO;
 import ids.unicam.models.contenuti.Contest;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

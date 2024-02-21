@@ -1,6 +1,5 @@
 package ids.unicam.models.contenuti.puntiInteresse;
 
-import ids.unicam.models.Comune;
 import ids.unicam.models.DTO.RichiestaCreazionePoiDTO;
 import ids.unicam.models.Expirable;
 import ids.unicam.models.Punto;
@@ -16,7 +15,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;

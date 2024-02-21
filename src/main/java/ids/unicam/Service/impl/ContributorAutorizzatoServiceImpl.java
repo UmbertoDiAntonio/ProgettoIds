@@ -2,7 +2,6 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.ContributorAutorizzatoRepository;
 import ids.unicam.Service.ContributorAutorizzatoService;
-import ids.unicam.models.Comune;
 import ids.unicam.models.attori.ContributorAutorizzato;
 import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;

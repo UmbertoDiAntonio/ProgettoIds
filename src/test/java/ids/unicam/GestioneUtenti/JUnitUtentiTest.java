@@ -10,7 +10,6 @@ import ids.unicam.models.attori.*;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.Foto;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
-import ids.unicam.models.contenuti.notifiche.Notifica;
 import ids.unicam.models.contenuti.puntiInteresse.Orario;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import ids.unicam.models.contenuti.puntiInteresse.Tag;
@@ -20,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,24 +26,18 @@ import static org.junit.jupiter.api.Assertions.*;
 public class JUnitUtentiTest {
 
     private final ComuneServiceImpl comuneService;
-    private final ContributorServiceImpl contributorService;
-    private final ContributorAutorizzatoServiceImpl contributorAutorizzatoServiceImpl;
     private final CuratoreServiceImpl curatoreServiceImpl;
     private final PoiServiceImpl poiService;
-    private final MaterialeServiceImpl materialeService;
     private final TuristaAutenticatoServiceImpl turistaAutenticatoService;
     private final GestorePiattaformaServiceImpl gestorePiattaformaService;
     private final TuristaServiceImpl turistaService;
 
 
     @Autowired
-    public JUnitUtentiTest(ComuneServiceImpl comuneService, ContributorServiceImpl contributorService, ContributorAutorizzatoServiceImpl contributorAutorizzatoServiceImpl, CuratoreServiceImpl curatoreServiceImpl, PoiServiceImpl poiService, MaterialeServiceImpl materialeService, TuristaAutenticatoServiceImpl turistaAutenticatoService, GestorePiattaformaServiceImpl gestorePiattaformaService, TuristaServiceImpl turistaService, GestoreDatabase gestoreDatabase) {
+    public JUnitUtentiTest(ComuneServiceImpl comuneService, CuratoreServiceImpl curatoreServiceImpl, PoiServiceImpl poiService, TuristaAutenticatoServiceImpl turistaAutenticatoService, GestorePiattaformaServiceImpl gestorePiattaformaService, TuristaServiceImpl turistaService, GestoreDatabase gestoreDatabase) {
         this.comuneService = comuneService;
-        this.contributorService = contributorService;
-        this.contributorAutorizzatoServiceImpl = contributorAutorizzatoServiceImpl;
         this.curatoreServiceImpl = curatoreServiceImpl;
         this.poiService = poiService;
-        this.materialeService = materialeService;
         this.turistaAutenticatoService = turistaAutenticatoService;
         this.gestorePiattaformaService = gestorePiattaformaService;
         this.turistaService = turistaService;

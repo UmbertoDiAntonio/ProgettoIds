@@ -1,6 +1,5 @@
 package ids.unicam.controller;
 
-import jakarta.annotation.PostConstruct;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

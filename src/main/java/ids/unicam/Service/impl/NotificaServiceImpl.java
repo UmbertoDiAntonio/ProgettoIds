@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static ids.unicam.Main.logger;
-
 @Service
 public class NotificaServiceImpl {
 

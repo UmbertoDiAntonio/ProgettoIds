@@ -6,7 +6,6 @@ import ids.unicam.models.Invito;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.notifiche.Notifica;
-import ids.unicam.models.contenuti.notifiche.NotificaBuilder;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

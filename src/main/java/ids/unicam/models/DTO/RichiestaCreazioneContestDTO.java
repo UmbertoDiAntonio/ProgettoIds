@@ -1,7 +1,6 @@
 package ids.unicam.models.DTO;
 
 import ids.unicam.models.attori.Animatore;
-import jakarta.persistence.Access;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
