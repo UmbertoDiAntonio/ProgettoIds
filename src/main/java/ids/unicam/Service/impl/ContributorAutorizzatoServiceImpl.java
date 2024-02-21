@@ -31,7 +31,7 @@ public class ContributorAutorizzatoServiceImpl implements ContributorAutorizzato
         this.itinerarioServiceImpl = itinerarioServiceImpl;
     }
 
-    public void deleteById(int id) {
+    public void deleteById(String id) {
         repository.deleteById(id);
     }
 
@@ -42,7 +42,7 @@ public class ContributorAutorizzatoServiceImpl implements ContributorAutorizzato
     }
 
 
-    public Optional<ContributorAutorizzato> findById(int id) {
+    public Optional<ContributorAutorizzato> findById(String id) {
         return repository.findById(id);
     }
 
@@ -68,7 +68,7 @@ public class ContributorAutorizzatoServiceImpl implements ContributorAutorizzato
     public List<ContributorAutorizzato> findByNomeComune(String nomeComune) {
         return repository.findByComuneNome(nomeComune);
     }
-    
+
 
     @Override
     public Itinerario aggiungiItinerario(Comune comune, String nome, PuntoInteresse... puntiInteresse) {

@@ -47,7 +47,7 @@ public class Contributor extends TuristaAutenticato  {
     public String toString() {
         return "Contributor{" +
                 "comune=" + comune +
-                ", nome=" +getNome()+", id="+getId()+
+                ", nome=" +getNome()+
                 '}';
     }
 

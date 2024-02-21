@@ -88,7 +88,7 @@ public class ComuneServiceImpl implements ComuneService {
     }
 
     @Override
-    public void rimuoviContributor(int id) {
+    public void rimuoviContributor(String id) {
         contributorServiceImpl.deleteById(id);
     }
 

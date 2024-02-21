@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CuratoreRepository  extends JpaRepository<Curatore,Integer> {
+public interface CuratoreRepository  extends JpaRepository<Curatore,String> {
 
     List<Curatore> findByCognome(String cognome);
     List<Curatore> findByNome(String nome);
@@ -19,9 +19,9 @@ public interface CuratoreRepository  extends JpaRepository<Curatore,Integer> {
     @Query("SELECT c FROM Curatore c WHERE c.comune.nome = :nome_comune")
     List<Curatore> findCuratoreByComuneNome(String nome_comune);
 
-    @Query("select c.osservatori from Curatore c where c.id = :idCuratore")
-    List<Contributor> findOsservatoriByCuratore(int idCuratore);
-    @Query("SELECT Count(c) FROM Curatore c JOIN  c.osservatori  Where c.id = :idCuratore")
-    Integer countNumeroOsservatori( int idCuratore);
+    @Query("select c.osservatori from Curatore c where c.username = :usernameCuratore")
+    List<Contributor> findOsservatoriByCuratore(String usernameCuratore);
+    @Query("SELECT Count(c) FROM Curatore c JOIN  c.osservatori  Where c.username = :usernameCuratore")
+    Integer countNumeroOsservatori( String usernameCuratore);
 
 }

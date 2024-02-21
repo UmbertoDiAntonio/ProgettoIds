@@ -33,7 +33,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
         this.materialeServiceImpl = materialeServiceImpl;
     }
 
-    public void deleteById(int id) {
+    public void deleteById(String id) {
         repository.deleteById(id);
     }
 
@@ -43,7 +43,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
         return animatore;
     }
     
-    public Optional<Animatore> findById(int id) {
+    public Optional<Animatore> findById(String id) {
         return repository.findById(id);
     }
 

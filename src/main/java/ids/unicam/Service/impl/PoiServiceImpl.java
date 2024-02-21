@@ -14,6 +14,7 @@ import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import ids.unicam.models.contenuti.puntiInteresse.Tag;
 import ids.unicam.models.contenuti.puntiInteresse.TipologiaPuntoInteresse;
 import jakarta.transaction.Transactional;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,8 +44,17 @@ public class PoiServiceImpl implements PoiService {
     }
     @Transactional
     @Override
-    public PuntoInteresse creaPuntoInteresse(String nomePoi, Punto centroComune, Orario orario, TipologiaPuntoInteresse tipo, Contributor creatore) {
-        return save(new PuntoInteresse(creatore.getComune(), nomePoi, centroComune, orario, tipo, creatore));
+    public @Nullable PuntoInteresse creaPuntoInteresse(String nomePoi, Punto centroComune, Orario orario, TipologiaPuntoInteresse tipo, Contributor creatore) {
+        try {
+            PuntoInteresse punto = new PuntoInteresse(creatore.getComune(), nomePoi, centroComune, orario, tipo, creatore);
+            return save(punto);
+        }catch (IllegalArgumentException e){
+            logger.error("Verifica coordinate");
+        }catch (UnsupportedOperationException e){
+            logger.error("Verifica se è il comune giusto");
+        }
+        System.out.println("SAVE FINALE");
+        return null;
     }
 
     @Transactional
@@ -111,13 +121,6 @@ public class PoiServiceImpl implements PoiService {
         return repository.findAll();
     }
 
-    public PuntoInteresse getLast() {
-        return repository.findAll().getLast();
-    }
-
-    public PuntoInteresse getFirst() {
-        return repository.findAll().getFirst();
-    }
 
 
     public void deleteAll() {
@@ -150,5 +153,9 @@ public class PoiServiceImpl implements PoiService {
 
     public List<MaterialeGenerico> getMaterialiPoi(PuntoInteresse contenutoGenerico) {
         return repository.getMateriali(contenutoGenerico.getId());
+    }
+
+    public List<PuntoInteresse> findAll() {
+        return repository.findAll();
     }
 }

@@ -20,7 +20,7 @@ public interface ComuneService {
 
     List<Curatore> getCuratoriDelComune(String nome_comune);
 
-    void rimuoviContributor(int id);
+    void rimuoviContributor(String id);
 
     @Nullable Comune getComuneByNome(String nomeComune);
 

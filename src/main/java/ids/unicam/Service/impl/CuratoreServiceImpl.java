@@ -45,7 +45,7 @@ public class CuratoreServiceImpl implements CuratoreService {
     }
 
 
-    public void deleteById(int id) {
+    public void deleteById(String id) {
         repository.deleteById(id);
     }
 
@@ -55,8 +55,8 @@ public class CuratoreServiceImpl implements CuratoreService {
     }
 
 
-    public Optional<Curatore> findById(int id) {
-        return repository.findById(id);
+    public Optional<Curatore> findById(String idCuratore) {
+        return repository.findById(idCuratore);
     }
 
 
@@ -91,11 +91,12 @@ public class CuratoreServiceImpl implements CuratoreService {
     @Override
     @Transactional
     public void valuta(Curatore curatore, @NotNull PuntoInteresse puntoInteresse, Stato stato) {
-        puntoInteresse.setStato(stato);
-        if (stato == Stato.NON_APPROVATO)
+        if (!curatore.getComune().equals(puntoInteresse.getComune()))
+            return;
+        if (puntoInteresse.getStato().equals(stato) && stato.equals(Stato.NON_APPROVATO))
             poiServiceImpl.deleteById(puntoInteresse.getId());
-        else poiServiceImpl.save(puntoInteresse);
-
+        puntoInteresse.setStato(stato);
+        poiServiceImpl.save(puntoInteresse);
         Notifica notifica = notificaServiceImpl.creaNotifica(curatore, puntoInteresse, stato);
         System.out.println(notifica);
     }
@@ -159,8 +160,8 @@ public class CuratoreServiceImpl implements CuratoreService {
     }
 
     @Override
-    public void condividi(Curatore curatore,ContenutoGenerico contenutoGenerico) {
-        throw new UnsupportedOperationException(contenutoGenerico.getId() + "non può ancora essere condiviso da "+curatore);
+    public void condividi(Curatore curatore, ContenutoGenerico contenutoGenerico) {
+        throw new UnsupportedOperationException(contenutoGenerico.getId() + "non può ancora essere condiviso da " + curatore);
         //TODO
     }
 
@@ -180,7 +181,7 @@ public class CuratoreServiceImpl implements CuratoreService {
             return;
         }
         curatore.getOsservatori().add(osservatore);
-        deleteById(curatore.getId());
+        deleteById(curatore.getUsername());
         save(curatore);
     }
 
@@ -188,16 +189,16 @@ public class CuratoreServiceImpl implements CuratoreService {
     @Transactional
     public void rimuoviOsservatore(Curatore curatore, Contributor osservatore) {
         curatore.getOsservatori().remove(osservatore);
-        deleteById(curatore.getId());
+        deleteById(curatore.getUsername());
         save(curatore);
     }
 
     public List<Contributor> getOsservatori(Curatore curatore) {
-        return repository.findOsservatoriByCuratore(curatore.getId());
+        return repository.findOsservatoriByCuratore(curatore.getUsername());
     }
 
     public int getNumeroOsservatori(Curatore curatore) {
-        return repository.countNumeroOsservatori(curatore.getId());
+        return repository.countNumeroOsservatori(curatore.getUsername());
     }
 
 

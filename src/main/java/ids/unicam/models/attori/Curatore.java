@@ -33,7 +33,7 @@ public class Curatore extends ContributorAutorizzato {
     public String toString() {
         return "Curatore{" +
                 "comune=" + getComune() +
-                ", nome=" + getNome() + ", id=" + getId() +
+                ", nome=" + getNome()  +
                 '}';
     }
 

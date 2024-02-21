@@ -39,7 +39,7 @@ public class ContributorServiceImpl implements ContributorService, Observer {
         return repository.findByComuneNome(nomeComune);
     }
 
-    public void deleteById(int id) {
+    public void deleteById(String id) {
         repository.deleteById(id);
     }
 
@@ -49,7 +49,7 @@ public class ContributorServiceImpl implements ContributorService, Observer {
     }
 
 
-    public Optional<Contributor> findById(int id) {
+    public Optional<Contributor> findById(String id) {
         return repository.findById(id);
     }
 
@@ -58,13 +58,6 @@ public class ContributorServiceImpl implements ContributorService, Observer {
         return repository.findAll();
     }
 
-    public Contributor getLast() {
-        return repository.getLast();
-    }
-
-    public Contributor getFirst() {
-        return repository.getFirst();
-    }
 
 
     public void deleteAll() {

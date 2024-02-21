@@ -13,6 +13,6 @@ public interface InvitoRepository extends JpaRepository<Invito, Integer> {
 
     List<Invito> findByInvitato(TuristaAutenticato turistaAutenticato);
 
-    @Query("SELECT i FROM TuristaAutenticato t JOIN Invito i on t.id = i.invitato.id WHERE t.id = :id")
-    List<Invito> findInvitiByTurista(Integer id);
+    @Query("SELECT i FROM TuristaAutenticato t JOIN Invito i on t.username = i.invitato.username WHERE t.username = :usernameTurista")
+    List<Invito> findInvitiByTurista(String usernameTurista);
 }

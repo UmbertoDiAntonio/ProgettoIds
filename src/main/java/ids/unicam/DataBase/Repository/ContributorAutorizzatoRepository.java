@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ContributorAutorizzatoRepository extends JpaRepository<ContributorAutorizzato,Integer> {
+public interface ContributorAutorizzatoRepository extends JpaRepository<ContributorAutorizzato,String> {
     List<ContributorAutorizzato> findByCognome(String cognome);
     List<ContributorAutorizzato> findByNome(String nome);
     List<ContributorAutorizzato> findByComune(Comune comune);

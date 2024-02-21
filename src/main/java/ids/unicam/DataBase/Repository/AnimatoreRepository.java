@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface AnimatoreRepository extends JpaRepository<Animatore, Integer> {
+public interface AnimatoreRepository extends JpaRepository<Animatore, String> {
     List<Animatore> findByCognome(String cognome);
 
     List<Animatore> findByNome(String nome);

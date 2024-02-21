@@ -15,12 +15,8 @@ import java.util.Objects;
 @DiscriminatorColumn(name = "TIPO")
 @DiscriminatorValue("TuristaAutenticato")
 public class TuristaAutenticato extends Turista {
-    @Setter
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "sequenza_utenti")
-    @SequenceGenerator(name = "sequenza_utenti", sequenceName = "users", allocationSize = 1)
-    private Integer id;
     private String nome ="";
+    @Id
     private String username="";
     private String cognome ="";
     private GregorianCalendar dataNascita = new GregorianCalendar();
@@ -52,10 +48,6 @@ public class TuristaAutenticato extends Turista {
         return username;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
     public List<PuntoInteresse> getPreferiti() {
         return preferiti;
     }
@@ -74,7 +66,6 @@ public class TuristaAutenticato extends Turista {
     @Override
     public String toString() {
         return "TuristaAutenticato{" +
-                "id=" + id +
                 ", nome='" + nome + '\'' +
                 ", username='" + username + '\'' +
                 ", cognome='" + cognome + '\'' +
@@ -96,9 +87,8 @@ public class TuristaAutenticato extends Turista {
 
         TuristaAutenticato that = (TuristaAutenticato) o;
 
-        if (!id.equals(that.id)) return false;
         if (!Objects.equals(nome, that.nome)) return false;
-        if (!Objects.equals(username, that.username)) return false;
+        if (!username.equals(that.username)) return false;
         if (!Objects.equals(cognome, that.cognome)) return false;
         if (!Objects.equals(dataNascita, that.dataNascita)) return false;
         return Objects.equals(password, that.password);
@@ -106,9 +96,8 @@ public class TuristaAutenticato extends Turista {
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + (nome != null ? nome.hashCode() : 0);
-        result = 31 * result + (username != null ? username.hashCode() : 0);
+        int result = nome != null ? nome.hashCode() : 0;
+        result = 31 * result + username.hashCode();
         result = 31 * result + (cognome != null ? cognome.hashCode() : 0);
         result = 31 * result + (dataNascita != null ? dataNascita.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);

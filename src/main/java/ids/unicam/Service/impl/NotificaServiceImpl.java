@@ -29,7 +29,7 @@ public class NotificaServiceImpl {
     }
 
     public Notifica creaNotifica(@NotNull Curatore curatore, PuntoInteresse puntoInteresse, @NotNull Stato stato) {
-        if(turistaAutenticatoService.findById(puntoInteresse.getCreatore().getId()).isEmpty()) {
+        if(turistaAutenticatoService.findById(puntoInteresse.getCreatore().getUsername()).isEmpty()) {
             logger.warn("il creatore non esiste piu'.");
             return null;
         }
@@ -39,7 +39,7 @@ public class NotificaServiceImpl {
     }
 
     public Notifica creaNotifica(Curatore curatore, MaterialeGenerico materialeGenerico, Stato stato) {
-        if(turistaAutenticatoService.findById(materialeGenerico.getCreatore().getId()).isEmpty()) {
+        if(turistaAutenticatoService.findById(materialeGenerico.getCreatore().getUsername()).isEmpty()) {
             logger.warn("il creatore non esiste piu'.");
             return null;
         }

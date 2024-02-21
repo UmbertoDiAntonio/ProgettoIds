@@ -22,8 +22,6 @@ public class Notifica {
     @OneToOne
     private TuristaAutenticato ricevente;
 
-    @OneToOne
-    private TuristaAutenticato segnalatore;
 
     private String titolo;
 
@@ -46,7 +44,6 @@ public class Notifica {
     @Override
     public String toString() {
         return "Notifica{" +
-                "segnalatore=" + segnalatore +
                 ", titolo='" + titolo + '\'' +
                 ", descrizione='" + descrizione + '\'' +
                 ", data=" + data +

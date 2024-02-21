@@ -92,14 +92,13 @@ public class CreazioneTabelleDatabase {
     }
 
     private void creaTabellaOsservatori(@NotNull Connection connection){
-
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS CURATORI_OSSERVATORI(" +
-                        "CURATORE_ID INT," +
-                        "OSSERVATORI_ID INT," +
-                        "PRIMARY KEY(CURATORE_ID, OSSERVATORI_ID)," +
-                        "FOREIGN KEY (CURATORE_ID) REFERENCES CURATORI(id) ON DELETE CASCADE," +
-                        "FOREIGN KEY (OSSERVATORI_ID) REFERENCES CONTRIBUTOR(id) ON DELETE CASCADE)";
+                        "CURATORE_USERNAME VARCHAR(50)," +
+                        "OSSERVATORI_USERNAME INT," +
+                        "PRIMARY KEY(CURATORE_USERNAME, OSSERVATORI_USERNAME)," +
+                        "FOREIGN KEY (CURATORE_USERNAME) REFERENCES CURATORI(username) ON DELETE CASCADE," +
+                        "FOREIGN KEY (OSSERVATORI_USERNAME) REFERENCES CONTRIBUTOR(username) ON DELETE CASCADE)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -112,7 +111,7 @@ public class CreazioneTabelleDatabase {
                 "CREATE TABLE IF NOT EXISTS INVITO(" +
                         "id INT PRIMARY KEY AUTO_INCREMENT," +
                         "contest_id INT," +
-                        "invitato_id INT," +
+                        "invitato_username VARCHAR(50)," +
                         "FOREIGN KEY (contest_id) REFERENCES CONTEST(id))";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
@@ -169,9 +168,9 @@ public class CreazioneTabelleDatabase {
     private void creaTabellaPreferiti(@NotNull Connection connection) {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS TURISTI_PREFERITI(" +
-                        "TURISTA_AUTENTICATO_ID INT," +
+                        "TURISTA_AUTENTICATO_USERNAME VARCHAR(50)," +
                         "PREFERITI_ID INT," +
-                        "FOREIGN KEY (TURISTA_AUTENTICATO_ID) REFERENCES TURISTI(ID)," +
+                        "FOREIGN KEY (TURISTA_AUTENTICATO_USERNAME) REFERENCES TURISTI(username)," +
                         "FOREIGN KEY (PREFERITI_ID) REFERENCES PUNTI_DI_INTERESSE(ID) ON DELETE CASCADE)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
@@ -179,6 +178,8 @@ public class CreazioneTabelleDatabase {
             logger.error("Impossibile eseguire la QuerySQL creazione tabella Turisti Preferiti", e);
         }
     }
+
+
 
     private void creaTabellaTuristi(@NotNull Connection connection) {
         String createTableSQL =
@@ -245,19 +246,19 @@ public class CreazioneTabelleDatabase {
     private void creaTabellaNotifica(@NotNull Connection connection) {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS NOTIFICA(" +
-                        "id INT PRIMARY KEY NOT NULL," +
-                        "data DATE," +
+                        "id INT PRIMARY KEY AUTO_INCREMENT," +
+                        "data TIMESTAMP," +
                         "descrizione VARCHAR(255),"+
-                        "ricevente_id INT," +
-                        "segnalatore_id INT,"+
-                        "titolo VARCHAR(100),"+
-                        "FOREIGN KEY (segnalatore_id) REFERENCES TURISTI(id))";
+                        "ricevente_username VARCHAR(50)," +
+                        "titolo VARCHAR(100))";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.error("Impossibile eseguire la QuerySQL creazione tabella Notifica", e);
         }
     }
+
+
 
     private void creaTabellaAnimatori(@NotNull Connection connection) {
         String createTableSQL =
@@ -295,9 +296,9 @@ public class CreazioneTabelleDatabase {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS CONTEST_PARTECIPANTI(" +
                         "contest_id INT NOT NULL," +
-                        "partecipanti_id INT," +
+                        "partecipanti_username VARCHAR(50)," +
                         "FOREIGN KEY (contest_id) REFERENCES CONTEST(id)," +
-                        "FOREIGN KEY (partecipanti_id) REFERENCES TURISTI(id))";
+                        "FOREIGN KEY (partecipanti_username) REFERENCES TURISTI(username))";
 
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
@@ -349,7 +350,7 @@ public class CreazioneTabelleDatabase {
                         "longitudine DOUBLE ," +
                         "nome VARCHAR(50) NOT NULL," +
                         "tipo VARCHAR(50) NOT NULL," +
-                        "creatore_id INT NOT NULL,"+
+                        "creatore_username VARCHAR(50) NOT NULL,"+
                         "EXPIRE_DATE DATE)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
@@ -384,7 +385,7 @@ public class CreazioneTabelleDatabase {
                         "longitudine DOUBLE ," +
                         "aperto BOOLEAN NOT NULL," +
                         "obiettivo VARCHAR(100) NOT NULL," +
-                        "creatore_id INT NOT NULL," +
+                        "creatore_username VARCHAR(50) NOT NULL," +
                         "Materiale_Vincitore_id INT,"+
                         "EXPIRE_DATE DATE)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
@@ -399,7 +400,7 @@ public class CreazioneTabelleDatabase {
                 "CREATE TABLE IF NOT EXISTS MATERIALI(" +
                         "id INT PRIMARY KEY NOT NULL," +
                         "stato BOOLEAN NOT NULL," +
-                        "creatore_id INT NOT NULL," +
+                        "creatore_username VARCHAR(50) NOT NULL," +
                         "tipo VARCHAR(50) NOT NULL)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();

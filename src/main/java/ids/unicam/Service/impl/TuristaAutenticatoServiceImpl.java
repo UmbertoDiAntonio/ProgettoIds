@@ -31,12 +31,12 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
     }
 
 
-    public void deleteById(int id) {
+    public void deleteById(String id) {
         repository.deleteById(id);
     }
 
 
-    public Optional<TuristaAutenticato> findById(int id) {
+    public Optional<TuristaAutenticato> findById(String id) {
         return repository.findById(id);
     }
 
@@ -77,6 +77,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
         save(turistaAutenticato);
     }
 
+    @Transactional
     @Override
     public void aggiungiPreferito(TuristaAutenticato turista, PuntoInteresse puntoInteresse) {
         if (puntoInteresse.getStato().asBoolean())
@@ -90,7 +91,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
 
     @Override
     public List<PuntoInteresse> findPreferiti(TuristaAutenticato turistaAutenticato) {
-        return repository.findPreferitiByTurista(turistaAutenticato.getId());
+        return repository.findPreferitiByTurista(turistaAutenticato.getUsername());
     }
 
     /**

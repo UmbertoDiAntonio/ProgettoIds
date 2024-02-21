@@ -1,14 +1,17 @@
 package ids.unicam.Service.impl;
 
 import ids.unicam.Service.GestorePiattaformaService;
+import ids.unicam.Service.PoiService;
 import ids.unicam.models.Comune;
 import ids.unicam.models.attori.*;
+import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.GregorianCalendar;
+import java.util.Objects;
 
 import static ids.unicam.Main.logger;
 
@@ -19,15 +22,17 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
     private final CuratoreServiceImpl curatoreServiceImpl;
     private final AnimatoreServiceImpl animatoreServiceImpl;
     private final ContributorAutorizzatoServiceImpl contributorAutorizzatoServiceImpl;
+    private final PoiServiceImpl poiServiceImpl;
 
     @Autowired
     public GestorePiattaformaServiceImpl(ContributorServiceImpl contributorServiceImpl, TuristaAutenticatoServiceImpl turistaAutenticatoServiceImpl,
-                                         CuratoreServiceImpl curatoreServiceImpl, AnimatoreServiceImpl animatoreServiceImpl, ContributorAutorizzatoServiceImpl contributorAutorizzatoServiceImpl) {
+                                         CuratoreServiceImpl curatoreServiceImpl, AnimatoreServiceImpl animatoreServiceImpl, ContributorAutorizzatoServiceImpl contributorAutorizzatoServiceImpl, PoiServiceImpl poiServiceImpl) {
         this.contributorServiceImpl = contributorServiceImpl;
         this.turistaAutenticatoServiceImpl = turistaAutenticatoServiceImpl;
         this.animatoreServiceImpl = animatoreServiceImpl;
         this.curatoreServiceImpl = curatoreServiceImpl;
         this.contributorAutorizzatoServiceImpl = contributorAutorizzatoServiceImpl;
+        this.poiServiceImpl = poiServiceImpl;
     }
 
 
@@ -37,49 +42,43 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
      * @param contributor il contributor a cui cambiare ruolo
      * @param ruolo       il nuovo ruolo
      */
+    @Transactional
     @Override
     public TuristaAutenticato cambiaRuolo(Contributor contributor, @NotNull Ruolo ruolo) {
         Comune comune = contributor.getComune();
-        rimuoviVecchioRuolo(contributor);
-
-        return switch (ruolo) {
+        Contributor modificato = switch (ruolo) {
             case TURISTA -> {
                 logger.error("Non puoi tornare un turista");
                 yield null;
             }
-            case CURATORE -> {
-                Curatore curatore = new Curatore(contributor);
-                curatore.setId(curatore.getId());
-                yield curatoreServiceImpl.save(curatore);
-            }
-            case ANIMATORE -> {
-                Animatore animatore = new Animatore(contributor);
-                animatore.setId(contributor.getId());
-                yield animatoreServiceImpl.save(new Animatore(contributor));
-            }
-            case CONTRIBUTOR_AUTORIZZATO -> {
-                ContributorAutorizzato contributorAut = new ContributorAutorizzato(contributor);
-                contributorAut.setId(contributor.getId());
-                yield contributorAutorizzatoServiceImpl.save(contributorAut);
-            }
-            case CONTRIBUTOR -> {
-                Contributor contributor2 = new Contributor(comune, contributor);
-                contributor2.setId(contributor.getId());
-                yield contributorServiceImpl.save(contributor2);
-            }
-
+            case CURATORE -> curatoreServiceImpl.save(new Curatore(contributor));
+            case ANIMATORE -> animatoreServiceImpl.save(new Animatore(new Animatore(contributor)));
+            case CONTRIBUTOR_AUTORIZZATO ->
+                    contributorAutorizzatoServiceImpl.save(new ContributorAutorizzato(contributor));
+            case CONTRIBUTOR -> contributorServiceImpl.save(new Contributor(comune, contributor));
         };
 
+        poiServiceImpl.findAll().stream()
+                .filter(puntoInteresse -> puntoInteresse.getCreatore() != null && puntoInteresse.getCreatore().getUsername().equals(contributor.getUsername()))
+                .forEach(puntoInteresse -> {
+                    puntoInteresse.setCreatore(modificato);
+                    poiServiceImpl.save(puntoInteresse);
+                });
+
+
+        //rimuoviVecchioRuolo(contributor);
+
+        return modificato;
     }
 
 
     private void rimuoviVecchioRuolo(@NotNull Contributor contributor) {
         switch (contributor) {
-            case Curatore curatore -> curatoreServiceImpl.deleteById(curatore.getId());
+            case Curatore curatore -> curatoreServiceImpl.deleteById(curatore.getUsername());
             case ContributorAutorizzato contributorAutorizzato ->
-                    contributorAutorizzatoServiceImpl.deleteById(contributorAutorizzato.getId());
-            case Animatore animatore -> animatoreServiceImpl.deleteById(animatore.getId());
-            case Contributor contributor1 -> contributorServiceImpl.deleteById(contributor1.getId());
+                    contributorAutorizzatoServiceImpl.deleteById(contributorAutorizzato.getUsername());
+            case Animatore animatore -> animatoreServiceImpl.deleteById(animatore.getUsername());
+            case Contributor contributor1 -> contributorServiceImpl.deleteById(contributor1.getUsername());
         }
     }
 

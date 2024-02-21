@@ -13,7 +13,9 @@ import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +48,7 @@ public class PuntoInteresse extends ContenutoGenerico implements Contenitore, Ta
     private Punto pt = null;
 
     @Getter
+    @Setter
     @OneToOne
     private Contributor creatore = null;
 
@@ -61,10 +64,10 @@ public class PuntoInteresse extends ContenutoGenerico implements Contenitore, Ta
     @Getter
     private TipologiaPuntoInteresse tipo;
 
-    public PuntoInteresse(Comune comune, String nome, Punto pt, TipologiaPuntoInteresse tipologiaPuntoInteresse, Contributor creatore) {
+    public PuntoInteresse(Comune comune, String nome, Punto pt, TipologiaPuntoInteresse tipologiaPuntoInteresse, @NotNull Contributor creatore) {
         super(comune);
         if (!comune.verificaCoordinateComune(pt)) {
-            logger.error("Non si possono creare punti di interesse fuori dal comune");
+            logger.error("Non si possono creare punti di interesse fuori dal comune2");
             throw new IllegalArgumentException("Posizione Punto di Interesse Fuori dall'area del comune");
         }
         if (!creatore.getComune().equals(getComune())) {
@@ -81,10 +84,11 @@ public class PuntoInteresse extends ContenutoGenerico implements Contenitore, Ta
     }
 
     public PuntoInteresse(Comune comune, String nome, Punto pt,Orario orario, TipologiaPuntoInteresse tipologiaPuntoInteresse,
-                          Contributor creatore) {
+                          @NotNull Contributor creatore) {
         super(comune);
+        System.out.println("DENTRO "+pt);
         if (!comune.verificaCoordinateComune(pt)) {
-            logger.error("Non si possono creare punti di interesse fuori dal comune");
+            logger.error("Non si possono creare punti di interesse fuori dal comune1");
             return;
         }
         logger.debug("Creato POI " + nome + " in " + pt);
@@ -93,6 +97,7 @@ public class PuntoInteresse extends ContenutoGenerico implements Contenitore, Ta
         this.orario = orario;
         this.tipo = tipologiaPuntoInteresse;
         this.creatore = creatore;
+        System.out.println("ESCO");
     }
 
     public String mostraInformazioniDettagliate(){
