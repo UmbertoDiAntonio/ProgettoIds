@@ -44,21 +44,30 @@ public class ComuneServiceImpl implements ComuneService {
         comuneRepository.deleteById(id);
     }
 
+    @Override
+    public Comune update(Comune comune, int id) {
+        //TODO
+        return null;
+    }
+
 
     public Comune save(Comune comune) {
         return comuneRepository.save(comune);
     }
 
-    @Override
-    public Comune creaComune(String nomeComune) {
-        return save(new Comune(nomeComune));
+
+    public Comune creaComune(Comune comune) {
+        return save(comune);
     }
+
+
 
     public Optional<Comune> findById(int id) {
         return comuneRepository.findById(id);
     }
 
 
+    @Override
     public List<Comune> findAll() {
         return comuneRepository.findAll();
     }
@@ -114,6 +123,5 @@ public class ComuneServiceImpl implements ComuneService {
             return Collections.emptyList(); // Nessun comune trovato con quel nome
         }
     }
-
 
 }

@@ -43,6 +43,12 @@ public class ContestServiceImpl implements ContestService {
         return repository.findById(id);
     }
 
+    @Override
+    public Contest update(Contest contest, int id) {
+        //TODO
+        return null;
+    }
+
     public List<Contest> findAll() {
         return repository.findAll();
     }

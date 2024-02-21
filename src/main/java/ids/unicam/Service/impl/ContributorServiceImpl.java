@@ -63,8 +63,8 @@ public class ContributorServiceImpl implements ContributorService, Observer {
 
 
     @Override
-    public Itinerario aggiungiItinerario(Comune comune, String nome, PuntoInteresse... puntoInteresse) {
-        return itinerarioServiceImpl.creaItinerario(comune, nome, puntoInteresse);
+    public Itinerario aggiungiItinerario(Itinerario itinerario) {
+        return itinerarioServiceImpl.creaItinerario(itinerario);
     }
 
     @Transactional

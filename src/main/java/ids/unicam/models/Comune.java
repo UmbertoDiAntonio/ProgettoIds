@@ -2,6 +2,7 @@ package ids.unicam.models;
 
 import ids.unicam.OSM.RichiestaOSM;
 import ids.unicam.exception.ConnessioneFallitaException;
+import ids.unicam.models.DTO.RichiestaCreazioneComuneDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,13 +31,13 @@ public class Comune {
 
 
     /**
-     * @param nome Nome del Comune
+     * @param comuneDTO Nome del Comune
      * @throws IllegalArgumentException se il nome del comune non corrisponde a nessun comune
      * @throws RuntimeException         se non è possibile raggiungere il sistema OSM
      */
-    public Comune(String nome) {
+    public Comune(RichiestaCreazioneComuneDTO comuneDTO) {
         try {
-            this.posizione = RichiestaOSM.getCoordinateDaComune(nome);
+            this.posizione = RichiestaOSM.getCoordinateDaComune(comuneDTO.getNome());
             if (posizione == null) {
                 logger.error("Coordinate comune nulle");
             }
@@ -45,7 +46,7 @@ public class Comune {
             if (this.nome == null)
                 throw new RuntimeException("Impossibile stabilire la connessione con il sistema OSM");
 
-            if (!this.nome.equalsIgnoreCase(nome))
+            if (!this.nome.equalsIgnoreCase(comuneDTO.getNome()))
                 throw new IllegalArgumentException("Il nome del comune ricercato non corrisponde con nessun comune reale");
 
         } catch (ConnessioneFallitaException e) {
@@ -59,6 +60,8 @@ public class Comune {
      * @return true se il punto è all'interno del territorio del comune
      */
     public final boolean verificaCoordinateComune(Punto punto) {
+        if(punto ==  null)
+            throw new IllegalArgumentException("il punto non puo' essere nullo");
         String nomeComune = RichiestaOSM.getComuneDaCoordinate(punto);
         if (nomeComune != null) {
             return nomeComune.equalsIgnoreCase(getNome());

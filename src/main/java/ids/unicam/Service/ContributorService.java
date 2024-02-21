@@ -7,7 +7,7 @@ import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import java.time.LocalDate;
 
 public interface ContributorService {
-    Itinerario aggiungiItinerario(Comune comune, String nome, PuntoInteresse... puntoInteresse) ;
+    Itinerario aggiungiItinerario(Itinerario itinerario) ;
 
     boolean aggiungiTappaItinerario(Itinerario itinerario, PuntoInteresse puntoInteresse);
     void modificaScadenza(PuntoInteresse puntoInteresse, LocalDate expireDate);

@@ -4,6 +4,9 @@ import ids.unicam.models.Comune;
 import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface ItinerarioService {
 
     boolean aggiungiTappa(Itinerario itinerario, PuntoInteresse puntoInteresse);
@@ -12,5 +15,14 @@ public interface ItinerarioService {
 
     void rimuoviTappa(Itinerario itinerario, PuntoInteresse puntoInteresse);
 
-    Itinerario creaItinerario(Comune comune, String nome, PuntoInteresse... puntiInteresse);
+    Itinerario creaItinerario(Itinerario itinerario);
+
+    Optional<Itinerario> getById(int id);
+
+    List<Itinerario> getAll();
+
+    void deleteById(int id);
+
+    Itinerario update(Itinerario itinerario, int id);
+
 }

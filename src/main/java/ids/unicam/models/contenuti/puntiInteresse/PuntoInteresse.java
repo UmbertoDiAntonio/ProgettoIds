@@ -1,6 +1,7 @@
 package ids.unicam.models.contenuti.puntiInteresse;
 
 import ids.unicam.models.Comune;
+import ids.unicam.models.DTO.RichiestaCreazionePoiDTO;
 import ids.unicam.models.Expirable;
 import ids.unicam.models.Punto;
 import ids.unicam.models.attori.Contributor;
@@ -69,39 +70,25 @@ public class PuntoInteresse extends ContenutoGenerico implements Contenitore, Ta
     @Getter
     private TipologiaPuntoInteresse tipo;
 
-    public PuntoInteresse(Comune comune, String nome, Punto pt, TipologiaPuntoInteresse tipologiaPuntoInteresse, @NotNull Contributor creatore) {
-        super(comune);
-        if (!comune.verificaCoordinateComune(pt)) {
+    public PuntoInteresse(RichiestaCreazionePoiDTO poiDTO) {
+        super(poiDTO.getCreatore().getComune());
+        if (!poiDTO.getCreatore().getComune().verificaCoordinateComune(poiDTO.getCoordinate())) {
             logger.error("Non si possono creare punti di interesse fuori dal comune");
             throw new IllegalArgumentException("Posizione Punto di Interesse Fuori dall'area del comune");
         }
-        if (!creatore.getComune().equals(getComune())) {
-            logger.error(creatore.getNome() + " non puo' creare punti di interesse fuori dal suo comune");
+        if (!poiDTO.getCreatore().getComune().equals(getComune())) {
+            logger.error(poiDTO.getCreatore().getNome() + " non puo' creare punti di interesse fuori dal suo comune");
             throw new UnsupportedOperationException(creatore + " non può creare punti di interesse fuori dal suo comune");
         }
         logger.debug("Creato POI " + nome + " in " + pt);
-        this.setStato(Stato.toStatus(creatore instanceof ContributorAutorizzato));
-        this.nome = nome;
-        this.pt = pt;
-        this.orario = new Orario();
-        this.tipo = tipologiaPuntoInteresse;
-        this.creatore = creatore;
+        this.setStato(poiDTO.getCreatore() instanceof ContributorAutorizzato ? Stato.APPROVATO : Stato.IN_ATTESA);
+        this.nome = poiDTO.getNome();
+        this.pt = poiDTO.getCoordinate();
+        this.orario = poiDTO.getOrario();
+        this.tipo = poiDTO.getTipologiaPuntoInteresse();
+        this.creatore = poiDTO.getCreatore();
     }
 
-    public PuntoInteresse(Comune comune, String nome, Punto pt,Orario orario, TipologiaPuntoInteresse tipologiaPuntoInteresse,
-                          @NotNull Contributor creatore) {
-        super(comune);
-        if (!comune.verificaCoordinateComune(pt)) {
-            logger.error("Non si possono creare punti di interesse fuori dal comune");
-            return;
-        }
-        logger.debug("Creato POI " + nome + " in " + pt);
-        this.nome = nome;
-        this.pt = pt;
-        this.orario = orario;
-        this.tipo = tipologiaPuntoInteresse;
-        this.creatore = creatore;
-    }
 
     public String mostraInformazioniDettagliate(){
         return getNome() + " " + getOrario();

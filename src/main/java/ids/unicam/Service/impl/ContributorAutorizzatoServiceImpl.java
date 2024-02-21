@@ -67,8 +67,8 @@ public class ContributorAutorizzatoServiceImpl implements ContributorAutorizzato
 
 
     @Override
-    public Itinerario aggiungiItinerario(Comune comune, String nome, PuntoInteresse... puntiInteresse) {
-        return itinerarioServiceImpl.creaItinerario(comune, nome, puntiInteresse);
+    public Itinerario aggiungiItinerario(Itinerario itinerario) {
+        return itinerarioServiceImpl.creaItinerario(itinerario);
     }
 
     @Override

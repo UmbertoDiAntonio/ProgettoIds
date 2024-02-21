@@ -60,15 +60,6 @@ public class CuratoreServiceImpl implements CuratoreService {
         return repository.findAll();
     }
 
-    public Curatore getLast() {
-        return repository.findAll().getLast();
-    }
-
-    public Curatore getFirst() {
-        return repository.findAll().getFirst();
-    }
-
-
     public void deleteAll() {
         repository.deleteAll();
     }
@@ -88,11 +79,11 @@ public class CuratoreServiceImpl implements CuratoreService {
     @Transactional
     public void valuta(Curatore curatore, @NotNull PuntoInteresse puntoInteresse, Stato stato) {
         if (!curatore.getComune().equals(puntoInteresse.getComune()))
-            return;
-        if (puntoInteresse.getStato()==stato && stato==Stato.NON_APPROVATO) {
-            System.out.println("\n\nDELETE\n\n");
-            poiServiceImpl.deleteById(puntoInteresse.getId());
-        }
+            throw new UnsupportedOperationException("curatore non puo' operare fuori dal suo comune");
+        if(puntoInteresse.getStato() != Stato.IN_ATTESA)
+            throw new UnsupportedOperationException("punto di interesse già settato");
+        if(stato==Stato.IN_ATTESA)
+            throw new UnsupportedOperationException("stato in attesa");
         puntoInteresse.setStato(stato);
         poiServiceImpl.save(puntoInteresse);
         Notifica notifica = notificaServiceImpl.creaNotifica(curatore, puntoInteresse, stato);

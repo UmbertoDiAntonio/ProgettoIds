@@ -2,6 +2,7 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.NotificaRepository;
 import ids.unicam.models.attori.Curatore;
+import ids.unicam.models.attori.Turista;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.notifiche.Notifica;
 import ids.unicam.models.contenuti.notifiche.NotificaBuilder;
@@ -33,17 +34,18 @@ public class NotificaServiceImpl {
             return null;
         }
         return notificaRepository.save(new NotificaBuilder().withTitolo("Valutazione: " + puntoInteresse.getNome())
-                .withDescrizione(curatore.getUsername() + " " + (stato.asBoolean() ? "ha approvato " : "non ha approvato ") +
+                .withDescrizione(curatore.getUsername() + " " + (Boolean.TRUE.equals(stato.asBoolean()) ? "ha approvato " : "non ha approvato ") +
                         "\"" + puntoInteresse.getNome()+"\"")
                 .withDestinatario(puntoInteresse.getCreatore()).build());
     }
+
 
     public Notifica creaNotifica(Curatore curatore, MaterialeGenerico materialeGenerico, Stato stato) {
 
         return notificaRepository.save(
                 new NotificaBuilder()
                         .withTitolo("Valutazione del materiale creato da: " + materialeGenerico.getCreatore().getUsername())
-                        .withDescrizione(curatore.getUsername() + " " + (stato.asBoolean() ? "ha approvato " : "non ha approvato ") +
+                        .withDescrizione(curatore.getUsername() + " " + (Boolean.TRUE.equals(stato.asBoolean()) ? "ha approvato " : "non ha approvato ") +
                                 "il materiale con id " + materialeGenerico.getId())
                         .withDestinatario(materialeGenerico.getCreatore()).build());
     }
@@ -53,4 +55,7 @@ public class NotificaServiceImpl {
     }
 
 
+    public Notifica save(Notifica build) {
+        return notificaRepository.save(build);
+    }
 }

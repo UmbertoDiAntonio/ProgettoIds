@@ -57,6 +57,7 @@ public class MaterialeServiceImpl implements MaterialeService {
     @Override
     public void approvaMateriale(MaterialeGenerico materialeGenerico, Stato stato) {
         materialeGenerico.setStato(stato);
+        save(materialeGenerico);
     }
 
 

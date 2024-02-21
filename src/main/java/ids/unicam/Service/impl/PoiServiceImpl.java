@@ -2,6 +2,7 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.PoiRepository;
 import ids.unicam.Service.PoiService;
+import ids.unicam.models.DTO.RichiestaCreazionePoiDTO;
 import ids.unicam.models.Punto;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.ContributorAutorizzato;
@@ -46,31 +47,10 @@ public class PoiServiceImpl implements PoiService {
 
     @Transactional
     @Override
-    public @Nullable PuntoInteresse creaPuntoInteresse(String nomePoi, Punto centroComune, Orario orario, TipologiaPuntoInteresse tipo, Contributor creatore) {
-        try {
-            PuntoInteresse punto = new PuntoInteresse(creatore.getComune(), nomePoi, centroComune, orario, tipo, creatore);
-            return save(punto);
-        } catch (IllegalArgumentException e) {
-            logger.error("Verifica coordinate");
-        } catch (UnsupportedOperationException e) {
-            logger.error("Verifica se è il comune giusto");
-        }
-        return null;
+    public @Nullable PuntoInteresse creaPuntoInteresse(PuntoInteresse puntoInteresse) {
+        return save(puntoInteresse);
     }
 
-    @Transactional
-    @Override
-    public PuntoInteresse creaPuntoInteresse(String nomePoi, Punto centroComune, TipologiaPuntoInteresse tipo, Contributor creatore) {
-        try {
-            PuntoInteresse punto = new PuntoInteresse(creatore.getComune(), nomePoi, centroComune, tipo, creatore);
-            return save(punto);
-        } catch (IllegalArgumentException e) {
-            logger.error("Verifica coordinate");
-        } catch (UnsupportedOperationException e) {
-            logger.error("Verifica se è il comune giusto");
-        }
-        return null;
-    }
 
     @Transactional
     @Override
@@ -95,7 +75,7 @@ public class PoiServiceImpl implements PoiService {
                 throw new IllegalStateException("il contributor cerca di caricare il materiale fuori dal suo comune");
             }
         }
-        if (!puntoInteresse.getStato().asBoolean()) {
+        if (Boolean.FALSE.equals(puntoInteresse.getStato().asBoolean())) {
             logger.error("il contributor cerca di caricare il materiale su un punto di interesse non approvato");
             throw new IllegalStateException("il contributor cerca di caricare il materiale su un punto di interesse non approvato");
         }
@@ -122,7 +102,7 @@ public class PoiServiceImpl implements PoiService {
     @Override
     public List<PuntoInteresse> findActive() {
         return repository.findAll().stream()
-                .filter(puntoInteresse -> !puntoInteresse.isExpired() || puntoInteresse.getStato().asBoolean())
+                .filter(puntoInteresse -> !puntoInteresse.isExpired() || Boolean.TRUE.equals(puntoInteresse.getStato().asBoolean()))
                 .peek(puntoInteresse -> {
                     if (puntoInteresse.isExpired()) {
                         repository.deleteById(puntoInteresse.getId());
@@ -158,6 +138,17 @@ public class PoiServiceImpl implements PoiService {
     @Override
     public List<Tag> getTags(PuntoInteresse puntoInteresse) {
         return repository.getTags(puntoInteresse.getId());
+    }
+
+    @Override
+    public Optional<PuntoInteresse> getById(int id) {
+        return repository.findById(id);
+    }
+
+    @Override
+    public PuntoInteresse update(PuntoInteresse puntoInteresse, int id) {
+        //TODO
+        return null;
     }
 
     public List<MaterialeGenerico> getMaterialiPoi(PuntoInteresse contenutoGenerico) {

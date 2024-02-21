@@ -11,8 +11,5 @@ import java.util.Optional;
 public interface TuristaService {
     List<Taggable> findByTag(Tag tag);
 
-    void report(PuntoInteresse puntoInteresse);
-
-
     Optional<TuristaAutenticato> accedi(String username, String password);
 }

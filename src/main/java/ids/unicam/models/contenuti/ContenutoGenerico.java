@@ -25,7 +25,7 @@ public abstract class ContenutoGenerico implements Taggable, Expirable {
     private Comune comune;
 
     @Setter
-    private Stato stato = Stato.NON_APPROVATO;
+    private Stato stato = Stato.IN_ATTESA;
 
     @OneToMany(fetch = FetchType.EAGER)
     private final Set<Tag> tags = new HashSet<>();

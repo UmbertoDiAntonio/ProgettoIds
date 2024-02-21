@@ -27,8 +27,15 @@ public class ItinerarioServiceImpl implements ItinerarioService {
     }
 
 
+    @Override
     public void deleteById(int id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public Itinerario update(Itinerario itinerario, int id) {
+        //TODO
+        return null;
     }
 
 
@@ -60,24 +67,6 @@ public class ItinerarioServiceImpl implements ItinerarioService {
         save(itinerario);
     }
 
-    public Optional<Itinerario> findById(int id) {
-        return repository.findById(id);
-    }
-
-
-    public List<Itinerario> findAll() {
-        return repository.findAll();
-    }
-
-    public Itinerario getLast() {
-        return repository.findAll().getLast();
-    }
-
-    public Itinerario getFirst() {
-        return repository.findAll().getFirst();
-    }
-
-
     public void deleteAll() {
         repository.deleteAll();
     }
@@ -90,13 +79,23 @@ public class ItinerarioServiceImpl implements ItinerarioService {
         return repository.countNumeroTappeItinerario(itinerario.getId());
     }
     @Override
-    public Itinerario creaItinerario(Comune comune, String nome, PuntoInteresse... puntiInteresse){
-        for (PuntoInteresse puntoInteresse : puntiInteresse) {
-            if (!comune.verificaCoordinateComune(puntoInteresse.getPt()) || !puntoInteresse.getStato().asBoolean()) {
+    public Itinerario creaItinerario(Itinerario itinerario){
+        for (PuntoInteresse puntoInteresse : itinerario.getPercorso()) {
+            if (!itinerario.getComune().verificaCoordinateComune(puntoInteresse.getPt()) || !(puntoInteresse.getStato().asBoolean() != null && (puntoInteresse.getStato().asBoolean()))) {
                 logger.error("Non si possono creare Itinerari con punti non approvati");
                 throw new IllegalArgumentException("Non si possono creare Itinerari con punti non approvati");
             }
         }
-        return save(new Itinerario(comune, nome, puntiInteresse));
+        return save(itinerario);
+    }
+
+    @Override
+    public Optional<Itinerario> getById(int id) {
+        return repository.findById(id);
+    }
+
+    @Override
+    public List<Itinerario> getAll() {
+        return repository.findAll();
     }
 }

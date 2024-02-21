@@ -23,7 +23,7 @@ public abstract class MaterialeGenerico {
     private TuristaAutenticato creatore =null;
 
     @Setter
-    private Stato stato = Stato.NON_APPROVATO;
+    private Stato stato = Stato.IN_ATTESA;
 
     public MaterialeGenerico() {
     }

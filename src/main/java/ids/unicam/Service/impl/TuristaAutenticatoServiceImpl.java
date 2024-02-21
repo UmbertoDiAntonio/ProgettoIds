@@ -5,6 +5,7 @@ import ids.unicam.Service.TuristaAutenticatoService;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
+import ids.unicam.models.contenuti.notifiche.NotificaBuilder;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,15 +45,6 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
         return repository.findAll();
     }
 
-    public TuristaAutenticato getLast() {
-        return repository.findAll().getLast();
-    }
-
-    public TuristaAutenticato getFirst() {
-        return repository.findAll().getFirst();
-    }
-
-
     public void deleteAll() {
         repository.deleteAll();
     }
@@ -79,9 +71,14 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
     @Transactional
     @Override
     public void aggiungiPreferito(TuristaAutenticato turista, PuntoInteresse puntoInteresse) {
-        if (puntoInteresse.getStato().asBoolean())
+        if (Boolean.TRUE.equals(puntoInteresse.getStato().asBoolean()))
             turista.getPreferiti().add(puntoInteresse);
         save(turista);
+    }
+
+    public boolean logOut() {
+        //TODO
+        return true;
     }
 
     public List<TuristaAutenticato> findTuristiConPreferiti() {
@@ -123,5 +120,8 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
     public boolean isUsernameUnique(String username) {
         return repository.countUsername(username) == 0;
     }
+
+
+
 
 }

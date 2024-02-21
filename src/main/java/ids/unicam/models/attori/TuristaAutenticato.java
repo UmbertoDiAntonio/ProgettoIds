@@ -74,10 +74,7 @@ public class TuristaAutenticato extends Turista {
                 '}';
     }
 
-    public boolean logOut() {
-        //TODO
-        return true;
-    }
+
 
     @Override
     public boolean equals(Object o) {

@@ -3,6 +3,7 @@ package ids.unicam.Service.impl;
 import ids.unicam.DataBase.Repository.AnimatoreRepository;
 import ids.unicam.Service.AnimatoreService;
 import ids.unicam.exception.ContestException;
+import ids.unicam.models.DTO.RichiestaCreazioneContestDTO;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
@@ -71,8 +72,8 @@ public class AnimatoreServiceImpl implements AnimatoreService {
     }
 
     @Override
-    public Contest creaContest(Animatore animatore,String nomeContest,String obiettivo,boolean tipoContest){
-        return contestServiceImpl.creaContest(new Contest(nomeContest,tipoContest,obiettivo,animatore));
+    public Contest creaContest(RichiestaCreazioneContestDTO contestDTO){
+        return contestServiceImpl.creaContest(new Contest(contestDTO));
     }
 
     @Override
@@ -94,11 +95,10 @@ public class AnimatoreServiceImpl implements AnimatoreService {
             logger.warn(animatore + "  non è autorizzato ad approvare nel contest " + contest);
             return false;
         }
-        if(materialeGenerico.getStato()==stato){
-            return true;
-        }
-        if(stato == Stato.NON_APPROVATO)
-            materialeServiceImpl.deleteById(materialeGenerico.getId());
+        if(materialeGenerico.getStato() != Stato.IN_ATTESA)
+            throw new UnsupportedOperationException("materiale già settato");
+        if(stato==Stato.IN_ATTESA)
+            throw new UnsupportedOperationException("stato in attesa");
         contestServiceImpl.approvaMateriale(materialeGenerico,stato);
         return true;
     }

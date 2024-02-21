@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 public interface ContributorAutorizzatoService {
 
-     Itinerario aggiungiItinerario(Comune comune, String nome, PuntoInteresse... puntiInteresse);
+     Itinerario aggiungiItinerario(Itinerario itinerario);
 
      boolean aggiungiTappaItinerario(Itinerario itinerario,PuntoInteresse puntoInteresse);
 
