@@ -95,7 +95,7 @@ public class CreazioneTabelleDatabase {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS CURATORI_OSSERVATORI(" +
                         "CURATORE_USERNAME VARCHAR(50)," +
-                        "OSSERVATORI_USERNAME INT," +
+                        "OSSERVATORI_USERNAME VARCHAR(50)," +
                         "PRIMARY KEY(CURATORE_USERNAME, OSSERVATORI_USERNAME)," +
                         "FOREIGN KEY (CURATORE_USERNAME) REFERENCES CURATORI(username) ON DELETE CASCADE," +
                         "FOREIGN KEY (OSSERVATORI_USERNAME) REFERENCES CONTRIBUTOR(username) ON DELETE CASCADE)";

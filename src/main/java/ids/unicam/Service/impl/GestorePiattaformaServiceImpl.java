@@ -46,6 +46,8 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
     @Override
     public TuristaAutenticato cambiaRuolo(Contributor contributor, @NotNull Ruolo ruolo) {
         Comune comune = contributor.getComune();
+        rimuoviVecchioRuolo(contributor);
+
         Contributor modificato = switch (ruolo) {
             case TURISTA -> {
                 logger.error("Non puoi tornare un turista");
@@ -66,7 +68,6 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
                 });
 
 
-        //rimuoviVecchioRuolo(contributor);
 
         return modificato;
     }

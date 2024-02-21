@@ -46,21 +46,28 @@ public class PoiServiceImpl implements PoiService {
     @Override
     public @Nullable PuntoInteresse creaPuntoInteresse(String nomePoi, Punto centroComune, Orario orario, TipologiaPuntoInteresse tipo, Contributor creatore) {
         try {
-            PuntoInteresse punto = new PuntoInteresse(creatore.getComune(), nomePoi, centroComune, orario, tipo, creatore);
+            PuntoInteresse punto = new PuntoInteresse(creatore.getComune(), nomePoi, centroComune,orario, tipo, creatore);//TODO orario
             return save(punto);
         }catch (IllegalArgumentException e){
             logger.error("Verifica coordinate");
         }catch (UnsupportedOperationException e){
             logger.error("Verifica se è il comune giusto");
         }
-        System.out.println("SAVE FINALE");
         return null;
     }
 
     @Transactional
     @Override
     public PuntoInteresse creaPuntoInteresse(String nomePoi, Punto centroComune, TipologiaPuntoInteresse tipo, Contributor creatore) {
-        return save(new PuntoInteresse(creatore.getComune(), nomePoi, centroComune, tipo, creatore));
+        try {
+            PuntoInteresse punto = new PuntoInteresse(creatore.getComune(), nomePoi, centroComune, tipo, creatore);
+            return save(punto);
+        }catch (IllegalArgumentException e){
+            logger.error("Verifica coordinate");
+        }catch (UnsupportedOperationException e){
+            logger.error("Verifica se è il comune giusto");
+        }
+        return null;
     }
 
     @Transactional
@@ -100,7 +107,9 @@ public class PoiServiceImpl implements PoiService {
 
     @Transactional
     public PuntoInteresse save(PuntoInteresse puntoInteresse) {
-        return repository.save(puntoInteresse);
+        assert puntoInteresse!=null;
+        PuntoInteresse poi = repository.save(puntoInteresse);
+        return poi;
     }
 
 

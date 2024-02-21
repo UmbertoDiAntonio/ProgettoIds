@@ -156,10 +156,7 @@ public class JUnitContenutiTests {
 
             Orario orarioAccademia = new Orario();
             orarioAccademia.setOrarioApertura(DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(18, 0));
-            System.out.println("Comune "+contributor.getComune());
             PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse("Accademia", new Punto(comune.getPosizione().getLatitudine() + 0.0, comune.getPosizione().getLongitudine() + 0.0), orarioAccademia, TipologiaPuntoInteresse.CENTRO_SPORTIVO, contributor);
-            System.out.println(0);
-            System.out.println(puntoInteresse.getCreatore());
             assertFalse(puntoInteresse.getStato().asBoolean());
             TuristaAutenticato turistaTemp2 = gestorePiattaformaService.registra(comune, Ruolo.CONTRIBUTOR, "Peppe", "Paol", new GregorianCalendar(2000, GregorianCalendar.MARCH, 11), "4Unica@", "user44");
 
@@ -176,7 +173,6 @@ public class JUnitContenutiTests {
             curatoreServiceImpl.aggiungiOsservatore(curatore, contributor2);
             assertEquals(numeroOsservatori + 2, curatoreServiceImpl.getNumeroOsservatori(curatore));
 
-            System.out.println(puntoInteresse.getCreatore());
             curatoreServiceImpl.valuta(curatore, puntoInteresse, Stato.APPROVATO);
             assertTrue(puntoInteresse.getStato().asBoolean());
             MaterialeGenerico materialeGenerico1 = new Foto(contributor);
@@ -355,7 +351,7 @@ public class JUnitContenutiTests {
 
         turistaAutenticatoService.aggiungiPreferito(turista, puntoInteresse);
         turistaAutenticatoService.aggiungiPreferito(turista, puntoInt2);
-System.out.println(turista.getPreferiti());
+
         assertEquals(2, turistaAutenticatoService.findPreferiti(turista).size());
 
         curatoreServiceImpl.elimina(curatore, puntoInteresse);

@@ -54,4 +54,14 @@ public abstract class ContenutoGenerico implements Taggable, Expirable {
     public ContenutoGenerico() {
     }
 
+    @Override
+    public String toString() {
+        return "ContenutoGenerico{" +
+                "id=" + id +
+                ", comune=" + comune +
+                ", stato=" + stato +
+                ", tags=" + tags +
+                ", expireDate=" + expireDate +
+                '}';
+    }
 }

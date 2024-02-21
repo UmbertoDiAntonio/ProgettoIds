@@ -32,8 +32,13 @@ public class PuntoInteresse extends ContenutoGenerico implements Contenitore, Ta
     @Override
     public String toString() {
         return "PuntoInteresse{" +
-                "nome='" + nome + '\'' +
+                "orario=" + orario +
+                ", nome='" + nome + '\'' +
                 ", pt=" + pt +
+                ", creatore=" + creatore +
+                ", listaMateriali=" + listaMateriali +
+                ", tipo=" + tipo +
+                super.toString()+
                 '}';
     }
 
@@ -67,7 +72,7 @@ public class PuntoInteresse extends ContenutoGenerico implements Contenitore, Ta
     public PuntoInteresse(Comune comune, String nome, Punto pt, TipologiaPuntoInteresse tipologiaPuntoInteresse, @NotNull Contributor creatore) {
         super(comune);
         if (!comune.verificaCoordinateComune(pt)) {
-            logger.error("Non si possono creare punti di interesse fuori dal comune2");
+            logger.error("Non si possono creare punti di interesse fuori dal comune");
             throw new IllegalArgumentException("Posizione Punto di Interesse Fuori dall'area del comune");
         }
         if (!creatore.getComune().equals(getComune())) {
@@ -86,9 +91,8 @@ public class PuntoInteresse extends ContenutoGenerico implements Contenitore, Ta
     public PuntoInteresse(Comune comune, String nome, Punto pt,Orario orario, TipologiaPuntoInteresse tipologiaPuntoInteresse,
                           @NotNull Contributor creatore) {
         super(comune);
-        System.out.println("DENTRO "+pt);
         if (!comune.verificaCoordinateComune(pt)) {
-            logger.error("Non si possono creare punti di interesse fuori dal comune1");
+            logger.error("Non si possono creare punti di interesse fuori dal comune");
             return;
         }
         logger.debug("Creato POI " + nome + " in " + pt);
@@ -97,7 +101,6 @@ public class PuntoInteresse extends ContenutoGenerico implements Contenitore, Ta
         this.orario = orario;
         this.tipo = tipologiaPuntoInteresse;
         this.creatore = creatore;
-        System.out.println("ESCO");
     }
 
     public String mostraInformazioniDettagliate(){
