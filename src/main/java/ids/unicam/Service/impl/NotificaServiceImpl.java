@@ -1,10 +1,11 @@
 package ids.unicam.Service.impl;
 
+import ids.unicam.models.contenuti.Notifica2;
 import ids.unicam.DataBase.Repository.NotificaRepository;
-import ids.unicam.Service.ComuneService;
 import ids.unicam.models.Notifica;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.Curatore;
+import ids.unicam.models.contenuti.NotificaBuilder;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
@@ -50,4 +51,9 @@ public class NotificaServiceImpl {
     public List<Notifica> getNotifiche(Contributor contributor) {
         return notificaRepository.findByRicevente(contributor);
     }
+
+    public Notifica2 creaNotifica() {
+        return new NotificaBuilder().withTitolo("titolo").withDescrizione("Desc").build();
+    }
+
 }

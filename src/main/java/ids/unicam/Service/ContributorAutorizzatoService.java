@@ -8,7 +8,6 @@ import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import java.time.LocalDate;
 
 public interface ContributorAutorizzatoService {
-     void aggiungiPuntoInteresse(Contributor contributor, PuntoInteresse puntoInteresse);
 
      Itinerario aggiungiItinerario(Comune comune, String nome, PuntoInteresse... puntiInteresse);
 

@@ -1,42 +1,31 @@
-package ids.unicam.models;
+package ids.unicam.models.contenuti;
 
 import ids.unicam.models.attori.TuristaAutenticato;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @NoArgsConstructor
-public class Notifica {
+public class Notifica2 {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenza_report")
     @SequenceGenerator(name = "sequenza_report", sequenceName = "NOTIFICA_SEQ", allocationSize = 1)
-    private int id=0;
+    private int id = 0;
 
     @OneToOne
     private TuristaAutenticato ricevente;
 
-    @OneToOne
-    private TuristaAutenticato segnalatore;
-
     private String titolo;
-
     private String descrizione;
-
     private LocalDateTime data;
 
-    public Notifica(@NotNull String titolo, @NotNull String descrizione, TuristaAutenticato ricevente)
-    {
-        if (titolo.isBlank() || descrizione.isBlank())
-        {
-            throw new IllegalArgumentException("Titolo o descrizione sono vuoti");
-        }
+    // Costruttore privato per il Builder
+    Notifica2(String titolo, String descrizione, TuristaAutenticato ricevente) {
         this.titolo = titolo;
         this.descrizione = descrizione;
         this.data = LocalDateTime.now();
@@ -46,7 +35,7 @@ public class Notifica {
     @Override
     public String toString() {
         return "Notifica{" +
-                "segnalatore=" + segnalatore +
+                "ricevente=" + ricevente +
                 ", titolo='" + titolo + '\'' +
                 ", descrizione='" + descrizione + '\'' +
                 ", data=" + data +

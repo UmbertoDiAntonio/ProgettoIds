@@ -97,6 +97,7 @@ public class CuratoreServiceImpl implements CuratoreService {
         else poiServiceImpl.save(puntoInteresse);
 
         Notifica notifica = notificaServiceImpl.creaNotifica(curatore, puntoInteresse, stato);
+        System.out.println(notifica);
     }
 
     /**

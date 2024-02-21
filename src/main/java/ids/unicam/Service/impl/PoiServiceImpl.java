@@ -2,14 +2,17 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.PoiRepository;
 import ids.unicam.Service.PoiService;
+import ids.unicam.models.Punto;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.ContributorAutorizzato;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.Taggable;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
+import ids.unicam.models.contenuti.puntiInteresse.Orario;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import ids.unicam.models.contenuti.puntiInteresse.Tag;
+import ids.unicam.models.contenuti.puntiInteresse.TipologiaPuntoInteresse;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +40,17 @@ public class PoiServiceImpl implements PoiService {
 
     public void deleteById(int id) {
         repository.deleteById(id);
+    }
+    @Transactional
+    @Override
+    public PuntoInteresse creaPuntoInteresse(String nomePoi, Punto centroComune, Orario orario, TipologiaPuntoInteresse tipo, Contributor creatore) {
+        return save(new PuntoInteresse(creatore.getComune(), nomePoi, centroComune, orario, tipo, creatore));
+    }
+
+    @Transactional
+    @Override
+    public PuntoInteresse creaPuntoInteresse(String nomePoi, Punto centroComune, TipologiaPuntoInteresse tipo, Contributor creatore) {
+        return save(new PuntoInteresse(creatore.getComune(), nomePoi, centroComune, tipo, creatore));
     }
 
     @Transactional
@@ -114,7 +128,7 @@ public class PoiServiceImpl implements PoiService {
     @Transactional
     @Override
     public void aggiungiTag(PuntoInteresse puntoInteresse, Tag tag) {
-        if(tagServiceImpl.haveTag(puntoInteresse,tag)) {
+        if (tagServiceImpl.haveTag(puntoInteresse, tag)) {
             logger.warn("Tag già aggiunto");
             return;
         }
@@ -134,7 +148,7 @@ public class PoiServiceImpl implements PoiService {
         return repository.getTags(puntoInteresse.getId());
     }
 
-    public  List<MaterialeGenerico> getMaterialiPoi(PuntoInteresse contenutoGenerico) {
-        return repository.getMateriali(contenutoGenerico.getId()) ;
+    public List<MaterialeGenerico> getMaterialiPoi(PuntoInteresse contenutoGenerico) {
+        return repository.getMateriali(contenutoGenerico.getId());
     }
 }

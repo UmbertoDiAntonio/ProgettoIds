@@ -2,6 +2,7 @@ package ids.unicam.models.attori;
 
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.persistence.*;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -14,6 +15,7 @@ import java.util.Objects;
 @DiscriminatorColumn(name = "TIPO")
 @DiscriminatorValue("TuristaAutenticato")
 public class TuristaAutenticato extends Turista {
+    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "sequenza_utenti")
     @SequenceGenerator(name = "sequenza_utenti", sequenceName = "users", allocationSize = 1)
@@ -53,7 +55,6 @@ public class TuristaAutenticato extends Turista {
     public Integer getId() {
         return id;
     }
-
 
     public List<PuntoInteresse> getPreferiti() {
         return preferiti;

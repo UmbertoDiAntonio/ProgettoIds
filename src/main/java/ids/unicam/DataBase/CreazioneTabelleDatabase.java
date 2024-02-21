@@ -254,7 +254,6 @@ public class CreazioneTabelleDatabase {
                         "ricevente_id INT," +
                         "segnalatore_id INT,"+
                         "titolo VARCHAR(100),"+
-                        "FOREIGN KEY (ricevente_id) REFERENCES CONTRIBUTOR(id),"+
                         "FOREIGN KEY (segnalatore_id) REFERENCES TURISTI(id))";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();

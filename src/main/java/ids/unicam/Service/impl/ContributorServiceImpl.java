@@ -71,15 +71,6 @@ public class ContributorServiceImpl implements ContributorService, Observer {
         repository.deleteAll();
     }
 
-    @Override
-    public PuntoInteresse aggiungiPuntoInteresse(Contributor contributor, PuntoInteresse puntoInteresse) {
-        if (!contributor.getComune().equals(puntoInteresse.getComune())) {
-            logger.error(contributor.getNome() + " non puo' creare punti di interesse fuori dal suo comune");
-            throw new UnsupportedOperationException(contributor + " non può creare punti di interesse fuori dal suo comune");
-        }
-        puntoInteresse.setStato(Stato.NON_APPROVATO);
-        return poiServiceImpl.save(puntoInteresse);
-    }
 
     @Override
     public Itinerario aggiungiItinerario(Comune comune, String nome, PuntoInteresse... puntoInteresse) {

@@ -22,7 +22,7 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
 
     @Autowired
     public GestorePiattaformaServiceImpl(ContributorServiceImpl contributorServiceImpl, TuristaAutenticatoServiceImpl turistaAutenticatoServiceImpl,
-                                         CuratoreServiceImpl curatoreServiceImpl,AnimatoreServiceImpl animatoreServiceImpl, ContributorAutorizzatoServiceImpl contributorAutorizzatoServiceImpl) {
+                                         CuratoreServiceImpl curatoreServiceImpl, AnimatoreServiceImpl animatoreServiceImpl, ContributorAutorizzatoServiceImpl contributorAutorizzatoServiceImpl) {
         this.contributorServiceImpl = contributorServiceImpl;
         this.turistaAutenticatoServiceImpl = turistaAutenticatoServiceImpl;
         this.animatoreServiceImpl = animatoreServiceImpl;
@@ -47,11 +47,26 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
                 logger.error("Non puoi tornare un turista");
                 yield null;
             }
-            case CURATORE -> curatoreServiceImpl.save(new Curatore(contributor));
-            case ANIMATORE -> animatoreServiceImpl.save(new Animatore(contributor));
-            case CONTRIBUTOR_AUTORIZZATO ->
-                    contributorAutorizzatoServiceImpl.save(new ContributorAutorizzato(contributor));
-            case CONTRIBUTOR -> contributorServiceImpl.save(new Contributor(comune, contributor));
+            case CURATORE -> {
+                Curatore curatore = new Curatore(contributor);
+                curatore.setId(curatore.getId());
+                yield curatoreServiceImpl.save(curatore);
+            }
+            case ANIMATORE -> {
+                Animatore animatore = new Animatore(contributor);
+                animatore.setId(contributor.getId());
+                yield animatoreServiceImpl.save(new Animatore(contributor));
+            }
+            case CONTRIBUTOR_AUTORIZZATO -> {
+                ContributorAutorizzato contributorAut = new ContributorAutorizzato(contributor);
+                contributorAut.setId(contributor.getId());
+                yield contributorAutorizzatoServiceImpl.save(contributorAut);
+            }
+            case CONTRIBUTOR -> {
+                Contributor contributor2 = new Contributor(comune, contributor);
+                contributor2.setId(contributor.getId());
+                yield contributorServiceImpl.save(contributor2);
+            }
 
         };
 
@@ -67,7 +82,6 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
             case Contributor contributor1 -> contributorServiceImpl.deleteById(contributor1.getId());
         }
     }
-
 
 
     @Override
