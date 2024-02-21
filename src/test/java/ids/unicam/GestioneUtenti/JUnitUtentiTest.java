@@ -10,6 +10,7 @@ import ids.unicam.models.attori.*;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.Foto;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
+import ids.unicam.models.contenuti.notifiche.Notifica;
 import ids.unicam.models.contenuti.puntiInteresse.Orario;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import ids.unicam.models.contenuti.puntiInteresse.Tag;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -95,7 +97,7 @@ public class JUnitUtentiTest {
 
         gestorePiattaformaService.cambiaRuolo(contributor, Ruolo.CONTRIBUTOR_AUTORIZZATO);
         ContributorAutorizzato contributorAutorizzato = comuneService.getContributorAutorizzatiDelComune(comune.getNome()).getFirst();
-        PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse(new RichiestaCreazionePoiDTO("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(),  TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributorAutorizzato)));
+        PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse(new RichiestaCreazionePoiDTO("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributorAutorizzato)));
         assertEquals(0, turistaAutenticato.getPreferiti().size());
         assert puntoInteresse != null;
         turistaAutenticatoService.aggiungiPreferito(turistaAutenticato, puntoInteresse);
@@ -109,7 +111,7 @@ public class JUnitUtentiTest {
         TuristaAutenticato turista = gestorePiattaformaService.registra(comune, Ruolo.CURATORE, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "6Unico@", "user6");
         if (!(turista instanceof Curatore curatore))
             throw new IllegalArgumentException("errore");
-        PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse(new RichiestaCreazionePoiDTO("Teatro", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015),new Orario(), TipologiaPuntoInteresse.INTRATTENIMENTO, curatore)));
+        PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse(new RichiestaCreazionePoiDTO("Teatro", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.INTRATTENIMENTO, curatore)));
 
         assertThrows(UnsupportedOperationException.class, () -> {
             assert puntoInteresse != null;
@@ -193,6 +195,23 @@ public class JUnitUtentiTest {
 
     @Test
     public void segnalaContenuto() {
+        Comune comune = comuneService.creaComune(new Comune(new RichiestaCreazioneComuneDTO("Milano")));
+
+        TuristaAutenticato turista = gestorePiattaformaService.registra(comune, Ruolo.CONTRIBUTOR, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "9Unico@", "user91");
+        if (!(turista instanceof Contributor contributor))
+            throw new IllegalArgumentException("errore");
+
+        PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse(new RichiestaCreazionePoiDTO("n0me b4rutt0 ", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.PARCO, contributor)));
+
+
+        TuristaAutenticato turista2 = gestorePiattaformaService.registra(comune, Ruolo.CURATORE, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "9Unico@", "user92");
+        if (!(turista2 instanceof Curatore curatore))
+            throw new ClassCastException("Non è possibile trasformare il turista " + turista2 + " in un Curatore");
+        assertEquals(0, turistaAutenticatoService.visualizzaNotifiche(curatore).size());
+        turistaService.report(puntoInteresse, "Nome Sbagliato");
+
+        assertEquals(1, turistaAutenticatoService.visualizzaNotifiche(curatore).size());
+
 
     }
 

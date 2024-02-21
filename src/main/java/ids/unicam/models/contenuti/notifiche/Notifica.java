@@ -18,7 +18,6 @@ public class Notifica {
     private int id = 0;
 
     private String usernameDestinatario;
-
     private String titolo;
     private String descrizione;
     private LocalDateTime data;
@@ -29,6 +28,7 @@ public class Notifica {
         this.data = LocalDateTime.now();
         this.usernameDestinatario = usernameDestinatario;
     }
+
 
     @Override
     public String toString() {

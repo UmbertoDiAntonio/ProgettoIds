@@ -5,6 +5,7 @@ import ids.unicam.Service.TuristaAutenticatoService;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
+import ids.unicam.models.contenuti.notifiche.Notifica;
 import ids.unicam.models.contenuti.notifiche.NotificaBuilder;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.transaction.Transactional;
@@ -21,13 +22,15 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
     private final TuristaAutenticatoRepository repository;
     private final ContestServiceImpl contestServiceImpl;
     private final InvitoServiceImpl invitoServiceImpl;
+    private final NotificaServiceImpl notificaService;
 
 
     @Autowired
-    public TuristaAutenticatoServiceImpl(TuristaAutenticatoRepository repository, ContestServiceImpl contestServiceImpl, InvitoServiceImpl invitoServiceImpl) {
+    public TuristaAutenticatoServiceImpl(TuristaAutenticatoRepository repository, ContestServiceImpl contestServiceImpl, InvitoServiceImpl invitoServiceImpl, NotificaServiceImpl notificaService) {
         this.repository = repository;
         this.contestServiceImpl = contestServiceImpl;
         this.invitoServiceImpl = invitoServiceImpl;
+        this.notificaService = notificaService;
     }
 
 
@@ -122,6 +125,8 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
     }
 
 
-
+    public List<Notifica> visualizzaNotifiche(TuristaAutenticato turistaAutenticato){
+        return notificaService.getNotifiche(turistaAutenticato);
+    }
 
 }

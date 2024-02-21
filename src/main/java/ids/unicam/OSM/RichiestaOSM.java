@@ -61,7 +61,7 @@ public class RichiestaOSM {
             return (new Punto(latitudine, longitudine));
         } catch (IOException e) {
             logger.error("Connessione a OSM Fallita");
-            throw new ConnessioneFallitaException("La connessione non è riuscita");
+            throw new ConnessioneFallitaException("La connessione non e' riuscita");
         }
     }
 

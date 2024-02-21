@@ -21,17 +21,15 @@ import static ids.unicam.Main.logger;
 @Service
 public class AnimatoreServiceImpl implements AnimatoreService {
     private final AnimatoreRepository repository;
-    private final ContestServiceImpl contestServiceImpl;
+    private final ContestServiceImpl contestService;
     private final InvitoServiceImpl invitoServiceImpl;
-    private final MaterialeServiceImpl materialeServiceImpl;
 
 
     @Autowired
-    public AnimatoreServiceImpl(AnimatoreRepository repository, ContestServiceImpl contestServiceImpl, InvitoServiceImpl invitoServiceImpl, MaterialeServiceImpl materialeServiceImpl) {
+    public AnimatoreServiceImpl(AnimatoreRepository repository, ContestServiceImpl contestService, InvitoServiceImpl invitoServiceImpl, MaterialeServiceImpl materialeServiceImpl) {
         this.repository = repository;
-        this.contestServiceImpl = contestServiceImpl;
+        this.contestService = contestService;
         this.invitoServiceImpl = invitoServiceImpl;
-        this.materialeServiceImpl = materialeServiceImpl;
     }
 
     public void deleteById(String id) {
@@ -73,7 +71,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
 
     @Override
     public Contest creaContest(RichiestaCreazioneContestDTO contestDTO){
-        return contestServiceImpl.creaContest(new Contest(contestDTO));
+        return contestService.creaContest(new Contest(contestDTO));
     }
 
     @Override
@@ -82,7 +80,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
             logger.error("L'animatore non e' il creatore del contest.");
             throw new IllegalStateException("L'animatore non e' il creatore del contest.");
         }
-        if(contestServiceImpl.getPartecipanti(contest).contains(turistaAutenticato)){
+        if(contestService.getPartecipanti(contest).contains(turistaAutenticato)){
             logger.error("Il turista autenticato fa gia' parte del contest");
             throw new ContestException("Il turista autenticato fa gia' parte del contest");
         }
@@ -99,7 +97,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
             throw new UnsupportedOperationException("materiale già settato");
         if(stato==Stato.IN_ATTESA)
             throw new UnsupportedOperationException("stato in attesa");
-        contestServiceImpl.approvaMateriale(materialeGenerico,stato);
+        contestService.approvaMateriale(materialeGenerico,stato);
         return true;
     }
 }
