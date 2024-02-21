@@ -1,11 +1,11 @@
-package ids.unicam.models.contenuti;
+package ids.unicam.models.contenuti.notifiche;
 
 import ids.unicam.models.attori.TuristaAutenticato;
 
 public class NotificaBuilder {
     private String titolo;
     private String descrizione;
-    private TuristaAutenticato ricevente;
+    private String usernameDestinatario;
 
     public NotificaBuilder() {}
 
@@ -19,16 +19,22 @@ public class NotificaBuilder {
         return this;
     }
 
-    public NotificaBuilder withRicevente(TuristaAutenticato ricevente) {
-        this.ricevente = ricevente;
+    public NotificaBuilder withDestinatario(TuristaAutenticato destinatario) {
+        this.usernameDestinatario = destinatario.getUsername();
         return this;
     }
 
+    /**
+     * Valida i dati inseriti e restituisce un istanza della classe generata
+     * @return la notifica generata
+     */
     public Notifica build() {
         if (titolo == null || titolo.isBlank() || descrizione == null || descrizione.isBlank()) {
             throw new IllegalArgumentException("Titolo o descrizione sono vuoti");
         }
-        //TODO validare ricevente
-        return new Notifica(titolo, descrizione, ricevente);
+        if(usernameDestinatario == null || usernameDestinatario.isBlank()){
+            throw new IllegalArgumentException("E' necessario impostare un destinatario valido");
+        }
+        return new Notifica(titolo, descrizione, usernameDestinatario);
     }
 }

@@ -28,7 +28,7 @@ public abstract class ContenutoGenerico implements Taggable, Expirable {
     private Stato stato = Stato.NON_APPROVATO;
 
     @OneToMany(fetch = FetchType.EAGER)
-    private Set<Tag> tags = new HashSet<>();
+    private final Set<Tag> tags = new HashSet<>();
 
     @Setter
     private LocalDate expireDate = LocalDate.MAX;

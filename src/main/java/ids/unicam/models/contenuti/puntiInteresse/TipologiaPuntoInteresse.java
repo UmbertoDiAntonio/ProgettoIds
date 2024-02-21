@@ -1,7 +1,6 @@
 package ids.unicam.models.contenuti.puntiInteresse;
 
 public enum TipologiaPuntoInteresse {
-
     MONUMENTO,
     PARCO,
     LUOGO_DI_CULTO,

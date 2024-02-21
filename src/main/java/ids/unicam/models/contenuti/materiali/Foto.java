@@ -20,6 +20,6 @@ public class Foto extends MaterialeGenerico {
 
     @Override
     public String toString() {
-        return super.toString();
+        return "FOTO "+super.toString();
     }
 }

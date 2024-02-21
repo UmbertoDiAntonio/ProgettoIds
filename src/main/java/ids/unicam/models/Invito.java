@@ -32,7 +32,7 @@ public class Invito {
 
 
     /**
-     * Crea un invito e lo aggiunge alla lista degli inviti mandati dal contest
+     * Crea un invito
      * @param contest il contest da cui si sta mandando l'invito
      * @param invitato il turista da invitare
      */

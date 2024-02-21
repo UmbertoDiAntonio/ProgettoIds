@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,6 +72,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
 
+    @Transactional
     @Override
     public void aggiungiMateriale(MaterialeGenerico materialeGenerico, Contest contest, TuristaAutenticato turistaAutenticato) {
         if (!(getPartecipanti(contest).contains(turistaAutenticato))) {
@@ -95,9 +97,17 @@ public class ContestServiceImpl implements ContestService {
         save(contest);
     }
 
+    @Transactional
     @Override
     public void setVincitoreContest(Contest contest, MaterialeGenerico materialeGenerico) {
         contest.setMaterialeVincitore(materialeGenerico);
+        save(contest);
+    }
+
+    @Transactional
+    @Override
+    public void terminaContest(Contest contest) {
+        contest.setExpireDate(LocalDate.now());
         save(contest);
     }
 

@@ -7,6 +7,7 @@ import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.Curatore;
 import ids.unicam.models.contenuti.*;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
+import ids.unicam.models.contenuti.notifiche.Notifica;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
@@ -88,8 +89,10 @@ public class CuratoreServiceImpl implements CuratoreService {
     public void valuta(Curatore curatore, @NotNull PuntoInteresse puntoInteresse, Stato stato) {
         if (!curatore.getComune().equals(puntoInteresse.getComune()))
             return;
-        if (puntoInteresse.getStato().equals(stato) && stato.equals(Stato.NON_APPROVATO))
+        if (puntoInteresse.getStato()==stato && stato==Stato.NON_APPROVATO) {
+            System.out.println("\n\nDELETE\n\n");
             poiServiceImpl.deleteById(puntoInteresse.getId());
+        }
         puntoInteresse.setStato(stato);
         poiServiceImpl.save(puntoInteresse);
         Notifica notifica = notificaServiceImpl.creaNotifica(curatore, puntoInteresse, stato);

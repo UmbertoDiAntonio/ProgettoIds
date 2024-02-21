@@ -1,11 +1,10 @@
 package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.NotificaRepository;
-import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.Curatore;
 import ids.unicam.models.attori.TuristaAutenticato;
-import ids.unicam.models.contenuti.Notifica;
-import ids.unicam.models.contenuti.NotificaBuilder;
+import ids.unicam.models.contenuti.notifiche.Notifica;
+import ids.unicam.models.contenuti.notifiche.NotificaBuilder;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
@@ -35,24 +34,22 @@ public class NotificaServiceImpl {
         }
         return notificaRepository.save(new NotificaBuilder().withTitolo("Valutazione: " + puntoInteresse.getNome())
                 .withDescrizione(curatore.getUsername() + " " + (stato.asBoolean() ? "ha approvato " : "non ha approvato ") +
-                        "il " + puntoInteresse.getNome())
-                .withRicevente(puntoInteresse.getCreatore()).build());
+                        "\"" + puntoInteresse.getNome()+"\"")
+                .withDestinatario(puntoInteresse.getCreatore()).build());
     }
 
     public Notifica creaNotifica(Curatore curatore, MaterialeGenerico materialeGenerico, Stato stato) {
-        if (turistaAutenticatoService.findById(materialeGenerico.getCreatore().getUsername()).isEmpty()) {
-            logger.warn("il creatore non esiste piu'.");
-            return null;
-        }
-        return notificaRepository.save(new NotificaBuilder()
-                .withTitolo("Valutazione del materiale creato da: " + materialeGenerico.getCreatore().getUsername())
-                .withDescrizione(curatore.getUsername() + " " + (stato.asBoolean() ? "ha approvato " : "non ha approvato ") +
-                        "il materiale con id " + materialeGenerico.getId())
-                .withRicevente(materialeGenerico.getCreatore()).build());
+
+        return notificaRepository.save(
+                new NotificaBuilder()
+                        .withTitolo("Valutazione del materiale creato da: " + materialeGenerico.getCreatore().getUsername())
+                        .withDescrizione(curatore.getUsername() + " " + (stato.asBoolean() ? "ha approvato " : "non ha approvato ") +
+                                "il materiale con id " + materialeGenerico.getId())
+                        .withDestinatario(materialeGenerico.getCreatore()).build());
     }
 
     public List<Notifica> getNotifiche(TuristaAutenticato turistaAutenticato) {
-        return notificaRepository.findByRicevente(turistaAutenticato);
+        return notificaRepository.findByUsernameDestinatario(turistaAutenticato.getUsername());
     }
 
 

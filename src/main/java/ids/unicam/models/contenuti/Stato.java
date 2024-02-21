@@ -14,4 +14,6 @@ public enum Stato {
     public static Stato toStatus(boolean value) {
         return value ? APPROVATO : NON_APPROVATO;
     }
+
+
 }

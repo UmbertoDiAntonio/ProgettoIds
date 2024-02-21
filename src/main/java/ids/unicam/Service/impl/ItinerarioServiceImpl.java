@@ -41,7 +41,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
     public boolean aggiungiTappa(Itinerario itinerario, PuntoInteresse puntoInteresse) {
         if (itinerario.getComune().equals(puntoInteresse.getComune())) {
             poiServiceImpl.save(puntoInteresse);
-            itinerario.aggiungiTappaPercorso(puntoInteresse);
+            itinerario.getPercorso().add(puntoInteresse);
             save(itinerario);
             return true;
         }

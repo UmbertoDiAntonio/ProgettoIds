@@ -18,4 +18,8 @@ public class Animatore extends Contributor {
         super();
     }
 
+    @Override
+    public String toString() {
+        return "Animatore "+super.toString();
+    }
 }

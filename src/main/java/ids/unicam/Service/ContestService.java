@@ -26,4 +26,6 @@ public interface ContestService {
     void aggiungiPartecipante(Contest contest, TuristaAutenticato turistaAutenticato);
 
     void setVincitoreContest(Contest contest,  MaterialeGenerico materialeGenerico);
+
+    void terminaContest(Contest contest);
 }

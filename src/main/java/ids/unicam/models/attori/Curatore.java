@@ -31,10 +31,7 @@ public class Curatore extends ContributorAutorizzato {
 
     @Override
     public String toString() {
-        return "Curatore{" +
-                "comune=" + getComune() +
-                ", nome=" + getNome()  +
-                '}';
+        return "Curatore "+super.toString();
     }
 
 

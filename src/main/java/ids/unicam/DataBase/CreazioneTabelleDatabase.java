@@ -249,7 +249,7 @@ public class CreazioneTabelleDatabase {
                         "id INT PRIMARY KEY AUTO_INCREMENT," +
                         "data TIMESTAMP," +
                         "descrizione VARCHAR(255),"+
-                        "ricevente_username VARCHAR(50)," +
+                        "username_destinatario VARCHAR(50)," +
                         "titolo VARCHAR(100))";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();

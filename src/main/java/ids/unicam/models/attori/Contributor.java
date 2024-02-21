@@ -33,16 +33,10 @@ public class Contributor extends TuristaAutenticato  {
         this.comune = comune;
     }
 
-
-
-
-
-
     @Override
     public String toString() {
-        return "Contributor{" +
-                "comune=" + comune +
-                ", nome=" +getNome()+
+        return "Contributor " +getUsername()+" "+
+                "(" + comune +")"+
                 '}';
     }
 

@@ -54,9 +54,11 @@ public class Comune {
     }
 
 
+    /**
+     * @param punto il punto geografico di cui vogliamo verificare la posizione
+     * @return true se il punto è all'interno del territorio del comune
+     */
     public final boolean verificaCoordinateComune(Punto punto) {
-        if(punto.equals(new Punto(0,0)))
-            throw new RuntimeException("0,0 IMPOSSIBLE POSITION");
         String nomeComune = RichiestaOSM.getComuneDaCoordinate(punto);
         if (nomeComune != null) {
             return nomeComune.equalsIgnoreCase(getNome());
@@ -84,9 +86,6 @@ public class Comune {
 
     @Override
     public String toString() {
-        return "Comune{" +
-                "nome='" + nome + '\'' +
-                ", posizione=" + posizione +
-                '}';
+        return nome +posizione;
     }
 }

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static ids.unicam.Main.logger;
 
@@ -42,15 +43,16 @@ public class PoiServiceImpl implements PoiService {
     public void deleteById(int id) {
         repository.deleteById(id);
     }
+
     @Transactional
     @Override
     public @Nullable PuntoInteresse creaPuntoInteresse(String nomePoi, Punto centroComune, Orario orario, TipologiaPuntoInteresse tipo, Contributor creatore) {
         try {
-            PuntoInteresse punto = new PuntoInteresse(creatore.getComune(), nomePoi, centroComune,orario, tipo, creatore);
+            PuntoInteresse punto = new PuntoInteresse(creatore.getComune(), nomePoi, centroComune, orario, tipo, creatore);
             return save(punto);
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             logger.error("Verifica coordinate");
-        }catch (UnsupportedOperationException e){
+        } catch (UnsupportedOperationException e) {
             logger.error("Verifica se è il comune giusto");
         }
         return null;
@@ -62,9 +64,9 @@ public class PoiServiceImpl implements PoiService {
         try {
             PuntoInteresse punto = new PuntoInteresse(creatore.getComune(), nomePoi, centroComune, tipo, creatore);
             return save(punto);
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             logger.error("Verifica coordinate");
-        }catch (UnsupportedOperationException e){
+        } catch (UnsupportedOperationException e) {
             logger.error("Verifica se è il comune giusto");
         }
         return null;
@@ -107,9 +109,7 @@ public class PoiServiceImpl implements PoiService {
 
     @Transactional
     public PuntoInteresse save(PuntoInteresse puntoInteresse) {
-        assert puntoInteresse!=null;
-        PuntoInteresse poi = repository.save(puntoInteresse);
-        return poi;
+        return repository.save(puntoInteresse);
     }
 
 
@@ -121,15 +121,15 @@ public class PoiServiceImpl implements PoiService {
     @Transactional
     @Override
     public List<PuntoInteresse> findActive() {
-        List<PuntoInteresse> list = repository.findAll();
-        for (PuntoInteresse puntoInteresse : list) {
-            if (puntoInteresse.isExpired()) {
-                repository.deleteById(puntoInteresse.getId());
-            }
-        }
-        return repository.findAll();
+        return repository.findAll().stream()
+                .filter(puntoInteresse -> !puntoInteresse.isExpired() || puntoInteresse.getStato().asBoolean())
+                .peek(puntoInteresse -> {
+                    if (puntoInteresse.isExpired()) {
+                        repository.deleteById(puntoInteresse.getId());
+                    }
+                })
+                .collect(Collectors.toList());
     }
-
 
 
     public void deleteAll() {

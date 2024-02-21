@@ -1,11 +1,11 @@
-package ids.unicam.models.contenuti;
+package ids.unicam.models.contenuti.notifiche;
 
-import ids.unicam.models.attori.TuristaAutenticato;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -17,28 +17,25 @@ public class Notifica {
     @SequenceGenerator(name = "sequenza_report", sequenceName = "NOTIFICA_SEQ", allocationSize = 1)
     private int id = 0;
 
-    @OneToOne
-    private TuristaAutenticato ricevente;
+    private String usernameDestinatario;
 
     private String titolo;
     private String descrizione;
     private LocalDateTime data;
 
-    // Costruttore privato per il Builder
-    Notifica(String titolo, String descrizione, TuristaAutenticato ricevente) {
+    Notifica(String titolo, String descrizione, String usernameDestinatario) {
         this.titolo = titolo;
         this.descrizione = descrizione;
         this.data = LocalDateTime.now();
-        this.ricevente = ricevente;
+        this.usernameDestinatario = usernameDestinatario;
     }
 
     @Override
     public String toString() {
-        return "Notifica{" +
-                "ricevente=" + ricevente +
-                ", titolo='" + titolo + '\'' +
-                ", descrizione='" + descrizione + '\'' +
-                ", data=" + data +
-                '}';
+        return "Notifica :" +
+                "\n destinatario = " + usernameDestinatario +
+                "\n titolo       = " + titolo +
+                "\n descrizione  = " + descrizione +
+                "\n data         = " + data.format(DateTimeFormatter.ISO_DATE);
     }
 }

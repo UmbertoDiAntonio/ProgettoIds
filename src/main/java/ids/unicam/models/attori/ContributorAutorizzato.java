@@ -20,6 +20,6 @@ public class ContributorAutorizzato extends Contributor{
 
     @Override
     public String toString() {
-        return "ContributorAutorizzato"+super.toString();
+        return "ContributorAutorizzato "+super.toString();
     }
 }

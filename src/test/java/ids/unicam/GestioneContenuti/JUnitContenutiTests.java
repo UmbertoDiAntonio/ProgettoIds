@@ -174,6 +174,13 @@ public class JUnitContenutiTests {
             assertEquals(numeroOsservatori + 2, curatoreServiceImpl.getNumeroOsservatori(curatore));
 
             curatoreServiceImpl.valuta(curatore, puntoInteresse, Stato.APPROVATO);
+            curatoreServiceImpl.valuta(curatore, puntoInteresse, Stato.NON_APPROVATO);
+            curatoreServiceImpl.valuta(curatore, puntoInteresse, Stato.APPROVATO);
+            curatoreServiceImpl.valuta(curatore, puntoInteresse, Stato.NON_APPROVATO);
+            curatoreServiceImpl.valuta(curatore, puntoInteresse, Stato.NON_APPROVATO);
+            curatoreServiceImpl.valuta(curatore, puntoInteresse, Stato.NON_APPROVATO);
+            curatoreServiceImpl.valuta(curatore, puntoInteresse, Stato.APPROVATO);
+
             assertTrue(puntoInteresse.getStato().asBoolean());
             MaterialeGenerico materialeGenerico1 = new Foto(contributor);
             assertFalse(materialeGenerico1.getStato().asBoolean());

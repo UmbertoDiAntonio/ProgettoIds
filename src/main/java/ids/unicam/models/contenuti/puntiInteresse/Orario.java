@@ -2,6 +2,7 @@ package ids.unicam.models.contenuti.puntiInteresse;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embeddable;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
@@ -40,8 +41,8 @@ public class Orario {
     }
 
     @Embeddable
+    @NoArgsConstructor
     public static class OrarioApertura {
-
         private LocalTime openingTime = null;
         private LocalTime closingTime = null;
 
@@ -50,9 +51,6 @@ public class Orario {
             this.closingTime = closingTime;
         }
 
-        public OrarioApertura() {
-
-        }
 
         public LocalTime getOrarioApertura() {
             return openingTime;
