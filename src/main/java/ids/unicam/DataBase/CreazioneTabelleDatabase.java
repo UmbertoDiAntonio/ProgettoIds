@@ -183,11 +183,10 @@ public class CreazioneTabelleDatabase {
     private void creaTabellaTuristi(@NotNull Connection connection) {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS TURISTI(" +
-                        "id INT PRIMARY KEY AUTO_INCREMENT," +
                         "nome VARCHAR(50) NOT NULL," +
                         "cognome VARCHAR(50) NOT NULL," +
                         "data_nascita DATE," +
-                        "username VARCHAR(50) NOT NULL," +
+                        "username VARCHAR(50) PRIMARY KEY," +
                         "password VARCHAR(50) NOT NULL)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
@@ -213,12 +212,11 @@ public class CreazioneTabelleDatabase {
 
     private void creaTabellaContributor(@NotNull Connection connection) {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS CONTRIBUTOR(" +
-                "id INT PRIMARY KEY NOT NULL," +
                 "comune VARCHAR(50) NOT NULL," +
                 "nome VARCHAR(50) NOT NULL," +
                 "cognome VARCHAR(50) NOT NULL," +
                 "data_nascita DATE," +
-                "username VARCHAR(50) NOT NULL," +
+                "username VARCHAR(50) PRIMARY KEY," +
                 "password VARCHAR(50) NOT NULL)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
@@ -231,12 +229,11 @@ public class CreazioneTabelleDatabase {
     private void creaTabellaContributorAutorizzati(@NotNull Connection connection) {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS CONTRIBUTOR_AUTORIZZATI(" +
-                        "id INT PRIMARY KEY NOT NULL," +
                         "comune VARCHAR(50) NOT NULL," +
                         "nome VARCHAR(50) NOT NULL," +
                         "cognome VARCHAR(50) NOT NULL," +
                         "data_nascita DATE," +
-                        "username VARCHAR(50) NOT NULL," +
+                        "username VARCHAR(50) PRIMARY KEY," +
                         "password VARCHAR(50) NOT NULL)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
@@ -265,12 +262,11 @@ public class CreazioneTabelleDatabase {
     private void creaTabellaAnimatori(@NotNull Connection connection) {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS ANIMATORI(" +
-                        "id INT PRIMARY KEY NOT NULL," +
                         "comune VARCHAR(50) NOT NULL," +
                         "nome VARCHAR(50) NOT NULL," +
                         "cognome VARCHAR(50) NOT NULL," +
                         "data_nascita DATE," +
-                        "username VARCHAR(50) NOT NULL," +
+                        "username VARCHAR(50) PRIMARY KEY," +
                         "password VARCHAR(50) NOT NULL)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
@@ -282,12 +278,11 @@ public class CreazioneTabelleDatabase {
     private void creaTabellaCuratori(@NotNull Connection connection) {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS CURATORI(" +
-                        "id INT PRIMARY KEY NOT NULL," +
                         "comune VARCHAR(50) NOT NULL," +
                         "nome VARCHAR(50) NOT NULL," +
                         "cognome VARCHAR(50) NOT NULL," +
                         "data_nascita DATE," +
-                        "username VARCHAR(50) NOT NULL," +
+                        "username VARCHAR(50) PRIMARY KEY," +
                         "password VARCHAR(50) NOT NULL)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
