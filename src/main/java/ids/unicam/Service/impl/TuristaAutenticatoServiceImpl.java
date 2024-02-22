@@ -90,13 +90,18 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
                     TuristaAutenticato turistaAutenticato = oTurista.get();
                     turistaAutenticato.getPreferiti().add(puntoInteresse);
                     save(turistaAutenticato);
+                } else {
+                    logger.error("username del turista non valido");
+                    throw new IllegalArgumentException("username del turista non valido");
                 }
+            } else {
+                logger.error("punto di interesse non approvato");
+                throw new IllegalArgumentException("punto di interesse non approvato");
             }
-            logger.error("username del turista non valido");
-            throw new IllegalArgumentException("username del turista non valido");
+        } else {
+            logger.error("id del punto di interesse non valido");
+            throw new IllegalArgumentException("id del punto di interesse non valido");
         }
-        logger.error("id del punto di interesse non valido");
-        throw new IllegalArgumentException("id del punto di interesse non valido");
     }
 
     public boolean logOut() {
@@ -125,7 +130,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
     public void partecipaAlContest(Integer idContest, String usernameTurista) {
         Optional<Contest> oContest = contestServiceImpl.findById(idContest);
         if (oContest.isPresent()) {
-            Contest contest=oContest.get();
+            Contest contest = oContest.get();
             Optional<TuristaAutenticato> oTurista = findTuristaByUsername(usernameTurista);
             if (oTurista.isPresent()) {
                 TuristaAutenticato turistaAutenticato = oTurista.get();
@@ -134,12 +139,14 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
                     return;
                 }
                 contestServiceImpl.aggiungiPartecipante(contest, turistaAutenticato);
+            } else {
+                logger.error("username del turista non valido");
+                throw new IllegalArgumentException("username del turista non valido");
             }
-            logger.error("username del turista non valido");
-            throw new IllegalArgumentException("username del turista non valido");
+        } else {
+            logger.error("id del contest non valido");
+            throw new IllegalArgumentException("id del contest non valido");
         }
-        logger.error("id del contest non valido");
-        throw new IllegalArgumentException("id del contest non valido");
     }
 
     @Override

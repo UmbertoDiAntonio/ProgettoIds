@@ -231,7 +231,7 @@ public class JUnitContenutiTests {
             assertEquals(numeroItinerariIniziale + 1, itinerarioService.findAllByComune(comune).size());
             assertEquals(3, itinerarioService.getNumeroTappe(itinerario1));
 
-            itinerarioService.aggiungiTappa(contributorAutorizzato.getUsername(), nuovoPunto2.getId(), nuovoPunto3.getId());
+            itinerarioService.aggiungiTappa(contributorAutorizzato.getUsername(), itinerario1.getId(),nuovoPunto2.getId(), nuovoPunto3.getId());
             //itinerarioService.aggiungiTappa(itinerario1, nuovoPunto1, nuovoPunto2, nuovoPunto3);
             assertEquals(numeroItinerariIniziale + 1, itinerarioService.findAllByComune(comune).size());
 
@@ -259,7 +259,7 @@ public class JUnitContenutiTests {
          */
         {
 
-            Contest contest = animatoreServiceImpl.creaContest(new RichiestaCreazioneContestDTO("Monumento", "Foto più bella", animatore, true));
+            Contest contest = contestService.creaContest(new Contest(new RichiestaCreazioneContestDTO("Monumento", "Foto più bella", animatore, true)));
 
             assertEquals(numeroContestCreatiDaAnimatore + 1, contestService.getContestByCreatore(animatore).size());
 
@@ -281,7 +281,7 @@ public class JUnitContenutiTests {
          * Accettazione invito da parte del turista
          */
         {
-            Contest contest = animatoreServiceImpl.creaContest(new RichiestaCreazioneContestDTO("Monumento", "Foto più bella", animatore, false));
+            Contest contest = contestService.creaContest(new Contest(new RichiestaCreazioneContestDTO("Monumento", "Foto più bella", animatore, false)));
             assertEquals(numeroContestCreatiDaAnimatore + 2, contestService.getContestByCreatore(animatore).size());
 
             TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.NOVEMBER, 5), "8Unica@", "user8"));
@@ -319,7 +319,7 @@ public class JUnitContenutiTests {
             throw new IllegalArgumentException("errore");
 
 
-        Contest contest = animatoreServiceImpl.creaContest(new RichiestaCreazioneContestDTO("Monumento", "Foto più bella", animatore, true));
+        Contest contest = contestService.creaContest(new Contest(new RichiestaCreazioneContestDTO("Monumento", "Foto più bella", animatore, true)));
 
         Descrizione descrizione = new Descrizione(turistaAutenticato);
         assertThrows(ContestException.class, () -> contestService.aggiungiMateriale(descrizione, contest, turistaAutenticato));
@@ -392,7 +392,7 @@ public class JUnitContenutiTests {
 
 
         int numeroContest = contestService.getContestByCreatore(animatore).size();
-        animatoreServiceImpl.creaContest(new RichiestaCreazioneContestDTO("contest", "spiaggia", animatore, true));
+        contestService.creaContest(new Contest(new RichiestaCreazioneContestDTO("contest", "spiaggia", animatore, true)));
         assertEquals(numeroContest + 1, contestService.getContestByCreatore(animatore).size());
         curatoreServiceImpl.elimina(curatore, contestService.getContestByCreatore(animatore).getLast());
         assertEquals(numeroContest, contestService.getContestByCreatore(animatore).size());
@@ -401,7 +401,11 @@ public class JUnitContenutiTests {
         assertEquals(1, itinerarioService.getNumeroTappe(itinerario3));
         assertTrue(itinerarioService.aggiungiTappa(contributor.getUsername(),itinerario3.getId(), puntoInt2.getId()));
         assertEquals(2, itinerarioService.getNumeroTappe(itinerario3));
+
+        System.out.println("Prima :"+itinerarioService.getNumeroTappe(itinerario3));
         curatoreServiceImpl.rimuoviTappa(curatore, itinerario3, puntoInteresse1);
+        System.out.println("Dopo :"+itinerarioService.getNumeroTappe(itinerario3));
+
         assertEquals(1, itinerarioService.getNumeroTappe(itinerario3));
 
 
@@ -439,7 +443,7 @@ public class JUnitContenutiTests {
 
 
         poiService.modificaScadenza(contributor.getUsername(),puntoInteresse.getId(), LocalDate.of(2024, 2, 1));
-        assertEquals(LocalDate.of(2024, 2, 1), puntoInteresse.getExpireDate());
+        assertEquals(LocalDate.of(2024, 2, 1), poiService.getScadenza(puntoInteresse));
         assertEquals(numPoi, poiService.findActive().size());
     }
 }

@@ -58,14 +58,18 @@ public class ItinerarioServiceImpl implements ItinerarioService {
                     itinerario.getPercorso().add(puntoInteresse);
                     save(itinerario);
                     return true;
+                } else {
+                    logger.error("il punto di interesse e' fuori dall'itinerario");
+                    throw new IllegalArgumentException("il punto di interesse e' fuori dall'itinerario");
                 }
-                return false;
+            } else {
+                logger.error("id Itinerario non valido");
+                throw new IllegalArgumentException("id itinerario non valido");
             }
-            logger.error("id Itinerario non valido");
-            throw new IllegalArgumentException("id itinerario non valido");
+        } else {
+            logger.error("id Punto Interesse non valido");
+            throw new IllegalArgumentException("id Punto Interesse non valido");
         }
-        logger.error("id Punto Interesse non valido");
-        throw new IllegalArgumentException("id Punto Interesse non valido");
     }
 
     @Override
@@ -82,7 +86,9 @@ public class ItinerarioServiceImpl implements ItinerarioService {
 
     @Override
     public void rimuoviTappa(Itinerario itinerario, PuntoInteresse puntoInteresse) {
+        System.out.println("PRIMA :" +itinerario.getPercorso().size());
         itinerario.getPercorso().remove(puntoInteresse);
+        System.out.println("DOPO :" +itinerario.getPercorso().size());
         save(itinerario);
     }
 

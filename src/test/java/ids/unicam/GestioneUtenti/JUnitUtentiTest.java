@@ -97,7 +97,7 @@ public class JUnitUtentiTest {
         assertEquals(0, turistaAutenticato.getPreferiti().size());
 
         turistaAutenticatoService.aggiungiPreferito(turistaAutenticato.getUsername(), puntoInteresse.getId());
-        assertEquals(1, turistaAutenticato.getPreferiti().size());
+        assertEquals(1, turistaAutenticatoService.findPreferiti(turistaAutenticato.getUsername()).size());
     }
 
     @Test

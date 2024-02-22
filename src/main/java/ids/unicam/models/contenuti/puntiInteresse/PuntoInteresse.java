@@ -131,19 +131,31 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
 
         PuntoInteresse that = (PuntoInteresse) o;
 
+        if (id != that.id) return false;
+        if (!comune.equals(that.comune)) return false;
+        if (stato != that.stato) return false;
+        if (!tags.equals(that.tags)) return false;
+        if (!Objects.equals(expireDate, that.expireDate)) return false;
         if (!Objects.equals(orario, that.orario)) return false;
-        if (!Objects.equals(nome, that.nome)) return false;
-        if (!Objects.equals(pt, that.pt)) return false;
+        if (!nome.equals(that.nome)) return false;
+        if (!pt.equals(that.pt)) return false;
         if (!creatore.equals(that.creatore)) return false;
+        if (!listaMateriali.equals(that.listaMateriali)) return false;
         return tipo == that.tipo;
     }
 
     @Override
     public int hashCode() {
-        int result = orario != null ? orario.hashCode() : 0;
-        result = 31 * result + (nome != null ? nome.hashCode() : 0);
-        result = 31 * result + (pt != null ? pt.hashCode() : 0);
+        int result = id;
+        result = 31 * result + comune.hashCode();
+        result = 31 * result + stato.hashCode();
+        result = 31 * result + tags.hashCode();
+        result = 31 * result + (expireDate != null ? expireDate.hashCode() : 0);
+        result = 31 * result + (orario != null ? orario.hashCode() : 0);
+        result = 31 * result + nome.hashCode();
+        result = 31 * result + pt.hashCode();
         result = 31 * result + creatore.hashCode();
+        result = 31 * result + listaMateriali.hashCode();
         result = 31 * result + tipo.hashCode();
         return result;
     }

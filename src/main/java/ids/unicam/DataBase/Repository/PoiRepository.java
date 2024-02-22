@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -26,4 +27,7 @@ public interface PoiRepository extends JpaRepository<PuntoInteresse,Integer> {
     @Modifying
     @Query("DELETE FROM PuntoInteresse p WHERE p.id = :id")
     void deleteById(int id);
+
+    @Query("SELECT p.expireDate FROM PuntoInteresse p WHERE p.id = :id")
+    LocalDate getExpireDateById(int id);
 }

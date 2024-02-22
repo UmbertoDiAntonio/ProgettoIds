@@ -85,9 +85,9 @@ public class CuratoreServiceImpl implements CuratoreService {
     public void valuta(Curatore curatore, @NotNull PuntoInteresse puntoInteresse, Stato stato) {
         if (!curatore.getComune().equals(puntoInteresse.getComune()))
             throw new UnsupportedOperationException("curatore non puo' operare fuori dal suo comune");
-        if(puntoInteresse.getStato() != Stato.IN_ATTESA)
+        if (puntoInteresse.getStato() != Stato.IN_ATTESA)
             throw new UnsupportedOperationException("punto di interesse già settato");
-        if(stato==Stato.IN_ATTESA)
+        if (stato == Stato.IN_ATTESA)
             throw new UnsupportedOperationException("stato in attesa");
         puntoInteresse.setStato(stato);
         poiServiceImpl.save(puntoInteresse);
@@ -164,7 +164,8 @@ public class CuratoreServiceImpl implements CuratoreService {
     public void rimuoviTappa(Curatore curatore, Itinerario itinerario, PuntoInteresse tappa) {
         if (!curatore.getComune().equals(itinerario.getComune()))
             logger.warn(curatore + " non può rimuovere tappe da itinerari esterni al suo comune");
-        itinerarioServiceImpl.rimuoviTappa(itinerario, tappa);
+        else
+            itinerarioServiceImpl.rimuoviTappa(itinerario, tappa);
     }
 
     @Override
