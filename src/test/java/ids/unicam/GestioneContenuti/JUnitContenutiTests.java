@@ -180,14 +180,14 @@ public class JUnitContenutiTests {
             curatoreServiceImpl.aggiungiOsservatore(curatore, contributor2);
             assertEquals(numeroOsservatori + 2, curatoreServiceImpl.getNumeroOsservatori(curatore));
 
-            curatoreServiceImpl.valuta(curatore, puntoInteresse, Stato.APPROVATO);
-            assertThrows(UnsupportedOperationException.class, () -> curatoreServiceImpl.valuta(curatore, puntoInteresse, Stato.NON_APPROVATO));
+            curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse.getId(), true);
+            assertThrows(UnsupportedOperationException.class, () -> curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse.getId(), Stato.NON_APPROVATO.asBoolean()));
 
 
             assertTrue(puntoInteresse.getStato().asBoolean());
             MaterialeGenerico materialeGenerico1 = new Foto(new MaterialeDTO( contributor));
             assertNull(materialeGenerico1.getStato().asBoolean());
-            curatoreServiceImpl.valuta(curatore, materialeGenerico1, Stato.APPROVATO);
+            curatoreServiceImpl.valutaMateriale(curatore.getUsername(), materialeGenerico1.getId(), Stato.APPROVATO.asBoolean());
             poiService.aggiungiMateriale(turistaAutenticato, puntoInteresse, materialeGenerico1);
             curatoreServiceImpl.rimuoviOsservatore(curatore, contributor1);
             assertEquals(numeroOsservatori + 1, curatoreServiceImpl.getNumeroOsservatori(curatore));
@@ -367,9 +367,9 @@ public class JUnitContenutiTests {
 
         assertEquals(numeroPuntiInteresse + 2, comuneService.getPuntiInteresseNelComune(comune.getNome()).size());
         assert puntoInteresse != null;
-        curatoreServiceImpl.valuta(curatore, puntoInteresse, Stato.APPROVATO);
+        curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse.getId(), Stato.APPROVATO.asBoolean());
         assert puntoInt2 != null;
-        curatoreServiceImpl.valuta(curatore, puntoInt2, Stato.APPROVATO);
+        curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInt2.getId(), Stato.APPROVATO.asBoolean());
 
         turistaAutenticatoService.aggiungiPreferito(turista.getUsername(), puntoInteresse.getId());
         turistaAutenticatoService.aggiungiPreferito(turista.getUsername(), puntoInt2.getId());
@@ -388,7 +388,7 @@ public class JUnitContenutiTests {
         assertThrows(IllegalArgumentException.class, () -> itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(comune, "girodeibar", new PuntoInteresse[]{puntoInteresse1}))));
         assertEquals(numeroItinerariComune, itinerarioService.findAllByComune(comune).size());
 
-        curatoreServiceImpl.valuta(curatore, puntoInteresse1, Stato.APPROVATO);
+        curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse1.getId(), Stato.APPROVATO.asBoolean());
         Itinerario itinerario2 = itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(comune, "giro dei bar", new PuntoInteresse[]{puntoInteresse1})));
         assertEquals(numeroItinerariComune + 1, itinerarioService.findAllByComune(comune).size());
         curatoreServiceImpl.eliminaItinerario(curatore.getUsername(), itinerario2.getId());
@@ -412,10 +412,10 @@ public class JUnitContenutiTests {
 
 
         PuntoInteresse puntoInteresse2 = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("Castello", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), new Orario(), TipologiaPuntoInteresse.MONUMENTO, contributor)));
-        assert puntoInteresse2 != null;
-        curatoreServiceImpl.valuta(curatore, puntoInteresse2, Stato.APPROVATO);
+
+        curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse2.getId(), Stato.APPROVATO.asBoolean());
         MaterialeGenerico foto = new Foto(new MaterialeDTO( turista));
-        curatoreServiceImpl.valuta(curatore, foto, Stato.APPROVATO);
+        curatoreServiceImpl.valutaMateriale(curatore.getUsername(), foto.getId(), Stato.APPROVATO.asBoolean());
 
         poiService.aggiungiMateriale(turista, puntoInteresse2, foto);
         assertEquals(1, poiService.getMaterialiPoi(puntoInteresse2).size());

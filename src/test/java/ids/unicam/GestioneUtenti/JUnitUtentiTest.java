@@ -139,7 +139,7 @@ public class JUnitUtentiTest {
         assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag((new RichiestaCreazioneTagDTO("Edicola", puntoInteresse))).size());
 
         assert puntoInteresse != null;
-        curatoreServiceImpl.valuta(curatore, puntoInteresse, Stato.APPROVATO);
+        curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse.getId(), Stato.APPROVATO.asBoolean());
 
 
         poiService.aggiungiTag(puntoInteresse, new Tag(new RichiestaCreazioneTagDTO("Tabaccheria", puntoInteresse)));
@@ -175,7 +175,7 @@ public class JUnitUtentiTest {
             throw new IllegalArgumentException("errore");
 
         assert puntoInteresse != null;
-        curatoreServiceImpl.valuta(curatore1, puntoInteresse, Stato.APPROVATO);
+        curatoreServiceImpl.valutaPuntoInteresse(curatore1.getUsername(), puntoInteresse.getId(), Stato.APPROVATO.asBoolean());
         assertEquals(Boolean.TRUE, puntoInteresse.getStato().asBoolean());
         TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO( "andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "10Unico@", "user10"));
 
@@ -185,7 +185,7 @@ public class JUnitUtentiTest {
         poiService.aggiungiMateriale(turistaAutenticato, puntoInteresse, foto);
         assertEquals(1, poiService.getMaterialiPoi(puntoInteresse).size());
         assertNull(foto.getStato().asBoolean());
-        curatoreServiceImpl.valuta(curatore1, foto, Stato.APPROVATO);
+        curatoreServiceImpl.valutaMateriale(curatore1.getUsername(), foto.getId(), Stato.APPROVATO.asBoolean());
         assertTrue(foto.getStato().asBoolean());
     }
 

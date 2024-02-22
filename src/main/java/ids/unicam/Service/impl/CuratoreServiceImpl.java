@@ -83,43 +83,48 @@ public class CuratoreServiceImpl implements CuratoreService {
         return comune.equals(curatore.getComune());
     }
 
-    /**
-     * Valuta un punto di interesse, in caso di non approvazione lo rimuove dalla lista dei contenuti nel controller del comune associato,
-     * notifica i subscriber
-     *
-     * @param puntoInteresse il punto di interesse che si vuole valutare
-     * @param stato          stato punto di interesse: approvato/non approvato
-     */
+
     @Override
     @Transactional
-    public void valuta(Curatore curatore, @NotNull PuntoInteresse puntoInteresse, Stato stato) {
-        if (!curatore.getComune().equals(puntoInteresse.getComune()))
-            throw new UnsupportedOperationException("curatore non puo' operare fuori dal suo comune");
-        if (puntoInteresse.getStato() != Stato.IN_ATTESA)
-            throw new UnsupportedOperationException("punto di interesse già settato");
-        if (stato == Stato.IN_ATTESA)
-            throw new UnsupportedOperationException("non puoi impostare stato in attesa");
-        puntoInteresse.setStato(stato);
-        poiServiceImpl.save(puntoInteresse);
-        Notifica notifica = notificaServiceImpl.creaNotifica(curatore, puntoInteresse, stato);
-        System.out.println(notifica);
+    public void valutaPuntoInteresse(String usernameCuratore, @NotNull Integer idPuntoInteresse, Boolean stato) {
+        Optional<Curatore> oCuratore = getById(usernameCuratore);
+        if (oCuratore.isPresent()) {
+            Curatore curatore = oCuratore.get();
+            Optional<PuntoInteresse> oPoi = poiServiceImpl.findById(idPuntoInteresse);
+            if (oPoi.isPresent()) {
+                PuntoInteresse puntoInteresse = oPoi.get();
+                if (!curatore.getComune().equals(puntoInteresse.getComune()))
+                    throw new UnsupportedOperationException("curatore non puo' operare fuori dal suo comune");
+                if (puntoInteresse.getStato() != Stato.IN_ATTESA)
+                    throw new UnsupportedOperationException("punto di interesse già settato");
+                if (Stato.toStatus(stato) == Stato.IN_ATTESA)
+                    throw new UnsupportedOperationException("non puoi impostare stato in attesa");
+                puntoInteresse.setStato(Stato.toStatus(stato));
+                poiServiceImpl.save(puntoInteresse);
+                Notifica notifica = notificaServiceImpl.creaNotifica(curatore, puntoInteresse, Stato.toStatus(stato));
+                System.out.println(notifica);
+            }
+        }
     }
 
-    /**
-     * Valuta un Materiale,
-     * notifica i subscriber
-     *
-     * @param materialeGenerico il materiale che si vuole valutare
-     * @param stato             approvato o non approvato
-     */
-    @Override
-    public void valuta(Curatore curatore, MaterialeGenerico materialeGenerico, Stato stato) {
-        materialeGenerico.setStato(stato);
-        if (stato == Stato.NON_APPROVATO)
-            materialeServiceImpl.deleteById(materialeGenerico.getId());
-        else materialeServiceImpl.save(materialeGenerico);
 
-        Notifica notifica = notificaServiceImpl.creaNotifica(curatore, materialeGenerico, stato);
+    @Override
+    public void valutaMateriale(String usernameCuratore, Integer idMaterialeGenerico, Boolean bStato) {
+        Optional<Curatore> oCuratore = getById(usernameCuratore);
+        if (oCuratore.isPresent()) {
+            Curatore curatore = oCuratore.get();
+            Optional<MaterialeGenerico> oMateriale = materialeServiceImpl.getById(idMaterialeGenerico);
+            if (oMateriale.isPresent()) {
+                MaterialeGenerico materialeGenerico = oMateriale.get();
+                Stato stato = Stato.toStatus(bStato);
+                materialeGenerico.setStato(stato);
+                if (stato == Stato.NON_APPROVATO)
+                    materialeServiceImpl.deleteById(materialeGenerico.getId());
+                else materialeServiceImpl.save(materialeGenerico);
+
+                Notifica notifica = notificaServiceImpl.creaNotifica(curatore, materialeGenerico, stato);
+            }
+        }
     }
 
 

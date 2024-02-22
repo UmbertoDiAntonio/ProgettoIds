@@ -14,16 +14,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CuratoreService {
-    void valuta(Curatore curatore, @NotNull PuntoInteresse puntoInteresse, Stato stato);
+    void valutaPuntoInteresse(String usernameCuratore, @NotNull Integer idPuntoInteresse, Boolean stato);
 
-    /**
-     * Valuta un Materiale,
-     * notifica i subscriber
-     *
-     * @param materialeGenerico il materiale che si vuole valutare
-     * @param stato             approvato o non approvato
-     */
-    void valuta(Curatore curatore, MaterialeGenerico materialeGenerico, Stato stato);
+    void valutaMateriale(String usernameCuratore, Integer idMaterialeGenerico, Boolean stato);
 
     void eliminaPuntoInteresse(String usernameCuratore,Integer idPuntoInteresse);
 
