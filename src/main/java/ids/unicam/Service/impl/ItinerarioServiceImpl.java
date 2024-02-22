@@ -61,10 +61,11 @@ public class ItinerarioServiceImpl implements ItinerarioService {
                 }
                 return false;
             }
-            //TODO itinerario non valido
+            logger.error("id Itinerario non valido");
+            throw new IllegalArgumentException("id itinerario non valido");
         }
-        //TODO punto non valido
-        return false;
+        logger.error("id Punto Interesse non valido");
+        throw new IllegalArgumentException("id Punto Interesse non valido");
     }
 
     @Override

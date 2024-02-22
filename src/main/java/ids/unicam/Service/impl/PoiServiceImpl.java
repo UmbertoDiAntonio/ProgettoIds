@@ -54,14 +54,17 @@ public class PoiServiceImpl implements PoiService {
                 PuntoInteresse puntoInteresse = oPoi.get();
                 if (contributor.getComune().equals(puntoInteresse.getComune())) {
                     puntoInteresse.setExpireDate(expireDate);
-                    //TODO expireDate > now
-                    save(puntoInteresse);
+                    if(expireDate.isAfter(LocalDate.now()))
+                        save(puntoInteresse);
                 }
-                //TODO punto fuori comune contributor
+                logger.error("punto di interesse fuori dal comune di appartenenza del contributor");
+                throw new IllegalArgumentException("punto di interesse fuori dal comune di appartenenza del contributor");
             }
-            //TODO punto non valido
+            logger.error("id del punto di interesse non esiste");
+            throw new IllegalArgumentException("id del punto di interesse non esiste");
         }
-        //TODO contributor non valido
+        logger.error("username del contributor non esiste");
+        throw new IllegalArgumentException("username del contributor non esiste");
     }
 
     @Transactional

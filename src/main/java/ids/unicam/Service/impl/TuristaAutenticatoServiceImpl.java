@@ -74,7 +74,8 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
             turistaAutenticato.getPreferiti().removeIf(puntoInteresse -> puntoInteresse.getId() == id);
             save(turistaAutenticato);
         }
-        //TODO turista non valido
+        logger.error("username del turista non valido");
+        throw new IllegalArgumentException("username del turista non valido");
     }
 
     @Transactional
@@ -91,9 +92,11 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
                     save(turistaAutenticato);
                 }
             }
-            //TODO Turista non valido
+            logger.error("username del turista non valido");
+            throw new IllegalArgumentException("username del turista non valido");
         }
-        //TODO puntoInteresse non valido
+        logger.error("id del punto di interesse non valido");
+        throw new IllegalArgumentException("id del punto di interesse non valido");
     }
 
     public boolean logOut() {
@@ -112,8 +115,8 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
             TuristaAutenticato turistaAutenticato = oTurista.get();
             return repository.findPreferitiByTurista(turistaAutenticato.getUsername());
         }
-        //TODO turista non valido
-        return null;
+        logger.error("username del turista non valido");
+        throw new IllegalArgumentException("username del turista non valido");
     }
 
 
@@ -132,9 +135,11 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
                 }
                 contestServiceImpl.aggiungiPartecipante(contest, turistaAutenticato);
             }
-            //TODO turista non valido
+            logger.error("username del turista non valido");
+            throw new IllegalArgumentException("username del turista non valido");
         }
-       //TODO contest non presente
+        logger.error("id del contest non valido");
+        throw new IllegalArgumentException("id del contest non valido");
     }
 
     @Override
@@ -170,8 +175,8 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
             TuristaAutenticato turistaAutenticato = oTurista.get();
             return notificaService.getNotifiche(turistaAutenticato);
         }
-        //TODO turista non valido
-        return null;
+        logger.error("username del turista non valido");
+        throw new IllegalArgumentException("username del turista non valido");
     }
 
 }

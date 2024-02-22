@@ -102,11 +102,14 @@ public class AnimatoreServiceImpl implements AnimatoreService {
                     }
                     return invitoServiceImpl.save(new Invito(new InvitoDTO(contest, turistaAutenticato)));
                 }
-                //TODO turista non valido
+                logger.error("username del turista invitato non valido");
+                throw new IllegalArgumentException("username del turista invitato non valido");
             }
-            //TODO contest non valido
+            logger.error("id del contest non valido");
+            throw new IllegalArgumentException("id del contest non valido");
         }
-        //TODO animatore non valido
+        logger.error("username dell'animatore non valido");
+        throw new IllegalArgumentException("username dell'animatore non valido");
     }
 
     @Override

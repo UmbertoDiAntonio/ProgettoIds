@@ -71,9 +71,6 @@ public class ContributorAutorizzatoServiceImpl implements ContributorAutorizzato
         return itinerarioServiceImpl.aggiungiTappa(itinerario, puntoInteresse);
     }
 
-
-
-
     @Override
     @Transactional
     public void aggiungiTappaItinerario(Itinerario itinerario, PuntoInteresse... puntiInteresse) {
@@ -82,13 +79,10 @@ public class ContributorAutorizzatoServiceImpl implements ContributorAutorizzato
         }
     }
 
-
-
     @Override
     public void modificaScadenza(PuntoInteresse puntoInteresse, LocalDate expireDate) {
         puntoInteresse.setExpireDate(expireDate);
     }
-
 
      */
 
