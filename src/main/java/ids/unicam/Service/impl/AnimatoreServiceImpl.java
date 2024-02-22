@@ -2,6 +2,7 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.AnimatoreRepository;
 import ids.unicam.Service.AnimatoreService;
+import ids.unicam.Service.TuristaAutenticatoService;
 import ids.unicam.exception.ContestException;
 import ids.unicam.models.DTO.RichiestaCreazioneContestDTO;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
@@ -25,13 +26,15 @@ public class AnimatoreServiceImpl implements AnimatoreService {
     private final AnimatoreRepository repository;
     private final ContestServiceImpl contestService;
     private final InvitoServiceImpl invitoServiceImpl;
+    private final TuristaAutenticatoService turistaAutenticatoService;
 
 
     @Autowired
-    public AnimatoreServiceImpl(AnimatoreRepository repository, ContestServiceImpl contestService, InvitoServiceImpl invitoServiceImpl, MaterialeServiceImpl materialeServiceImpl) {
+    public AnimatoreServiceImpl(AnimatoreRepository repository, ContestServiceImpl contestService, InvitoServiceImpl invitoServiceImpl, MaterialeServiceImpl materialeServiceImpl, TuristaAutenticatoService turistaAutenticatoService) {
         this.repository = repository;
         this.contestService = contestService;
         this.invitoServiceImpl = invitoServiceImpl;
+        this.turistaAutenticatoService = turistaAutenticatoService;
     }
 
     @Override
@@ -50,6 +53,10 @@ public class AnimatoreServiceImpl implements AnimatoreService {
         return null;
     }
 
+    @Override
+    public List<Animatore> getAll() {
+        return repository.findAll();
+    }
 
     public Animatore save(Animatore animatore) {
         animatore = repository.save(animatore);
@@ -65,40 +72,56 @@ public class AnimatoreServiceImpl implements AnimatoreService {
         return repository.findByComuneNome(nomeComune);
     }
 
+    /*
     @Override
     public Contest creaContest(RichiestaCreazioneContestDTO contestDTO){
         return contestService.creaContest(new Contest(contestDTO));
     }
 
+     */
+
     @Override
-    public Invito invitaContest(Animatore animatore, Contest contest, TuristaAutenticato turistaAutenticato){
-        if(!contest.getCreatore().equals(animatore)) {
-            logger.error("L'animatore non e' il creatore del contest.");
-            throw new IllegalStateException("L'animatore non e' il creatore del contest.");
+    public Invito invitaContest(String usernameAnimatore, Integer idContest, String invitato) {
+        Optional<Animatore> oAnimatore = getById(usernameAnimatore);
+        if (oAnimatore.isPresent()) {
+            Animatore animatore = oAnimatore.get();
+            Optional<Contest> oContest = contestService.findById(idContest);
+            if (oContest.isPresent()) {
+                Contest contest = oContest.get();
+                if (!contest.getCreatore().equals(animatore)) {
+                    logger.error("L'animatore non e' il creatore del contest.");
+                    throw new IllegalStateException("L'animatore non e' il creatore del contest.");
+                }
+                Optional<TuristaAutenticato> oTurista = turistaAutenticatoService.getById(invitato);
+                if (oTurista.isPresent())
+                {
+                    TuristaAutenticato turistaAutenticato = oTurista.get();
+                    if (contestService.getPartecipanti(contest).contains(turistaAutenticato)) {
+                        logger.error("Il turista autenticato fa gia' parte del contest");
+                        throw new ContestException("Il turista autenticato fa gia' parte del contest");
+                    }
+                    return invitoServiceImpl.save(new Invito(new InvitoDTO(contest, turistaAutenticato)));
+                }
+                //TODO turista non valido
+            }
+            //TODO contest non valido
         }
-        if(contestService.getPartecipanti(contest).contains(turistaAutenticato)){
-            logger.error("Il turista autenticato fa gia' parte del contest");
-            throw new ContestException("Il turista autenticato fa gia' parte del contest");
-        }
-        return invitoServiceImpl.save(new Invito(new InvitoDTO(contest, turistaAutenticato)));
+        //TODO animatore non valido
     }
 
     @Override
     public boolean approvaMateriale(Animatore animatore, Contest contest, MaterialeGenerico materialeGenerico, Stato stato) {
-        if(!contest.getCreatore().equals(animatore)) {
+        if (!contest.getCreatore().equals(animatore)) {
             logger.warn(animatore + "  non è autorizzato ad approvare nel contest " + contest);
             return false;
         }
-        if(materialeGenerico.getStato() != Stato.IN_ATTESA)
+        if (materialeGenerico.getStato() != Stato.IN_ATTESA)
             throw new UnsupportedOperationException("materiale già settato");
-        if(stato==Stato.IN_ATTESA)
+        if (stato == Stato.IN_ATTESA)
             throw new UnsupportedOperationException("stato in attesa");
-        contestService.approvaMateriale(materialeGenerico,stato);
+        contestService.approvaMateriale(materialeGenerico, stato);
         return true;
     }
 
-    @Override
-    public List<Animatore> getAll() {
-        return repository.findAll();
-    }
+
 }

@@ -17,7 +17,7 @@ public interface AnimatoreService {
 
     Contest creaContest(RichiestaCreazioneContestDTO contestDTO);
 
-    Invito invitaContest(Animatore animatore, Contest contest, TuristaAutenticato turistaAutenticato);
+    Invito invitaContest(String idAnimatore, Integer idContest, String usernameInvitato);
 
     boolean approvaMateriale(Animatore animatore, Contest contest, MaterialeGenerico materialeGenerico, Stato stato);
 
