@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public interface AnimatoreService {
 
-    Contest creaContest(RichiestaCreazioneContestDTO contestDTO);
+   // Contest creaContest(RichiestaCreazioneContestDTO contestDTO);
 
     Invito invitaContest(String idAnimatore, Integer idContest, String usernameInvitato);
 

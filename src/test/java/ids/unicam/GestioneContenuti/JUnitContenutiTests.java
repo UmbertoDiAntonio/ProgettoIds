@@ -285,7 +285,7 @@ public class JUnitContenutiTests {
             assertEquals(numeroContestCreatiDaAnimatore + 2, contestService.getContestByCreatore(animatore).size());
 
             TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.NOVEMBER, 5), "8Unica@", "user8"));
-            Invito invito = animatoreServiceImpl.invitaContest(animatore, contest, turistaAutenticato);
+            Invito invito = animatoreServiceImpl.invitaContest(animatore.getUsername(), contest.getId(), turistaAutenticato.getUsername());
 
             assertTrue(invitoService.isValid(new InvitoDTO(invito.getContest(), invito.getInvitato())));
 
