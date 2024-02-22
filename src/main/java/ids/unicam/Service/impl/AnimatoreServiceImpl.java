@@ -2,11 +2,11 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.AnimatoreRepository;
 import ids.unicam.Service.AnimatoreService;
+import ids.unicam.Service.MaterialeService;
 import ids.unicam.Service.TuristaAutenticatoService;
 import ids.unicam.exception.ContestException;
-import ids.unicam.models.DTO.RichiestaCreazioneContestDTO;
-import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.DTO.InvitoDTO;
+import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
@@ -27,14 +27,16 @@ public class AnimatoreServiceImpl implements AnimatoreService {
     private final ContestServiceImpl contestService;
     private final InvitoServiceImpl invitoServiceImpl;
     private final TuristaAutenticatoService turistaAutenticatoService;
+    private final MaterialeService materialeService;
 
 
     @Autowired
-    public AnimatoreServiceImpl(AnimatoreRepository repository, ContestServiceImpl contestService, InvitoServiceImpl invitoServiceImpl, MaterialeServiceImpl materialeServiceImpl, TuristaAutenticatoService turistaAutenticatoService) {
+    public AnimatoreServiceImpl(AnimatoreRepository repository, ContestServiceImpl contestService, InvitoServiceImpl invitoServiceImpl, MaterialeServiceImpl materialeServiceImpl, TuristaAutenticatoService turistaAutenticatoService, MaterialeService materialeService) {
         this.repository = repository;
         this.contestService = contestService;
         this.invitoServiceImpl = invitoServiceImpl;
         this.turistaAutenticatoService = turistaAutenticatoService;
+        this.materialeService = materialeService;
     }
 
     @Override
@@ -113,17 +115,30 @@ public class AnimatoreServiceImpl implements AnimatoreService {
     }
 
     @Override
-    public boolean approvaMateriale(Animatore animatore, Contest contest, MaterialeGenerico materialeGenerico, Stato stato) {
-        if (!contest.getCreatore().equals(animatore)) {
-            logger.warn(animatore + "  non è autorizzato ad approvare nel contest " + contest);
-            return false;
-        }
-        if (materialeGenerico.getStato() != Stato.IN_ATTESA)
-            throw new UnsupportedOperationException("materiale già settato");
-        if (stato == Stato.IN_ATTESA)
-            throw new UnsupportedOperationException("stato in attesa");
-        contestService.approvaMateriale(materialeGenerico, stato);
-        return true;
+    public boolean approvaMateriale(String usernameAnimatore, Integer idContest, Integer idMaterialeGenerico, boolean stato) {
+        Optional<Animatore> oAnimatore = getById(usernameAnimatore);
+        if(oAnimatore.isPresent()) {
+            Animatore animatore = oAnimatore.get();
+            Optional<Contest> oContest = contestService.findById(idContest);
+            if(oContest.isPresent()) {
+                Contest contest = oContest.get();
+                if (!contest.getCreatore().equals(animatore)) {
+                    logger.warn(animatore + "  non è autorizzato ad approvare nel contest " + contest);
+                    return false;
+                }
+                Optional<MaterialeGenerico> oMateriale = materialeService.getById(idMaterialeGenerico);
+                if(oMateriale.isPresent()) {
+                    MaterialeGenerico materialeGenerico = oMateriale.get();
+                    if (materialeGenerico.getStato() != Stato.IN_ATTESA)
+                        throw new UnsupportedOperationException("materiale già settato");
+                    if (Stato.toStatus(stato) == Stato.IN_ATTESA)
+                        throw new UnsupportedOperationException("stato in attesa");
+                    contestService.approvaMateriale(materialeGenerico, Stato.toStatus(stato));
+                    return true;
+                }//TODO materiale non valido
+            }//TODO contest non valido
+        }//TODO animatore non valido
+        return false;
     }
 
 

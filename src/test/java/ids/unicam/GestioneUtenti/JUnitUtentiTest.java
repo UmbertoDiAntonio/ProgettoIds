@@ -181,7 +181,7 @@ public class JUnitUtentiTest {
 
 
         assertEquals(0, poiService.getMaterialiPoi(puntoInteresse).size());
-        MaterialeGenerico foto = new Foto(turistaAutenticato);
+        MaterialeGenerico foto = new Foto(new MaterialeDTO(turistaAutenticato));
         poiService.aggiungiMateriale(turistaAutenticato, puntoInteresse, foto);
         assertEquals(1, poiService.getMaterialiPoi(puntoInteresse).size());
         assertNull(foto.getStato().asBoolean());

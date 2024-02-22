@@ -139,7 +139,7 @@ public class JUnitContenutiTests {
             PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributorAutorizzato)));
 
             TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.FEBRUARY, 3), "2Unica@", "user2"));
-            MaterialeGenerico materialeGenerico = new Foto(turistaAutenticato);
+            MaterialeGenerico materialeGenerico = new Foto(new MaterialeDTO( turistaAutenticato));
             poiService.aggiungiMateriale(contributorAutorizzato, puntoInteresse, materialeGenerico);
             assert puntoInteresse != null;
             assertEquals(1, poiService.getMaterialiPoi(puntoInteresse).size());
@@ -183,7 +183,7 @@ public class JUnitContenutiTests {
 
 
             assertTrue(puntoInteresse.getStato().asBoolean());
-            MaterialeGenerico materialeGenerico1 = new Foto(contributor);
+            MaterialeGenerico materialeGenerico1 = new Foto(new MaterialeDTO( contributor));
             assertNull(materialeGenerico1.getStato().asBoolean());
             curatoreServiceImpl.valuta(curatore, materialeGenerico1, Stato.APPROVATO);
             poiService.aggiungiMateriale(turistaAutenticato, puntoInteresse, materialeGenerico1);
@@ -267,7 +267,7 @@ public class JUnitContenutiTests {
 
             turistaAutenticatoService.partecipaAlContest(contest.getId(), turistaAutenticato.getUsername());
 
-            contestService.aggiungiMateriale(new Foto(turistaAutenticato), contest, turistaAutenticato);
+            contestService.aggiungiMateriale(new Foto(new MaterialeDTO( turistaAutenticato)), contest, turistaAutenticato);
 
 
             assertEquals(1, contestService.getPartecipanti(contest).size());
@@ -321,15 +321,15 @@ public class JUnitContenutiTests {
 
         Contest contest = contestService.creaContest(new Contest(new RichiestaCreazioneContestDTO("Monumento", "Foto più bella", animatore, true)));
 
-        Descrizione descrizione = new Descrizione(turistaAutenticato);
+        Descrizione descrizione = new Descrizione(new MaterialeDTO( turistaAutenticato));
         assertThrows(ContestException.class, () -> contestService.aggiungiMateriale(descrizione, contest, turistaAutenticato));
 
         turistaAutenticatoService.partecipaAlContest(contest.getId(), turistaAutenticato.getUsername());
-        MaterialeGenerico materialeGenerico = new Descrizione(turistaAutenticato);
+        MaterialeGenerico materialeGenerico = new Descrizione(new MaterialeDTO( turistaAutenticato));
         contestService.aggiungiMateriale(descrizione, contest, turistaAutenticato);
         assertNull(materialeGenerico.getStato().asBoolean());
         assertEquals(1, contestService.getMaterialiContest(contest).size());
-        assertTrue(animatoreServiceImpl.approvaMateriale(animatore, contest, materialeGenerico, Stato.APPROVATO));
+        assertTrue(animatoreServiceImpl.approvaMateriale(animatore.getUsername(), contest.getId(), materialeGenerico.getId(), true));
         assertTrue(materialeGenerico.getStato().asBoolean());
 
     }
@@ -411,7 +411,7 @@ public class JUnitContenutiTests {
         PuntoInteresse puntoInteresse2 = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("Castello", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), new Orario(), TipologiaPuntoInteresse.MONUMENTO, contributor)));
         assert puntoInteresse2 != null;
         curatoreServiceImpl.valuta(curatore, puntoInteresse2, Stato.APPROVATO);
-        MaterialeGenerico foto = new Foto(turista);
+        MaterialeGenerico foto = new Foto(new MaterialeDTO( turista));
         curatoreServiceImpl.valuta(curatore, foto, Stato.APPROVATO);
 
         poiService.aggiungiMateriale(turista, puntoInteresse2, foto);

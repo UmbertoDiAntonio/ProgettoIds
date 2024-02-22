@@ -1,5 +1,6 @@
 package ids.unicam.models.contenuti.materiali;
 
+import ids.unicam.models.DTO.MaterialeDTO;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Stato;
 import jakarta.persistence.*;
@@ -33,12 +34,8 @@ public abstract class MaterialeGenerico {
      */
     public abstract String get();
 
-    /**
-     * Crea un materiale e gli assegna un id random
-     * @param creatore l'autore del materiale
-     */
-    public MaterialeGenerico(TuristaAutenticato creatore) {
-        this.creatore = creatore;
+    public MaterialeGenerico(MaterialeDTO materialeDTO) {
+        this.creatore = materialeDTO.getCreatore();
     }
 
     @Override

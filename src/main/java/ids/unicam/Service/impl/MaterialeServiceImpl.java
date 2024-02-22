@@ -2,6 +2,7 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.MaterialeRepository;
 import ids.unicam.Service.MaterialeService;
+import ids.unicam.models.DTO.MaterialeDTO;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +22,25 @@ public class MaterialeServiceImpl implements MaterialeService {
         this.repository = repository;
     }
 
-
+    @Override
     public void deleteById(int id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public Optional<MaterialeGenerico> getById(int id) {
+        return repository.findById(id);
+    }
+
+    @Override
+    public MaterialeGenerico update(MaterialeDTO materialeDTO, int id) {
+        //TODO
+        return null;
+    }
+
+    @Override
+    public List<MaterialeGenerico> getAll() {
+        return repository.findAll();
     }
 
 
@@ -31,24 +48,6 @@ public class MaterialeServiceImpl implements MaterialeService {
     public MaterialeGenerico save(MaterialeGenerico materialeGenerico) {
         return repository.save(materialeGenerico);
     }
-
-
-    public Optional<MaterialeGenerico> findById(int id) {
-        return repository.findById(id);
-    }
-
-    public List<MaterialeGenerico> findAll() {
-        return repository.findAll();
-    }
-
-    public MaterialeGenerico getLast() {
-        return repository.findAll().getLast();
-    }
-
-    public MaterialeGenerico getFirst() {
-        return repository.findAll().getFirst();
-    }
-
 
     public void deleteAll() {
         repository.deleteAll();
@@ -59,8 +58,4 @@ public class MaterialeServiceImpl implements MaterialeService {
         materialeGenerico.setStato(stato);
         save(materialeGenerico);
     }
-
-
-
-
 }

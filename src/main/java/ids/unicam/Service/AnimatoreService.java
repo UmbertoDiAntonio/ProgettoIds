@@ -19,7 +19,7 @@ public interface AnimatoreService {
 
     Invito invitaContest(String idAnimatore, Integer idContest, String usernameInvitato);
 
-    boolean approvaMateriale(Animatore animatore, Contest contest, MaterialeGenerico materialeGenerico, Stato stato);
+    boolean approvaMateriale(String usernameAnimatore,Integer idContest, Integer idMaterialeGenerico, boolean stato);
 
     List<Animatore> getAll();
 
