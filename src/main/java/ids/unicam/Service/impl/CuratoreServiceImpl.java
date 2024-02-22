@@ -72,6 +72,16 @@ public class CuratoreServiceImpl implements CuratoreService {
     public List<Curatore> findByNomeComune(String nomeComune) {
         return repository.findCuratoreByComuneNome(nomeComune);
     }
+    @Override
+    public List<Curatore> getAll() {
+        return repository.findAll();
+    }
+
+
+
+    private boolean controllaSeInComune(Curatore curatore, Comune comune) {
+        return comune.equals(curatore.getComune());
+    }
 
     /**
      * Valuta un punto di interesse, in caso di non approvazione lo rimuove dalla lista dei contenuti nel controller del comune associato,
@@ -88,7 +98,7 @@ public class CuratoreServiceImpl implements CuratoreService {
         if (puntoInteresse.getStato() != Stato.IN_ATTESA)
             throw new UnsupportedOperationException("punto di interesse già settato");
         if (stato == Stato.IN_ATTESA)
-            throw new UnsupportedOperationException("stato in attesa");
+            throw new UnsupportedOperationException("non puoi impostare stato in attesa");
         puntoInteresse.setStato(stato);
         poiServiceImpl.save(puntoInteresse);
         Notifica notifica = notificaServiceImpl.creaNotifica(curatore, puntoInteresse, stato);
@@ -112,9 +122,7 @@ public class CuratoreServiceImpl implements CuratoreService {
         Notifica notifica = notificaServiceImpl.creaNotifica(curatore, materialeGenerico, stato);
     }
 
-    private boolean controllaSeInComune(Curatore curatore, Comune comune) {
-        return comune.equals(curatore.getComune());
-    }
+
 
     @Override
     public void elimina(Curatore curatore, PuntoInteresse puntoInteresse) {
@@ -122,7 +130,6 @@ public class CuratoreServiceImpl implements CuratoreService {
             poiServiceImpl.eliminaPuntoInteresse(puntoInteresse.getId());
         }
     }
-
 
     @Override
     public void elimina(Curatore curatore, Itinerario itinerario) {
@@ -154,26 +161,29 @@ public class CuratoreServiceImpl implements CuratoreService {
     }
 
     @Override
-    public void condividi(Curatore curatore, PuntoInteresse contenutoGenerico) {
-        throw new UnsupportedOperationException(contenutoGenerico.getId() + "non può ancora essere condiviso da " + curatore);
-        //TODO
-    }
+    public void condividi(String usernameCuratore, Integer idPunto) {
+        Optional<Curatore> oCuratore = getById(usernameCuratore);
+        if(oCuratore.isPresent()){
+            Curatore curatore = oCuratore.get();
+            Optional<PuntoInteresse> oPoi = poiServiceImpl.findById(idPunto);
+            if(oPoi.isPresent()){
+                PuntoInteresse puntoInteresse = oPoi.get();
+                throw new UnsupportedOperationException(puntoInteresse.getId() + "non può ancora essere condiviso da " + curatore);
+                //TODO
+            }else {
+                logger.error("id del punto di interesse non valido");
+                throw new IllegalArgumentException("id del punto di interesse non valido");
+            }
 
-
-    @Override
-    public Itinerario rimuoviTappa(Curatore curatore, Itinerario itinerario, PuntoInteresse tappa) {
-        if (!curatore.getComune().equals(itinerario.getComune())) {
-            logger.warn(curatore + " non può rimuovere tappe da itinerari esterni al suo comune");
-            throw new UnsupportedOperationException(curatore + " non può rimuovere tappe da itinerari esterni al suo comune");
+        }else {
+            logger.error("username del curatore non valido");
+            throw new IllegalArgumentException("username del curatore non valido");
         }
-        else
-            return itinerarioServiceImpl.rimuoviTappa(itinerario, tappa);
+
     }
 
-    @Override
-    public List<Curatore> getAll() {
-        return repository.findAll();
-    }
+
+
 
 
     @Transactional

@@ -111,7 +111,7 @@ public class JUnitUtentiTest {
 
         assertThrows(UnsupportedOperationException.class, () -> {
             assert puntoInteresse != null;
-            curatoreServiceImpl.condividi(curatore, puntoInteresse);
+            curatoreServiceImpl.condividi(curatore.getUsername(), puntoInteresse.getId());
         });
         //TODO test condivisione contenuto
     }

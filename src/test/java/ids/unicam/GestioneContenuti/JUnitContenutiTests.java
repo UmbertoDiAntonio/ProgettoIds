@@ -402,10 +402,10 @@ public class JUnitContenutiTests {
         assertEquals(2, itinerarioService.getNumeroTappe(itinerario3));
 
         System.out.println("Prima :"+itinerarioService.getNumeroTappe(itinerario3));
-        curatoreServiceImpl.rimuoviTappa(curatore, itinerario3, puntoInt2);
+        itinerarioService.rimuoviTappa(curatore.getUsername(), itinerario3.getId(), puntoInt2.getId());
         System.out.println("Dopo :"+itinerarioService.getNumeroTappe(itinerario3));
 
-        assertEquals(1, curatoreServiceImpl.rimuoviTappa(curatore, itinerario3, puntoInt2).getPercorso().size());
+        assertEquals(1, itinerarioService.rimuoviTappa(curatore.getUsername(), itinerario3.getId(), puntoInt2.getId()).getPercorso().size());
 
 
         PuntoInteresse puntoInteresse2 = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("Castello", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), new Orario(), TipologiaPuntoInteresse.MONUMENTO, contributor)));

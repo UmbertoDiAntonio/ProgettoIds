@@ -7,6 +7,7 @@ import ids.unicam.models.contenuti.Itinerario;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -46,7 +47,14 @@ public class ItinerarioController implements ControllerBase<RichiestaCreazioneIt
     }
 
     @PutMapping("/aggiungiTappa")
-    public boolean aggiungiTappaItinerario(String usernameContributor,Integer idItinerario,Integer idTappa){
+    public boolean aggiungiTappaItinerario(@RequestParam String usernameContributor, @RequestParam Integer idItinerario, @RequestParam Integer idTappa){
         return  itinerarioService.aggiungiTappa(usernameContributor,idItinerario,idTappa);
     }
+
+    @PutMapping("/rimuoviTappa")
+    public Itinerario rimuoviTappaItinerario(@RequestParam String usernameContributor, @RequestParam Integer idItinerario,@RequestParam Integer idPunto){
+        return  itinerarioService.rimuoviTappa(usernameContributor,idItinerario,idPunto);
+    }
+
+
 }

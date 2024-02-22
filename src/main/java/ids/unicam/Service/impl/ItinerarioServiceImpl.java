@@ -1,8 +1,10 @@
 package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.ItinerarioRepository;
+import ids.unicam.Service.ContributorService;
 import ids.unicam.Service.ItinerarioService;
 import ids.unicam.models.Comune;
+import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.transaction.Transactional;
@@ -20,12 +22,14 @@ import static ids.unicam.Main.logger;
 public class ItinerarioServiceImpl implements ItinerarioService {
     private final ItinerarioRepository repository;
     private final PoiServiceImpl poiServiceImpl;
+    private final ContributorServiceImpl contributorService;
 
 
     @Autowired
-    public ItinerarioServiceImpl(ItinerarioRepository repository, PoiServiceImpl poiServiceImpl) {
+    public ItinerarioServiceImpl(ItinerarioRepository repository, PoiServiceImpl poiServiceImpl, ContributorServiceImpl contributorService) {
         this.repository = repository;
         this.poiServiceImpl = poiServiceImpl;
+        this.contributorService = contributorService;
     }
 
 
@@ -86,10 +90,36 @@ public class ItinerarioServiceImpl implements ItinerarioService {
 
 
     @Override
-    public Itinerario rimuoviTappa(Itinerario itinerario, PuntoInteresse puntoInteresse) {
-        repository.deleteById(itinerario.getId());
-        itinerario.getPercorso().remove(puntoInteresse);
-        return save(itinerario);
+    public Itinerario rimuoviTappa(String usernameContributor, Integer idItinerario, Integer idPuntoInteresse) {
+        Optional<Contributor> oContributor = contributorService.getById(usernameContributor);
+        if (oContributor.isPresent()) {
+            Contributor contributor = oContributor.get();
+            Optional<Itinerario> oItinerario = getById(idItinerario);
+            if (oItinerario.isPresent()) {
+                Itinerario itinerario = oItinerario.get();
+                if (contributor.getComune().equals(itinerario.getComune())) {
+                    Optional<PuntoInteresse> oPoi = poiServiceImpl.getById(idPuntoInteresse);
+                    if (oPoi.isPresent()) {
+                        PuntoInteresse puntoInteresse = oPoi.get();
+                        repository.deleteById(itinerario.getId());
+                        itinerario.getPercorso().remove(puntoInteresse);
+                        return save(itinerario);
+                    } else {
+                        logger.error("id Punto Interesse non valido");
+                        throw new IllegalArgumentException("id Punto Interesse non valido");
+                    }
+                } else {
+                    logger.warn(contributor + " non può rimuovere tappe da itinerari esterni al suo comune");
+                    throw new UnsupportedOperationException(contributor + " non può rimuovere tappe da itinerari esterni al suo comune");
+                }
+            } else {
+                logger.error("id Itinerario non valido");
+                throw new IllegalArgumentException("id itinerario non valido");
+            }
+        } else {
+            //TODO contributor
+        }
+        return null; //TODO
     }
 
     public void deleteAll() {

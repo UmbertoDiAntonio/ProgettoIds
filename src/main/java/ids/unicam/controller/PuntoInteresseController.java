@@ -1,13 +1,11 @@
 package ids.unicam.controller;
 
+import ids.unicam.Service.CuratoreService;
 import ids.unicam.Service.PoiService;
 import ids.unicam.models.DTO.PuntoInteresseDTO;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
@@ -15,9 +13,11 @@ import java.time.LocalDate;
 @RequestMapping("/PuntoInteresse")
 public class PuntoInteresseController implements ControllerBase<PuntoInteresseDTO, Integer> {
     private final PoiService poiService;
+    private final CuratoreService curatoreService;
 
-    public PuntoInteresseController(PoiService poiService) {
+    public PuntoInteresseController(PoiService poiService, CuratoreService curatoreService) {
         this.poiService = poiService;
+        this.curatoreService = curatoreService;
     }
 
     @Override
@@ -45,8 +45,13 @@ public class PuntoInteresseController implements ControllerBase<PuntoInteresseDT
         return null;
     }
 
-    @PutMapping("setScadenza")
+    @PutMapping("/setScadenza")
     public void modificaScadenza(@RequestParam String usernameContributor, @RequestParam Integer idPuntoInteresse,@RequestParam LocalDate scadenza){
         poiService.modificaScadenza(usernameContributor,idPuntoInteresse,scadenza);
+    }
+
+    @PutMapping("/condividi/{idPunto}")
+    public void condividi(@RequestParam String usernameCuratore,@PathVariable Integer idPunto){
+        curatoreService.condividi(usernameCuratore,idPunto);
     }
 }

@@ -31,12 +31,11 @@ public interface CuratoreService {
 
     void elimina(Curatore curatore,Contest contest);
 
-    void condividi(Curatore curatore, PuntoInteresse contenutoGenerico);
+    void condividi(String usernameCuratore, Integer idPunto);
 
     @Transactional
     void elimina(Curatore curatore, MaterialeGenerico materialeGenerico);
 
-    Itinerario rimuoviTappa(Curatore curatore, Itinerario itinerario, PuntoInteresse tappa);
 
     List<Curatore> getAll();
 
