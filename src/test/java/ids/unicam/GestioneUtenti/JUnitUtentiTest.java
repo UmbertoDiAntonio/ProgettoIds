@@ -5,6 +5,7 @@ import ids.unicam.Service.impl.*;
 import ids.unicam.models.Comune;
 import ids.unicam.models.DTO.RichiestaCreazioneComuneDTO;
 import ids.unicam.models.DTO.RichiestaCreazionePoiDTO;
+import ids.unicam.models.DTO.RichiestaCreazioneTuristaDTO;
 import ids.unicam.models.Punto;
 import ids.unicam.models.attori.*;
 import ids.unicam.models.contenuti.Stato;
@@ -54,9 +55,9 @@ public class JUnitUtentiTest {
         int numeroContributorAutorizzati = comuneService.getContributorAutorizzatiDelComune(comune.getNome()).size();
         int numeroCuratori = comuneService.getCuratoriDelComune(comune.getNome()).size();
 
-        gestorePiattaformaService.registra(null, Ruolo.TURISTA, "Mario", "Rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "1Unico@", "user1");
-        gestorePiattaformaService.registra(null, Ruolo.TURISTA, "Paolo", "Giallo", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "2Unico@", "user2");
-        gestorePiattaformaService.registra(comune, Ruolo.CONTRIBUTOR, "Giuseppe", "Oro", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "3Unico@", "user3");
+        gestorePiattaformaService.registraTurista(new RichiestaCreazioneTuristaDTO( "Mario", "Rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "1Unico@", "user1"));
+        gestorePiattaformaService.registraTurista(new RichiestaCreazioneTuristaDTO( "Paolo", "Giallo", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "2Unico@", "user2"));
+        gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(comune,new RichiestaCreazioneTuristaDTO("Giuseppe", "Oro", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "3Unico@", "user3"),Ruolo.CONTRIBUTOR));
 
         assertEquals(numeroContributor + 1, comuneService.getContributorDelComune(comune.getNome()).size());
 
@@ -82,10 +83,10 @@ public class JUnitUtentiTest {
 
         Comune comune = comuneService.creaComune(new Comune(new RichiestaCreazioneComuneDTO("Milano")));
 
-        TuristaAutenticato turista = gestorePiattaformaService.registra(comune, Ruolo.CONTRIBUTOR, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "4Unico@", "user4");
+        TuristaAutenticato turista = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(comune,RichiestaCreazioneTuristaDTO( "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "4Unico@", "user4"),Ruolo.CONTRIBUTOR));
         if (!(turista instanceof Contributor contributor))
             throw new IllegalArgumentException("errore");
-        TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registra(null, Ruolo.TURISTA, "andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "5Unico@", "user5");
+        TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista(new RichiestaCreazioneTuristaDTO( "andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "5Unico@", "user5");
 
         gestorePiattaformaService.cambiaRuolo(contributor, Ruolo.CONTRIBUTOR_AUTORIZZATO);
         ContributorAutorizzato contributorAutorizzato = comuneService.getContributorAutorizzatiDelComune(comune.getNome()).getFirst();
@@ -100,7 +101,7 @@ public class JUnitUtentiTest {
     public void condividiContenuto() {
 
         Comune comune = comuneService.creaComune(new Comune(new RichiestaCreazioneComuneDTO("Milano")));
-        TuristaAutenticato turista = gestorePiattaformaService.registra(comune, Ruolo.CURATORE, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "6Unico@", "user6");
+        TuristaAutenticato turista = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(comune,new RichiestaCreazioneTuristaDTO( "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "6Unico@", "user6"),Ruolo.CURATORE);
         if (!(turista instanceof Curatore curatore))
             throw new IllegalArgumentException("errore");
         PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse(new RichiestaCreazionePoiDTO("Teatro", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.INTRATTENIMENTO, curatore)));
@@ -116,12 +117,12 @@ public class JUnitUtentiTest {
     public void metodoCercaTurista() {
 
         Comune comune = comuneService.creaComune(new Comune(new RichiestaCreazioneComuneDTO("Milano")));
-        TuristaAutenticato turista1 = gestorePiattaformaService.registra(comune, Ruolo.CONTRIBUTOR, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "7Unico@", "user7");
+        TuristaAutenticato turista1 = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(comune,RichiestaCreazioneTuristaDTO( "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "7Unico@", "user7"),Ruolo.CONTRIBUTOR));
         if (!(turista1 instanceof Contributor contributor))
             throw new IllegalArgumentException("errore");
 
 
-        TuristaAutenticato turista2 = gestorePiattaformaService.registra(comune, Ruolo.CURATORE, "mirco", "blu", new GregorianCalendar(2002, GregorianCalendar.MAY, 15), "8Unico@", "user8");
+        TuristaAutenticato turista2 = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(comune,new RichiestaCreazioneTuristaDTO( "mirco", "blu", new GregorianCalendar(2002, GregorianCalendar.MAY, 15), "8Unico@", "user8"),Ruolo.CURATORE);
         if (!(turista2 instanceof Curatore curatore))
             throw new IllegalArgumentException("errore");
 
@@ -160,20 +161,20 @@ public class JUnitUtentiTest {
     public void aggiungiFoto() {
         Comune comune = comuneService.creaComune(new Comune(new RichiestaCreazioneComuneDTO("Milano")));
 
-        TuristaAutenticato turista = gestorePiattaformaService.registra(comune, Ruolo.CONTRIBUTOR, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "9Unico@", "user9");
+        TuristaAutenticato turista = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(comune,RichiestaCreazioneTuristaDTO( "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "9Unico@", "user9"),Ruolo.CONTRIBUTOR));
         if (!(turista instanceof Contributor contributor))
             throw new IllegalArgumentException("errore");
 
         PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse(new RichiestaCreazionePoiDTO("parco centrale", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.PARCO, contributor)));
 
-        TuristaAutenticato turist2 = gestorePiattaformaService.registra(comune, Ruolo.CURATORE, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "9Unico@", "user99");
+        TuristaAutenticato turist2 = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(comune,new RichiestaCreazioneTuristaDTO( "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "9Unico@", "user99"),Ruolo.CURATORE));
         if (!(turist2 instanceof Curatore curatore1))
             throw new IllegalArgumentException("errore");
 
         assert puntoInteresse != null;
         curatoreServiceImpl.valuta(curatore1, puntoInteresse, Stato.APPROVATO);
         assertEquals(Boolean.TRUE, puntoInteresse.getStato().asBoolean());
-        TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registra(null, Ruolo.TURISTA, "andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "10Unico@", "user10");
+        TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista(new RichiestaCreazioneTuristaDTO( "andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "10Unico@", "user10"));
 
 
         assertEquals(0, poiService.getMaterialiPoi(puntoInteresse).size());
@@ -189,14 +190,14 @@ public class JUnitUtentiTest {
     public void segnalaContenuto() {
         Comune comune = comuneService.creaComune(new Comune(new RichiestaCreazioneComuneDTO("Milano")));
 
-        TuristaAutenticato turista = gestorePiattaformaService.registra(comune, Ruolo.CONTRIBUTOR, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "9Unico@", "user91");
+        TuristaAutenticato turista = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(comune,RichiestaCreazioneTuristaDTO( "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "9Unico@", "user91"),Ruolo.CONTRIBUTOR));
         if (!(turista instanceof Contributor contributor))
             throw new IllegalArgumentException("errore");
 
         PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse(new RichiestaCreazionePoiDTO("n0me b4rutt0 ", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.PARCO, contributor)));
 
 
-        TuristaAutenticato turista2 = gestorePiattaformaService.registra(comune, Ruolo.CURATORE, "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "9Unico@", "user92");
+        TuristaAutenticato turista2 = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(comune,new RichiestaCreazioneTuristaDTO( "mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "9Unico@", "user92"),Ruolo.CURATORE));
         if (!(turista2 instanceof Curatore curatore))
             throw new ClassCastException("Non è possibile trasformare il turista " + turista2 + " in un Curatore");
         assertEquals(0, turistaAutenticatoService.visualizzaNotifiche(curatore).size());
