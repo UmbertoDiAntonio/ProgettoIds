@@ -1,36 +1,39 @@
 package ids.unicam.controller;
 
 import ids.unicam.Service.TuristaService;
+import ids.unicam.models.DTO.RichiestaCreazionePoiDTO;
 import ids.unicam.models.DTO.RichiestaCreazioneTagDTO;
+import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Taggable;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import ids.unicam.models.contenuti.puntiInteresse.Tag;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequestMapping("/Turista")
 @RestController
 public class TuristaController  {
 
-    private TuristaService turistaService;
-
+    private final TuristaService turistaService;
 
     public TuristaController(TuristaService turistaService) {
         this.turistaService = turistaService;
     }
 
-    public List<Taggable> getByTag(RichiestaCreazioneTagDTO tagDTO){
-        //TODO
-        return null;
+    @GetMapping("/{tagDTO}")
+    public List<Taggable> getByTag(@PathVariable RichiestaCreazioneTagDTO tagDTO){
+        return turistaService.findByTag(tagDTO);
     }
 
-    public void report(PuntoInteresse puntoInteresse, String messaggio){
-        //TODO
+    @GetMapping("/report")
+    public void report(@RequestParam RichiestaCreazionePoiDTO poiDTO, @RequestParam String messaggio){
+        turistaService.report(poiDTO, messaggio);
     }
 
-    public void accedi(String username, String password){
-        //TODO
+    @GetMapping("/accedi")
+    public Optional<TuristaAutenticato> accedi(@RequestParam String username, @RequestParam String password){
+        return turistaService.accedi(username,password);
     }
 }

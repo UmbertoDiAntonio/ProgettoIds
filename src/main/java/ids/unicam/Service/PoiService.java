@@ -1,5 +1,6 @@
 package ids.unicam.Service;
 
+import ids.unicam.models.DTO.RichiestaCreazioneTagDTO;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Taggable;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
@@ -20,7 +21,7 @@ public interface PoiService {
 
     void aggiungiTag(PuntoInteresse puntoInteresse, Tag tag) ;
 
-    List<Taggable> findByTag(Tag tag);
+    List<Taggable> findByTag(RichiestaCreazioneTagDTO tagDTO);
 
     List<Tag> getTags(PuntoInteresse puntoInteresse);
 

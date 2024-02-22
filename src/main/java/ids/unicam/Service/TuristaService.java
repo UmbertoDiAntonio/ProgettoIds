@@ -1,5 +1,7 @@
 package ids.unicam.Service;
 
+import ids.unicam.models.DTO.RichiestaCreazionePoiDTO;
+import ids.unicam.models.DTO.RichiestaCreazioneTagDTO;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Taggable;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
@@ -9,9 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TuristaService {
-    List<Taggable> findByTag(Tag tag);
+    List<Taggable> findByTag(RichiestaCreazioneTagDTO tagDTO);
 
-    void report(PuntoInteresse puntoInteresse, String msg);
+    void report(RichiestaCreazionePoiDTO
+                        poiDTO, String msg);
 
     Optional<TuristaAutenticato> accedi(String username, String password);
 }

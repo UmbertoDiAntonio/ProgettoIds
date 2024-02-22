@@ -1,5 +1,6 @@
 package ids.unicam.Service;
 
+import ids.unicam.models.DTO.RichiestaCreazioneInvitoDTO;
 import ids.unicam.models.DTO.RichiestaCreazioneTuristaDTO;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.TuristaAutenticato;
@@ -11,7 +12,7 @@ import java.util.Optional;
 
 public interface TuristaAutenticatoService {
 
-    void accettaInvitoContest(TuristaAutenticato turistaAutenticato, Invito invito);
+    void accettaInvitoContest(RichiestaCreazioneTuristaDTO turistaDTO, RichiestaCreazioneInvitoDTO invitoDTO);
 
     void rimuoviPreferito(TuristaAutenticato turistaAutenticato, int id);
 

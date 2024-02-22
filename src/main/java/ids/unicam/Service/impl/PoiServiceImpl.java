@@ -2,6 +2,7 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.PoiRepository;
 import ids.unicam.Service.PoiService;
+import ids.unicam.models.DTO.RichiestaCreazioneTagDTO;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.ContributorAutorizzato;
 import ids.unicam.models.attori.TuristaAutenticato;
@@ -127,8 +128,8 @@ public class PoiServiceImpl implements PoiService {
     }
 
     @Override
-    public List<Taggable> findByTag(Tag tag) {
-        return repository.findByTagsValoreContaining(tag.getValore());
+    public List<Taggable> findByTag(RichiestaCreazioneTagDTO tagDTO) {
+        return repository.findByTagsValoreContaining(tagDTO.getValore());
     }
 
     @Override

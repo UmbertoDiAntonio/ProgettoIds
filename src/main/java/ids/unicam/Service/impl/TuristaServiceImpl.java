@@ -1,6 +1,9 @@
 package ids.unicam.Service.impl;
 
 import ids.unicam.Service.TuristaService;
+import ids.unicam.models.DTO.RichiestaCreazioneItinerarioDTO;
+import ids.unicam.models.DTO.RichiestaCreazionePoiDTO;
+import ids.unicam.models.DTO.RichiestaCreazioneTagDTO;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Taggable;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
@@ -26,13 +29,13 @@ public class TuristaServiceImpl implements TuristaService {
     }
 
     @Override
-    public List<Taggable> findByTag(Tag tag) {
-        return poiServiceImpl.findByTag(tag);
+    public List<Taggable> findByTag(RichiestaCreazioneTagDTO tagDTO) {
+        return poiServiceImpl.findByTag(tagDTO);
     }
 
     @Override
-    public void report(PuntoInteresse puntoInteresse,String msg){
-        notificaReportService.creaNotificaReport(puntoInteresse,msg);
+    public void report(RichiestaCreazionePoiDTO poiDTO, String messaggio){
+        notificaReportService.creaNotificaReport(poiDTO,messaggio);
     }
 
     @Override

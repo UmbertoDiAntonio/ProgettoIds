@@ -2,6 +2,8 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.InvitoRepository;
 import ids.unicam.Service.InvitoService;
+import ids.unicam.models.DTO.RichiestaCreazioneInvitoDTO;
+import ids.unicam.models.DTO.RichiestaCreazioneTuristaDTO;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.TuristaAutenticato;
 import jakarta.transaction.Transactional;
@@ -59,10 +61,10 @@ public class InvitoServiceImpl implements InvitoService {
 
     @Transactional
     @Override
-    public void accettaInvito(TuristaAutenticato turistaAutenticato, Invito invito) {
-        if (isValid(invito)) {
-            if (invito.getInvitato().equals(turistaAutenticato)) {
-                contestServiceImpl.aggiungiPartecipante(invito.getContest(), turistaAutenticato);
+    public void accettaInvito(RichiestaCreazioneTuristaDTO turistaDTO, RichiestaCreazioneInvitoDTO invitoDTO) {
+        if (isValid(invitoDTO)) {
+            if (invitoDTO.getInvitato().getUsername().equals(turistaDTO.getUsername())) {
+                contestServiceImpl.aggiungiPartecipante(invitoDTO.getContest(), new TuristaAutenticato(turistaDTO));
             } else {
                 logger.error("Non sei Invitato");
             }
@@ -76,12 +78,12 @@ public class InvitoServiceImpl implements InvitoService {
     }
 
     @Override
-    public boolean isValid(Invito invito) {
-        return !invito.getContest().isOpen() || !contestServiceImpl.getPartecipanti(invito.getContest()).contains(invito.getInvitato());
+    public boolean isValid(RichiestaCreazioneInvitoDTO invitoDTO) {
+        return !invitoDTO.getContest().isOpen() || !contestServiceImpl.getPartecipanti(invitoDTO.getContest()).contains(invitoDTO.getInvitato());
     }
 
     @Override
-    public List<Invito> getInvitiRicevuti(TuristaAutenticato turistaAutenticato) {
-        return repository.findInvitiByTurista(turistaAutenticato.getUsername());
+    public List<Invito> getInvitiRicevuti(RichiestaCreazioneTuristaDTO turistaDTO) {
+        return repository.findInvitiByTurista(turistaDTO.getUsername());
     }
 }

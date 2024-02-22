@@ -132,11 +132,11 @@ public class JUnitUtentiTest {
         PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse(new RichiestaCreazionePoiDTO("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributor)));
 
 
-        int numeroTagEdicolaIniziale = turistaService.findByTag(new Tag(new RichiestaCreazioneTagDTO("Edicola", puntoInteresse))).size();
+        int numeroTagEdicolaIniziale = turistaService.findByTag((new RichiestaCreazioneTagDTO("Edicola", puntoInteresse))).size();
 
 
         poiService.aggiungiTag(puntoInteresse, new Tag(new RichiestaCreazioneTagDTO("Edicola", puntoInteresse)));
-        assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag(new Tag(new RichiestaCreazioneTagDTO("Edicola", puntoInteresse))).size());
+        assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag((new RichiestaCreazioneTagDTO("Edicola", puntoInteresse))).size());
 
         assert puntoInteresse != null;
         curatoreServiceImpl.valuta(curatore, puntoInteresse, Stato.APPROVATO);
@@ -144,7 +144,7 @@ public class JUnitUtentiTest {
 
         poiService.aggiungiTag(puntoInteresse, new Tag(new RichiestaCreazioneTagDTO("Tabaccheria", puntoInteresse)));
 
-        assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag(new Tag(new RichiestaCreazioneTagDTO("Edicola", puntoInteresse))).size());
+        assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag((new RichiestaCreazioneTagDTO("Edicola", puntoInteresse))).size());
 
         assertEquals("Edicola", poiService.getTags(puntoInteresse).getFirst().getValore());
         assertEquals("Tabaccheria", poiService.getTags(puntoInteresse).getLast().getValore());
@@ -152,7 +152,7 @@ public class JUnitUtentiTest {
 
         poiService.aggiungiTag(puntoInteresse, new Tag(new RichiestaCreazioneTagDTO("Bar", puntoInteresse)));
 
-        assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag(new Tag(new RichiestaCreazioneTagDTO("Edicola", puntoInteresse))).size());
+        assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag((new RichiestaCreazioneTagDTO("Edicola", puntoInteresse))).size());
 
         assertEquals("Edicola", poiService.getTags(puntoInteresse).getFirst().getValore());
         assertEquals("Tabaccheria", poiService.getTags(puntoInteresse).get(1).getValore());
@@ -204,7 +204,8 @@ public class JUnitUtentiTest {
         if (!(turista2 instanceof Curatore curatore))
             throw new ClassCastException("Non è possibile trasformare il turista " + turista2 + " in un Curatore");
         assertEquals(0, turistaAutenticatoService.visualizzaNotifiche(curatore).size());
-        turistaService.report(puntoInteresse, "Nome Sbagliato");
+        assert puntoInteresse != null;
+        turistaService.report(new RichiestaCreazionePoiDTO(puntoInteresse.getNome(),puntoInteresse.getPt(),puntoInteresse.getOrario(), puntoInteresse.getTipo(), puntoInteresse.getCreatore()), "Nome Sbagliato");
 
         assertEquals(1, turistaAutenticatoService.visualizzaNotifiche(curatore).size());
 

@@ -2,6 +2,7 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.TuristaAutenticatoRepository;
 import ids.unicam.Service.TuristaAutenticatoService;
+import ids.unicam.models.DTO.RichiestaCreazioneInvitoDTO;
 import ids.unicam.models.DTO.RichiestaCreazioneTuristaDTO;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.TuristaAutenticato;
@@ -55,9 +56,9 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
 
     @Transactional
     @Override
-    public void accettaInvitoContest(TuristaAutenticato turistaAutenticato, Invito invito) {
-        invitoServiceImpl.accettaInvito(turistaAutenticato, invito);
-        repository.save(turistaAutenticato);
+    public void accettaInvitoContest(RichiestaCreazioneTuristaDTO turistaDTO, RichiestaCreazioneInvitoDTO invitoDTO) {
+        invitoServiceImpl.accettaInvito(turistaDTO,invitoDTO);
+        repository.save(new TuristaAutenticato(turistaDTO));
     }
 
     @Transactional

@@ -1,5 +1,6 @@
 package ids.unicam.Service.impl;
 
+import ids.unicam.models.DTO.RichiestaCreazionePoiDTO;
 import ids.unicam.models.contenuti.notifiche.NotificaBuilder;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import org.springframework.stereotype.Service;
@@ -13,9 +14,9 @@ private final NotificaServiceImpl notificaService;
         this.notificaService = notificaService;
     }
 
-    public void creaNotificaReport(PuntoInteresse puntoInteresse, String messaggio) {
-        curatoreService.findByNomeComune(puntoInteresse.getComune().getNome()).forEach( curatore ->
-                notificaService.save(new NotificaBuilder().withTitolo("Segnalazione: " + puntoInteresse.getNome())
+    public void creaNotificaReport(RichiestaCreazionePoiDTO poiDTO, String messaggio) {
+        curatoreService.findByNomeComune(poiDTO.getCreatore().getComune().getNome()).forEach( curatore ->
+                notificaService.save(new NotificaBuilder().withTitolo("Segnalazione: " + poiDTO.getNome())
                         .withDescrizione(messaggio)
                         .withDestinatario(curatore).build()));
     }
