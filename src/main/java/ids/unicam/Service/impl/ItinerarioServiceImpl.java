@@ -8,6 +8,7 @@ import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.List;
 import java.util.Optional;
@@ -45,22 +46,39 @@ public class ItinerarioServiceImpl implements ItinerarioService {
 
     @Override
     @Transactional
-    public boolean aggiungiTappa(Itinerario itinerario, PuntoInteresse puntoInteresse) {
-        if (itinerario.getComune().equals(puntoInteresse.getComune())) {
-            poiServiceImpl.save(puntoInteresse);
-            itinerario.getPercorso().add(puntoInteresse);
-            save(itinerario);
-            return true;
+    public boolean aggiungiTappa(String usernameContributor, Integer idItinerario, Integer idPuntoInteresse) {
+        Optional<PuntoInteresse> oPoi = poiServiceImpl.findById(idPuntoInteresse);
+        if (oPoi.isPresent()) {
+            PuntoInteresse puntoInteresse = oPoi.get();
+            Optional<Itinerario> oItinerario = getById(idItinerario);
+            if (oItinerario.isPresent()) {
+                Itinerario itinerario = oItinerario.get();
+                if (itinerario.getComune().equals(puntoInteresse.getComune())) {
+                    poiServiceImpl.save(puntoInteresse);
+                    itinerario.getPercorso().add(puntoInteresse);
+                    save(itinerario);
+                    return true;
+                }
+                return false;
+            }
+            //TODO itinerario non valido
         }
+        //TODO punto non valido
         return false;
     }
 
     @Override
-    public void aggiungiTappa(Itinerario itinerario, PuntoInteresse... puntiInteresse) {
-        for (PuntoInteresse puntoInteresse : puntiInteresse) {
-            aggiungiTappa(itinerario, puntoInteresse);
+    public void aggiungiTappa(String usernameContributor, Integer idItinerario, Integer... idPuntiInteresse) {
+        Optional<Itinerario> oItinerario = getById(idItinerario);
+        if (oItinerario.isPresent()) {
+            Itinerario itinerario = oItinerario.get();
+            for (Integer idPuntoInteresse : idPuntiInteresse) {
+                aggiungiTappa(usernameContributor, itinerario.getId(), idPuntoInteresse);
+            }
         }
     }
+
+
     @Override
     public void rimuoviTappa(Itinerario itinerario, PuntoInteresse puntoInteresse) {
         itinerario.getPercorso().remove(puntoInteresse);
@@ -78,8 +96,9 @@ public class ItinerarioServiceImpl implements ItinerarioService {
     public int getNumeroTappe(Itinerario itinerario) {
         return repository.countNumeroTappeItinerario(itinerario.getId());
     }
+
     @Override
-    public Itinerario creaItinerario(Itinerario itinerario){
+    public Itinerario creaItinerario(Itinerario itinerario) {
         for (PuntoInteresse puntoInteresse : itinerario.getPercorso()) {
             if (!itinerario.getComune().verificaCoordinateComune(puntoInteresse.getPt()) || !(puntoInteresse.getStato().asBoolean() != null && (puntoInteresse.getStato().asBoolean()))) {
                 logger.error("Non si possono creare Itinerari con punti non approvati");
@@ -98,4 +117,6 @@ public class ItinerarioServiceImpl implements ItinerarioService {
     public List<Itinerario> getAll() {
         return repository.findAll();
     }
+
+
 }

@@ -1,10 +1,11 @@
 package ids.unicam.Service;
 
-import ids.unicam.models.DTO.RichiestaCreazioneInvitoDTO;
-import ids.unicam.models.DTO.RichiestaCreazioneTuristaDTO;
-import ids.unicam.models.Invito;
+import ids.unicam.models.DTO.InvitoDTO;
+import ids.unicam.models.DTO.PuntoInteresseDTO;
+import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
+import ids.unicam.models.contenuti.notifiche.Notifica;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 
 import java.util.List;
@@ -12,20 +13,20 @@ import java.util.Optional;
 
 public interface TuristaAutenticatoService {
 
-    void accettaInvitoContest(RichiestaCreazioneTuristaDTO turistaDTO, RichiestaCreazioneInvitoDTO invitoDTO);
+    void accettaInvitoContest(TuristaAutenticatoDTO turistaDTO, InvitoDTO invitoDTO);
 
-    void rimuoviPreferito(TuristaAutenticato turistaAutenticato, int id);
+    void rimuoviPreferito(String usernameTurista, int id);
 
-    void aggiungiPreferito(TuristaAutenticato turista, PuntoInteresse puntoInteresse);
+    void aggiungiPreferito(String usernameTurista, int idPunto);
 
-    List<PuntoInteresse> findPreferiti(TuristaAutenticato turistaAutenticato);
+    List<PuntoInteresse> findPreferiti(String usernameTurista);
 
     /**
      * Entra nel contest se è aperto
      *
      * @param contest il contest in cui si vuole entrare
      */
-    void partecipaAlContest(Contest contest, TuristaAutenticato turistaAutenticato);
+    void partecipaAlContest(Integer idContest, String usernameTurista);
 
 
     Optional<TuristaAutenticato> findTuristaByUsername(String username);
@@ -40,5 +41,7 @@ public interface TuristaAutenticatoService {
 
     void deleteById(String username);
 
-    TuristaAutenticato update(RichiestaCreazioneTuristaDTO turistaDTO, String username);
-}
+    TuristaAutenticato update(TuristaAutenticatoDTO turistaDTO, String username);
+    public List<Notifica> visualizzaNotifiche(String usernameTurista) ;
+
+    }

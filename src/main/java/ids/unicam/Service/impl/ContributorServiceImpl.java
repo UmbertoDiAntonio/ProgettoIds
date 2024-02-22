@@ -19,16 +19,12 @@ import java.util.Optional;
 @Service
 public class ContributorServiceImpl implements ContributorService, Observer {
     private final ContributorRepository repository;
-    private final PoiServiceImpl poiServiceImpl;
-    private final ItinerarioServiceImpl itinerarioServiceImpl;
     private final NotificaServiceImpl notificaServiceImpl;
 
     @Autowired
-    public ContributorServiceImpl(ContributorRepository repository, PoiServiceImpl poiServiceImpl,
-                                  ItinerarioServiceImpl itinerarioServiceImpl, NotificaServiceImpl notificaServiceImpl) {
+    public ContributorServiceImpl(ContributorRepository repository,
+                                  NotificaServiceImpl notificaServiceImpl) {
         this.repository = repository;
-        this.poiServiceImpl = poiServiceImpl;
-        this.itinerarioServiceImpl = itinerarioServiceImpl;
         this.notificaServiceImpl = notificaServiceImpl;
     }
 
@@ -60,8 +56,12 @@ public class ContributorServiceImpl implements ContributorService, Observer {
     public void deleteAll() {
         repository.deleteAll();
     }
+    @Override
+    public List<Contributor> getAll() {
+        return repository.findAll();
+    }
 
-
+    /*TODO rimosso
     @Override
     public Itinerario aggiungiItinerario(Itinerario itinerario) {
         return itinerarioServiceImpl.creaItinerario(itinerario);
@@ -72,20 +72,11 @@ public class ContributorServiceImpl implements ContributorService, Observer {
     public boolean aggiungiTappaItinerario(Itinerario itinerario, PuntoInteresse puntoInteresse) {
         return itinerarioServiceImpl.aggiungiTappa(itinerario, puntoInteresse);
     }
+     */
+
 
     @Override
-    public void modificaScadenza(PuntoInteresse puntoInteresse, LocalDate expireDate) {
-        puntoInteresse.setExpireDate(expireDate);
-        poiServiceImpl.save(puntoInteresse);
-    }
-
-    @Override
-    public List<Contributor> getAll() {
-        return repository.findAll();
-    }
-
-    @Override
-    public List<Notifica> riceviNotifiche(Contributor contributor) {
+    public List<Notifica> riceviNotifiche(Contributor contributor) {//TODO notifiche Controller?
         return notificaServiceImpl.getNotifiche(contributor);
     }
 

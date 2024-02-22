@@ -12,14 +12,15 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RichiestaCreazionePoiDTO {
-
-
+public class PuntoInteresseDTO {
     private String nome;
     private Punto coordinate;
     private Orario orario;
     private TipologiaPuntoInteresse tipologiaPuntoInteresse;
     private Contributor creatore;
-
+//TAG
+    //ListaMateriali
+    //STATO
+    //EXPIRE DATE
 
 }

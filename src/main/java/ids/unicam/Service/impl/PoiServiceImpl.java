@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,16 +26,16 @@ import static ids.unicam.Main.logger;
 @Service
 public class PoiServiceImpl implements PoiService {
     private final PoiRepository repository;
-    private final TuristaAutenticatoServiceImpl turistaAutenticatoServiceImpl;
     private final MaterialeServiceImpl materialeServiceImpl;
     private final TagServiceImpl tagServiceImpl;
+    private final ContributorServiceImpl contributorService;
 
     @Autowired
-    public PoiServiceImpl(PoiRepository repository, TuristaAutenticatoServiceImpl turistaAutenticatoServiceImpl, MaterialeServiceImpl materialeServiceImpl, TagServiceImpl tagServiceImpl) {
+    public PoiServiceImpl(PoiRepository repository, MaterialeServiceImpl materialeServiceImpl, TagServiceImpl tagServiceImpl, ContributorServiceImpl contributorService) {
         this.repository = repository;
-        this.turistaAutenticatoServiceImpl = turistaAutenticatoServiceImpl;
         this.materialeServiceImpl = materialeServiceImpl;
         this.tagServiceImpl = tagServiceImpl;
+        this.contributorService = contributorService;
     }
 
 
@@ -44,7 +45,28 @@ public class PoiServiceImpl implements PoiService {
 
     @Transactional
     @Override
-    public @Nullable PuntoInteresse creaPuntoInteresse(PuntoInteresse puntoInteresse) {
+    public void modificaScadenza(String usernameContributor, Integer idPuntoInteresse, LocalDate expireDate) {
+        Optional<Contributor> oContributor = contributorService.getById(usernameContributor);
+        if (oContributor.isPresent()) {
+            Contributor contributor = oContributor.get();
+            Optional<PuntoInteresse> oPoi = findById(idPuntoInteresse);
+            if (oPoi.isPresent()) {
+                PuntoInteresse puntoInteresse = oPoi.get();
+                if (contributor.getComune().equals(puntoInteresse.getComune())) {
+                    puntoInteresse.setExpireDate(expireDate);
+                    //TODO expireDate > now
+                    save(puntoInteresse);
+                }
+                //TODO punto fuori comune contributor
+            }
+            //TODO punto non valido
+        }
+        //TODO contributor non valido
+    }
+
+    @Transactional
+    @Override
+    public PuntoInteresse creaPuntoInteresse(PuntoInteresse puntoInteresse) {
         return save(puntoInteresse);
     }
 
@@ -54,13 +76,15 @@ public class PoiServiceImpl implements PoiService {
     public void eliminaPuntoInteresse(int idPuntoInteresse) {
         // Elimina il PuntoInteresse dal database
         repository.deleteById(idPuntoInteresse);
-
+/*TODO
         // Rileva l'eliminazione e aggiorna le liste di preferiti dei turisti
         List<TuristaAutenticato> turisti = turistaAutenticatoServiceImpl.findTuristiConPreferiti();
         for (TuristaAutenticato turista : turisti) {
-            turistaAutenticatoServiceImpl.rimuoviPreferito(turista, idPuntoInteresse);
+            turistaAutenticatoServiceImpl.rimuoviPreferito(turista.getUsername(), idPuntoInteresse);
 
         }
+
+ */
     }
 
     @Transactional
@@ -148,8 +172,8 @@ public class PoiServiceImpl implements PoiService {
         return null;
     }
 
-    public List<MaterialeGenerico> getMaterialiPoi(PuntoInteresse contenutoGenerico) {
-        return repository.getMateriali(contenutoGenerico.getId());
+    public List<MaterialeGenerico> getMaterialiPoi(PuntoInteresse puntoInteresse) {
+        return repository.getMateriali(puntoInteresse.getId());
     }
 
     public List<PuntoInteresse> findAll() {

@@ -1,9 +1,7 @@
 package ids.unicam.Service;
 
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
-import ids.unicam.models.attori.ContributorAutorizzato;
 import ids.unicam.models.attori.Curatore;
-import ids.unicam.models.contenuti.ContenutoGenerico;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.Stato;
@@ -33,7 +31,7 @@ public interface CuratoreService {
 
     void elimina(Curatore curatore,Contest contest);
 
-    void condividi(Curatore curatore, ContenutoGenerico contenutoGenerico);
+    void condividi(Curatore curatore, PuntoInteresse contenutoGenerico);
 
     @Transactional
     void elimina(Curatore curatore, MaterialeGenerico materialeGenerico);

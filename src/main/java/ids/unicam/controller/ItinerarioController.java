@@ -1,9 +1,11 @@
 package ids.unicam.controller;
 
+import ids.unicam.Service.ContributorService;
 import ids.unicam.Service.ItinerarioService;
 import ids.unicam.models.DTO.RichiestaCreazioneItinerarioDTO;
 import ids.unicam.models.contenuti.Itinerario;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,7 +40,13 @@ public class ItinerarioController implements ControllerBase<RichiestaCreazioneIt
     }
 
     @Override
-    public ResponseEntity<?> delete(Integer integer) {
-        return null;
+    public ResponseEntity<?> delete(Integer id) {
+        itinerarioService.deleteById(id);
+        return ResponseEntity.ok("{}");
+    }
+
+    @PutMapping("/aggiungiTappa")
+    public boolean aggiungiTappaItinerario(String usernameContributor,Integer idItinerario,Integer idTappa){
+        return  itinerarioService.aggiungiTappa(usernameContributor,idItinerario,idTappa);
     }
 }

@@ -6,7 +6,6 @@ import ids.unicam.models.Comune;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.Curatore;
-import ids.unicam.models.contenuti.ContenutoGenerico;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.Stato;
@@ -155,7 +154,7 @@ public class CuratoreServiceImpl implements CuratoreService {
     }
 
     @Override
-    public void condividi(Curatore curatore, ContenutoGenerico contenutoGenerico) {
+    public void condividi(Curatore curatore, PuntoInteresse contenutoGenerico) {
         throw new UnsupportedOperationException(contenutoGenerico.getId() + "non può ancora essere condiviso da " + curatore);
         //TODO
     }

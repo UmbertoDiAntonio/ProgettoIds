@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class RichiestaCreazioneContributorDTO {
     private Comune comune;
-    private RichiestaCreazioneTuristaDTO turistaDTO;
+    private TuristaAutenticatoDTO turistaDTO;
     private Ruolo ruolo;
 }

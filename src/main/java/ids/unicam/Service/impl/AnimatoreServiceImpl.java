@@ -5,7 +5,7 @@ import ids.unicam.Service.AnimatoreService;
 import ids.unicam.exception.ContestException;
 import ids.unicam.models.DTO.RichiestaCreazioneContestDTO;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
-import ids.unicam.models.DTO.RichiestaCreazioneInvitoDTO;
+import ids.unicam.models.DTO.InvitoDTO;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
@@ -80,7 +80,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
             logger.error("Il turista autenticato fa gia' parte del contest");
             throw new ContestException("Il turista autenticato fa gia' parte del contest");
         }
-        return invitoServiceImpl.save(new Invito(new RichiestaCreazioneInvitoDTO(contest, turistaAutenticato)));
+        return invitoServiceImpl.save(new Invito(new InvitoDTO(contest, turistaAutenticato)));
     }
 
     @Override

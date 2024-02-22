@@ -1,13 +1,10 @@
 package ids.unicam.Service.impl;
 
 import ids.unicam.Service.TuristaService;
-import ids.unicam.models.DTO.RichiestaCreazioneItinerarioDTO;
-import ids.unicam.models.DTO.RichiestaCreazionePoiDTO;
+import ids.unicam.models.DTO.PuntoInteresseDTO;
 import ids.unicam.models.DTO.RichiestaCreazioneTagDTO;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Taggable;
-import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
-import ids.unicam.models.contenuti.puntiInteresse.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +31,7 @@ public class TuristaServiceImpl implements TuristaService {
     }
 
     @Override
-    public void report(RichiestaCreazionePoiDTO poiDTO, String messaggio){
+    public void report(PuntoInteresseDTO poiDTO, String messaggio){
         notificaReportService.creaNotificaReport(poiDTO,messaggio);
     }
 

@@ -1,6 +1,7 @@
 package ids.unicam.models.contenuti.puntiInteresse;
 
-import ids.unicam.models.DTO.RichiestaCreazionePoiDTO;
+import ids.unicam.models.Comune;
+import ids.unicam.models.DTO.PuntoInteresseDTO;
 import ids.unicam.models.Expirable;
 import ids.unicam.models.Punto;
 import ids.unicam.models.attori.Contributor;
@@ -16,18 +17,45 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.Contract;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.time.LocalDate;
+import java.util.*;
 
 import static ids.unicam.Main.logger;
 
 
 @NoArgsConstructor
 @Entity
+@Getter
 @Table(name = "Punti_di_Interesse")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class PuntoInteresse extends ContenutoGenerico implements Contenitore, Taggable, Expirable {
+public class PuntoInteresse implements Contenitore, Taggable, Expirable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenza_contenuti")
+    @SequenceGenerator(name = "sequenza_contenuti", sequenceName = "PUNTI_DI_INTERESSE_SEQ", allocationSize = 1)
+    private int id = 0;
+
+    @OneToOne
+    @JoinColumn(name = "nome_comune")
+    private Comune comune;
+
+    @Setter
+    private Stato stato = Stato.IN_ATTESA;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    private final Set<Tag> tags = new HashSet<>();
+
+    @Setter
+    private LocalDate expireDate = LocalDate.MAX;
+
+    public boolean isExpired() {
+        return LocalDate.now().isAfter(expireDate);
+    }
+
+    @Override
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
     @Override
     public String toString() {
         return "PuntoInteresse{" +
@@ -37,7 +65,11 @@ public class PuntoInteresse extends ContenutoGenerico implements Contenitore, Ta
                 ", creatore=" + creatore +
                 ", listaMateriali=" + listaMateriali +
                 ", tipo=" + tipo +
-                super.toString()+
+                ", id=" + id +
+                ", comune=" + comune +
+                ", stato=" + stato +
+                ", tags=" + tags +
+                ", expireDate=" + expireDate +
                 '}';
     }
 
@@ -68,15 +100,11 @@ public class PuntoInteresse extends ContenutoGenerico implements Contenitore, Ta
     @Getter
     private TipologiaPuntoInteresse tipo;
 
-    public PuntoInteresse(RichiestaCreazionePoiDTO poiDTO) {
-        super(poiDTO.getCreatore().getComune());
+    public PuntoInteresse(PuntoInteresseDTO poiDTO) {
+        this.comune = poiDTO.getCreatore().getComune();
         if (!poiDTO.getCreatore().getComune().verificaCoordinateComune(poiDTO.getCoordinate())) {
             logger.error("Non si possono creare punti di interesse fuori dal comune");
             throw new IllegalArgumentException("Posizione Punto di Interesse Fuori dall'area del comune");
-        }
-        if (!poiDTO.getCreatore().getComune().equals(getComune())) {
-            logger.error(poiDTO.getCreatore().getNome() + " non puo' creare punti di interesse fuori dal suo comune");
-            throw new UnsupportedOperationException(creatore + " non può creare punti di interesse fuori dal suo comune");
         }
         logger.debug("Creato POI " + nome + " in " + pt);
         this.setStato(poiDTO.getCreatore() instanceof ContributorAutorizzato ? Stato.APPROVATO : Stato.IN_ATTESA);
@@ -88,11 +116,11 @@ public class PuntoInteresse extends ContenutoGenerico implements Contenitore, Ta
     }
 
 
-    public String mostraInformazioniDettagliate(){
+    public String mostraInformazioniDettagliate() {
         return getNome() + " " + getOrario();
     }
 
-    public String mostraInformazioniGeneriche(){
+    public String mostraInformazioniGeneriche() {
         return getNome();
     }
 
@@ -132,7 +160,7 @@ public class PuntoInteresse extends ContenutoGenerico implements Contenitore, Ta
 
     @Override
     public void addMateriale(MaterialeGenerico materialeGenerico) {
-        if(materialeGenerico != null)
+        if (materialeGenerico != null)
             listaMateriali.add(materialeGenerico);
     }
 

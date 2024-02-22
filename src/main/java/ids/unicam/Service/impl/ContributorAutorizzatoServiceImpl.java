@@ -18,12 +18,9 @@ import java.util.Optional;
 public class ContributorAutorizzatoServiceImpl implements ContributorAutorizzatoService {
     private final ContributorAutorizzatoRepository repository;
 
-    private final ItinerarioServiceImpl itinerarioServiceImpl;
-
     @Autowired
     public ContributorAutorizzatoServiceImpl(ContributorAutorizzatoRepository repository, ItinerarioServiceImpl itinerarioServiceImpl) {
         this.repository = repository;
-        this.itinerarioServiceImpl = itinerarioServiceImpl;
     }
 
     @Override
@@ -52,23 +49,30 @@ public class ContributorAutorizzatoServiceImpl implements ContributorAutorizzato
     public void deleteAll() {
         repository.deleteAll();
     }
-
+    @Override
+    public List<ContributorAutorizzato> getAll() {
+        return repository.findAll();
+    }
 
     public List<ContributorAutorizzato> findByNomeComune(String nomeComune) {
         return repository.findByComuneNome(nomeComune);
     }
 
-
+    /*TODO rimosso
     @Override
     public Itinerario aggiungiItinerario(Itinerario itinerario) {
         return itinerarioServiceImpl.creaItinerario(itinerario);
     }
+
 
     @Override
     @Transactional
     public boolean aggiungiTappaItinerario(Itinerario itinerario, PuntoInteresse puntoInteresse) {
         return itinerarioServiceImpl.aggiungiTappa(itinerario, puntoInteresse);
     }
+
+
+
 
     @Override
     @Transactional
@@ -78,13 +82,14 @@ public class ContributorAutorizzatoServiceImpl implements ContributorAutorizzato
         }
     }
 
+
+
     @Override
     public void modificaScadenza(PuntoInteresse puntoInteresse, LocalDate expireDate) {
         puntoInteresse.setExpireDate(expireDate);
     }
 
-    @Override
-    public List<ContributorAutorizzato> getAll() {
-        return repository.findAll();
-    }
+
+     */
+
 }

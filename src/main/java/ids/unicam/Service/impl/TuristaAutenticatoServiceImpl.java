@@ -2,9 +2,10 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.TuristaAutenticatoRepository;
 import ids.unicam.Service.TuristaAutenticatoService;
-import ids.unicam.models.DTO.RichiestaCreazioneInvitoDTO;
-import ids.unicam.models.DTO.RichiestaCreazioneTuristaDTO;
-import ids.unicam.models.Invito;
+import ids.unicam.Service.TuristaService;
+import ids.unicam.models.DTO.InvitoDTO;
+import ids.unicam.models.DTO.PuntoInteresseDTO;
+import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.notifiche.Notifica;
@@ -13,6 +14,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,14 +26,16 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
     private final ContestServiceImpl contestServiceImpl;
     private final InvitoServiceImpl invitoServiceImpl;
     private final NotificaServiceImpl notificaService;
+    private final PoiServiceImpl poiService;
 
 
     @Autowired
-    public TuristaAutenticatoServiceImpl(TuristaAutenticatoRepository repository, ContestServiceImpl contestServiceImpl, InvitoServiceImpl invitoServiceImpl, NotificaServiceImpl notificaService) {
+    public TuristaAutenticatoServiceImpl(TuristaAutenticatoRepository repository, ContestServiceImpl contestServiceImpl, InvitoServiceImpl invitoServiceImpl, NotificaServiceImpl notificaService, PoiServiceImpl poiService) {
         this.repository = repository;
         this.contestServiceImpl = contestServiceImpl;
         this.invitoServiceImpl = invitoServiceImpl;
         this.notificaService = notificaService;
+        this.poiService = poiService;
     }
 
     @Override
@@ -40,7 +44,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
     }
 
     @Override
-    public TuristaAutenticato update(RichiestaCreazioneTuristaDTO turistaDTO, String username) {
+    public TuristaAutenticato update(TuristaAutenticatoDTO turistaDTO, String username) {
         //TODO
         return null;
     }
@@ -56,24 +60,40 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
 
     @Transactional
     @Override
-    public void accettaInvitoContest(RichiestaCreazioneTuristaDTO turistaDTO, RichiestaCreazioneInvitoDTO invitoDTO) {
-        invitoServiceImpl.accettaInvito(turistaDTO,invitoDTO);
+    public void accettaInvitoContest(TuristaAutenticatoDTO turistaDTO, InvitoDTO invitoDTO) {
+        invitoServiceImpl.accettaInvito(turistaDTO, invitoDTO);
         repository.save(new TuristaAutenticato(turistaDTO));
     }
 
     @Transactional
     @Override
-    public void rimuoviPreferito(TuristaAutenticato turistaAutenticato, int id) {
-        turistaAutenticato.getPreferiti().removeIf(puntoInteresse -> puntoInteresse.getId() == id);
-        save(turistaAutenticato);
+    public void rimuoviPreferito(String usernameTurista, int id) {
+        Optional<TuristaAutenticato> oTurista = findTuristaByUsername(usernameTurista);
+        if (oTurista.isPresent()) {
+            TuristaAutenticato turistaAutenticato = oTurista.get();
+            turistaAutenticato.getPreferiti().removeIf(puntoInteresse -> puntoInteresse.getId() == id);
+            save(turistaAutenticato);
+        }
+        //TODO turista non valido
     }
 
     @Transactional
     @Override
-    public void aggiungiPreferito(TuristaAutenticato turista, PuntoInteresse puntoInteresse) {
-        if (Boolean.TRUE.equals(puntoInteresse.getStato().asBoolean()))
-            turista.getPreferiti().add(puntoInteresse);
-        save(turista);
+    public void aggiungiPreferito(String usernameTurista, int idPunto) {
+        Optional<PuntoInteresse> oPunto = poiService.findById(idPunto);
+        if (oPunto.isPresent()) {
+            PuntoInteresse puntoInteresse = oPunto.get();
+            if (Boolean.TRUE.equals(puntoInteresse.getStato().asBoolean())) {
+                Optional<TuristaAutenticato> oTurista = findTuristaByUsername(usernameTurista);
+                if (oTurista.isPresent()) {
+                    TuristaAutenticato turistaAutenticato = oTurista.get();
+                    turistaAutenticato.getPreferiti().add(puntoInteresse);
+                    save(turistaAutenticato);
+                }
+            }
+            //TODO Turista non valido
+        }
+        //TODO puntoInteresse non valido
     }
 
     public boolean logOut() {
@@ -86,23 +106,35 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
     }
 
     @Override
-    public List<PuntoInteresse> findPreferiti(TuristaAutenticato turistaAutenticato) {
-        return repository.findPreferitiByTurista(turistaAutenticato.getUsername());
+    public List<PuntoInteresse> findPreferiti(String usernameTurista) {
+        Optional<TuristaAutenticato> oTurista = findTuristaByUsername(usernameTurista);
+        if (oTurista.isPresent()) {
+            TuristaAutenticato turistaAutenticato = oTurista.get();
+            return repository.findPreferitiByTurista(turistaAutenticato.getUsername());
+        }
+        //TODO turista non valido
+        return null;
     }
 
-    /**
-     * Entra nel contest se è aperto
-     *
-     * @param contest il contest in cui si vuole entrare
-     */
+
     @Transactional
     @Override
-    public void partecipaAlContest(Contest contest, TuristaAutenticato turistaAutenticato) {
-        if (!contest.isOpen()) {
-            logger.error("Il contest non è aperto");
-            return;
+    public void partecipaAlContest(Integer idContest, String usernameTurista) {
+        Optional<Contest> oContest = contestServiceImpl.findById(idContest);
+        if (oContest.isPresent()) {
+            Contest contest=oContest.get();
+            Optional<TuristaAutenticato> oTurista = findTuristaByUsername(usernameTurista);
+            if (oTurista.isPresent()) {
+                TuristaAutenticato turistaAutenticato = oTurista.get();
+                if (!contest.isOpen()) {
+                    logger.error("Il contest non è aperto");
+                    return;
+                }
+                contestServiceImpl.aggiungiPartecipante(contest, turistaAutenticato);
+            }
+            //TODO turista non valido
         }
-        contestServiceImpl.aggiungiPartecipante(contest, turistaAutenticato);
+       //TODO contest non presente
     }
 
     @Override
@@ -132,8 +164,14 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
     }
 
 
-    public List<Notifica> visualizzaNotifiche(TuristaAutenticato turistaAutenticato){
-        return notificaService.getNotifiche(turistaAutenticato);
+    public List<Notifica> visualizzaNotifiche(String usernameTurista) {
+        Optional<TuristaAutenticato> oTurista = findTuristaByUsername(usernameTurista);
+        if (oTurista.isPresent()) {
+            TuristaAutenticato turistaAutenticato = oTurista.get();
+            return notificaService.getNotifiche(turistaAutenticato);
+        }
+        //TODO turista non valido
+        return null;
     }
 
 }

@@ -1,20 +1,15 @@
 package ids.unicam.Service.impl;
 
 import ids.unicam.Service.GestorePiattaformaService;
-import ids.unicam.models.Comune;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
-import ids.unicam.models.DTO.RichiestaCreazioneTuristaDTO;
+import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.attori.*;
 import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.GregorianCalendar;
-
 import static ids.unicam.Main.logger;
-import static ids.unicam.models.attori.Ruolo.CONTRIBUTOR_AUTORIZZATO;
 
 @Service
 public class GestorePiattaformaServiceImpl implements GestorePiattaformaService {
@@ -74,7 +69,7 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
         }
     }
 
-    public boolean validaCredenziali(RichiestaCreazioneTuristaDTO turistaDTO) {
+    public boolean validaCredenziali(TuristaAutenticatoDTO turistaDTO) {
         if (!turistaDTO.getPassword().matches("^(?=.*[A-Z])(?=.*[@#$%^&+=])(?=.*[0-9])(?=.*[a-zA-Z]).{6,}$")) {
             logger.error("Password non valida");
             throw new IllegalArgumentException("Password non valida");
@@ -93,7 +88,7 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
         return true;
     }
 
-    public TuristaAutenticato registraTurista(RichiestaCreazioneTuristaDTO turistaDTO) {
+    public TuristaAutenticato registraTurista(TuristaAutenticatoDTO turistaDTO) {
         if (!validaCredenziali(turistaDTO)) {
             return null;
         }

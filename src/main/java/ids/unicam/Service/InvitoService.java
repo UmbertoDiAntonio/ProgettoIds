@@ -1,18 +1,17 @@
 package ids.unicam.Service;
 
-import ids.unicam.models.DTO.RichiestaCreazioneInvitoDTO;
-import ids.unicam.models.DTO.RichiestaCreazioneTuristaDTO;
+import ids.unicam.models.DTO.InvitoDTO;
+import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.Invito;
-import ids.unicam.models.attori.TuristaAutenticato;
 
 import java.util.List;
 
 public interface InvitoService {
 
-    void accettaInvito(RichiestaCreazioneTuristaDTO turistaDTO, RichiestaCreazioneInvitoDTO invitoDTO);
+    void accettaInvito(TuristaAutenticatoDTO turistaDTO, InvitoDTO invitoDTO);
 
 
-    boolean isValid(RichiestaCreazioneInvitoDTO invitoDTO) ;
+    boolean isValid(InvitoDTO invitoDTO) ;
 
-    List<Invito> getInvitiRicevuti(RichiestaCreazioneTuristaDTO turistaDTO) ;
+    List<Invito> getInvitiRicevuti(TuristaAutenticatoDTO turistaDTO) ;
 }

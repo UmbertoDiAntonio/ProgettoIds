@@ -3,20 +3,19 @@ package ids.unicam.controller;
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.Service.TuristaAutenticatoService;
 import ids.unicam.models.DTO.RichiestaCreazioneContestDTO;
-import ids.unicam.models.DTO.RichiestaCreazioneInvitoDTO;
-import ids.unicam.models.DTO.RichiestaCreazionePoiDTO;
-import ids.unicam.models.DTO.RichiestaCreazioneTuristaDTO;
-import ids.unicam.models.attori.TuristaAutenticato;
-import ids.unicam.models.contenuti.Contest;
+import ids.unicam.models.DTO.InvitoDTO;
+import ids.unicam.models.DTO.PuntoInteresseDTO;
+import ids.unicam.models.DTO.TuristaAutenticatoDTO;
+import ids.unicam.models.contenuti.notifiche.Notifica;
+import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/TuristaAutenticato")
-public class TuristaAutenticatoController implements ControllerBase<RichiestaCreazioneTuristaDTO, String> {
+public class TuristaAutenticatoController implements ControllerBase<TuristaAutenticatoDTO, String> {
 
     private final TuristaAutenticatoService turistaAutenticatoService;
     private final GestorePiattaformaService gestorePiattaformaService;
@@ -37,13 +36,13 @@ public class TuristaAutenticatoController implements ControllerBase<RichiestaCre
     }
 
     @Override
-    public ResponseEntity<?> create(RichiestaCreazioneTuristaDTO turistaDTO) {
+    public ResponseEntity<?> create(TuristaAutenticatoDTO turistaDTO) {
         return ResponseEntity.ok(gestorePiattaformaService.registraTurista(turistaDTO));
     }
 
     @Override
-    public ResponseEntity<?> update(RichiestaCreazioneTuristaDTO turistaDTO, String username) {
-        return ResponseEntity.ok(turistaAutenticatoService.update(turistaDTO,username));
+    public ResponseEntity<?> update(TuristaAutenticatoDTO turistaDTO, String username) {
+        return ResponseEntity.ok(turistaAutenticatoService.update(turistaDTO, username));
     }
 
     @Override
@@ -53,28 +52,34 @@ public class TuristaAutenticatoController implements ControllerBase<RichiestaCre
     }
 
     @PutMapping("/accettaInvito")
-    public void accettaInvito(@RequestParam RichiestaCreazioneTuristaDTO turistaDTO, @RequestParam RichiestaCreazioneInvitoDTO invitoDTO){
+    public void accettaInvito(@RequestParam TuristaAutenticatoDTO turistaDTO, @RequestParam InvitoDTO invitoDTO) {
         turistaAutenticatoService.accettaInvitoContest(turistaDTO, invitoDTO);
     }
 
-    public void aggiungiPreferito(RichiestaCreazioneTuristaDTO turistaDTO, RichiestaCreazionePoiDTO poiDTO){
+    @PutMapping("/aggiungiPreferito")
+    public void aggiungiPreferito(@RequestParam String usernameTurista, @RequestParam Integer idPunto) {
+        turistaAutenticatoService.aggiungiPreferito(usernameTurista, idPunto);
+    }
+
+    @GetMapping("/getPreferiti/{usernameTurista}")
+    public List<PuntoInteresse> getPreferiti(@PathVariable String usernameTurista) {
+        return turistaAutenticatoService.findPreferiti(usernameTurista);
+    }
+
+    @GetMapping("/rimuoviPreferito")
+    public void rimuoviPreferito(@RequestParam String usernameTurista, @RequestParam Integer idPunto) {
+        turistaAutenticatoService.rimuoviPreferito(usernameTurista,idPunto);
 
     }
 
-    public void getPreferiti(RichiestaCreazioneTuristaDTO turistaDTO){
-
+    @PutMapping("/partecipaContest")
+    public void partecipaAlContest(@RequestParam Integer idContest, @RequestParam String usernameTurista) {
+        turistaAutenticatoService.partecipaAlContest(idContest,usernameTurista);
     }
 
-    public void rimuoviPreferito(RichiestaCreazioneTuristaDTO turistaDTO, int idPuntoInteresse){
-
-    }
-
-    public void partecipaAlContest(RichiestaCreazioneContestDTO contestDTO, RichiestaCreazioneTuristaDTO turistaDTO){
-
-    }
-
-    public void getNotifiche(RichiestaCreazioneTuristaDTO turistaDTO){
-
+    @GetMapping("/notifiche/{usernameTurista}")
+    public List<Notifica> getNotifiche(@PathVariable String usernameTurista) {
+        return turistaAutenticatoService.visualizzaNotifiche(usernameTurista);
     }
 
 

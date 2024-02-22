@@ -1,6 +1,6 @@
 package ids.unicam.models.attori;
 
-import ids.unicam.models.DTO.RichiestaCreazioneTuristaDTO;
+import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.persistence.*;
 
@@ -52,7 +52,7 @@ public class TuristaAutenticato extends Turista {
         return preferiti;
     }
 
-    public TuristaAutenticato(RichiestaCreazioneTuristaDTO turistaDTO) {
+    public TuristaAutenticato(TuristaAutenticatoDTO turistaDTO) {
         this.nome = turistaDTO.getNome();
         this.cognome = turistaDTO.getCognome();
         this.dataNascita = turistaDTO.getDataNascita();

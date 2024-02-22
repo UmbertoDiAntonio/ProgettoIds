@@ -1,16 +1,18 @@
 package ids.unicam.Service;
 
+import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
+import io.swagger.models.auth.In;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ItinerarioService {
 
-    boolean aggiungiTappa(Itinerario itinerario, PuntoInteresse puntoInteresse);
+    boolean aggiungiTappa(String usernameContributor,Integer idItinerario, Integer idPuntoInteresse);
 
-    void aggiungiTappa(Itinerario itinerario, PuntoInteresse... puntiInteresse);
+    void aggiungiTappa(String usernameContributor,Integer idItinerario, Integer... idPuntiInteresse);
 
     void rimuoviTappa(Itinerario itinerario, PuntoInteresse puntoInteresse);
 

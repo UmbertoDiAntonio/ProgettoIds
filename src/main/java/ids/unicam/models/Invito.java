@@ -1,6 +1,6 @@
 package ids.unicam.models;
 
-import ids.unicam.models.DTO.RichiestaCreazioneInvitoDTO;
+import ids.unicam.models.DTO.InvitoDTO;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
 import jakarta.persistence.*;
@@ -32,7 +32,7 @@ public class Invito {
     }
 
 
-    public Invito(RichiestaCreazioneInvitoDTO invitoDTO) {
+    public Invito(InvitoDTO invitoDTO) {
         this.contest = invitoDTO.getContest();
         this.invitato = invitoDTO.getInvitato();
     }

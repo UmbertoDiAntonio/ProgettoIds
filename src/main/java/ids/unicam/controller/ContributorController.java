@@ -4,6 +4,7 @@ import ids.unicam.Service.ContributorService;
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,4 +45,6 @@ public class ContributorController implements ControllerBase<RichiestaCreazioneC
         contributorService.deleteById(username);
         return ResponseEntity.ok("{}");
     }
+
+
 }

@@ -12,13 +12,13 @@ import java.util.Optional;
 
 public interface ContributorAutorizzatoService {
 
-     Itinerario aggiungiItinerario(Itinerario itinerario);
+    //Itinerario aggiungiItinerario(Itinerario itinerario);
 
-     boolean aggiungiTappaItinerario(Itinerario itinerario,PuntoInteresse puntoInteresse);
+     //boolean aggiungiTappaItinerario(Itinerario itinerario,PuntoInteresse puntoInteresse);
 
-     void aggiungiTappaItinerario(Itinerario itinerario,PuntoInteresse... puntiInteresse);
+     //void aggiungiTappaItinerario(Itinerario itinerario,PuntoInteresse... puntiInteresse);
 
-     void modificaScadenza(PuntoInteresse puntoInteresse, LocalDate expireDate);
+     //void modificaScadenza(PuntoInteresse puntoInteresse, LocalDate expireDate);
 
      List<ContributorAutorizzato> getAll();
 

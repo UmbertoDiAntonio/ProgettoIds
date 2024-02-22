@@ -2,8 +2,8 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.InvitoRepository;
 import ids.unicam.Service.InvitoService;
-import ids.unicam.models.DTO.RichiestaCreazioneInvitoDTO;
-import ids.unicam.models.DTO.RichiestaCreazioneTuristaDTO;
+import ids.unicam.models.DTO.InvitoDTO;
+import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.TuristaAutenticato;
 import jakarta.transaction.Transactional;
@@ -61,7 +61,7 @@ public class InvitoServiceImpl implements InvitoService {
 
     @Transactional
     @Override
-    public void accettaInvito(RichiestaCreazioneTuristaDTO turistaDTO, RichiestaCreazioneInvitoDTO invitoDTO) {
+    public void accettaInvito(TuristaAutenticatoDTO turistaDTO, InvitoDTO invitoDTO) {
         if (isValid(invitoDTO)) {
             if (invitoDTO.getInvitato().getUsername().equals(turistaDTO.getUsername())) {
                 contestServiceImpl.aggiungiPartecipante(invitoDTO.getContest(), new TuristaAutenticato(turistaDTO));
@@ -78,12 +78,12 @@ public class InvitoServiceImpl implements InvitoService {
     }
 
     @Override
-    public boolean isValid(RichiestaCreazioneInvitoDTO invitoDTO) {
+    public boolean isValid(InvitoDTO invitoDTO) {
         return !invitoDTO.getContest().isOpen() || !contestServiceImpl.getPartecipanti(invitoDTO.getContest()).contains(invitoDTO.getInvitato());
     }
 
     @Override
-    public List<Invito> getInvitiRicevuti(RichiestaCreazioneTuristaDTO turistaDTO) {
+    public List<Invito> getInvitiRicevuti(TuristaAutenticatoDTO turistaDTO) {
         return repository.findInvitiByTurista(turistaDTO.getUsername());
     }
 }

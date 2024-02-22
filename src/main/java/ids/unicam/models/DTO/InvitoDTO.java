@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RichiestaCreazioneInvitoDTO {
+public class InvitoDTO {
 
     private Contest contest;
     private TuristaAutenticato invitato;

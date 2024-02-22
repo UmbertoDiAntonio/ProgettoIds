@@ -9,7 +9,7 @@ import java.util.GregorianCalendar;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RichiestaCreazioneTuristaDTO {
+public class TuristaAutenticatoDTO {
     private String nome;
     private String cognome;
     private GregorianCalendar dataNascita;
