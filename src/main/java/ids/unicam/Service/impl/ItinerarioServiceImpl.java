@@ -21,6 +21,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
     private final ItinerarioRepository repository;
     private final PoiServiceImpl poiServiceImpl;
 
+
     @Autowired
     public ItinerarioServiceImpl(ItinerarioRepository repository, PoiServiceImpl poiServiceImpl) {
         this.repository = repository;
@@ -85,11 +86,10 @@ public class ItinerarioServiceImpl implements ItinerarioService {
 
 
     @Override
-    public void rimuoviTappa(Itinerario itinerario, PuntoInteresse puntoInteresse) {
-        System.out.println("PRIMA :" +itinerario.getPercorso().size());
+    public Itinerario rimuoviTappa(Itinerario itinerario, PuntoInteresse puntoInteresse) {
+        repository.deleteById(itinerario.getId());
         itinerario.getPercorso().remove(puntoInteresse);
-        System.out.println("DOPO :" +itinerario.getPercorso().size());
-        save(itinerario);
+        return save(itinerario);
     }
 
     public void deleteAll() {

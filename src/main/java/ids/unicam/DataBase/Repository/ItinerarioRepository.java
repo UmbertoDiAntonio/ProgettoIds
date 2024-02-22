@@ -4,6 +4,7 @@ import ids.unicam.models.Comune;
 import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -19,4 +20,10 @@ public interface ItinerarioRepository extends JpaRepository<Itinerario,Integer> 
 
     @Query("SELECT i.percorso FROM Itinerario i  Where i.id = :id")
     List<PuntoInteresse> findTappeByItinerario(@Param("id") int id);
+
+    @Modifying
+    @Query("DELETE FROM Itinerario i WHERE i.id = :id")
+    void deleteById(int id);
+
+
 }

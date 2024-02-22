@@ -161,11 +161,13 @@ public class CuratoreServiceImpl implements CuratoreService {
 
 
     @Override
-    public void rimuoviTappa(Curatore curatore, Itinerario itinerario, PuntoInteresse tappa) {
-        if (!curatore.getComune().equals(itinerario.getComune()))
+    public Itinerario rimuoviTappa(Curatore curatore, Itinerario itinerario, PuntoInteresse tappa) {
+        if (!curatore.getComune().equals(itinerario.getComune())) {
             logger.warn(curatore + " non può rimuovere tappe da itinerari esterni al suo comune");
+            throw new UnsupportedOperationException(curatore + " non può rimuovere tappe da itinerari esterni al suo comune");
+        }
         else
-            itinerarioServiceImpl.rimuoviTappa(itinerario, tappa);
+            return itinerarioServiceImpl.rimuoviTappa(itinerario, tappa);
     }
 
     @Override

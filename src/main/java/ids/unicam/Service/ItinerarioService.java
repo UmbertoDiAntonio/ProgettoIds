@@ -14,7 +14,7 @@ public interface ItinerarioService {
 
     void aggiungiTappa(String usernameContributor,Integer idItinerario, Integer... idPuntiInteresse);
 
-    void rimuoviTappa(Itinerario itinerario, PuntoInteresse puntoInteresse);
+    Itinerario rimuoviTappa(Itinerario itinerario, PuntoInteresse puntoInteresse);
 
     Itinerario creaItinerario(Itinerario itinerario);
 

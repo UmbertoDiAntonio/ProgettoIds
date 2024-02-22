@@ -133,7 +133,6 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
 
         if (id != that.id) return false;
         if (!comune.equals(that.comune)) return false;
-        if (stato != that.stato) return false;
         if (!tags.equals(that.tags)) return false;
         if (!Objects.equals(expireDate, that.expireDate)) return false;
         if (!Objects.equals(orario, that.orario)) return false;
@@ -148,7 +147,6 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
     public int hashCode() {
         int result = id;
         result = 31 * result + comune.hashCode();
-        result = 31 * result + stato.hashCode();
         result = 31 * result + tags.hashCode();
         result = 31 * result + (expireDate != null ? expireDate.hashCode() : 0);
         result = 31 * result + (orario != null ? orario.hashCode() : 0);

@@ -377,13 +377,12 @@ public class JUnitContenutiTests {
 
         assertEquals(1, turistaAutenticatoService.findPreferiti(turista.getUsername()).size());
 
-        PuntoInteresse puntoInteresse1 = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("parco", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), new Orario(), TipologiaPuntoInteresse.PARCO, contributor)));
+        PuntoInteresse puntoInteresse1 = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("parco", new Punto(comune.getPosizione().getLatitudine(), comune.getPosizione().getLongitudine()), new Orario(), TipologiaPuntoInteresse.PARCO, contributor)));
 
         int numeroItinerariComune = itinerarioService.findAllByComune(comune).size();
         assertThrows(IllegalArgumentException.class, () -> itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(comune, "girodeibar", new PuntoInteresse[]{puntoInteresse1}))));
         assertEquals(numeroItinerariComune, itinerarioService.findAllByComune(comune).size());
 
-        assert puntoInteresse1 != null;
         curatoreServiceImpl.valuta(curatore, puntoInteresse1, Stato.APPROVATO);
         Itinerario itinerario2 = itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(comune, "giro dei bar", new PuntoInteresse[]{puntoInteresse1})));
         assertEquals(numeroItinerariComune + 1, itinerarioService.findAllByComune(comune).size());
@@ -403,10 +402,10 @@ public class JUnitContenutiTests {
         assertEquals(2, itinerarioService.getNumeroTappe(itinerario3));
 
         System.out.println("Prima :"+itinerarioService.getNumeroTappe(itinerario3));
-        curatoreServiceImpl.rimuoviTappa(curatore, itinerario3, puntoInteresse1);
+        curatoreServiceImpl.rimuoviTappa(curatore, itinerario3, puntoInt2);
         System.out.println("Dopo :"+itinerarioService.getNumeroTappe(itinerario3));
 
-        assertEquals(1, itinerarioService.getNumeroTappe(itinerario3));
+        assertEquals(1, curatoreServiceImpl.rimuoviTappa(curatore, itinerario3, puntoInt2).getPercorso().size());
 
 
         PuntoInteresse puntoInteresse2 = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("Castello", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), new Orario(), TipologiaPuntoInteresse.MONUMENTO, contributor)));

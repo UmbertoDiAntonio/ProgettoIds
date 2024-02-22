@@ -36,7 +36,7 @@ public interface CuratoreService {
     @Transactional
     void elimina(Curatore curatore, MaterialeGenerico materialeGenerico);
 
-    void rimuoviTappa(Curatore curatore, Itinerario itinerario, PuntoInteresse tappa);
+    Itinerario rimuoviTappa(Curatore curatore, Itinerario itinerario, PuntoInteresse tappa);
 
     List<Curatore> getAll();
 
