@@ -101,7 +101,6 @@ public class ItinerarioServiceImpl implements ItinerarioService {
                     Optional<PuntoInteresse> oPoi = poiServiceImpl.getById(idPuntoInteresse);
                     if (oPoi.isPresent()) {
                         PuntoInteresse puntoInteresse = oPoi.get();
-                        repository.deleteById(itinerario.getId());
                         itinerario.getPercorso().remove(puntoInteresse);
                         return save(itinerario);
                     } else {
@@ -117,9 +116,9 @@ public class ItinerarioServiceImpl implements ItinerarioService {
                 throw new IllegalArgumentException("id itinerario non valido");
             }
         } else {
-            //TODO contributor
+            logger.error("username Contributor non valido");
+            throw new IllegalArgumentException("username Contributor non valido");
         }
-        return null; //TODO
     }
 
     public void deleteAll() {

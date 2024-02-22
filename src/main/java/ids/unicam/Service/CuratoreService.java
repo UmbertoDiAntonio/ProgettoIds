@@ -25,11 +25,11 @@ public interface CuratoreService {
      */
     void valuta(Curatore curatore, MaterialeGenerico materialeGenerico, Stato stato);
 
-    void elimina(Curatore curatore,PuntoInteresse puntoInteresse);
+    void eliminaPuntoInteresse(String usernameCuratore,Integer idPuntoInteresse);
 
-    void elimina(Curatore curatore,Itinerario itinerario);
+    void eliminaItinerario(String usernameCuratore,Integer idItinerario);
 
-    void elimina(Curatore curatore,Contest contest);
+    void eliminaContest(String usernameCuratore,Integer idContest);
 
     void condividi(String usernameCuratore, Integer idPunto);
 

@@ -376,7 +376,7 @@ public class JUnitContenutiTests {
 
         assertEquals(2, turistaAutenticatoService.findPreferiti(turista.getUsername()).size());
 
-        curatoreServiceImpl.elimina(curatore, puntoInteresse);
+        curatoreServiceImpl.eliminaPuntoInteresse(curatore.getUsername(), puntoInteresse.getId());
 
         assertEquals(numeroPuntiInteresse + 1, comuneService.getPuntiInteresseNelComune(comune.getNome()).size());
 
@@ -391,14 +391,14 @@ public class JUnitContenutiTests {
         curatoreServiceImpl.valuta(curatore, puntoInteresse1, Stato.APPROVATO);
         Itinerario itinerario2 = itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(comune, "giro dei bar", new PuntoInteresse[]{puntoInteresse1})));
         assertEquals(numeroItinerariComune + 1, itinerarioService.findAllByComune(comune).size());
-        curatoreServiceImpl.elimina(curatore, itinerario2);
+        curatoreServiceImpl.eliminaItinerario(curatore.getUsername(), itinerario2.getId());
         assertEquals(numeroItinerariComune, itinerarioService.findAllByComune(comune).size());
 
 
         int numeroContest = contestService.getContestByCreatore(animatore).size();
-        contestService.creaContest(new Contest(new RichiestaCreazioneContestDTO("contest", "spiaggia", animatore, true)));
+        Contest contest = contestService.creaContest(new Contest(new RichiestaCreazioneContestDTO("contest", "spiaggia", animatore, true)));
         assertEquals(numeroContest + 1, contestService.getContestByCreatore(animatore).size());
-        curatoreServiceImpl.elimina(curatore, contestService.getContestByCreatore(animatore).getLast());
+        curatoreServiceImpl.eliminaContest(curatore.getUsername(), contest.getId());
         assertEquals(numeroContest, contestService.getContestByCreatore(animatore).size());
 
         Itinerario itinerario3 = itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(comune, "girodeibar2", new PuntoInteresse[]{puntoInteresse1})));
@@ -406,9 +406,7 @@ public class JUnitContenutiTests {
         assertTrue(itinerarioService.aggiungiTappa(contributor.getUsername(),itinerario3.getId(), puntoInt2.getId()));
         assertEquals(2, itinerarioService.getNumeroTappe(itinerario3));
 
-        System.out.println("Prima :"+itinerarioService.getNumeroTappe(itinerario3));
         itinerarioService.rimuoviTappa(curatore.getUsername(), itinerario3.getId(), puntoInt2.getId());
-        System.out.println("Dopo :"+itinerarioService.getNumeroTappe(itinerario3));
 
         assertEquals(1, itinerarioService.rimuoviTappa(curatore.getUsername(), itinerario3.getId(), puntoInt2.getId()).getPercorso().size());
 

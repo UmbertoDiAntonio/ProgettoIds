@@ -72,11 +72,11 @@ public class CuratoreServiceImpl implements CuratoreService {
     public List<Curatore> findByNomeComune(String nomeComune) {
         return repository.findCuratoreByComuneNome(nomeComune);
     }
+
     @Override
     public List<Curatore> getAll() {
         return repository.findAll();
     }
-
 
 
     private boolean controllaSeInComune(Curatore curatore, Comune comune) {
@@ -123,25 +123,75 @@ public class CuratoreServiceImpl implements CuratoreService {
     }
 
 
-
     @Override
-    public void elimina(Curatore curatore, PuntoInteresse puntoInteresse) {
-        if (controllaSeInComune(curatore, puntoInteresse.getComune())) {
-            poiServiceImpl.eliminaPuntoInteresse(puntoInteresse.getId());
+    public void eliminaPuntoInteresse(String usernameCuratore, Integer idPuntoInteresse) {
+        Optional<Curatore> oCuratore = getById(usernameCuratore);
+        if (oCuratore.isPresent()) {
+            Curatore curatore = oCuratore.get();
+            Optional<PuntoInteresse> oPoi = poiServiceImpl.getById(idPuntoInteresse);
+            if (oPoi.isPresent()) {
+                PuntoInteresse puntoInteresse = oPoi.get();
+                if (controllaSeInComune(curatore, puntoInteresse.getComune())) {
+                    poiServiceImpl.eliminaPuntoInteresse(idPuntoInteresse);
+                }else {
+                    logger.error("Il punto di interesse e' fuori dal comune del curatore");
+                    throw new IllegalArgumentException("Il punto di interesse e' fuori dal comune del curatore");
+                }
+            }else {
+                logger.error("Id del punto di interesse non valido");
+                throw new IllegalArgumentException("Id del punto di interesse non valido");
+            }
+        }else{
+            logger.error("username curatore non valido");
+            throw new IllegalArgumentException("username curatore non valido");
         }
     }
 
     @Override
-    public void elimina(Curatore curatore, Itinerario itinerario) {
-        if (controllaSeInComune(curatore, itinerario.getComune())) {
-            itinerarioServiceImpl.deleteById(itinerario.getId());
+    public void eliminaItinerario(String usernameCuratore, Integer idItinerario) {
+        Optional<Curatore> oCuratore = getById(usernameCuratore);
+        if (oCuratore.isPresent()) {
+            Curatore curatore = oCuratore.get();
+            Optional<Itinerario> oItinerario = itinerarioServiceImpl.getById(idItinerario);
+            if (oItinerario.isPresent()) {
+                Itinerario itinerario = oItinerario.get();
+                if (controllaSeInComune(curatore, itinerario.getComune())) {
+                    itinerarioServiceImpl.deleteById(itinerario.getId());
+                }else {
+                    logger.error("L'itinerario e' fuori dal comune del curatore");
+                    throw new IllegalArgumentException("L'itinerario e' fuori dal comune del curatore");
+                }
+            }else {
+                logger.error("Id dell'itinerario non valido");
+                throw new IllegalArgumentException("Id dell'itinerario non valido");
+            }
+        }else{
+            logger.error("username curatore non valido");
+            throw new IllegalArgumentException("username curatore non valido");
         }
     }
 
     @Override
-    public void elimina(Curatore curatore, Contest contest) {
-        if (controllaSeInComune(curatore, contest.getComune())) {
-            contestServiceImpl.deleteById(contest.getId());
+    public void eliminaContest(String usernameCuratore, Integer idContest) {
+        Optional<Curatore> oCuratore = getById(usernameCuratore);
+        if (oCuratore.isPresent()) {
+            Curatore curatore = oCuratore.get();
+            Optional<Contest> oContest = contestServiceImpl.findById(idContest);
+            if (oContest.isPresent()) {
+                Contest contest = oContest.get();
+                if (controllaSeInComune(curatore, contest.getComune())) {
+                    contestServiceImpl.deleteById(contest.getId());
+                }else {
+                    logger.error("Il contest e' fuori dal comune del curatore");
+                    throw new IllegalArgumentException("Il contest e' fuori dal comune del curatore");
+                }
+            }else {
+                logger.error("Id del contest non valido");
+                throw new IllegalArgumentException("Id del contest non valido");
+            }
+        }else{
+            logger.error("username curatore non valido");
+            throw new IllegalArgumentException("username curatore non valido");
         }
     }
 
@@ -163,27 +213,24 @@ public class CuratoreServiceImpl implements CuratoreService {
     @Override
     public void condividi(String usernameCuratore, Integer idPunto) {
         Optional<Curatore> oCuratore = getById(usernameCuratore);
-        if(oCuratore.isPresent()){
+        if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
             Optional<PuntoInteresse> oPoi = poiServiceImpl.findById(idPunto);
-            if(oPoi.isPresent()){
+            if (oPoi.isPresent()) {
                 PuntoInteresse puntoInteresse = oPoi.get();
                 throw new UnsupportedOperationException(puntoInteresse.getId() + "non può ancora essere condiviso da " + curatore);
                 //TODO
-            }else {
+            } else {
                 logger.error("id del punto di interesse non valido");
                 throw new IllegalArgumentException("id del punto di interesse non valido");
             }
 
-        }else {
+        } else {
             logger.error("username del curatore non valido");
             throw new IllegalArgumentException("username del curatore non valido");
         }
 
     }
-
-
-
 
 
     @Transactional

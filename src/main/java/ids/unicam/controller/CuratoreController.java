@@ -47,4 +47,18 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
         return ResponseEntity.ok("{}");
     }
 
+    public void eliminaItinerario(String usernameCuratore, Integer idItinerario){
+        curatoreService.eliminaItinerario(usernameCuratore, idItinerario);
+    }
+
+    public void eliminaPuntoInteresse(String usernameCuratore, Integer idPuntoInteresse){
+        curatoreService.eliminaItinerario(usernameCuratore, idPuntoInteresse);
+    }
+
+    public void eliminaContest(String usernameCuratore, Integer idContest){
+        curatoreService.eliminaItinerario(usernameCuratore, idContest);
+    }
+
+
+
 }

@@ -21,9 +21,6 @@ public interface ItinerarioRepository extends JpaRepository<Itinerario,Integer> 
     @Query("SELECT i.percorso FROM Itinerario i  Where i.id = :id")
     List<PuntoInteresse> findTappeByItinerario(@Param("id") int id);
 
-    @Modifying
-    @Query("DELETE FROM Itinerario i WHERE i.id = :id")
-    void deleteById(int id);
 
 
 }
