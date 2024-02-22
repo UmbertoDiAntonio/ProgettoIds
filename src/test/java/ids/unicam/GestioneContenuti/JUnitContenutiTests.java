@@ -42,9 +42,10 @@ public class JUnitContenutiTests {
     private final ContestServiceImpl contestService;
     private final GestorePiattaformaServiceImpl gestorePiattaformaService;
     private final InvitoServiceImpl invitoService;
+    private final MaterialeServiceImpl materialeService;
 
     @Autowired
-    public JUnitContenutiTests(ComuneServiceImpl comuneService, ContributorServiceImpl contributorService, ContributorAutorizzatoServiceImpl contributorAutorizzatoServiceImpl, CuratoreServiceImpl curatoreServiceImpl, AnimatoreServiceImpl animatoreServiceImpl, TuristaAutenticatoServiceImpl turistaAutenticatoService, PoiServiceImpl poiService, ItinerarioServiceImpl itinerarioService, ContestServiceImpl contestService, GestorePiattaformaServiceImpl gestorePiattaformaService, InvitoServiceImpl invitoService, GestoreDatabase gestoreDatabase) {
+    public JUnitContenutiTests(ComuneServiceImpl comuneService, ContributorServiceImpl contributorService, ContributorAutorizzatoServiceImpl contributorAutorizzatoServiceImpl, CuratoreServiceImpl curatoreServiceImpl, AnimatoreServiceImpl animatoreServiceImpl, TuristaAutenticatoServiceImpl turistaAutenticatoService, PoiServiceImpl poiService, ItinerarioServiceImpl itinerarioService, ContestServiceImpl contestService, GestorePiattaformaServiceImpl gestorePiattaformaService, InvitoServiceImpl invitoService, GestoreDatabase gestoreDatabase, MaterialeServiceImpl materialeService) {
         this.comuneService = comuneService;
         this.contributorService = contributorService;
         this.contributorAutorizzatoServiceImpl = contributorAutorizzatoServiceImpl;
@@ -56,6 +57,7 @@ public class JUnitContenutiTests {
         this.contestService = contestService;
         this.gestorePiattaformaService = gestorePiattaformaService;
         this.invitoService = invitoService;
+        this.materialeService = materialeService;
         gestoreDatabase.eliminaTabelleDB();
         gestoreDatabase.inizializzaDatabase();
     }
@@ -313,6 +315,7 @@ public class JUnitContenutiTests {
     public void approvaMaterialeByAnimatore() {
         Comune comune = comuneService.creaComune(new Comune(new RichiestaCreazioneComuneDTO("Milano")));
         TuristaAutenticato turistaTemp = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(comune, new TuristaAutenticatoDTO("mario", "rossi", new GregorianCalendar(2000, GregorianCalendar.OCTOBER, 1), "9Unica@", "user9"), Ruolo.ANIMATORE));
+
         TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.DECEMBER, 3), "10Unica@", "user10"));
 
         if (!(turistaTemp instanceof Animatore animatore))
@@ -325,12 +328,14 @@ public class JUnitContenutiTests {
         assertThrows(ContestException.class, () -> contestService.aggiungiMateriale(descrizione, contest, turistaAutenticato));
 
         turistaAutenticatoService.partecipaAlContest(contest.getId(), turistaAutenticato.getUsername());
-        MaterialeGenerico materialeGenerico = new Descrizione(new MaterialeDTO( turistaAutenticato));
+        MaterialeGenerico materialeGenerico = materialeService.save(new Descrizione(new MaterialeDTO( turistaAutenticato)));
         contestService.aggiungiMateriale(descrizione, contest, turistaAutenticato);
         assertNull(materialeGenerico.getStato().asBoolean());
         assertEquals(1, contestService.getMaterialiContest(contest).size());
+
         assertTrue(animatoreServiceImpl.approvaMateriale(animatore.getUsername(), contest.getId(), materialeGenerico.getId(), true));
-        assertTrue(materialeGenerico.getStato().asBoolean());
+
+        assertEquals(Boolean.TRUE, materialeService.getById(materialeGenerico.getId()).get().getStato().asBoolean());
 
     }
 

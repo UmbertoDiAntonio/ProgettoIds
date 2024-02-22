@@ -399,7 +399,7 @@ public class CreazioneTabelleDatabase {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS MATERIALI(" +
                         "id INT PRIMARY KEY NOT NULL," +
-                        "stato BOOLEAN NOT NULL," +
+                        "stato VARCHAR(50)," +
                         "creatore_username VARCHAR(50) NOT NULL," +
                         "tipo VARCHAR(50) NOT NULL)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {

@@ -15,8 +15,8 @@ public enum Stato {
         };
     }
 
-    public static Stato toStatus(boolean value) {
-        return value ? APPROVATO : NON_APPROVATO;
+    public static Stato toStatus(Boolean value) {
+        return value == null ? IN_ATTESA : value ? APPROVATO : NON_APPROVATO;
     }
 
 

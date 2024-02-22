@@ -124,7 +124,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
                 Contest contest = oContest.get();
                 if (!contest.getCreatore().equals(animatore)) {
                     logger.warn(animatore + "  non è autorizzato ad approvare nel contest " + contest);
-                    return false;
+                    throw new UnsupportedOperationException(animatore + "  non è autorizzato ad approvare nel contest " + contest);
                 }
                 Optional<MaterialeGenerico> oMateriale = materialeService.getById(idMaterialeGenerico);
                 if(oMateriale.isPresent()) {
@@ -135,10 +135,18 @@ public class AnimatoreServiceImpl implements AnimatoreService {
                         throw new UnsupportedOperationException("stato in attesa");
                     contestService.approvaMateriale(materialeGenerico, Stato.toStatus(stato));
                     return true;
-                }//TODO materiale non valido
-            }//TODO contest non valido
-        }//TODO animatore non valido
-        return false;
+                } else {
+                    logger.error("id Materiale non valido");
+                    throw new IllegalArgumentException("id Materiale non valido");
+                }
+            }else{
+                logger.error("id Contest non valido");
+                throw new IllegalArgumentException("id Contest non valido");
+            }
+        }else{
+            logger.error("username Animatore non valido");
+            throw new IllegalArgumentException("username Animatore non valido");
+        }
     }
 
 
