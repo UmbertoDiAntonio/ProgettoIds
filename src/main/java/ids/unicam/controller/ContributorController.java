@@ -1,34 +1,32 @@
 package ids.unicam.controller;
 
-import ids.unicam.Service.ContributorAutorizzatoService;
-import ids.unicam.Service.CuratoreService;
+import ids.unicam.Service.ContributorService;
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/Curatore")
-public class CuratoreController implements ControllerBase<RichiestaCreazioneContributorDTO, String> {
+@RequestMapping("/Contributor")
+public class ContributorController implements ControllerBase<RichiestaCreazioneContributorDTO, String> {
 
-    private final CuratoreService curatoreService;
+    private final ContributorService contributorService;
     private final GestorePiattaformaService gestorePiattaformaService;
 
-    public CuratoreController(CuratoreService curatoreService, GestorePiattaformaService gestorePiattaformaService) {
-        this.curatoreService = curatoreService;
+    public ContributorController(ContributorService contributorService, GestorePiattaformaService gestorePiattaformaService) {
+        this.contributorService = contributorService;
         this.gestorePiattaformaService = gestorePiattaformaService;
     }
 
     @Override
     public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(curatoreService.getAll());
+        return ResponseEntity.ok(contributorService.getAll());
     }
 
     @Override
     public ResponseEntity<?> getById(String username) {
-        return ResponseEntity.ok(curatoreService.getById(username));
+        return ResponseEntity.ok(contributorService.getById(username));
     }
 
     @Override
@@ -38,13 +36,12 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
 
     @Override
     public ResponseEntity<?> update(RichiestaCreazioneContributorDTO contributorDTO, String username) {
-        return ResponseEntity.ok(curatoreService.update(contributorDTO, username));
+        return ResponseEntity.ok(contributorService.update(contributorDTO, username));
     }
 
     @Override
     public ResponseEntity<?> delete(String username) {
-        curatoreService.deleteById(username);
+        contributorService.deleteById(username);
         return ResponseEntity.ok("{}");
     }
-
 }

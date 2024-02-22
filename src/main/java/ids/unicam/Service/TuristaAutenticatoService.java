@@ -1,5 +1,6 @@
 package ids.unicam.Service;
 
+import ids.unicam.models.DTO.RichiestaCreazioneTuristaDTO;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
@@ -31,4 +32,12 @@ public interface TuristaAutenticatoService {
     boolean verificaPassword(String password, String username);
 
     boolean isUsernameUnique(String username);
+
+    List<TuristaAutenticato> getAll();
+
+    Optional<TuristaAutenticato> getById(String username);
+
+    void deleteById(String username);
+
+    TuristaAutenticato update(RichiestaCreazioneTuristaDTO turistaDTO, String username);
 }

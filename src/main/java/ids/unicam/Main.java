@@ -34,9 +34,5 @@ public class Main implements ApplicationRunner {
         gestoreDatabase.inizializzaDatabase();
     }
 
-    @RequestMapping(value = "/")
-    public String hello() {
-        return "Hello World";
-    }
 
 }

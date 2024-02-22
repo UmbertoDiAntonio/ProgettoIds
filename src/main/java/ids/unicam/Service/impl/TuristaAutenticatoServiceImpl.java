@@ -2,6 +2,7 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.TuristaAutenticatoRepository;
 import ids.unicam.Service.TuristaAutenticatoService;
+import ids.unicam.models.DTO.RichiestaCreazioneTuristaDTO;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
@@ -32,19 +33,15 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
         this.notificaService = notificaService;
     }
 
-
+    @Override
     public void deleteById(String id) {
         repository.deleteById(id);
     }
 
-
-    public Optional<TuristaAutenticato> findById(String id) {
-        return repository.findById(id);
-    }
-
-
-    public List<TuristaAutenticato> findAll() {
-        return repository.findAll();
+    @Override
+    public TuristaAutenticato update(RichiestaCreazioneTuristaDTO turistaDTO, String username) {
+        //TODO
+        return null;
     }
 
     public void deleteAll() {
@@ -121,6 +118,16 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
     @Override
     public boolean isUsernameUnique(String username) {
         return repository.countUsername(username) == 0;
+    }
+
+    @Override
+    public List<TuristaAutenticato> getAll() {
+        return repository.findAll();
+    }
+
+    @Override
+    public Optional<TuristaAutenticato> getById(String username) {
+        return repository.findById(username);
     }
 
 

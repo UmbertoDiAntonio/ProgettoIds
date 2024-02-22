@@ -2,6 +2,7 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.ContributorRepository;
 import ids.unicam.Service.ContributorService;
+import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.Observer;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.contenuti.Itinerario;
@@ -35,25 +36,25 @@ public class ContributorServiceImpl implements ContributorService, Observer {
         return repository.findByComuneNome(nomeComune);
     }
 
+    @Override
     public void deleteById(String id) {
         repository.deleteById(id);
     }
 
+    @Override
+    public Optional<Contributor> getById(String username) {
+        return repository.findById(username);
+    }
+
+    @Override
+    public Contributor update(RichiestaCreazioneContributorDTO contributorDTO, String username) {
+        //TODO
+        return null;
+    }
 
     public Contributor save(Contributor contributor) {
         return repository.save(contributor);
     }
-
-
-    public Optional<Contributor> findById(String id) {
-        return repository.findById(id);
-    }
-
-
-    public List<Contributor> findAll() {
-        return repository.findAll();
-    }
-
 
 
     public void deleteAll() {
@@ -76,6 +77,11 @@ public class ContributorServiceImpl implements ContributorService, Observer {
     public void modificaScadenza(PuntoInteresse puntoInteresse, LocalDate expireDate) {
         puntoInteresse.setExpireDate(expireDate);
         poiServiceImpl.save(puntoInteresse);
+    }
+
+    @Override
+    public List<Contributor> getAll() {
+        return repository.findAll();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package ids.unicam.models.contenuti.puntiInteresse;
 
+import ids.unicam.models.DTO.RichiestaCreazioneTagDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,10 +19,9 @@ public class Tag {
     @ManyToOne
     private PuntoInteresse punto;
 
-    public Tag(String valore, PuntoInteresse puntoInteresse) {
-        this.valore = valore;
-        this.punto = puntoInteresse;
-
+    public Tag(RichiestaCreazioneTagDTO tagDTO) {
+        this.valore = tagDTO.getValore();
+        this.punto = tagDTO.getPuntoInteresse();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package ids.unicam.models.attori;
 
+import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -13,8 +14,8 @@ public class Curatore extends ContributorAutorizzato {
     public Curatore() {
     }
 
-    public Curatore(Contributor contributor) {
-        super(contributor);
+    public Curatore(RichiestaCreazioneContributorDTO contributorDTO) {
+        super(contributorDTO);
     }
 
     @OneToMany(fetch = FetchType.EAGER)

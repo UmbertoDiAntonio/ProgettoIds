@@ -2,6 +2,8 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.models.Comune;
+import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
+import ids.unicam.models.DTO.RichiestaCreazioneTuristaDTO;
 import ids.unicam.models.attori.*;
 import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.GregorianCalendar;
 
 import static ids.unicam.Main.logger;
+import static ids.unicam.models.attori.Ruolo.CONTRIBUTOR_AUTORIZZATO;
 
 @Service
 public class GestorePiattaformaServiceImpl implements GestorePiattaformaService {
@@ -34,93 +37,103 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
     }
 
 
-    /**
-     * Modifica il ruolo di un contributor all'interno del comune
-     *
-     * @param contributor il contributor a cui cambiare ruolo
-     * @param ruolo       il nuovo ruolo
-     */
     @Transactional
     @Override
-    public TuristaAutenticato cambiaRuolo(Contributor contributor, @NotNull Ruolo ruolo) {
-        Comune comune = contributor.getComune();
-        rimuoviVecchioRuolo(contributor);
-
+    public TuristaAutenticato cambiaRuolo(RichiestaCreazioneContributorDTO contributorDTO, @NotNull Ruolo ruolo) {
+        rimuoviVecchioRuolo(contributorDTO);
         Contributor modificato = switch (ruolo) {
             case TURISTA -> {
                 logger.error("Non puoi tornare un turista");
                 yield null;
             }
-            case CURATORE -> curatoreServiceImpl.save(new Curatore(contributor));
-            case ANIMATORE -> animatoreServiceImpl.save(new Animatore(new Animatore(contributor)));
+            case CURATORE -> curatoreServiceImpl.save(new Curatore(contributorDTO));
+            case ANIMATORE -> animatoreServiceImpl.save(new Animatore(contributorDTO));
             case CONTRIBUTOR_AUTORIZZATO ->
-                    contributorAutorizzatoServiceImpl.save(new ContributorAutorizzato(contributor));
-            case CONTRIBUTOR -> contributorServiceImpl.save(new Contributor(comune, contributor));
+                    contributorAutorizzatoServiceImpl.save(new ContributorAutorizzato(contributorDTO));
+            case CONTRIBUTOR -> contributorServiceImpl.save(new Contributor(contributorDTO));
         };
 
         poiServiceImpl.findAll().stream()
-                .filter(puntoInteresse -> puntoInteresse.getCreatore() != null && puntoInteresse.getCreatore().getUsername().equals(contributor.getUsername()))
+                .filter(puntoInteresse -> puntoInteresse.getCreatore() != null && puntoInteresse.getCreatore().getUsername().equals(contributorDTO.getTuristaDTO().getUsername()))
                 .forEach(puntoInteresse -> {
                     puntoInteresse.setCreatore(modificato);
                     poiServiceImpl.save(puntoInteresse);
                 });
 
-
-
         return modificato;
     }
 
 
-    private void rimuoviVecchioRuolo(@NotNull Contributor contributor) {
-        switch (contributor) {
-            case Curatore curatore -> curatoreServiceImpl.deleteById(curatore.getUsername());
-            case ContributorAutorizzato contributorAutorizzato ->
-                    contributorAutorizzatoServiceImpl.deleteById(contributorAutorizzato.getUsername());
-            case Animatore animatore -> animatoreServiceImpl.deleteById(animatore.getUsername());
-            case Contributor contributor1 -> contributorServiceImpl.deleteById(contributor1.getUsername());
+    private void rimuoviVecchioRuolo(@NotNull RichiestaCreazioneContributorDTO contributorDTO) {
+        switch (contributorDTO.getRuolo()) {
+            case CURATORE -> curatoreServiceImpl.deleteById(contributorDTO.getTuristaDTO().getUsername());
+            case CONTRIBUTOR_AUTORIZZATO ->
+                    contributorAutorizzatoServiceImpl.deleteById(contributorDTO.getTuristaDTO().getUsername());
+            case ANIMATORE -> animatoreServiceImpl.deleteById(contributorDTO.getTuristaDTO().getUsername());
+            case CONTRIBUTOR -> contributorServiceImpl.deleteById(contributorDTO.getTuristaDTO().getUsername());
         }
     }
 
-
-    @Override
-    public TuristaAutenticato registra(@Nullable Comune comune, Ruolo ruolo, String nome, String cognome, GregorianCalendar birthday, String password, String username) {
-        if (ruolo != Ruolo.TURISTA && comune == null) {
-            logger.error("Il comune non puo' essere nullo, registrazione >= Contributor");
-            throw new RuntimeException("Il comune non puo' essere nullo, registrazione >= Contributor");
-        }
-        if (!password.matches("^(?=.*[A-Z])(?=.*[@#$%^&+=])(?=.*[0-9])(?=.*[a-zA-Z]).{6,}$")) {
+    public boolean validaCredenziali(RichiestaCreazioneTuristaDTO turistaDTO) {
+        if (!turistaDTO.getPassword().matches("^(?=.*[A-Z])(?=.*[@#$%^&+=])(?=.*[0-9])(?=.*[a-zA-Z]).{6,}$")) {
             logger.error("Password non valida");
             throw new IllegalArgumentException("Password non valida");
             //TODO messaggio da parte dell'interfaccia
         }
-        if (!username.matches("^.{5,}$")) {
+        if (!turistaDTO.getUsername().matches("^.{5,}$")) {
             logger.error("Username non valido");
             throw new IllegalArgumentException("Username non valido");
             //TODO messaggio da parte dell'interfaccia
         }
-        if (!turistaAutenticatoServiceImpl.isUsernameUnique(username)) {
+        if (!turistaAutenticatoServiceImpl.isUsernameUnique(turistaDTO.getUsername())) {
             logger.error("Username già esistente");
             throw new IllegalArgumentException("Username già esistente");
             //TODO messaggio da parte dell'interfaccia
         }
-        return switch (ruolo) {
-            case TURISTA -> registraTurista(nome, cognome, birthday, password, username);
-            case CONTRIBUTOR -> registraContributor(comune, nome, cognome, birthday, password, username);
-            case CURATORE, ANIMATORE, CONTRIBUTOR_AUTORIZZATO -> {
-                Contributor contributor = registraContributor(comune, nome, cognome, birthday, password, username);
-                yield cambiaRuolo(contributor, ruolo);
-            }
-        };
+        return true;
     }
 
-    private TuristaAutenticato registraTurista(String nome, String cognome, GregorianCalendar birthday, String password, String username) {
-        TuristaAutenticato nuovoTurista = new TuristaAutenticato(nome, cognome, birthday, password, username);
+    public TuristaAutenticato registraTurista(RichiestaCreazioneTuristaDTO turistaDTO) {
+        if (!validaCredenziali(turistaDTO)) {
+            return null;
+        }
+        TuristaAutenticato nuovoTurista = new TuristaAutenticato(turistaDTO);
         return turistaAutenticatoServiceImpl.save(nuovoTurista);
     }
 
-    private Contributor registraContributor(Comune comune, String nome, String cognome, GregorianCalendar birthday, String password, String username) {
-        Contributor contributor = new Contributor(comune, nome, cognome, birthday, password, username);
-        return contributorServiceImpl.save(contributor);
+    @Transactional
+    public TuristaAutenticato registraContributor(RichiestaCreazioneContributorDTO contributorDTO) {
+        if (contributorDTO.getRuolo() != Ruolo.TURISTA && contributorDTO.getComune() == null) {
+            logger.error("Il comune non puo' essere nullo, registrazione >= Contributor");
+            throw new RuntimeException("Il comune non puo' essere nullo, registrazione >= Contributor");
+        }
+        if (!validaCredenziali(contributorDTO.getTuristaDTO())) {
+            return null;
+        }
+        return switch (contributorDTO.getRuolo()) {
+            case TURISTA -> registraTurista(contributorDTO.getTuristaDTO());
+            case CONTRIBUTOR -> {
+                Contributor contributor = new Contributor(contributorDTO);
+                yield contributorServiceImpl.save(contributor);
+            }
+            case CURATORE-> {
+                Curatore curatore = new Curatore(contributorDTO);
+                curatoreServiceImpl.save(curatore);
+                yield cambiaRuolo(contributorDTO,Ruolo.CURATORE);
+            }
+            case ANIMATORE -> {
+                Animatore animatore = new Animatore(contributorDTO);
+                animatoreServiceImpl.save(animatore);
+                yield cambiaRuolo(contributorDTO,Ruolo.ANIMATORE);
+            }
+            case CONTRIBUTOR_AUTORIZZATO -> {
+                ContributorAutorizzato contributor = new ContributorAutorizzato(contributorDTO);
+                contributorAutorizzatoServiceImpl.save(contributor);
+                yield cambiaRuolo(contributorDTO,Ruolo.CONTRIBUTOR_AUTORIZZATO);
+            }
+
+        };
+
     }
 
 

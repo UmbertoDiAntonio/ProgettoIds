@@ -4,7 +4,11 @@ import ids.unicam.Service.ItinerarioService;
 import ids.unicam.models.DTO.RichiestaCreazioneItinerarioDTO;
 import ids.unicam.models.contenuti.Itinerario;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
+@RequestMapping("/Itinerario")
 public class ItinerarioController implements ControllerBase<RichiestaCreazioneItinerarioDTO, Integer> {
 
     private final ItinerarioService itinerarioService;

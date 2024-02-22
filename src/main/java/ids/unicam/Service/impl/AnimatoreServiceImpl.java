@@ -4,6 +4,7 @@ import ids.unicam.DataBase.Repository.AnimatoreRepository;
 import ids.unicam.Service.AnimatoreService;
 import ids.unicam.exception.ContestException;
 import ids.unicam.models.DTO.RichiestaCreazioneContestDTO;
+import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
@@ -32,8 +33,20 @@ public class AnimatoreServiceImpl implements AnimatoreService {
         this.invitoServiceImpl = invitoServiceImpl;
     }
 
+    @Override
     public void deleteById(String id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public Optional<Animatore> getById(String username) {
+        return repository.findById(username);
+    }
+
+    @Override
+    public Animatore update(RichiestaCreazioneContributorDTO contributorDTO, String username) {
+        //TODO
+        return null;
     }
 
 
@@ -41,24 +54,6 @@ public class AnimatoreServiceImpl implements AnimatoreService {
         animatore = repository.save(animatore);
         return animatore;
     }
-    
-    public Optional<Animatore> findById(String id) {
-        return repository.findById(id);
-    }
-
-
-    public List<Animatore> findAll() {
-        return repository.findAll();
-    }
-
-    public Animatore getLast() {
-        return repository.findAll().getLast();
-    }
-
-    public Animatore getFirst() {
-        return repository.findAll().getFirst();
-    }
-
 
     public void deleteAll() {
         repository.deleteAll();
@@ -99,5 +94,10 @@ public class AnimatoreServiceImpl implements AnimatoreService {
             throw new UnsupportedOperationException("stato in attesa");
         contestService.approvaMateriale(materialeGenerico,stato);
         return true;
+    }
+
+    @Override
+    public List<Animatore> getAll() {
+        return repository.findAll();
     }
 }

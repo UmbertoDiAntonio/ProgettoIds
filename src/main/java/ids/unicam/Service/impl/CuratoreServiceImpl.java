@@ -3,6 +3,7 @@ package ids.unicam.Service.impl;
 import ids.unicam.DataBase.Repository.CuratoreRepository;
 import ids.unicam.Service.CuratoreService;
 import ids.unicam.models.Comune;
+import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.Curatore;
 import ids.unicam.models.contenuti.ContenutoGenerico;
@@ -44,23 +45,25 @@ public class CuratoreServiceImpl implements CuratoreService {
     }
 
 
+    @Override
     public void deleteById(String id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public Optional<Curatore> getById(String username) {
+        return repository.findById(username);
+    }
+
+    @Override
+    public Curatore update(RichiestaCreazioneContributorDTO contributorDTO, String username) {
+        //TODO
+        return null;
     }
 
 
     public Curatore save(Curatore curatore) {
         return repository.save(curatore);
-    }
-
-
-    public Optional<Curatore> findById(String idCuratore) {
-        return repository.findById(idCuratore);
-    }
-
-
-    public List<Curatore> findAll() {
-        return repository.findAll();
     }
 
     public void deleteAll() {
@@ -165,6 +168,11 @@ public class CuratoreServiceImpl implements CuratoreService {
         itinerarioServiceImpl.rimuoviTappa(itinerario, tappa);
     }
 
+    @Override
+    public List<Curatore> getAll() {
+        return repository.findAll();
+    }
+
 
     @Transactional
     public void aggiungiOsservatore(Curatore curatore, Contributor osservatore) {
@@ -192,7 +200,6 @@ public class CuratoreServiceImpl implements CuratoreService {
     public int getNumeroOsservatori(Curatore curatore) {
         return repository.countNumeroOsservatori(curatore.getUsername());
     }
-
 
 }
 
