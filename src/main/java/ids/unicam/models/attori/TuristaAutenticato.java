@@ -1,5 +1,6 @@
 package ids.unicam.models.attori;
 
+import ids.unicam.models.DTO.RichiestaCreazioneTuristaDTO;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.persistence.*;
 
@@ -51,12 +52,12 @@ public class TuristaAutenticato extends Turista {
         return preferiti;
     }
 
-    public TuristaAutenticato(String nome, String cognome, GregorianCalendar dataNascita, String password, String username) {
-        this.nome = nome;
-        this.cognome = cognome;
-        this.dataNascita = dataNascita;
-        this.password = password;
-        this.username = username;
+    public TuristaAutenticato(RichiestaCreazioneTuristaDTO turistaDTO) {
+        this.nome = turistaDTO.getNome();
+        this.cognome = turistaDTO.getCognome();
+        this.dataNascita = turistaDTO.getDataNascita();
+        this.password = turistaDTO.getPassword();
+        this.username = turistaDTO.getUsername();
     }
 
 

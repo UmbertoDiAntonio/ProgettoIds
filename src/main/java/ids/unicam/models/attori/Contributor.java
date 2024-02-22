@@ -1,14 +1,17 @@
 package ids.unicam.models.attori;
 
 import ids.unicam.models.Comune;
+import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.util.GregorianCalendar;
 
+@Getter
 @Entity
 @DiscriminatorValue("Contributor")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Contributor extends TuristaAutenticato  {
+public class Contributor extends TuristaAutenticato {
     @OneToOne
     @JoinColumn(name = "comune")
     private Comune comune = null;
@@ -18,25 +21,15 @@ public class Contributor extends TuristaAutenticato  {
     }
 
 
-    public Comune getComune() {
-        return comune;
-    }
-
-
-    public Contributor(Comune comune, TuristaAutenticato turistaAutenticato) {
-        super(turistaAutenticato.getNome(), turistaAutenticato.getCognome(), turistaAutenticato.getDataNascita(), turistaAutenticato.getPassword(), turistaAutenticato.getUsername());
-        this.comune = comune;
-    }
-
-    public Contributor(Comune comune, String name, String surname, GregorianCalendar dateBirthday, String password, String username) {
-        super(name, surname, dateBirthday, password, username);
-        this.comune = comune;
+    public Contributor(RichiestaCreazioneContributorDTO contributorDTO) {
+        super(contributorDTO.getTuristaDTO());
+        this.comune = contributorDTO.getComune();
     }
 
     @Override
     public String toString() {
-        return "Contributor " +getUsername()+" "+
-                "(" + comune +")"+
+        return "Contributor " + getUsername() + " " +
+                "(" + comune + ")" +
                 '}';
     }
 
