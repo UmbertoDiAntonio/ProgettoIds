@@ -28,6 +28,11 @@ public class MaterialeServiceImpl implements MaterialeService {
     }
 
     @Override
+    public Stato getStato(MaterialeGenerico foto) {
+        return repository.getStatoById(foto.getId());
+    }
+
+    @Override
     public Optional<MaterialeGenerico> getById(int id) {
         return repository.findById(id);
     }

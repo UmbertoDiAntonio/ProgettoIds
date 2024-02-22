@@ -14,6 +14,7 @@ import ids.unicam.models.contenuti.notifiche.Notifica;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -86,7 +87,7 @@ public class CuratoreServiceImpl implements CuratoreService {
 
     @Override
     @Transactional
-    public void valutaPuntoInteresse(String usernameCuratore, @NotNull Integer idPuntoInteresse, Boolean stato) {
+    public PuntoInteresse valutaPuntoInteresse(String usernameCuratore, @NotNull Integer idPuntoInteresse, @Nullable Boolean bStato) {
         Optional<Curatore> oCuratore = getById(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
@@ -97,33 +98,50 @@ public class CuratoreServiceImpl implements CuratoreService {
                     throw new UnsupportedOperationException("curatore non puo' operare fuori dal suo comune");
                 if (puntoInteresse.getStato() != Stato.IN_ATTESA)
                     throw new UnsupportedOperationException("punto di interesse già settato");
-                if (Stato.toStatus(stato) == Stato.IN_ATTESA)
+                Stato stato = Stato.toStatus(bStato);
+                if (stato == Stato.IN_ATTESA)
                     throw new UnsupportedOperationException("non puoi impostare stato in attesa");
-                puntoInteresse.setStato(Stato.toStatus(stato));
-                poiServiceImpl.save(puntoInteresse);
-                Notifica notifica = notificaServiceImpl.creaNotifica(curatore, puntoInteresse, Stato.toStatus(stato));
+                puntoInteresse.setStato(stato);
+                Notifica notifica = notificaServiceImpl.creaNotifica(curatore, puntoInteresse, stato);
                 System.out.println(notifica);
+                return poiServiceImpl.save(puntoInteresse);
+            } else {
+                logger.error("Id del punto di interesse non valido");
+                throw new IllegalArgumentException("Id del punto di interesse non valido");
             }
+        } else {
+            logger.error("username curatore non valido");
+            throw new IllegalArgumentException("username curatore non valido");
         }
     }
 
 
     @Override
-    public void valutaMateriale(String usernameCuratore, Integer idMaterialeGenerico, Boolean bStato) {
+    public MaterialeGenerico valutaMateriale(String usernameCuratore, Integer idMaterialeGenerico, Boolean bStato) {
         Optional<Curatore> oCuratore = getById(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
             Optional<MaterialeGenerico> oMateriale = materialeServiceImpl.getById(idMaterialeGenerico);
             if (oMateriale.isPresent()) {
                 MaterialeGenerico materialeGenerico = oMateriale.get();
+                if (false)//TODO
+                    throw new UnsupportedOperationException("curatore non puo' operare fuori dal suo comune");
+                if (materialeGenerico.getStato() != Stato.IN_ATTESA)
+                    throw new UnsupportedOperationException("materiale già settato");
                 Stato stato = Stato.toStatus(bStato);
+                if (stato == Stato.IN_ATTESA)
+                    throw new UnsupportedOperationException("non puoi impostare stato in attesa");
                 materialeGenerico.setStato(stato);
-                if (stato == Stato.NON_APPROVATO)
-                    materialeServiceImpl.deleteById(materialeGenerico.getId());
-                else materialeServiceImpl.save(materialeGenerico);
-
                 Notifica notifica = notificaServiceImpl.creaNotifica(curatore, materialeGenerico, stato);
+                return materialeServiceImpl.save(materialeGenerico);
+
+            } else {
+                logger.error("Id del materiale non valido");
+                throw new IllegalArgumentException("Id del materiale non valido");
             }
+        } else {
+            logger.error("username curatore non valido");
+            throw new IllegalArgumentException("username curatore non valido");
         }
     }
 
@@ -138,15 +156,15 @@ public class CuratoreServiceImpl implements CuratoreService {
                 PuntoInteresse puntoInteresse = oPoi.get();
                 if (controllaSeInComune(curatore, puntoInteresse.getComune())) {
                     poiServiceImpl.eliminaPuntoInteresse(idPuntoInteresse);
-                }else {
+                } else {
                     logger.error("Il punto di interesse e' fuori dal comune del curatore");
                     throw new IllegalArgumentException("Il punto di interesse e' fuori dal comune del curatore");
                 }
-            }else {
+            } else {
                 logger.error("Id del punto di interesse non valido");
                 throw new IllegalArgumentException("Id del punto di interesse non valido");
             }
-        }else{
+        } else {
             logger.error("username curatore non valido");
             throw new IllegalArgumentException("username curatore non valido");
         }
@@ -162,15 +180,15 @@ public class CuratoreServiceImpl implements CuratoreService {
                 Itinerario itinerario = oItinerario.get();
                 if (controllaSeInComune(curatore, itinerario.getComune())) {
                     itinerarioServiceImpl.deleteById(itinerario.getId());
-                }else {
+                } else {
                     logger.error("L'itinerario e' fuori dal comune del curatore");
                     throw new IllegalArgumentException("L'itinerario e' fuori dal comune del curatore");
                 }
-            }else {
+            } else {
                 logger.error("Id dell'itinerario non valido");
                 throw new IllegalArgumentException("Id dell'itinerario non valido");
             }
-        }else{
+        } else {
             logger.error("username curatore non valido");
             throw new IllegalArgumentException("username curatore non valido");
         }
@@ -186,15 +204,15 @@ public class CuratoreServiceImpl implements CuratoreService {
                 Contest contest = oContest.get();
                 if (controllaSeInComune(curatore, contest.getComune())) {
                     contestServiceImpl.deleteById(contest.getId());
-                }else {
+                } else {
                     logger.error("Il contest e' fuori dal comune del curatore");
                     throw new IllegalArgumentException("Il contest e' fuori dal comune del curatore");
                 }
-            }else {
+            } else {
                 logger.error("Id del contest non valido");
                 throw new IllegalArgumentException("Id del contest non valido");
             }
-        }else{
+        } else {
             logger.error("username curatore non valido");
             throw new IllegalArgumentException("username curatore non valido");
         }

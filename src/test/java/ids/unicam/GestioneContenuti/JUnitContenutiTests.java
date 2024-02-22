@@ -32,8 +32,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class JUnitContenutiTests {
     private final ComuneServiceImpl comuneService;
-    private final ContributorServiceImpl contributorService;
-    private final ContributorAutorizzatoServiceImpl contributorAutorizzatoServiceImpl;
     private final CuratoreServiceImpl curatoreServiceImpl;
     private final AnimatoreServiceImpl animatoreServiceImpl;
     private final TuristaAutenticatoServiceImpl turistaAutenticatoService;
@@ -45,10 +43,8 @@ public class JUnitContenutiTests {
     private final MaterialeServiceImpl materialeService;
 
     @Autowired
-    public JUnitContenutiTests(ComuneServiceImpl comuneService, ContributorServiceImpl contributorService, ContributorAutorizzatoServiceImpl contributorAutorizzatoServiceImpl, CuratoreServiceImpl curatoreServiceImpl, AnimatoreServiceImpl animatoreServiceImpl, TuristaAutenticatoServiceImpl turistaAutenticatoService, PoiServiceImpl poiService, ItinerarioServiceImpl itinerarioService, ContestServiceImpl contestService, GestorePiattaformaServiceImpl gestorePiattaformaService, InvitoServiceImpl invitoService, GestoreDatabase gestoreDatabase, MaterialeServiceImpl materialeService) {
+    public JUnitContenutiTests(ComuneServiceImpl comuneService, CuratoreServiceImpl curatoreServiceImpl, AnimatoreServiceImpl animatoreServiceImpl, TuristaAutenticatoServiceImpl turistaAutenticatoService, PoiServiceImpl poiService, ItinerarioServiceImpl itinerarioService, ContestServiceImpl contestService, GestorePiattaformaServiceImpl gestorePiattaformaService, InvitoServiceImpl invitoService, GestoreDatabase gestoreDatabase, MaterialeServiceImpl materialeService) {
         this.comuneService = comuneService;
-        this.contributorService = contributorService;
-        this.contributorAutorizzatoServiceImpl = contributorAutorizzatoServiceImpl;
         this.curatoreServiceImpl = curatoreServiceImpl;
         this.animatoreServiceImpl = animatoreServiceImpl;
         this.turistaAutenticatoService = turistaAutenticatoService;
@@ -141,9 +137,8 @@ public class JUnitContenutiTests {
             PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributorAutorizzato)));
 
             TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO("andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.FEBRUARY, 3), "2Unica@", "user2"));
-            MaterialeGenerico materialeGenerico = new Foto(new MaterialeDTO( turistaAutenticato));
+            MaterialeGenerico materialeGenerico = materialeService.save(new Foto(new MaterialeDTO(turistaAutenticato)));
             poiService.aggiungiMateriale(contributorAutorizzato, puntoInteresse, materialeGenerico);
-            assert puntoInteresse != null;
             assertEquals(1, poiService.getMaterialiPoi(puntoInteresse).size());
         }
 
@@ -163,8 +158,7 @@ public class JUnitContenutiTests {
             Orario orarioAccademia = new Orario();
             orarioAccademia.setOrarioApertura(DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(18, 0));
             PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("Accademia", new Punto(comune.getPosizione().getLatitudine() + 0.0, comune.getPosizione().getLongitudine() + 0.0), orarioAccademia, TipologiaPuntoInteresse.CENTRO_SPORTIVO, contributor)));
-            assert puntoInteresse != null;
-            assertNull(puntoInteresse.getStato().asBoolean());
+            assertNull(poiService.getStato(puntoInteresse.getId()).asBoolean());
             TuristaAutenticato turistaTemp2 = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(comune, new TuristaAutenticatoDTO("Peppe", "Paol", new GregorianCalendar(2000, GregorianCalendar.MARCH, 11), "4Unica@", "user44"), Ruolo.CONTRIBUTOR));
 
             if (!(turistaTemp2 instanceof Contributor contributor1))
@@ -184,8 +178,8 @@ public class JUnitContenutiTests {
             assertThrows(UnsupportedOperationException.class, () -> curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse.getId(), Stato.NON_APPROVATO.asBoolean()));
 
 
-            assertTrue(puntoInteresse.getStato().asBoolean());
-            MaterialeGenerico materialeGenerico1 = new Foto(new MaterialeDTO( contributor));
+            assertEquals(Boolean.TRUE, poiService.getStato(puntoInteresse.getId()).asBoolean());
+            MaterialeGenerico materialeGenerico1 = materialeService.save(new Foto(new MaterialeDTO(contributor)));
             assertNull(materialeGenerico1.getStato().asBoolean());
             curatoreServiceImpl.valutaMateriale(curatore.getUsername(), materialeGenerico1.getId(), Stato.APPROVATO.asBoolean());
             poiService.aggiungiMateriale(turistaAutenticato, puntoInteresse, materialeGenerico1);
@@ -227,13 +221,13 @@ public class JUnitContenutiTests {
             PuntoInteresse nuovoPunto3 = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("universita3'", new Punto(comune.getPosizione().getLatitudine() + 0.014, comune.getPosizione().getLongitudine() + 0.014), new Orario(), TipologiaPuntoInteresse.FORMAZIONE, contributorAutorizzato)));
 
 
-           assertTrue(itinerarioService.aggiungiTappa(contributorAutorizzato.getUsername() ,itinerario1.getId(), nuovoPunto1.getId()));
+            assertTrue(itinerarioService.aggiungiTappa(contributorAutorizzato.getUsername(), itinerario1.getId(), nuovoPunto1.getId()));
             //itinerarioService.aggiungiTappa(itinerario1, nuovoPunto);
 
             assertEquals(numeroItinerariIniziale + 1, itinerarioService.findAllByComune(comune).size());
             assertEquals(3, itinerarioService.getNumeroTappe(itinerario1));
 
-            itinerarioService.aggiungiTappa(contributorAutorizzato.getUsername(), itinerario1.getId(),nuovoPunto2.getId(), nuovoPunto3.getId());
+            itinerarioService.aggiungiTappa(contributorAutorizzato.getUsername(), itinerario1.getId(), nuovoPunto2.getId(), nuovoPunto3.getId());
             //itinerarioService.aggiungiTappa(itinerario1, nuovoPunto1, nuovoPunto2, nuovoPunto3);
             assertEquals(numeroItinerariIniziale + 1, itinerarioService.findAllByComune(comune).size());
 
@@ -269,7 +263,7 @@ public class JUnitContenutiTests {
 
             turistaAutenticatoService.partecipaAlContest(contest.getId(), turistaAutenticato.getUsername());
 
-            contestService.aggiungiMateriale(new Foto(new MaterialeDTO( turistaAutenticato)), contest, turistaAutenticato);
+            contestService.aggiungiMateriale(new Foto(new MaterialeDTO(turistaAutenticato)), contest, turistaAutenticato);
 
 
             assertEquals(1, contestService.getPartecipanti(contest).size());
@@ -292,11 +286,11 @@ public class JUnitContenutiTests {
             assertTrue(invitoService.isValid(new InvitoDTO(invito.getContest(), invito.getInvitato())));
 
             turistaAutenticatoService.accettaInvitoContest(new TuristaAutenticatoDTO(
-                            turistaAutenticato.getNome(),
-                            turistaAutenticato.getCognome(),
-                            turistaAutenticato.getDataNascita(),
-                            turistaAutenticato.getPassword(),
-                            turistaAutenticato.getUsername()),new InvitoDTO(invito.getContest(),invito.getInvitato()));
+                    turistaAutenticato.getNome(),
+                    turistaAutenticato.getCognome(),
+                    turistaAutenticato.getDataNascita(),
+                    turistaAutenticato.getPassword(),
+                    turistaAutenticato.getUsername()), new InvitoDTO(invito.getContest(), invito.getInvitato()));
 
             assertEquals(1, contestService.getPartecipanti(contest).size());
             // assertEquals(contestService.getContestByCreatore(animatore).getLast(),
@@ -324,18 +318,18 @@ public class JUnitContenutiTests {
 
         Contest contest = contestService.creaContest(new Contest(new RichiestaCreazioneContestDTO("Monumento", "Foto più bella", animatore, true)));
 
-        Descrizione descrizione = new Descrizione(new MaterialeDTO( turistaAutenticato));
+        MaterialeGenerico descrizione = materialeService.save(new Descrizione(new MaterialeDTO(turistaAutenticato)));
         assertThrows(ContestException.class, () -> contestService.aggiungiMateriale(descrizione, contest, turistaAutenticato));
 
         turistaAutenticatoService.partecipaAlContest(contest.getId(), turistaAutenticato.getUsername());
-        MaterialeGenerico materialeGenerico = materialeService.save(new Descrizione(new MaterialeDTO( turistaAutenticato)));
+        MaterialeGenerico materialeGenerico = materialeService.save(new Descrizione(new MaterialeDTO(turistaAutenticato)));
         contestService.aggiungiMateriale(descrizione, contest, turistaAutenticato);
         assertNull(materialeGenerico.getStato().asBoolean());
         assertEquals(1, contestService.getMaterialiContest(contest).size());
 
         assertTrue(animatoreServiceImpl.approvaMateriale(animatore.getUsername(), contest.getId(), materialeGenerico.getId(), true));
 
-        assertEquals(Boolean.TRUE, materialeService.getById(materialeGenerico.getId()).get().getStato().asBoolean());
+        assertEquals(Boolean.TRUE, materialeService.getStato(materialeGenerico).asBoolean());
 
     }
 
@@ -389,6 +383,7 @@ public class JUnitContenutiTests {
         assertEquals(numeroItinerariComune, itinerarioService.findAllByComune(comune).size());
 
         curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse1.getId(), Stato.APPROVATO.asBoolean());
+        System.out.println(puntoInteresse1.getStato());
         Itinerario itinerario2 = itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(comune, "giro dei bar", new PuntoInteresse[]{puntoInteresse1})));
         assertEquals(numeroItinerariComune + 1, itinerarioService.findAllByComune(comune).size());
         curatoreServiceImpl.eliminaItinerario(curatore.getUsername(), itinerario2.getId());
@@ -403,7 +398,7 @@ public class JUnitContenutiTests {
 
         Itinerario itinerario3 = itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(comune, "girodeibar2", new PuntoInteresse[]{puntoInteresse1})));
         assertEquals(1, itinerarioService.getNumeroTappe(itinerario3));
-        assertTrue(itinerarioService.aggiungiTappa(contributor.getUsername(),itinerario3.getId(), puntoInt2.getId()));
+        assertTrue(itinerarioService.aggiungiTappa(contributor.getUsername(), itinerario3.getId(), puntoInt2.getId()));
         assertEquals(2, itinerarioService.getNumeroTappe(itinerario3));
 
         itinerarioService.rimuoviTappa(curatore.getUsername(), itinerario3.getId(), puntoInt2.getId());
@@ -414,7 +409,7 @@ public class JUnitContenutiTests {
         PuntoInteresse puntoInteresse2 = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("Castello", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), new Orario(), TipologiaPuntoInteresse.MONUMENTO, contributor)));
 
         curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse2.getId(), Stato.APPROVATO.asBoolean());
-        MaterialeGenerico foto = new Foto(new MaterialeDTO( turista));
+        MaterialeGenerico foto = materialeService.save(new Foto(new MaterialeDTO(turista)));
         curatoreServiceImpl.valutaMateriale(curatore.getUsername(), foto.getId(), Stato.APPROVATO.asBoolean());
 
         poiService.aggiungiMateriale(turista, puntoInteresse2, foto);
@@ -444,7 +439,7 @@ public class JUnitContenutiTests {
         assertEquals(LocalDate.MAX, puntoInteresse.getExpireDate());
 
 
-        poiService.modificaScadenza(contributor.getUsername(),puntoInteresse.getId(), LocalDate.of(2024, 2, 1));
+        poiService.modificaScadenza(contributor.getUsername(), puntoInteresse.getId(), LocalDate.of(2024, 2, 1));
         assertEquals(LocalDate.of(2024, 2, 1), poiService.getScadenza(puntoInteresse));
         assertEquals(numPoi, poiService.findActive().size());
     }

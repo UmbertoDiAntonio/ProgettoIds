@@ -12,7 +12,6 @@ import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import ids.unicam.models.contenuti.puntiInteresse.Tag;
 import jakarta.transaction.Transactional;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,6 +67,11 @@ public class PoiServiceImpl implements PoiService {
             logger.error("username del contributor non esiste");
             throw new IllegalArgumentException("username del contributor non esiste");
         }
+    }
+
+    @Override
+    public Stato getStato(int idPunto) {
+        return repository.getStatoById(idPunto);
     }
 
     @Transactional

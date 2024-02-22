@@ -345,7 +345,7 @@ public class CreazioneTabelleDatabase {
                 "CREATE TABLE IF NOT EXISTS PUNTI_DI_INTERESSE(" +
                         "id INT PRIMARY KEY NOT NULL," +
                         "nome_comune VARCHAR(50) NOT NULL," +
-                        "stato BOOLEAN NOT NULL," +
+                        "stato  VARCHAR(50)," +
                         "latitudine DOUBLE ," +
                         "longitudine DOUBLE ," +
                         "nome VARCHAR(50) NOT NULL," +

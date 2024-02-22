@@ -5,8 +5,6 @@ import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 
-import java.util.GregorianCalendar;
-
 @Getter
 @Entity
 @DiscriminatorValue("Contributor")

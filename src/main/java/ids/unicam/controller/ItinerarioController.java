@@ -1,6 +1,5 @@
 package ids.unicam.controller;
 
-import ids.unicam.Service.ContributorService;
 import ids.unicam.Service.ItinerarioService;
 import ids.unicam.models.DTO.RichiestaCreazioneItinerarioDTO;
 import ids.unicam.models.contenuti.Itinerario;

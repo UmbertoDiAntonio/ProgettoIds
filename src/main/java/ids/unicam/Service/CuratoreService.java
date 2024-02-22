@@ -2,9 +2,6 @@ package ids.unicam.Service;
 
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.attori.Curatore;
-import ids.unicam.models.contenuti.Contest;
-import ids.unicam.models.contenuti.Itinerario;
-import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.transaction.Transactional;
@@ -14,9 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CuratoreService {
-    void valutaPuntoInteresse(String usernameCuratore, @NotNull Integer idPuntoInteresse, Boolean stato);
+    PuntoInteresse valutaPuntoInteresse(String usernameCuratore, @NotNull Integer idPuntoInteresse, Boolean stato);
 
-    void valutaMateriale(String usernameCuratore, Integer idMaterialeGenerico, Boolean stato);
+    MaterialeGenerico valutaMateriale(String usernameCuratore, Integer idMaterialeGenerico, Boolean stato);
 
     void eliminaPuntoInteresse(String usernameCuratore,Integer idPuntoInteresse);
 

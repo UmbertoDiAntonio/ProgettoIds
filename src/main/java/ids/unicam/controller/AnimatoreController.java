@@ -1,7 +1,6 @@
 package ids.unicam.controller;
 
 import ids.unicam.Service.AnimatoreService;
-import ids.unicam.Service.ContributorService;
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import org.springframework.http.ResponseEntity;

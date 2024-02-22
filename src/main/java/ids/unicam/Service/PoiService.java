@@ -2,11 +2,11 @@ package ids.unicam.Service;
 
 import ids.unicam.models.DTO.RichiestaCreazioneTagDTO;
 import ids.unicam.models.attori.TuristaAutenticato;
+import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.Taggable;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import ids.unicam.models.contenuti.puntiInteresse.Tag;
-import io.swagger.models.auth.In;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -34,4 +34,6 @@ public interface PoiService {
     void deleteById(int id);
 
     void modificaScadenza(String usernameContributor,Integer idPuntoInteresse, LocalDate expireDate) ;
+
+    Stato getStato(int idPuntoInteresse);
 }

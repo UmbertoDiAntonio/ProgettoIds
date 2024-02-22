@@ -30,16 +30,18 @@ public class JUnitUtentiTest {
     private final TuristaAutenticatoServiceImpl turistaAutenticatoService;
     private final GestorePiattaformaServiceImpl gestorePiattaformaService;
     private final TuristaServiceImpl turistaService;
+    private final MaterialeServiceImpl materialeService;
 
 
     @Autowired
-    public JUnitUtentiTest(ComuneServiceImpl comuneService, CuratoreServiceImpl curatoreServiceImpl, PoiServiceImpl poiService, TuristaAutenticatoServiceImpl turistaAutenticatoService, GestorePiattaformaServiceImpl gestorePiattaformaService, TuristaServiceImpl turistaService, GestoreDatabase gestoreDatabase) {
+    public JUnitUtentiTest(ComuneServiceImpl comuneService, CuratoreServiceImpl curatoreServiceImpl, PoiServiceImpl poiService, TuristaAutenticatoServiceImpl turistaAutenticatoService, GestorePiattaformaServiceImpl gestorePiattaformaService, TuristaServiceImpl turistaService, GestoreDatabase gestoreDatabase, MaterialeServiceImpl materialeService) {
         this.comuneService = comuneService;
         this.curatoreServiceImpl = curatoreServiceImpl;
         this.poiService = poiService;
         this.turistaAutenticatoService = turistaAutenticatoService;
         this.gestorePiattaformaService = gestorePiattaformaService;
         this.turistaService = turistaService;
+        this.materialeService = materialeService;
         gestoreDatabase.eliminaTabelleDB();
         gestoreDatabase.inizializzaDatabase();
     }
@@ -176,17 +178,17 @@ public class JUnitUtentiTest {
 
         assert puntoInteresse != null;
         curatoreServiceImpl.valutaPuntoInteresse(curatore1.getUsername(), puntoInteresse.getId(), Stato.APPROVATO.asBoolean());
-        assertEquals(Boolean.TRUE, puntoInteresse.getStato().asBoolean());
+        assertEquals(Boolean.TRUE, poiService.getStato(puntoInteresse.getId()).asBoolean());
         TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO( "andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "10Unico@", "user10"));
 
 
         assertEquals(0, poiService.getMaterialiPoi(puntoInteresse).size());
-        MaterialeGenerico foto = new Foto(new MaterialeDTO(turistaAutenticato));
+        MaterialeGenerico foto = materialeService.save(new Foto(new MaterialeDTO(turistaAutenticato)));
         poiService.aggiungiMateriale(turistaAutenticato, puntoInteresse, foto);
         assertEquals(1, poiService.getMaterialiPoi(puntoInteresse).size());
-        assertNull(foto.getStato().asBoolean());
+        assertNull(materialeService.getStato(foto).asBoolean());
         curatoreServiceImpl.valutaMateriale(curatore1.getUsername(), foto.getId(), Stato.APPROVATO.asBoolean());
-        assertTrue(foto.getStato().asBoolean());
+        assertEquals(Boolean.TRUE, materialeService.getStato(foto).asBoolean());
     }
 
     @Test

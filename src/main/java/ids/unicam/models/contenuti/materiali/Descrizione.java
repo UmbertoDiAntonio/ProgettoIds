@@ -1,7 +1,6 @@
 package ids.unicam.models.contenuti.materiali;
 
 import ids.unicam.models.DTO.MaterialeDTO;
-import ids.unicam.models.attori.TuristaAutenticato;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.NoArgsConstructor;

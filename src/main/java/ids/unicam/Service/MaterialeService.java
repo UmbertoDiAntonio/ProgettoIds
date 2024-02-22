@@ -3,7 +3,6 @@ package ids.unicam.Service;
 import ids.unicam.models.DTO.MaterialeDTO;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
-import io.swagger.models.auth.In;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,4 +14,5 @@ public interface MaterialeService {
     MaterialeGenerico update(MaterialeDTO materialeDTO, int id);
     void deleteById(int id);
 
+    Stato getStato(MaterialeGenerico foto);
 }

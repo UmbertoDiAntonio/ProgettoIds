@@ -1,11 +1,9 @@
 package ids.unicam.controller;
 
-import ids.unicam.Service.ContributorAutorizzatoService;
 import ids.unicam.Service.CuratoreService;
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

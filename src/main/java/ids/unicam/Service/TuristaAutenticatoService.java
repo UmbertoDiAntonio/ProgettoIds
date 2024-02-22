@@ -1,10 +1,8 @@
 package ids.unicam.Service;
 
 import ids.unicam.models.DTO.InvitoDTO;
-import ids.unicam.models.DTO.PuntoInteresseDTO;
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.attori.TuristaAutenticato;
-import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.notifiche.Notifica;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 

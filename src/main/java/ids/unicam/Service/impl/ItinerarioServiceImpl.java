@@ -1,16 +1,15 @@
 package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.ItinerarioRepository;
-import ids.unicam.Service.ContributorService;
 import ids.unicam.Service.ItinerarioService;
 import ids.unicam.models.Comune;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.transaction.Transactional;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.List;
 import java.util.Optional;
@@ -136,7 +135,8 @@ public class ItinerarioServiceImpl implements ItinerarioService {
     @Override
     public Itinerario creaItinerario(Itinerario itinerario) {
         for (PuntoInteresse puntoInteresse : itinerario.getPercorso()) {
-            if (!itinerario.getComune().verificaCoordinateComune(puntoInteresse.getPt()) || !(puntoInteresse.getStato().asBoolean() != null && (puntoInteresse.getStato().asBoolean()))) {
+            @Nullable Boolean stato = poiServiceImpl.getStato(puntoInteresse.getId()).asBoolean();
+            if (!itinerario.getComune().verificaCoordinateComune(puntoInteresse.getPt()) || !(stato != null && (stato))) {
                 logger.error("Non si possono creare Itinerari con punti non approvati");
                 throw new IllegalArgumentException("Non si possono creare Itinerari con punti non approvati");
             }

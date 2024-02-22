@@ -2,9 +2,7 @@ package ids.unicam.controller;
 
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.Service.TuristaAutenticatoService;
-import ids.unicam.models.DTO.RichiestaCreazioneContestDTO;
 import ids.unicam.models.DTO.InvitoDTO;
-import ids.unicam.models.DTO.PuntoInteresseDTO;
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.contenuti.notifiche.Notifica;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;

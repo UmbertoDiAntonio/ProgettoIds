@@ -1,5 +1,6 @@
 package ids.unicam.DataBase.Repository;
 
+import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.Taggable;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
@@ -30,4 +31,7 @@ public interface PoiRepository extends JpaRepository<PuntoInteresse,Integer> {
 
     @Query("SELECT p.expireDate FROM PuntoInteresse p WHERE p.id = :id")
     LocalDate getExpireDateById(int id);
+
+    @Query("select p.stato from PuntoInteresse p where p.id=:idPunto")
+    Stato getStatoById(int idPunto);
 }
