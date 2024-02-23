@@ -9,8 +9,8 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.io.IOException;
 
 
@@ -20,19 +20,23 @@ import java.io.IOException;
 public class Main implements ApplicationRunner {
     public static final Logger logger = LoggerFactory.getLogger(Main.class);
 
+    private static Environment environment;
 
     private final GestoreDatabase gestoreDatabase;
 
-    public Main(GestoreDatabase gestoreDatabase) {
+    public Main(Environment environment, GestoreDatabase gestoreDatabase) {
+        Main.environment = environment;
         this.gestoreDatabase = gestoreDatabase;
     }
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
+        // URL da aprire
+        String port = environment.getProperty("server.port");
+        String urlToOpen = "http://localhost:"+port+"/swagger-ui/index.html#/";
+        String urlToDB = "http://localhost:"+port+"/h2-console";
 
-        String urlToOpen = "http://localhost:9090/swagger-ui/index.html#/";
-        String urlToDB = "http://localhost:9090/h2-console";
-
+        // Apri l'URL
         openUrl(urlToOpen);
         openUrl(urlToDB);
     }
