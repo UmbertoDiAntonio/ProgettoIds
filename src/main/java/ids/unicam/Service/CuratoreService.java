@@ -1,5 +1,6 @@
 package ids.unicam.Service;
 
+import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.attori.Curatore;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
@@ -12,20 +13,20 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CuratoreService {
-    PuntoInteresse valutaPuntoInteresse(String usernameCuratore, @NotNull Integer idPuntoInteresse, Boolean stato);
+    PuntoInteresse valutaPuntoInteresse(String usernameCuratore, @NotNull Integer idPuntoInteresse, Boolean stato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException;
 
-    MaterialeGenerico valutaMateriale(String usernameCuratore, Integer idMaterialeGenerico, Boolean stato);
+    MaterialeGenerico valutaMateriale(String usernameCuratore, Integer idMaterialeGenerico, Boolean stato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException;
 
-    void eliminaPuntoInteresse(String usernameCuratore,Integer idPuntoInteresse);
+    void eliminaPuntoInteresse(String usernameCuratore,Integer idPuntoInteresse) throws IllegalArgumentException, FuoriComuneException;
 
-    void eliminaItinerario(String usernameCuratore,Integer idItinerario);
+    void eliminaItinerario(String usernameCuratore,Integer idItinerario) throws IllegalArgumentException, FuoriComuneException;
 
-    void eliminaContest(String usernameCuratore,Integer idContest);
+    void eliminaContest(String usernameCuratore,Integer idContest) throws IllegalArgumentException, FuoriComuneException;
 
-    void condividi(String usernameCuratore, Integer idPunto);
+    void condividi(String usernameCuratore, Integer idPunto)throws IllegalArgumentException;
 
     @Transactional
-    void elimina(Curatore curatore, MaterialeGenerico materialeGenerico);
+    void elimina(Curatore curatore, MaterialeGenerico materialeGenerico) throws FuoriComuneException;
 
 
     List<Curatore> getAll();
@@ -34,10 +35,10 @@ public interface CuratoreService {
 
     Optional<Curatore> getById(String username);
 
-    void aggiungiOsservatore(String usernameCuratore, String usernameContributorOsservatore) ;
+    void aggiungiOsservatore(String usernameCuratore, String usernameContributorOsservatore) throws IllegalArgumentException;
 
-    void rimuoviOsservatore(String usernameCuratore, String usernameContributorOsservatore) ;
+    void rimuoviOsservatore(String usernameCuratore, String usernameContributorOsservatore)throws IllegalArgumentException ;
 
-    List<Notifica> getNotifiche(String usernameCuratore);
+    List<Notifica> getNotifiche(String usernameCuratore) throws IllegalArgumentException;
 
 }

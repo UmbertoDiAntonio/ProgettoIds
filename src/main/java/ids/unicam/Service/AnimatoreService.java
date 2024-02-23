@@ -10,11 +10,10 @@ import java.util.Optional;
 
 public interface AnimatoreService {
 
-   // Contest creaContest(RichiestaCreazioneContestDTO contestDTO);
 
-    Invito invitaContest(String idAnimatore, Integer idContest, String usernameInvitato) throws ContestException;
+    Invito invitaContest(String idAnimatore, Integer idContest, String usernameInvitato) throws ContestException,IllegalStateException,IllegalArgumentException;
 
-    boolean approvaMateriale(String usernameAnimatore,Integer idContest, Integer idMaterialeGenerico, boolean stato);
+    boolean approvaMateriale(String usernameAnimatore,Integer idContest, Integer idMaterialeGenerico, boolean stato) throws UnsupportedOperationException,IllegalArgumentException ;
 
     List<Animatore> getAll();
 

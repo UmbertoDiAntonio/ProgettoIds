@@ -9,11 +9,11 @@ public interface ItinerarioService {
 
     boolean aggiungiTappa(String usernameContributor,Integer idItinerario, Integer idPuntoInteresse);
 
-    void aggiungiTappa(String usernameContributor,Integer idItinerario, Integer... idPuntiInteresse);
+    void aggiungiTappa(String usernameContributor,Integer idItinerario, Integer... idPuntiInteresse) throws IllegalArgumentException;
 
-    Itinerario rimuoviTappa(String usernameContributor,Integer idItinerario, Integer idPuntoInteresse);
+    Itinerario rimuoviTappa(String usernameContributor,Integer idItinerario, Integer idPuntoInteresse) throws IllegalArgumentException;
 
-    Itinerario creaItinerario(Itinerario itinerario);
+    Itinerario creaItinerario(Itinerario itinerario) throws IllegalArgumentException;
 
     Optional<Itinerario> getById(int id);
 

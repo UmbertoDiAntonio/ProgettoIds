@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class RichiestaCreazioneTagDTO {
 
     private String valore;
-    private PuntoInteresse puntoInteresse;
+    private PuntoInteresse puntoInteresse;//TODO id
 }

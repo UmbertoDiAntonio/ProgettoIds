@@ -3,8 +3,11 @@ package ids.unicam.controller;
 import ids.unicam.Service.CuratoreService;
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.exception.ConnessioneFallitaException;
+import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.attori.Ruolo;
+import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
+import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +37,8 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
     @Override
     public ResponseEntity<?> create(RichiestaCreazioneContributorDTO contributorDTO) {
         try {
-            return new ResponseEntity<>(gestorePiattaformaService.registraContributor(contributorDTO, Ruolo.CURATORE),HttpStatus.OK);
-        } catch (ConnessioneFallitaException  | IllegalArgumentException e) {
+            return new ResponseEntity<>(gestorePiattaformaService.registraContributor(contributorDTO, Ruolo.CURATORE), HttpStatus.OK);
+        } catch (ConnessioneFallitaException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -47,36 +50,65 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
     }
 
     @DeleteMapping("eliminaItinerario")
-    public void eliminaItinerario(@RequestParam String usernameCuratore,@RequestParam Integer idItinerario){
-        curatoreService.eliminaItinerario(usernameCuratore, idItinerario);
+    public ResponseEntity<?> eliminaItinerario(@RequestParam String usernameCuratore, @RequestParam Integer idItinerario) {
+        try {
+            curatoreService.eliminaItinerario(usernameCuratore, idItinerario)
+            return ResponseEntity.ok("{}");
+        } catch (FuoriComuneException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
+
     @DeleteMapping("eliminaPuntoIntesse")
-    public void eliminaPuntoInteresse(@RequestParam String usernameCuratore,@RequestParam Integer idPuntoInteresse){
-        curatoreService.eliminaItinerario(usernameCuratore, idPuntoInteresse);
+    public ResponseEntity<?> eliminaPuntoInteresse(@RequestParam String usernameCuratore, @RequestParam Integer idPuntoInteresse) {
+        try {
+            curatoreService.eliminaPuntoInteresse(usernameCuratore, idPuntoInteresse);
+            return ResponseEntity.ok("{}");
+        } catch (FuoriComuneException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
+
     @DeleteMapping("eliminaContest")
-    public void eliminaContest(@RequestParam String usernameCuratore, @RequestParam Integer idContest){
-        curatoreService.eliminaItinerario(usernameCuratore, idContest);
+    public ResponseEntity<?> eliminaContest(@RequestParam String usernameCuratore, @RequestParam Integer idContest) {
+        try {
+            curatoreService.eliminaContest(usernameCuratore, idContest);
+            return ResponseEntity.ok("{}");
+        } catch (FuoriComuneException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
+
     @PutMapping("valutaPuntoInteresse")
-    public void valutaPuntoInteresse(@RequestParam String usernameCuratore,@RequestParam Integer idPunto,@RequestParam Boolean stato){
-        curatoreService.valutaPuntoInteresse(usernameCuratore, idPunto,stato);
+    public ResponseEntity<PuntoInteresse> valutaPuntoInteresse(@RequestParam String usernameCuratore, @RequestParam Integer idPunto, @RequestParam Boolean stato) {
+        try {
+            return ResponseEntity.ok(curatoreService.valutaPuntoInteresse(usernameCuratore, idPunto, stato));
+        } catch (FuoriComuneException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
+
     @PutMapping("valutaMateriale")
-    public void valutaMateriale(@RequestParam String usernameCuratore,@RequestParam Integer idMateriale,@RequestParam Boolean stato){
-        curatoreService.valutaMateriale(usernameCuratore, idMateriale,stato);
+    public ResponseEntity<MaterialeGenerico> valutaMateriale(@RequestParam String usernameCuratore, @RequestParam Integer idMateriale, @RequestParam Boolean stato) {
+        try {
+            return ResponseEntity.ok(curatoreService.valutaMateriale(usernameCuratore, idMateriale, stato));
+        } catch (FuoriComuneException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("segui/{usernameCuratore}")
-    public void subscribeOsservatore(@PathVariable String usernameCuratore,@RequestParam String usernameContributor){
-        curatoreService.aggiungiOsservatore(usernameCuratore,usernameContributor);
+    public void subscribeOsservatore(@PathVariable String usernameCuratore, @RequestParam String usernameContributor) {
+        curatoreService.aggiungiOsservatore(usernameCuratore, usernameContributor);
     }
+
     @PutMapping("unsuscribe/{usernameCuratore}")
-    public void unsubscibeOsservatore(@PathVariable String usernameCuratore,@RequestParam String usernameContributor){
-        curatoreService.rimuoviOsservatore(usernameCuratore,usernameContributor);
+    public void unsubscibeOsservatore(@PathVariable String usernameCuratore, @RequestParam String usernameContributor) {
+        curatoreService.rimuoviOsservatore(usernameCuratore, usernameContributor);
     }
+
     @PutMapping("getNotifiche/{usernameCuratore}")
-    public void getNotifiche(@PathVariable String usernameCuratore){
+    public void getNotifiche(@PathVariable String usernameCuratore) {
         curatoreService.getNotifiche(usernameCuratore);
     }
 

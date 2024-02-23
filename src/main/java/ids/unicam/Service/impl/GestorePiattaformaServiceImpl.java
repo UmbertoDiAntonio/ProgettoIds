@@ -41,8 +41,8 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
     public TuristaAutenticato cambiaRuolo(String usernameContributor, @NotNull Ruolo ruolo) throws IllegalArgumentException, ConnessioneFallitaException {
         Optional<Contributor> oContributor = contributorServiceImpl.getById(usernameContributor);
         if(oContributor.isEmpty()){
-            logger.error("username contributor non valido");
-            throw new IllegalArgumentException("username contribor non valido");
+            logger.error("username non valido");
+            throw new IllegalArgumentException("username non valido");
         }
         Contributor contributor = oContributor.get();
         rimuoviVecchioRuolo(contributor);
@@ -91,7 +91,7 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
         }
     }
 
-    public boolean validaCredenziali(TuristaAutenticatoDTO turistaDTO) throws IllegalArgumentException{
+    private boolean validaCredenziali(TuristaAutenticatoDTO turistaDTO) throws IllegalArgumentException{
         if (!turistaDTO.getPassword().matches("^(?=.*[A-Z])(?=.*[@#$%^&+=])(?=.*[0-9])(?=.*[a-zA-Z]).{6,}$")) {
             logger.error("Password non valida");
             throw new IllegalArgumentException("Password non valida");
@@ -124,7 +124,7 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
     public TuristaAutenticato registraContributor(RichiestaCreazioneContributorDTO contributorDTO,Ruolo ruolo) throws IllegalArgumentException, ConnessioneFallitaException {
         if (ruolo != Ruolo.TURISTA && contributorDTO.getComune() == null) {
             logger.error("Il comune non puo' essere nullo, registrazione >= Contributor");
-            throw new RuntimeException("Il comune non puo' essere nullo, registrazione >= Contributor");
+            throw new IllegalArgumentException("Il comune non puo' essere nullo, registrazione >= Contributor");
         }
         if (!validaCredenziali(contributorDTO.getTuristaDTO())) {
             return null;

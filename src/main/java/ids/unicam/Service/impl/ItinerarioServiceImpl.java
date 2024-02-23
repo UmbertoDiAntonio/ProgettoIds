@@ -43,7 +43,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
 
     @Override
     @Transactional
-    public boolean aggiungiTappa(String usernameContributor, Integer idItinerario, Integer idPuntoInteresse) {
+    public boolean aggiungiTappa(String usernameContributor, Integer idItinerario, Integer idPuntoInteresse) throws IllegalArgumentException{
         Optional<PuntoInteresse> oPoi = poiServiceImpl.findById(idPuntoInteresse);
         if (oPoi.isPresent()) {
             PuntoInteresse puntoInteresse = oPoi.get();
@@ -82,7 +82,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
 
 
     @Override
-    public Itinerario rimuoviTappa(String usernameContributor, Integer idItinerario, Integer idPuntoInteresse) {
+    public Itinerario rimuoviTappa(String usernameContributor, Integer idItinerario, Integer idPuntoInteresse)throws  IllegalArgumentException {
         Optional<Contributor> oContributor = contributorService.getById(usernameContributor);
         if (oContributor.isPresent()) {
             Contributor contributor = oContributor.get();
@@ -126,7 +126,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
     }
 
     @Override
-    public Itinerario creaItinerario(Itinerario itinerario) {
+    public Itinerario creaItinerario(Itinerario itinerario) throws IllegalArgumentException {
         for (PuntoInteresse puntoInteresse : itinerario.getPercorso()) {
             @Nullable Boolean stato = poiServiceImpl.getStato(puntoInteresse.getId()).asBoolean();
             if (!itinerario.getComune().verificaCoordinateComune(puntoInteresse.getPt()) || !(stato != null && (stato))) {

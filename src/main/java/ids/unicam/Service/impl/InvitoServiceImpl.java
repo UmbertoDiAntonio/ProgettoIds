@@ -59,9 +59,11 @@ public class InvitoServiceImpl implements InvitoService {
                 contestServiceImpl.aggiungiPartecipante(invitoDTO.getContest(), new TuristaAutenticato(turistaDTO));
             } else {
                 logger.error("Non sei Invitato");
+                //TODO
             }
         } else
             logger.warn("Invito non valido");
+        //TODO
     }
 
 

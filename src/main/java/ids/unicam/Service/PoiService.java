@@ -31,7 +31,7 @@ public interface PoiService {
 
     void deleteById(int id);
 
-    void modificaScadenza(String usernameContributor,Integer idPuntoInteresse, LocalDate expireDate) ;
+    void modificaScadenza(String usernameContributor,Integer idPuntoInteresse, LocalDate expireDate) throws IllegalArgumentException;
 
     Stato getStato(int idPuntoInteresse);
 

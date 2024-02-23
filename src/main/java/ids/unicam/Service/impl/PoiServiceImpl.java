@@ -44,7 +44,7 @@ public class PoiServiceImpl implements PoiService {
 
     @Transactional
     @Override
-    public void modificaScadenza(String usernameContributor, Integer idPuntoInteresse, LocalDate expireDate) {
+    public void modificaScadenza(String usernameContributor, Integer idPuntoInteresse, LocalDate expireDate) throws IllegalArgumentException {
         Optional<Contributor> oContributor = contributorService.getById(usernameContributor);
         if (oContributor.isPresent()) {
             Contributor contributor = oContributor.get();

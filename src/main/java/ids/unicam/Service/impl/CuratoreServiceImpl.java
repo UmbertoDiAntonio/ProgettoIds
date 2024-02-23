@@ -2,6 +2,7 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.CuratoreRepository;
 import ids.unicam.Service.CuratoreService;
+import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Comune;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.attori.Contributor;
@@ -82,7 +83,7 @@ public class CuratoreServiceImpl implements CuratoreService {
 
     @Override
     @Transactional
-    public PuntoInteresse valutaPuntoInteresse(String usernameCuratore, @NotNull Integer idPuntoInteresse, @Nullable Boolean bStato) {
+    public PuntoInteresse valutaPuntoInteresse(String usernameCuratore, @NotNull Integer idPuntoInteresse, @Nullable Boolean bStato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException {
         Optional<Curatore> oCuratore = getById(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
@@ -90,7 +91,7 @@ public class CuratoreServiceImpl implements CuratoreService {
             if (oPoi.isPresent()) {
                 PuntoInteresse puntoInteresse = oPoi.get();
                 if (!curatore.getComune().equals(puntoInteresse.getComune()))
-                    throw new UnsupportedOperationException("curatore non puo' operare fuori dal suo comune");
+                    throw new FuoriComuneException("curatore non puo' operare fuori dal suo comune");
                 if (puntoInteresse.getStato() != Stato.IN_ATTESA)
                     throw new UnsupportedOperationException("punto di interesse già settato");
                 Stato stato = Stato.toStatus(bStato);
@@ -111,7 +112,7 @@ public class CuratoreServiceImpl implements CuratoreService {
 
 
     @Override
-    public MaterialeGenerico valutaMateriale(String usernameCuratore, Integer idMaterialeGenerico, Boolean bStato) {
+    public MaterialeGenerico valutaMateriale(String usernameCuratore, Integer idMaterialeGenerico, Boolean bStato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException {
         Optional<Curatore> oCuratore = getById(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
@@ -119,7 +120,7 @@ public class CuratoreServiceImpl implements CuratoreService {
             if (oMateriale.isPresent()) {
                 MaterialeGenerico materialeGenerico = oMateriale.get();
                 if (false)//TODO
-                    throw new UnsupportedOperationException("curatore non puo' operare fuori dal suo comune");
+                    throw new FuoriComuneException("curatore non puo' operare fuori dal suo comune");
                 if (materialeGenerico.getStato() != Stato.IN_ATTESA)
                     throw new UnsupportedOperationException("materiale già settato");
                 Stato stato = Stato.toStatus(bStato);
@@ -141,7 +142,7 @@ public class CuratoreServiceImpl implements CuratoreService {
 
 
     @Override
-    public void eliminaPuntoInteresse(String usernameCuratore, Integer idPuntoInteresse) {
+    public void eliminaPuntoInteresse(String usernameCuratore, Integer idPuntoInteresse) throws IllegalArgumentException, FuoriComuneException {
         Optional<Curatore> oCuratore = getById(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
@@ -152,7 +153,7 @@ public class CuratoreServiceImpl implements CuratoreService {
                     poiServiceImpl.eliminaPuntoInteresse(idPuntoInteresse);
                 } else {
                     logger.error("Il punto di interesse e' fuori dal comune del curatore");
-                    throw new IllegalArgumentException("Il punto di interesse e' fuori dal comune del curatore");
+                    throw new FuoriComuneException("Il punto di interesse e' fuori dal comune del curatore");
                 }
             } else {
                 logger.error("Id del punto di interesse non valido");
@@ -165,7 +166,7 @@ public class CuratoreServiceImpl implements CuratoreService {
     }
 
     @Override
-    public void eliminaItinerario(String usernameCuratore, Integer idItinerario) {
+    public void eliminaItinerario(String usernameCuratore, Integer idItinerario) throws IllegalArgumentException, FuoriComuneException {
         Optional<Curatore> oCuratore = getById(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
@@ -176,7 +177,7 @@ public class CuratoreServiceImpl implements CuratoreService {
                     itinerarioServiceImpl.deleteById(itinerario.getId());
                 } else {
                     logger.error("L'itinerario e' fuori dal comune del curatore");
-                    throw new IllegalArgumentException("L'itinerario e' fuori dal comune del curatore");
+                    throw new FuoriComuneException("L'itinerario e' fuori dal comune del curatore");
                 }
             } else {
                 logger.error("Id dell'itinerario non valido");
@@ -189,7 +190,7 @@ public class CuratoreServiceImpl implements CuratoreService {
     }
 
     @Override
-    public void eliminaContest(String usernameCuratore, Integer idContest) {
+    public void eliminaContest(String usernameCuratore, Integer idContest) throws IllegalArgumentException, FuoriComuneException {
         Optional<Curatore> oCuratore = getById(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
@@ -200,7 +201,7 @@ public class CuratoreServiceImpl implements CuratoreService {
                     contestServiceImpl.deleteById(contest.getId());
                 } else {
                     logger.error("Il contest e' fuori dal comune del curatore");
-                    throw new IllegalArgumentException("Il contest e' fuori dal comune del curatore");
+                    throw new FuoriComuneException("Il contest e' fuori dal comune del curatore");
                 }
             } else {
                 logger.error("Id del contest non valido");
@@ -214,12 +215,12 @@ public class CuratoreServiceImpl implements CuratoreService {
 
     @Override
     @Transactional
-    public void elimina(Curatore curatore, MaterialeGenerico materialeGenerico) {
+    public void elimina(Curatore curatore, MaterialeGenerico materialeGenerico) throws IllegalArgumentException, FuoriComuneException {
         List<PuntoInteresse> listPuntoInteresse = poiServiceImpl.findActive();
         for (PuntoInteresse puntoInteresse : listPuntoInteresse) {
             if (!puntoInteresse.getComune().equals(curatore.getComune())) {
-                logger.error(curatore + " non può eliminare materiali fuori dal suo comune ");
-                return;
+                logger.error(curatore.getUsername() + " non può eliminare materiali fuori dal suo comune ");
+                throw new FuoriComuneException(curatore.getUsername() + " non può eliminare materiali fuori dal suo comune ");
             }
             puntoInteresse.rimuoviMateriale(materialeGenerico);
             poiServiceImpl.save(puntoInteresse);
@@ -228,7 +229,7 @@ public class CuratoreServiceImpl implements CuratoreService {
     }
 
     @Override
-    public void condividi(String usernameCuratore, Integer idPunto) {
+    public void condividi(String usernameCuratore, Integer idPunto) throws IllegalArgumentException{
         Optional<Curatore> oCuratore = getById(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
@@ -241,7 +242,6 @@ public class CuratoreServiceImpl implements CuratoreService {
                 logger.error("id del punto di interesse non valido");
                 throw new IllegalArgumentException("id del punto di interesse non valido");
             }
-
         } else {
             logger.error("username del curatore non valido");
             throw new IllegalArgumentException("username del curatore non valido");
@@ -251,7 +251,7 @@ public class CuratoreServiceImpl implements CuratoreService {
 
 
     @Transactional
-    public void aggiungiOsservatore(String usernameCuratore, String usernameContributorOsservatore) {
+    public void aggiungiOsservatore(String usernameCuratore, String usernameContributorOsservatore) throws IllegalArgumentException {
         Optional<Curatore> oCuratore = getById(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
@@ -259,7 +259,7 @@ public class CuratoreServiceImpl implements CuratoreService {
             if (oOsservatore.isPresent()) {
                 Contributor osservatore = oOsservatore.get();
                 if (curatore.getOsservatori().contains(osservatore)) {
-                    logger.error(osservatore + " stai già seguendo questo curatore");
+                    logger.warn(osservatore + " stai già seguendo questo curatore");
                     return;
                 }
                 curatore.getOsservatori().add(osservatore);
@@ -276,7 +276,7 @@ public class CuratoreServiceImpl implements CuratoreService {
 
 
     @Transactional
-    public void rimuoviOsservatore(String usernameCuratore, String usernameContributorOsservatore) {
+    public void rimuoviOsservatore(String usernameCuratore, String usernameContributorOsservatore) throws IllegalArgumentException{
         Optional<Curatore> oCuratore = getById(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
@@ -296,7 +296,7 @@ public class CuratoreServiceImpl implements CuratoreService {
     }
 
     @Override
-    public List<Notifica> getNotifiche(String usernameCurature) {
+    public List<Notifica> getNotifiche(String usernameCurature) throws IllegalArgumentException{
         Optional<Curatore> oCuratore = getById(usernameCurature);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();

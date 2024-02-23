@@ -6,7 +6,6 @@ import ids.unicam.Service.MaterialeService;
 import ids.unicam.Service.TuristaAutenticatoService;
 import ids.unicam.exception.ContestException;
 import ids.unicam.models.DTO.InvitoDTO;
-import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
@@ -71,7 +70,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
 
 
     @Override
-    public Invito invitaContest(String usernameAnimatore, Integer idContest, String invitato) throws ContestException {
+    public Invito invitaContest(String usernameAnimatore, Integer idContest, String invitato) throws ContestException,IllegalStateException,IllegalArgumentException {
         Optional<Animatore> oAnimatore = getById(usernameAnimatore);
         if (oAnimatore.isPresent()) {
             Animatore animatore = oAnimatore.get();
@@ -103,7 +102,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
     }
 
     @Override
-    public boolean approvaMateriale(String usernameAnimatore, Integer idContest, Integer idMaterialeGenerico, boolean stato) {
+    public boolean approvaMateriale(String usernameAnimatore, Integer idContest, Integer idMaterialeGenerico, boolean stato) throws UnsupportedOperationException,IllegalArgumentException {
         Optional<Animatore> oAnimatore = getById(usernameAnimatore);
         if(oAnimatore.isPresent()) {
             Animatore animatore = oAnimatore.get();
@@ -120,7 +119,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
                     if (materialeGenerico.getStato() != Stato.IN_ATTESA)
                         throw new UnsupportedOperationException("materiale già settato");
                     if (Stato.toStatus(stato) == Stato.IN_ATTESA)
-                        throw new UnsupportedOperationException("stato in attesa");
+                        throw new UnsupportedOperationException("non puoi settare stato in attesa");
                     contestService.approvaMateriale(materialeGenerico, Stato.toStatus(stato));
                     return true;
                 } else {

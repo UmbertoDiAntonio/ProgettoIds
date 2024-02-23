@@ -167,7 +167,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
     }
 
 
-    public List<Notifica> visualizzaNotifiche(String usernameTurista) {
+    public List<Notifica> visualizzaNotifiche(String usernameTurista)  throws IllegalArgumentException{
         Optional<TuristaAutenticato> oTurista = findTuristaByUsername(usernameTurista);
         if (oTurista.isPresent()) {
             TuristaAutenticato turistaAutenticato = oTurista.get();
