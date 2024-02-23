@@ -30,8 +30,4 @@ public class TuristaController  {
         turistaService.report(poiDTO, messaggio);
     }
 
-    @GetMapping("/accedi")
-    public Optional<TuristaAutenticato> accedi(@RequestParam String username, @RequestParam String password){
-        return turistaService.accedi(username,password);
-    }
 }

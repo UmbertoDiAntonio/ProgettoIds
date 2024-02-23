@@ -35,12 +35,5 @@ public class TuristaServiceImpl implements TuristaService {
         notificaReportService.creaNotificaReport(poiDTO,messaggio);
     }
 
-    @Override
-    public Optional<TuristaAutenticato> accedi(String username, String password) {
-        if (turistaAutenticatoServiceImpl.verificaPassword(password, username))
-            return turistaAutenticatoServiceImpl.findTuristaByUsername(username);
-        return Optional.empty();
-    }
-
 
 }

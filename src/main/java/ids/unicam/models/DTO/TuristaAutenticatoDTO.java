@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 @Data
@@ -12,7 +13,7 @@ import java.util.GregorianCalendar;
 public class TuristaAutenticatoDTO {
     private String nome;
     private String cognome;
-    private GregorianCalendar dataNascita;
+    private Date dataNascita;
     private String password;
     private String username;
     //PREFERITI?

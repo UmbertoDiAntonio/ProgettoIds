@@ -53,11 +53,12 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
 
 
     @PutMapping("/accettaInvito")
-    public void accettaInvito(@RequestParam TuristaAutenticatoDTO turistaDTO, @RequestParam InvitoDTO invitoDTO) {
+    public ResponseEntity<?> accettaInvito(@RequestParam TuristaAutenticatoDTO turistaDTO, @RequestParam InvitoDTO invitoDTO) {
         turistaAutenticatoService.accettaInvitoContest(turistaDTO, invitoDTO);
+        return ResponseEntity.ok("{}");
     }
 
-    @PutMapping("/aggiungiPreferito")
+    @PutMapping("/aggiungiPuntoPreferito")
     public ResponseEntity<?> aggiungiPreferito(@RequestParam String usernameTurista, @RequestParam Integer idPunto) {
         try {
             turistaAutenticatoService.aggiungiPreferito(usernameTurista, idPunto);

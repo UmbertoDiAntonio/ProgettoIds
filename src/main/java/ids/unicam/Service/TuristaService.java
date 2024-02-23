@@ -13,5 +13,4 @@ public interface TuristaService {
 
     void report(PuntoInteresseDTO poiDTO, String msg);
 
-    Optional<TuristaAutenticato> accedi(String username, String password);
 }

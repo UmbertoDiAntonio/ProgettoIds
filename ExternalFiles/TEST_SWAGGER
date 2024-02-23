@@ -2,7 +2,7 @@ PROBLEMI PROGETTO IDS
 
 MATERIALE CONTROLLER:
 - PUT
-- POST
+- POST          --> DA FARE COMPLETAMENTE
 - GET
 - DELETE
 - GETALL
@@ -10,8 +10,8 @@ MATERIALE CONTROLLER:
 
 CONTEST CONTROLLER
 - PUT
-- POST
-- GET
+- POST          --> DA RIFARE ASSOLUTAMENTE
+- GET           -->
 - DELETE
 - GETALL
 
@@ -27,7 +27,7 @@ COMUNE CONTROLLER
 TURISTA AUTENTICATO CONTROLLER
 - PUT(partecipaContest)
 - PUT(aggiungiPreferito)
-- PUT(accettaInvito)
+- PUT(accettaInvito)            --> da richiedere solamente id dell'invito e username del turista
 - POST
 - GET
 - DELETE
@@ -39,7 +39,7 @@ TURISTA AUTENTICATO CONTROLLER
 PUNTO DI INTERESSE CONTROLLER
 - PUT(setScadenza)
 - PUT(condividi)
-- POST
+- POST                      --> da inserire menù a tendina per scegliere la tipologia di punto di interesse
 - GET
 - DELETE
 - GET(materiali(idPunto))
@@ -76,9 +76,9 @@ ANIMATORE CONTROLLER
 
 
 TURISTA CONTROLLER
-- GET(tagDTO)
-- GET(report)
-- GET(accedi)
+- GET(tagDTO) -> da rivedere, troppe informazioni richieste
+- GET(report) -> da rivedere, troppe informazioni richieste
+- GET(accedi) -> da eliminare
 
 
 

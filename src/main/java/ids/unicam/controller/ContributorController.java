@@ -3,7 +3,9 @@ package ids.unicam.controller;
 import ids.unicam.Service.ContributorService;
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.exception.ConnessioneFallitaException;
+import ids.unicam.models.DTO.InvitoDTO;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
+import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.attori.Ruolo;
 import ids.unicam.models.attori.TuristaAutenticato;
 import org.springframework.http.HttpStatus;
@@ -16,10 +18,12 @@ public class ContributorController implements ControllerBase<RichiestaCreazioneC
 
     private final ContributorService contributorService;
     private final GestorePiattaformaService gestorePiattaformaService;
+    private final TuristaAutenticatoController turistaAutenticatoController;
 
-    public ContributorController(ContributorService contributorService, GestorePiattaformaService gestorePiattaformaService) {
+    public ContributorController(ContributorService contributorService, GestorePiattaformaService gestorePiattaformaService, TuristaAutenticatoController turistaAutenticatoController) {
         this.contributorService = contributorService;
         this.gestorePiattaformaService = gestorePiattaformaService;
+        this.turistaAutenticatoController = turistaAutenticatoController;
     }
 
     @Override
@@ -48,6 +52,12 @@ public class ContributorController implements ControllerBase<RichiestaCreazioneC
     public ResponseEntity<?> delete(@PathVariable String username) {
         contributorService.deleteById(username);
         return ResponseEntity.ok("Utente: \'"+username+ "\' eliminato");
+    }
+
+
+    @PutMapping("/accettaInvito")
+    public ResponseEntity<?> accettaInvito(@RequestParam TuristaAutenticatoDTO turistaDTO, @RequestParam InvitoDTO invitoDTO) {
+        return turistaAutenticatoController.accettaInvito(turistaDTO, invitoDTO);
     }
 
 
