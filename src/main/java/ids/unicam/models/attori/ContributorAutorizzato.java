@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 @Table(name="CONTRIBUTOR_AUTORIZZATI")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class ContributorAutorizzato extends Contributor{
-    public ContributorAutorizzato(RichiestaCreazioneContributorDTO contributorDTO) throws ConnessioneFallitaException {
+    public ContributorAutorizzato(RichiestaCreazioneContributorDTO contributorDTO) throws ConnessioneFallitaException,IllegalArgumentException,RuntimeException {
         super(contributorDTO);
     }
 

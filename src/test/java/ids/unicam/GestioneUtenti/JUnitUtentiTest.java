@@ -103,7 +103,7 @@ public class JUnitUtentiTest {
     }
 
     @Test
-    public void aggiungiPreferito() throws ConnessioneFallitaException {
+    public void aggiungiPreferito() throws ConnessioneFallitaException, FuoriComuneException {
 
         Comune comune = null;
         try {
@@ -131,7 +131,7 @@ public class JUnitUtentiTest {
     }
 
     @Test
-    public void condividiContenuto() throws ConnessioneFallitaException {
+    public void condividiContenuto() throws ConnessioneFallitaException, FuoriComuneException {
 
         Comune comune = null;
         try {
@@ -172,27 +172,27 @@ public class JUnitUtentiTest {
         PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributor)));
 
 
-        int numeroTagEdicolaIniziale = turistaService.findByTag((new RichiestaCreazioneTagDTO("Edicola", puntoInteresse))).size();
+        int numeroTagEdicolaIniziale = turistaService.findByTag((new RichiestaCreazioneTagDTO("Edicola", new PuntoInteresseDTO(puntoInteresse)))).size();
 
 
-        poiService.aggiungiTag(puntoInteresse, new Tag(new RichiestaCreazioneTagDTO("Edicola", puntoInteresse)));
-        assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag((new RichiestaCreazioneTagDTO("Edicola", puntoInteresse))).size());
+        poiService.aggiungiTag(puntoInteresse, new Tag(new RichiestaCreazioneTagDTO("Edicola", new PuntoInteresseDTO(puntoInteresse))));
+        assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag((new RichiestaCreazioneTagDTO("Edicola", new PuntoInteresseDTO(puntoInteresse)))).size());
 
         assert puntoInteresse != null;
         curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse.getId(), Stato.APPROVATO.asBoolean());
 
 
-        poiService.aggiungiTag(puntoInteresse, new Tag(new RichiestaCreazioneTagDTO("Tabaccheria", puntoInteresse)));
+        poiService.aggiungiTag(puntoInteresse, new Tag(new RichiestaCreazioneTagDTO("Tabaccheria",new PuntoInteresseDTO( puntoInteresse))));
 
-        assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag((new RichiestaCreazioneTagDTO("Edicola", puntoInteresse))).size());
+        assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag((new RichiestaCreazioneTagDTO("Edicola", new PuntoInteresseDTO(puntoInteresse)))).size());
 
         assertEquals("Edicola", poiService.getTags(puntoInteresse).getFirst().getValore());
         assertEquals("Tabaccheria", poiService.getTags(puntoInteresse).getLast().getValore());
 
 
-        poiService.aggiungiTag(puntoInteresse, new Tag(new RichiestaCreazioneTagDTO("Bar", puntoInteresse)));
+        poiService.aggiungiTag(puntoInteresse, new Tag(new RichiestaCreazioneTagDTO("Bar", new PuntoInteresseDTO(puntoInteresse))));
 
-        assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag((new RichiestaCreazioneTagDTO("Edicola", puntoInteresse))).size());
+        assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag((new RichiestaCreazioneTagDTO("Edicola", new PuntoInteresseDTO(puntoInteresse)))).size());
 
         assertEquals("Edicola", poiService.getTags(puntoInteresse).getFirst().getValore());
         assertEquals("Tabaccheria", poiService.getTags(puntoInteresse).get(1).getValore());
@@ -235,7 +235,7 @@ public class JUnitUtentiTest {
     }
 
     @Test
-    public void segnalaContenuto() throws ConnessioneFallitaException {
+    public void segnalaContenuto() throws ConnessioneFallitaException, FuoriComuneException {
         Comune comune = null;
         try {
             comune = comuneService.creaComune(new Comune(new RichiestaCreazioneComuneDTO("Milano")));

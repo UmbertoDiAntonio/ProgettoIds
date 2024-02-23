@@ -17,7 +17,7 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Curatore extends ContributorAutorizzato {
 
-    public Curatore(RichiestaCreazioneContributorDTO contributorDTO) throws ConnessioneFallitaException {
+    public Curatore(RichiestaCreazioneContributorDTO contributorDTO) throws ConnessioneFallitaException,IllegalArgumentException,RuntimeException {
         super(contributorDTO);
     }
 

@@ -13,7 +13,7 @@ import java.io.IOException;
 @Table(name="ANIMATORI")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Animatore extends Contributor {
-    public Animatore(RichiestaCreazioneContributorDTO contributorDTO) throws ConnessioneFallitaException {
+    public Animatore(RichiestaCreazioneContributorDTO contributorDTO) throws ConnessioneFallitaException,IllegalArgumentException,RuntimeException {
         super(contributorDTO);
     }
 

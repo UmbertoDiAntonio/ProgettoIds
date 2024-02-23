@@ -121,7 +121,7 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
     }
 
     @Transactional
-    public TuristaAutenticato registraContributor(RichiestaCreazioneContributorDTO contributorDTO,Ruolo ruolo) throws IllegalArgumentException, ConnessioneFallitaException {
+    public TuristaAutenticato registraContributor(RichiestaCreazioneContributorDTO contributorDTO,Ruolo ruolo) throws IllegalArgumentException, ConnessioneFallitaException,RuntimeException {
         if (ruolo != Ruolo.TURISTA && contributorDTO.getComune() == null) {
             logger.error("Il comune non puo' essere nullo, registrazione >= Contributor");
             throw new IllegalArgumentException("Il comune non puo' essere nullo, registrazione >= Contributor");

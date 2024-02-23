@@ -20,7 +20,7 @@ public class Contributor extends TuristaAutenticato {
     }
 
 
-    public Contributor(RichiestaCreazioneContributorDTO contributorDTO) throws ConnessioneFallitaException {
+    public Contributor(RichiestaCreazioneContributorDTO contributorDTO) throws ConnessioneFallitaException,IllegalArgumentException,RuntimeException {
         super(contributorDTO.getTuristaDTO());
         this.comune = new Comune(contributorDTO.getComune());
     }
