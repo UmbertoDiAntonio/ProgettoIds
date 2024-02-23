@@ -50,6 +50,11 @@ public class ComuneServiceImpl implements ComuneService {
         return null;
     }
 
+    @Override
+    public void deleteByNome(String nomeComune) {
+        comuneRepository.deleteByNome(nomeComune);
+    }
+
 
     public Comune save(Comune comune) {
         return comuneRepository.save(comune);

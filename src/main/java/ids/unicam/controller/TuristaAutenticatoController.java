@@ -6,15 +6,12 @@ import ids.unicam.models.DTO.InvitoDTO;
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.contenuti.notifiche.Notifica;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@Api(value = "TuristaAutenticatoController", description = "Endpoints for managing authenticated tourists")
 @RequestMapping("/TuristaAutenticato")
 public class TuristaAutenticatoController implements ControllerBase<TuristaAutenticatoDTO, String> {
 
@@ -26,13 +23,13 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
         this.gestorePiattaformaService = gestorePiattaformaService;
     }
 
-    @ApiOperation(value = "Get all authenticated tourists", response = ResponseEntity.class)
+
     @Override
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(turistaAutenticatoService.getAll());
     }
 
-    @ApiOperation(value = "Get an authenticated tourist by username", response = ResponseEntity.class)
+
     @Override
     public ResponseEntity<?> getById(String username) {
         return ResponseEntity.ok(turistaAutenticatoService.getById(username));
@@ -54,7 +51,7 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
         return ResponseEntity.ok("{}");
     }
 
-    @ApiOperation(value = "Accept an invitation to a contest")
+
     @PutMapping("/accettaInvito")
     public void accettaInvito(@RequestParam TuristaAutenticatoDTO turistaDTO, @RequestParam InvitoDTO invitoDTO) {
         turistaAutenticatoService.accettaInvitoContest(turistaDTO, invitoDTO);

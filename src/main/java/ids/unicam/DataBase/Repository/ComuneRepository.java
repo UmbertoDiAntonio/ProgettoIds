@@ -13,4 +13,5 @@ public interface ComuneRepository extends JpaRepository<Comune,Integer> {
     Optional<Comune> findByNome(String nomeComune);
 
 
+    void deleteByNome(String nomeComune);
 }

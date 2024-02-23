@@ -105,7 +105,6 @@ public class CuratoreServiceImpl implements CuratoreService {
                     throw new UnsupportedOperationException("non puoi impostare stato in attesa");
                 puntoInteresse.setStato(stato);
                 Notifica notifica = notificaServiceImpl.creaNotifica(curatore, puntoInteresse, stato);
-                System.out.println(notifica);
                 return poiServiceImpl.save(puntoInteresse);
             } else {
                 logger.error("Id del punto di interesse non valido");
