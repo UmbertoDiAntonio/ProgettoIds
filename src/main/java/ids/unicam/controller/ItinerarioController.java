@@ -3,6 +3,7 @@ package ids.unicam.controller;
 import ids.unicam.Service.ItinerarioService;
 import ids.unicam.models.DTO.RichiestaCreazioneItinerarioDTO;
 import ids.unicam.models.contenuti.Itinerario;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +32,12 @@ public class ItinerarioController implements ControllerBase<RichiestaCreazioneIt
 
     @Override
     public ResponseEntity<?> create(RichiestaCreazioneItinerarioDTO itinerarioDTO) {
-        return ResponseEntity.ok(itinerarioService.creaItinerario(new Itinerario(itinerarioDTO)));
+        try {
+            return ResponseEntity.ok(itinerarioService.creaItinerario(new Itinerario(itinerarioDTO)));
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @Override
@@ -41,13 +47,24 @@ public class ItinerarioController implements ControllerBase<RichiestaCreazioneIt
     }
 
     @PutMapping("/aggiungiTappa")
-    public boolean aggiungiTappaItinerario(@RequestParam String usernameContributor, @RequestParam Integer idItinerario, @RequestParam Integer idTappa){
-        return  itinerarioService.aggiungiTappa(usernameContributor,idItinerario,idTappa);
+    public ResponseEntity<?> aggiungiTappaItinerario(@RequestParam String usernameContributor, @RequestParam Integer idItinerario, @RequestParam Integer idTappa) {
+        try {
+            return ResponseEntity.ok(itinerarioService.aggiungiTappa(usernameContributor, idItinerario, idTappa));
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+
+        }
     }
 
     @PutMapping("/rimuoviTappa")
-    public Itinerario rimuoviTappaItinerario(@RequestParam String usernameContributor, @RequestParam Integer idItinerario,@RequestParam Integer idPunto){
-        return  itinerarioService.rimuoviTappa(usernameContributor,idItinerario,idPunto);
+    public ResponseEntity<?> rimuoviTappaItinerario(@RequestParam String usernameContributor, @RequestParam Integer
+            idItinerario, @RequestParam Integer idPunto) {
+        try {
+            itinerarioService.rimuoviTappa(usernameContributor, idItinerario, idPunto);
+            return ResponseEntity.ok("{}");
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
 

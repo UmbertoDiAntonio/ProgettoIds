@@ -58,7 +58,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
 
     @Transactional
     @Override
-    public void rimuoviPreferito(String usernameTurista, int id) {
+    public void rimuoviPreferito(String usernameTurista, int id) throws IllegalArgumentException{
         Optional<TuristaAutenticato> oTurista = findTuristaByUsername(usernameTurista);
         if (oTurista.isPresent()) {
             TuristaAutenticato turistaAutenticato = oTurista.get();
@@ -71,7 +71,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
 
     @Transactional
     @Override
-    public void aggiungiPreferito(String usernameTurista, int idPunto) {
+    public void aggiungiPreferito(String usernameTurista, int idPunto) throws IllegalArgumentException{
         Optional<PuntoInteresse> oPunto = poiService.findById(idPunto);
         if (oPunto.isPresent()) {
             PuntoInteresse puntoInteresse = oPunto.get();
@@ -105,7 +105,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
     }
 
     @Override
-    public List<PuntoInteresse> findPreferiti(String usernameTurista) {
+    public List<PuntoInteresse> findPreferiti(String usernameTurista) throws IllegalArgumentException{
         Optional<TuristaAutenticato> oTurista = findTuristaByUsername(usernameTurista);
         if (oTurista.isPresent()) {
             TuristaAutenticato turistaAutenticato = oTurista.get();
@@ -118,7 +118,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
 
     @Transactional
     @Override
-    public void partecipaAlContest(Integer idContest, String usernameTurista) {
+    public void partecipaAlContest(Integer idContest, String usernameTurista) throws UnsupportedOperationException,IllegalArgumentException{
         Optional<Contest> oContest = contestServiceImpl.findById(idContest);
         if (oContest.isPresent()) {
             Contest contest = oContest.get();
@@ -127,7 +127,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
                 TuristaAutenticato turistaAutenticato = oTurista.get();
                 if (!contest.isOpen()) {
                     logger.error("Il contest non è aperto");
-                    return;
+                    throw new UnsupportedOperationException("Il contest non è aperto");
                 }
                 contestServiceImpl.aggiungiPartecipante(contest, turistaAutenticato);
             } else {

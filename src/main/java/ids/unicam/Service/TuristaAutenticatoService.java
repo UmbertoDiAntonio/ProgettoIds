@@ -13,18 +13,14 @@ public interface TuristaAutenticatoService {
 
     void accettaInvitoContest(TuristaAutenticatoDTO turistaDTO, InvitoDTO invitoDTO);
 
-    void rimuoviPreferito(String usernameTurista, int id);
+    void rimuoviPreferito(String usernameTurista, int id) throws IllegalArgumentException;
 
-    void aggiungiPreferito(String usernameTurista, int idPunto);
+    void aggiungiPreferito(String usernameTurista, int idPunto) throws IllegalArgumentException;
 
-    List<PuntoInteresse> findPreferiti(String usernameTurista);
+    List<PuntoInteresse> findPreferiti(String usernameTurista) throws  IllegalArgumentException;
 
-    /**
-     * Entra nel contest se è aperto
-     *
-     * @param contest il contest in cui si vuole entrare
-     */
-    void partecipaAlContest(Integer idContest, String usernameTurista);
+
+    void partecipaAlContest(Integer idContest, String usernameTurista) throws  UnsupportedOperationException,IllegalArgumentException;
 
 
     Optional<TuristaAutenticato> findTuristaByUsername(String username);

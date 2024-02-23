@@ -3,6 +3,7 @@ package ids.unicam.controller;
 import ids.unicam.Service.AnimatoreService;
 import ids.unicam.Service.MaterialeService;
 import ids.unicam.models.DTO.MaterialeDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,8 +40,12 @@ public class MaterialeController implements ControllerBase<MaterialeDTO,Integer>
     }
 
     @PutMapping("/approva/{idMateriale}")
-    public void approvaMateriale(@RequestBody String usernameAnimatore,@RequestBody  Integer idContest, @PathVariable Integer idMateriale,@RequestBody  boolean stato){
-        animatoreService.approvaMateriale(usernameAnimatore,idMateriale,idMateriale,stato);
+    public ResponseEntity<?> approvaMateriale(@RequestBody String usernameAnimatore, @RequestBody  Integer idContest, @PathVariable Integer idMateriale, @RequestBody  boolean stato){
+        try {
+            return ResponseEntity.ok(animatoreService.approvaMateriale(usernameAnimatore, idMateriale, idMateriale, stato));
+        }catch (UnsupportedOperationException|IllegalArgumentException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

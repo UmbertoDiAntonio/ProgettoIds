@@ -4,9 +4,7 @@ import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.Service.TuristaAutenticatoService;
 import ids.unicam.models.DTO.InvitoDTO;
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
-import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.notifiche.Notifica;
-import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +39,8 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
     public ResponseEntity<?> create(TuristaAutenticatoDTO turistaDTO) {
         try {
             return ResponseEntity.ok(gestorePiattaformaService.registraTurista(turistaDTO));
-        }catch (IllegalArgumentException e){
-            return new ResponseEntity<> (e.getMessage(), HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         }
     }
 
@@ -59,29 +57,51 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
     }
 
     @PutMapping("/aggiungiPreferito")
-    public void aggiungiPreferito(@RequestParam String usernameTurista, @RequestParam Integer idPunto) {
-        turistaAutenticatoService.aggiungiPreferito(usernameTurista, idPunto);
+    public ResponseEntity<?> aggiungiPreferito(@RequestParam String usernameTurista, @RequestParam Integer idPunto) {
+        try {
+            turistaAutenticatoService.aggiungiPreferito(usernameTurista, idPunto);
+            return ResponseEntity.ok("{}");
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+        }
     }
 
     @GetMapping("/getPreferiti/{usernameTurista}")
-    public List<PuntoInteresse> getPreferiti(@PathVariable String usernameTurista) {
-        return turistaAutenticatoService.findPreferiti(usernameTurista);
+    public ResponseEntity<?> getPreferiti(@PathVariable String usernameTurista) {
+        try {
+            return ResponseEntity.ok(turistaAutenticatoService.findPreferiti(usernameTurista));
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+        }
     }
 
     @DeleteMapping("/rimuoviPreferito")
-    public void rimuoviPreferito(@RequestParam String usernameTurista, @RequestParam Integer idPunto) {
-        turistaAutenticatoService.rimuoviPreferito(usernameTurista,idPunto);
-
+    public ResponseEntity<?> rimuoviPreferito(@RequestParam String usernameTurista, @RequestParam Integer idPunto) {
+        try {
+            turistaAutenticatoService.rimuoviPreferito(usernameTurista, idPunto);
+            return ResponseEntity.ok("{}");
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+        }
     }
 
     @PutMapping("/partecipaContest")
-    public void partecipaAlContest(@RequestParam Integer idContest, @RequestParam String usernameTurista) {
-        turistaAutenticatoService.partecipaAlContest(idContest,usernameTurista);
+    public ResponseEntity<?> partecipaAlContest(@RequestParam Integer idContest, @RequestParam String usernameTurista) {
+        try {
+            turistaAutenticatoService.partecipaAlContest(idContest, usernameTurista);
+            return ResponseEntity.ok("{}");
+        } catch (IllegalArgumentException | UnsupportedOperationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+        }
     }
 
     @GetMapping("/notifiche/{usernameTurista}")
-    public List<Notifica> getNotifiche(@PathVariable String usernameTurista) {
-        return turistaAutenticatoService.visualizzaNotifiche(usernameTurista);
+    public ResponseEntity<?> getNotifiche(@PathVariable String usernameTurista) {
+        try {
+            return ResponseEntity.ok(turistaAutenticatoService.visualizzaNotifiche(usernameTurista));
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+        }
     }
 
 

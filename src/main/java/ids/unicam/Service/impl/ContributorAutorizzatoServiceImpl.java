@@ -15,7 +15,7 @@ public class ContributorAutorizzatoServiceImpl implements ContributorAutorizzato
     private final ContributorAutorizzatoRepository repository;
 
     @Autowired
-    public ContributorAutorizzatoServiceImpl(ContributorAutorizzatoRepository repository, ItinerarioServiceImpl itinerarioServiceImpl) {
+    public ContributorAutorizzatoServiceImpl(ContributorAutorizzatoRepository repository) {
         this.repository = repository;
     }
 

@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface ItinerarioService {
 
-    boolean aggiungiTappa(String usernameContributor,Integer idItinerario, Integer idPuntoInteresse);
+    boolean aggiungiTappa(String usernameContributor,Integer idItinerario, Integer idPuntoInteresse) throws IllegalArgumentException;
 
     void aggiungiTappa(String usernameContributor,Integer idItinerario, Integer... idPuntiInteresse) throws IllegalArgumentException;
 

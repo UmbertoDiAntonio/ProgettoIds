@@ -4,6 +4,7 @@ import ids.unicam.Service.CuratoreService;
 import ids.unicam.Service.PoiService;
 import ids.unicam.models.DTO.PuntoInteresseDTO;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,8 +42,14 @@ public class PuntoInteresseController implements ControllerBase<PuntoInteresseDT
     }
 
     @PutMapping("/setScadenza")
-    public void modificaScadenza(@RequestParam String usernameContributor, @RequestParam Integer idPuntoInteresse,@RequestParam LocalDate scadenza){
-        poiService.modificaScadenza(usernameContributor,idPuntoInteresse,scadenza);
+    public ResponseEntity<?> modificaScadenza(@RequestParam String usernameContributor, @RequestParam Integer idPuntoInteresse,@RequestParam LocalDate scadenza){
+        try {
+            poiService.modificaScadenza(usernameContributor, idPuntoInteresse, scadenza);
+            return ResponseEntity.ok("{}");
+        }catch (UnsupportedOperationException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @PutMapping("/condividi/{idPunto}")

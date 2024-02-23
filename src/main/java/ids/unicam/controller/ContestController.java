@@ -48,7 +48,7 @@ public class ContestController implements ControllerBase<RichiestaCreazioneConte
         try {
             Invito invito = animatoreService.invitaContest(idAnimatore, idContest, usernameInvitato);
             return new ResponseEntity<>(invito, HttpStatus.OK);
-        } catch (ContestException e) {
+        } catch (ContestException |IllegalStateException|IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
