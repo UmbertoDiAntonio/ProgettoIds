@@ -2,6 +2,7 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.PoiRepository;
 import ids.unicam.Service.PoiService;
+import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.DTO.RichiestaCreazioneTagDTO;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.ContributorAutorizzato;
@@ -76,7 +77,11 @@ public class PoiServiceImpl implements PoiService {
 
     @Transactional
     @Override
-    public PuntoInteresse creaPuntoInteresse(PuntoInteresse puntoInteresse) {
+    public PuntoInteresse creaPuntoInteresse(PuntoInteresse puntoInteresse) throws FuoriComuneException {
+        if (!puntoInteresse.getCreatore().getComune().verificaCoordinateComune(puntoInteresse.getPt())) {
+            logger.error("Non si possono creare punti di interesse fuori dal comune");
+            throw new FuoriComuneException("Posizione Punto di Interesse Fuori dall'area del comune");
+        }
         return save(puntoInteresse);
     }
 

@@ -1,5 +1,6 @@
 package ids.unicam.models.contenuti.puntiInteresse;
 
+import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.DTO.RichiestaCreazioneTagDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -19,9 +20,9 @@ public class Tag {
     @ManyToOne
     private PuntoInteresse punto;
 
-    public Tag(RichiestaCreazioneTagDTO tagDTO) {
+    public Tag(RichiestaCreazioneTagDTO tagDTO)  {
         this.valore = tagDTO.getValore();
-        this.punto = tagDTO.getPuntoInteresse();
+        this.punto = new PuntoInteresse(tagDTO.getPuntoInteresse());
     }
 
     @Override
