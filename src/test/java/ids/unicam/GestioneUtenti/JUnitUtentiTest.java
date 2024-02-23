@@ -3,6 +3,7 @@ package ids.unicam.GestioneUtenti;
 import ids.unicam.DataBase.GestoreDatabase;
 import ids.unicam.Service.impl.*;
 import ids.unicam.exception.ConnessioneFallitaException;
+import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Comune;
 import ids.unicam.models.DTO.*;
 import ids.unicam.models.Punto;
@@ -151,7 +152,7 @@ public class JUnitUtentiTest {
     }
 
     @Test
-    public void metodoCercaTurista() throws ConnessioneFallitaException {
+    public void metodoCercaTurista() throws ConnessioneFallitaException, FuoriComuneException {
 
         Comune comune = null;
         try {
@@ -200,7 +201,7 @@ public class JUnitUtentiTest {
     }
 
     @Test
-    public void aggiungiFoto() throws ConnessioneFallitaException {
+    public void aggiungiFoto() throws ConnessioneFallitaException, FuoriComuneException {
         Comune comune = null;
         try {
             comune = comuneService.creaComune(new Comune(new RichiestaCreazioneComuneDTO("Milano")));

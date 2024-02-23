@@ -4,6 +4,7 @@ import ids.unicam.DataBase.GestoreDatabase;
 import ids.unicam.Service.impl.*;
 import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.exception.ContestException;
+import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Comune;
 import ids.unicam.models.DTO.*;
 import ids.unicam.models.Invito;
@@ -79,7 +80,7 @@ public class JUnitContenutiTests {
      */
     @Test
     @Order(1)
-    public void testPoi() throws ConnessioneFallitaException {
+    public void testPoi() throws ConnessioneFallitaException, FuoriComuneException {
         Comune comune = null;
         try {
             comune = comuneService.creaComune(new Comune(new RichiestaCreazioneComuneDTO("Milano")));
@@ -199,7 +200,11 @@ public class JUnitContenutiTests {
             curatoreServiceImpl.aggiungiOsservatore(curatore.getUsername(), contributor2.getUsername());
             assertEquals(numeroOsservatori + 2, curatoreServiceImpl.getNumeroOsservatori(curatore));
 
-            curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse.getId(), true);
+            try {
+                curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse.getId(), true);
+            } catch (FuoriComuneException e) {
+                throw new RuntimeException(e);
+            }
             assertThrows(UnsupportedOperationException.class, () -> curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse.getId(), Stato.NON_APPROVATO.asBoolean()));
 
 
@@ -391,7 +396,7 @@ public class JUnitContenutiTests {
      */
     @Test
     @Order(5)
-    public void eliminaContenuto() throws ConnessioneFallitaException {
+    public void eliminaContenuto() throws ConnessioneFallitaException, FuoriComuneException {
 
         Comune comune = null;
         try {
