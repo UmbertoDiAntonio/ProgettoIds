@@ -145,7 +145,6 @@ public class JUnitUtentiTest {
         PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("Teatro", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.INTRATTENIMENTO, curatore)));
 
         assertThrows(UnsupportedOperationException.class, () -> {
-            assert puntoInteresse != null;
             curatoreServiceImpl.condividi(curatore.getUsername(), puntoInteresse.getId());
         });
         //TODO test condivisione contenuto
@@ -172,27 +171,26 @@ public class JUnitUtentiTest {
         PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributor)));
 
 
-        int numeroTagEdicolaIniziale = turistaService.findByTag((new RichiestaCreazioneTagDTO("Edicola", new PuntoInteresseDTO(puntoInteresse)))).size();
+        int numeroTagEdicolaIniziale = turistaService.findByTag("Edicola").size();
 
 
-        poiService.aggiungiTag(puntoInteresse, new Tag(new RichiestaCreazioneTagDTO("Edicola", new PuntoInteresseDTO(puntoInteresse))));
-        assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag((new RichiestaCreazioneTagDTO("Edicola", new PuntoInteresseDTO(puntoInteresse)))).size());
+        poiService.aggiungiTag(puntoInteresse, new Tag("Edicola"));
+        assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag("Edicola").size());
 
-        assert puntoInteresse != null;
         curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse.getId(), Stato.APPROVATO.asBoolean());
 
 
-        poiService.aggiungiTag(puntoInteresse, new Tag(new RichiestaCreazioneTagDTO("Tabaccheria",new PuntoInteresseDTO( puntoInteresse))));
+        poiService.aggiungiTag(puntoInteresse, new Tag("Tabaccheria"));
 
-        assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag((new RichiestaCreazioneTagDTO("Edicola", new PuntoInteresseDTO(puntoInteresse)))).size());
+        assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag("Edicola").size());
 
         assertEquals("Edicola", poiService.getTags(puntoInteresse).getFirst().getValore());
         assertEquals("Tabaccheria", poiService.getTags(puntoInteresse).getLast().getValore());
 
 
-        poiService.aggiungiTag(puntoInteresse, new Tag(new RichiestaCreazioneTagDTO("Bar", new PuntoInteresseDTO(puntoInteresse))));
+        poiService.aggiungiTag(puntoInteresse, new Tag("Bar"));
 
-        assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag((new RichiestaCreazioneTagDTO("Edicola", new PuntoInteresseDTO(puntoInteresse)))).size());
+        assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag("Edicola").size());
 
         assertEquals("Edicola", poiService.getTags(puntoInteresse).getFirst().getValore());
         assertEquals("Tabaccheria", poiService.getTags(puntoInteresse).get(1).getValore());
@@ -219,7 +217,6 @@ public class JUnitUtentiTest {
         if (!(turist2 instanceof Curatore curatore1))
             throw new IllegalArgumentException("errore");
 
-        assert puntoInteresse != null;
         curatoreServiceImpl.valutaPuntoInteresse(curatore1.getUsername(), puntoInteresse.getId(), Stato.APPROVATO.asBoolean());
         assertEquals(Boolean.TRUE, poiService.getStato(puntoInteresse.getId()).asBoolean());
         TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO( "andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "10Unico@", "user10"));
@@ -254,7 +251,6 @@ public class JUnitUtentiTest {
         if (!(turista2 instanceof Curatore curatore))
             throw new ClassCastException("Non è possibile trasformare il turista " + turista2 + " in un Curatore");
         assertEquals(0, turistaAutenticatoService.visualizzaNotifiche(curatore.getUsername()).size());
-        assert puntoInteresse != null;
         turistaService.report(new PuntoInteresseDTO(puntoInteresse.getNome(),puntoInteresse.getPt(),puntoInteresse.getOrario(), puntoInteresse.getTipo(), puntoInteresse.getCreatore()), "Nome Sbagliato");
 
         assertEquals(1, turistaAutenticatoService.visualizzaNotifiche(curatore.getUsername()).size());

@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RichiestaCreazioneItinerarioDTO {
-
     private Comune comune;
     private String nome;
-    private PuntoInteresseDTO[] puntoInteresse;
 }

@@ -71,8 +71,11 @@ public class PoiServiceImpl implements PoiService {
     }
 
     @Override
-    public Stato getStato(int idPunto) {
-        return repository.getStatoById(idPunto);
+    public Stato getStato(int idPunto) throws IllegalArgumentException {
+        Optional<Stato> oStato = repository.getStatoById(idPunto);
+        if(oStato.isEmpty())
+            throw new IllegalArgumentException("id punto non valido");
+        return oStato.get();
     }
 
     @Transactional
@@ -102,8 +105,11 @@ public class PoiServiceImpl implements PoiService {
  */
     }
 
-    public LocalDate getScadenza(PuntoInteresse puntoInteresse) {
-        return repository.getExpireDateById(puntoInteresse.getId());
+    public LocalDate getScadenza(int idPunto) throws IllegalArgumentException {
+        Optional<LocalDate> oScadenza = repository.getExpireDateById(idPunto);
+        if(oScadenza.isEmpty())
+            throw new IllegalArgumentException("id punto non valido");
+        return oScadenza.get();
     }
 
     @Transactional
@@ -171,8 +177,8 @@ public class PoiServiceImpl implements PoiService {
     }
 
     @Override
-    public List<Taggable> findByTag(RichiestaCreazioneTagDTO tagDTO) {
-        return repository.findByTagsValoreContaining(tagDTO.getValore());
+    public List<Taggable> findByTag(String tag) {
+        return repository.findByTagsValoreContaining(tag);
     }
 
     @Override

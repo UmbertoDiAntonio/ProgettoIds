@@ -20,9 +20,9 @@ public class TuristaController  {
         this.turistaService = turistaService;
     }
 
-    @GetMapping("/{tagDTO}")
-    public List<Taggable> getByTag(@PathVariable RichiestaCreazioneTagDTO tagDTO){
-        return turistaService.findByTag(tagDTO);
+    @GetMapping("/{tag}")
+    public List<Taggable> getByTag(@PathVariable String tag){
+        return turistaService.findByTag(tag);
     }
 
     @GetMapping("/report")

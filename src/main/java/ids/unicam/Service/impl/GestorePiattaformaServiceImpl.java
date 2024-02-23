@@ -73,19 +73,15 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
     private void rimuoviVecchioRuolo(@NotNull Contributor contributor) {
         switch (contributor) {
             case Curatore curatore-> {
-                System.out.println("CU");
                 curatoreServiceImpl.deleteById(curatore.getUsername());
             }
             case ContributorAutorizzato contributorAutorizzato -> {
-                System.out.println("CA");
                 contributorAutorizzatoServiceImpl.deleteById(contributorAutorizzato.getUsername());
             }
             case Animatore animatore-> {
-                System.out.println("AN");
                 animatoreServiceImpl.deleteById(animatore.getUsername());
             }
             case Contributor contributor1 -> {
-                System.out.println("Contributor rimosso");
                 contributorServiceImpl.deleteById(contributor1.getUsername());
             }
         }

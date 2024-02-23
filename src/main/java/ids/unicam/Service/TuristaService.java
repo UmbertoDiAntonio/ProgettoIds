@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TuristaService {
-    List<Taggable> findByTag(RichiestaCreazioneTagDTO tagDTO);
+    List<Taggable> findByTag(String tag);
 
     void report(PuntoInteresseDTO poiDTO, String msg);
 

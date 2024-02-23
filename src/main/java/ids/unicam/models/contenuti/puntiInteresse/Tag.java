@@ -17,12 +17,11 @@ public class Tag {
 
     private String valore;
 
-    @ManyToOne
-    private PuntoInteresse punto;
 
-    public Tag(RichiestaCreazioneTagDTO tagDTO)  {
-        this.valore = tagDTO.getValore();
-        this.punto = new PuntoInteresse(tagDTO.getPuntoInteresse());
+   // private PuntoInteresse punto;
+
+    public Tag(String tag)  {
+        this.valore = tag;
     }
 
     @Override

@@ -6,14 +6,17 @@ import ids.unicam.Service.ContestService;
 import ids.unicam.exception.ContestException;
 import ids.unicam.models.DTO.RichiestaCreazioneContestDTO;
 import ids.unicam.models.Invito;
+import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.contenuti.Contest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/contest")
-public class ContestController implements ControllerBase<RichiestaCreazioneContestDTO, Integer>{
+public class ContestController{
 
     private final ContestService contestService;
     private final AnimatoreService animatoreService;
@@ -22,24 +25,32 @@ public class ContestController implements ControllerBase<RichiestaCreazioneConte
         this.animatoreService = animatoreService;
     }
 
-    @Override
+
+    @GetMapping("/getAll")
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(contestService.findAll());
     }
 
-    @Override
-    public ResponseEntity<?> getById(Integer id) {
-        return ResponseEntity.ok(contestService.findById(id));
+    @GetMapping("/{idContest}")
+    public ResponseEntity<?> getById(Integer idContest) {
+        return ResponseEntity.ok(contestService.findById(idContest));
     }
 
-    @Override
-    public ResponseEntity<?> create(RichiestaCreazioneContestDTO contestDTO) {
+
+    @PostMapping("/crea")
+    public ResponseEntity<?> create(String nomeContest,String obiettivo,String usernameCreatore,boolean open) {
+        Optional<Animatore> oAnimatore = animatoreService.getById(usernameCreatore);
+        if(oAnimatore.isEmpty())
+            return new ResponseEntity<>("username creatore non valido", HttpStatus.BAD_REQUEST);
+        Animatore creatore = oAnimatore.get();
+        RichiestaCreazioneContestDTO contestDTO = new RichiestaCreazioneContestDTO(nomeContest, obiettivo, creatore, open);
         return ResponseEntity.ok(contestService.creaContest(new Contest(contestDTO)));
     }
 
-    @Override
-    public ResponseEntity<?> delete(Integer id) {
-        contestService.deleteById(id);
+
+    @DeleteMapping("/{idContest}")
+    public ResponseEntity<?> delete(Integer idContest) {
+        contestService.deleteById(idContest);
         return ResponseEntity.ok("{}");
     }
 

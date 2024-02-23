@@ -125,8 +125,6 @@ public class CreazioneTabelleDatabase {
                 "CREATE TABLE IF NOT EXISTS TAG(" +
                         "id INT AUTO_INCREMENT," +
                         "VALORE VARCHAR(50)," +
-                        "PUNTO_ID INT NOT NULL," +
-                        "FOREIGN KEY (PUNTO_ID) REFERENCES PUNTI_DI_INTERESSE(ID) ON DELETE CASCADE," +
                         "PRIMARY KEY (id))";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();

@@ -126,14 +126,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
     }
 
     @Override
-    public Itinerario creaItinerario(Itinerario itinerario) throws IllegalArgumentException {
-        for (PuntoInteresse puntoInteresse : itinerario.getPercorso()) {
-            @Nullable Boolean stato = poiServiceImpl.getStato(puntoInteresse.getId()).asBoolean();
-            if (!itinerario.getComune().verificaCoordinateComune(puntoInteresse.getPt()) || !(stato != null && (stato))) {
-                logger.error("Non si possono creare Itinerari con punti non approvati");
-                throw new IllegalArgumentException("Non si possono creare Itinerari con punti non approvati");
-            }
-        }
+    public Itinerario creaItinerario(Itinerario itinerario)  {
         return save(itinerario);
     }
 

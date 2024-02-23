@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PoiRepository extends JpaRepository<PuntoInteresse,Integer> {
@@ -30,8 +31,8 @@ public interface PoiRepository extends JpaRepository<PuntoInteresse,Integer> {
     void deleteById(int id);
 
     @Query("SELECT p.expireDate FROM PuntoInteresse p WHERE p.id = :id")
-    LocalDate getExpireDateById(int id);
+    Optional<LocalDate> getExpireDateById(int id);
 
     @Query("select p.stato from PuntoInteresse p where p.id=:idPunto")
-    Stato getStatoById(int idPunto);
+    Optional<Stato> getStatoById(int idPunto);
 }

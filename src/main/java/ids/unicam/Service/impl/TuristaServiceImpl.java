@@ -26,8 +26,8 @@ public class TuristaServiceImpl implements TuristaService {
     }
 
     @Override
-    public List<Taggable> findByTag(RichiestaCreazioneTagDTO tagDTO) {
-        return poiServiceImpl.findByTag(tagDTO);
+    public List<Taggable> findByTag(String tag) {
+        return poiServiceImpl.findByTag(tag);
     }
 
     @Override

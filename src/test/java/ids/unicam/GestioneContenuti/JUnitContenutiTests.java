@@ -105,7 +105,6 @@ public class JUnitContenutiTests {
             PuntoInteresse punto1 = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("bar", new Punto(comune.getPosizione().getLatitudine() + 0.01, comune.getPosizione().getLongitudine() + 0.01), orario, TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributor)));
 
             assertEquals(puntiInteresseComuneIniziali + 1, comuneService.getPuntiInteresseNelComune(comune.getNome()).size());
-            assert punto1 != null;
             assertNull(punto1.getStato().asBoolean());
         }
 
@@ -124,7 +123,6 @@ public class JUnitContenutiTests {
             PuntoInteresse punto2 = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("bar2", new Punto(comune.getPosizione().getLatitudine() + 0.02, comune.getPosizione().getLongitudine() + 0.02), new Orario(), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributorAutorizzato)));
 
             assertEquals(puntiInteresseComuneIniziali + 1, comuneService.getPuntiInteresseNelComune(comune.getNome()).size());
-            assert punto2 != null;
             assertEquals(Boolean.TRUE, punto2.getStato().asBoolean());
         }
 
@@ -149,7 +147,7 @@ public class JUnitContenutiTests {
             if (!(turistaTemp2 instanceof ContributorAutorizzato contributorAutorizzato))
                 throw new IllegalArgumentException("errore");
             Comune finalComune = comune;
-            assertThrows(IllegalArgumentException.class, () -> new PuntoInteresse(new PuntoInteresseDTO("chiesa", new Punto(finalComune.getPosizione().getLatitudine() + 2, finalComune.getPosizione().getLongitudine() + 2), new Orario(), TipologiaPuntoInteresse.LUOGO_DI_CULTO, contributorAutorizzato)));
+            assertThrows(FuoriComuneException.class, () -> poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("chiesa", new Punto(finalComune.getPosizione().getLatitudine() + 2, finalComune.getPosizione().getLongitudine() + 2), new Orario(), TipologiaPuntoInteresse.LUOGO_DI_CULTO, contributorAutorizzato))));
             assertEquals(puntiInteresseComuneIniziali, comuneService.getPuntiInteresseNelComune(comune.getNome()).size());
         }
 
@@ -246,10 +244,10 @@ public class JUnitContenutiTests {
             PuntoInteresse puntoInteresse2 = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("centro Commerciale", new Punto(comune.getPosizione().getLatitudine() - 0.02, comune.getPosizione().getLongitudine() - 0.02), new Orario(), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributorAutorizzato)));
 
 
-            Itinerario itinerario1 = itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(comune, "girodeibar", new PuntoInteresseDTO[]{new PuntoInteresseDTO(puntoInteresse),new PuntoInteresseDTO( puntoInteresse2)})));
+            Itinerario itinerario1 = itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(comune, "girodeibar")));
 
             assertEquals(numeroItinerariIniziale + 1, itinerarioService.findAllByComune(comune).size());
-            assertEquals(2, itinerarioService.getNumeroTappe(itinerario1));
+            assertEquals(0, itinerarioService.getNumeroTappe(itinerario1));
 
             PuntoInteresse nuovoPunto1 = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("universita'", new Punto(comune.getPosizione().getLatitudine() + 0.014, comune.getPosizione().getLongitudine() + 0.014), new Orario(), TipologiaPuntoInteresse.FORMAZIONE, contributorAutorizzato)));
             PuntoInteresse nuovoPunto2 = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("universita2'", new Punto(comune.getPosizione().getLatitudine() + 0.014, comune.getPosizione().getLongitudine() + 0.014), new Orario(), TipologiaPuntoInteresse.FORMAZIONE, contributorAutorizzato)));
@@ -260,13 +258,13 @@ public class JUnitContenutiTests {
             //itinerarioService.aggiungiTappa(itinerario1, nuovoPunto);
 
             assertEquals(numeroItinerariIniziale + 1, itinerarioService.findAllByComune(comune).size());
-            assertEquals(3, itinerarioService.getNumeroTappe(itinerario1));
+            assertEquals(1, itinerarioService.getNumeroTappe(itinerario1));
 
             itinerarioService.aggiungiTappa(contributorAutorizzato.getUsername(), itinerario1.getId(), nuovoPunto2.getId(), nuovoPunto3.getId());
             //itinerarioService.aggiungiTappa(itinerario1, nuovoPunto1, nuovoPunto2, nuovoPunto3);
             assertEquals(numeroItinerariIniziale + 1, itinerarioService.findAllByComune(comune).size());
 
-            assertEquals(5, itinerarioService.getNumeroTappe(itinerario1));
+            assertEquals(3, itinerarioService.getNumeroTappe(itinerario1));
 
         }
     }
@@ -423,9 +421,7 @@ public class JUnitContenutiTests {
         PuntoInteresse puntoInt2 = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("parcheggio centrale sotto", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), new Orario(), TipologiaPuntoInteresse.PARCHEGGIO, contributor)));
 
         assertEquals(numeroPuntiInteresse + 2, comuneService.getPuntiInteresseNelComune(comune.getNome()).size());
-        assert puntoInteresse != null;
         curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse.getId(), Stato.APPROVATO.asBoolean());
-        assert puntoInt2 != null;
         curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInt2.getId(), Stato.APPROVATO.asBoolean());
 
         turistaAutenticatoService.aggiungiPreferito(turista.getUsername(), puntoInteresse.getId());
@@ -443,15 +439,15 @@ public class JUnitContenutiTests {
 
         int numeroItinerariComune = itinerarioService.findAllByComune(comune).size();
         Comune finalComune = comune;
-        assertThrows(IllegalArgumentException.class, () -> itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(finalComune, "girodeibar", new PuntoInteresseDTO[]{new PuntoInteresseDTO(puntoInteresse1)}))));
-        assertEquals(numeroItinerariComune, itinerarioService.findAllByComune(comune).size());
+        itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(finalComune, "girodeibar")));
+        assertEquals(numeroItinerariComune+1, itinerarioService.findAllByComune(comune).size());
 
         curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse1.getId(), Stato.APPROVATO.asBoolean());
 
-        Itinerario itinerario2 = itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(comune, "giro dei bar", new PuntoInteresseDTO[]{new PuntoInteresseDTO(puntoInteresse1)})));
-        assertEquals(numeroItinerariComune + 1, itinerarioService.findAllByComune(comune).size());
+        Itinerario itinerario2 = itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(comune, "giro dei bar")));
+        assertEquals(numeroItinerariComune + 2, itinerarioService.findAllByComune(comune).size());
         curatoreServiceImpl.eliminaItinerario(curatore.getUsername(), itinerario2.getId());
-        assertEquals(numeroItinerariComune, itinerarioService.findAllByComune(comune).size());
+        assertEquals(numeroItinerariComune +1, itinerarioService.findAllByComune(comune).size());
 
 
         int numeroContest = contestService.getContestByCreatore(animatore).size();
@@ -460,14 +456,14 @@ public class JUnitContenutiTests {
         curatoreServiceImpl.eliminaContest(curatore.getUsername(), contest.getId());
         assertEquals(numeroContest, contestService.getContestByCreatore(animatore).size());
 
-        Itinerario itinerario3 = itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(comune, "girodeibar2", new PuntoInteresseDTO[]{new PuntoInteresseDTO(puntoInteresse1)})));
-        assertEquals(1, itinerarioService.getNumeroTappe(itinerario3));
+        Itinerario itinerario3 = itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(comune, "girodeibar2")));
+        assertEquals(0, itinerarioService.getNumeroTappe(itinerario3));
         assertTrue(itinerarioService.aggiungiTappa(contributor.getUsername(), itinerario3.getId(), puntoInt2.getId()));
-        assertEquals(2, itinerarioService.getNumeroTappe(itinerario3));
+        assertEquals(1, itinerarioService.getNumeroTappe(itinerario3));
 
         itinerarioService.rimuoviTappa(curatore.getUsername(), itinerario3.getId(), puntoInt2.getId());
 
-        assertEquals(1, itinerarioService.rimuoviTappa(curatore.getUsername(), itinerario3.getId(), puntoInt2.getId()).getPercorso().size());
+        assertEquals(0, itinerarioService.getNumeroTappe(itinerario2));
 
 
         PuntoInteresse puntoInteresse2 = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("Castello", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), new Orario(), TipologiaPuntoInteresse.MONUMENTO, contributor)));
@@ -503,12 +499,11 @@ public class JUnitContenutiTests {
         int numPoi = poiService.findActive().size();
         PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributor)));
         assertEquals(numPoi + 1, poiService.findActive().size());
-        assert puntoInteresse != null;
         assertEquals(LocalDate.MAX, puntoInteresse.getExpireDate());
 
 
         poiService.modificaScadenza(contributor.getUsername(), puntoInteresse.getId(), LocalDate.of(2024, 2, 1));
-        assertEquals(LocalDate.of(2024, 2, 1), poiService.getScadenza(puntoInteresse));
+        assertEquals(LocalDate.of(2024, 2, 1), poiService.getScadenza(puntoInteresse.getId()));
         assertEquals(numPoi, poiService.findActive().size());
     }
 }

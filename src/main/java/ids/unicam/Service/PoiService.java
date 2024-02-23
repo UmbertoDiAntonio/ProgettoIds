@@ -24,7 +24,7 @@ public interface PoiService {
 
     void aggiungiTag(PuntoInteresse puntoInteresse, Tag tag) ;
 
-    List<Taggable> findByTag(RichiestaCreazioneTagDTO tagDTO);
+    List<Taggable> findByTag(String tag);
 
     List<Tag> getTags(PuntoInteresse puntoInteresse);
 

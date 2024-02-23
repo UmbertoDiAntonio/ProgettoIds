@@ -32,11 +32,9 @@ public class ItinerarioController implements ControllerBase<RichiestaCreazioneIt
 
     @Override
     public ResponseEntity<?> create(RichiestaCreazioneItinerarioDTO itinerarioDTO) {
-        try {
+
             return ResponseEntity.ok(itinerarioService.creaItinerario(new Itinerario(itinerarioDTO)));
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+
 
     }
 
