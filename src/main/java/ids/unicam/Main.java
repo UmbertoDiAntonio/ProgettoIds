@@ -45,17 +45,21 @@ public class Main implements ApplicationRunner {
         String os = System.getProperty("os.name").toLowerCase();
         Runtime rt = Runtime.getRuntime();
 
+        String[] command = {};
         try {
             if (os.contains("win")) {
                 // Windows
-                rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
+                command=new String[] {"rundll32 url.dll,FileProtocolHandler " + url};
             } else if (os.contains("mac")) {
                 // Mac
-                rt.exec("open " + url);
+                command=new String[] {"open " + url};
             } else if (os.contains("nix") || os.contains("nux")) {
                 // Linux o Unix
-                rt.exec("xdg-open " + url);
+                command=new String[] {"xdg-open " + url};
             }
+
+            rt.exec(command);
+
         } catch (IOException e) {
             e.printStackTrace();
         }

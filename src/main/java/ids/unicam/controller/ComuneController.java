@@ -51,15 +51,6 @@ public class  ComuneController implements ControllerBase<RichiestaCreazioneComun
         }
     }
 
-    @Override
-    public ResponseEntity<?> update(RichiestaCreazioneComuneDTO comuneDTO, Integer id) {
-        try {
-            Comune comune = comuneService.update(new Comune(comuneDTO), id);
-            return new ResponseEntity<>(comune, HttpStatus.OK);
-        } catch (ConnessioneFallitaException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
-        }
-    }
 
     @Override
     public ResponseEntity<?> delete(Integer id) {

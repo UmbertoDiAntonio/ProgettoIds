@@ -10,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static ids.unicam.Main.logger;
-
 @RestController
 @RequestMapping("/Contributor")
 public class ContributorController implements ControllerBase<RichiestaCreazioneContributorDTO, String> {

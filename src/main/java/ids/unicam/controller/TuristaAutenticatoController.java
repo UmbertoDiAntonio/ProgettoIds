@@ -39,8 +39,11 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
 
     @Override
     public ResponseEntity<?> create(TuristaAutenticatoDTO turistaDTO) {
-        TuristaAutenticato turista = gestorePiattaformaService.registraTurista(turistaDTO);
-        return new ResponseEntity<> (turista, HttpStatus.OK);
+        try {
+            return ResponseEntity.ok(gestorePiattaformaService.registraTurista(turistaDTO));
+        }catch (IllegalArgumentException e){
+            return new ResponseEntity<> (e.getMessage(), HttpStatus.OK);
+        }
     }
 
     @Override

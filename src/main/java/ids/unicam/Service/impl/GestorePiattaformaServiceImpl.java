@@ -2,7 +2,6 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.exception.ConnessioneFallitaException;
-import ids.unicam.exception.MyExceptionHandler;
 import ids.unicam.models.DTO.RichiestaCreazioneComuneDTO;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
