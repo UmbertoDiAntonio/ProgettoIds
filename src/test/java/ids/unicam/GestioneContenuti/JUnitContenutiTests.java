@@ -413,9 +413,9 @@ public class JUnitContenutiTests {
         curatoreServiceImpl.valutaMateriale(curatore.getUsername(), foto.getId(), Stato.APPROVATO.asBoolean());
 
         poiService.aggiungiMateriale(turista, puntoInteresse2, foto);
-        assertEquals(1, poiService.getMaterialiPoi(puntoInteresse2).size());
+        assertEquals(1, poiService.getMaterialiPoi(puntoInteresse2.getId()).size());
         curatoreServiceImpl.elimina(curatore, foto);
-        assertEquals(0, poiService.getMaterialiPoi(puntoInteresse2).size());
+        assertEquals(0, poiService.getMaterialiPoi(puntoInteresse2.getId()).size());
 
     }
 
