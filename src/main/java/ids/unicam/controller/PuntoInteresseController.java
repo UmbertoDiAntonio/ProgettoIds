@@ -2,6 +2,7 @@ package ids.unicam.controller;
 
 import ids.unicam.Service.CuratoreService;
 import ids.unicam.Service.PoiService;
+import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.DTO.PuntoInteresseDTO;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,11 @@ public class PuntoInteresseController implements ControllerBase<PuntoInteresseDT
 
     @Override
     public ResponseEntity<?> create(PuntoInteresseDTO poiDTO) {
-        return ResponseEntity.ok(poiService.creaPuntoInteresse(new PuntoInteresse(poiDTO)));
+        try {
+            return ResponseEntity.ok(poiService.creaPuntoInteresse(new PuntoInteresse(poiDTO)));
+        } catch (FuoriComuneException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Override

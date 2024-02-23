@@ -223,7 +223,7 @@ public class JUnitContenutiTests {
      */
     @Test
     @Order(2)
-    public void testItinerario() throws ConnessioneFallitaException {
+    public void testItinerario() throws ConnessioneFallitaException, FuoriComuneException {
         Comune comune = null;
         try {
             comune = comuneService.creaComune(new Comune(new RichiestaCreazioneComuneDTO("Milano")));
@@ -246,7 +246,7 @@ public class JUnitContenutiTests {
             PuntoInteresse puntoInteresse2 = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("centro Commerciale", new Punto(comune.getPosizione().getLatitudine() - 0.02, comune.getPosizione().getLongitudine() - 0.02), new Orario(), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributorAutorizzato)));
 
 
-            Itinerario itinerario1 = itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(comune, "girodeibar", new PuntoInteresse[]{puntoInteresse, puntoInteresse2})));
+            Itinerario itinerario1 = itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(comune, "girodeibar", new PuntoInteresseDTO[]{new PuntoInteresseDTO(puntoInteresse),new PuntoInteresseDTO( puntoInteresse2)})));
 
             assertEquals(numeroItinerariIniziale + 1, itinerarioService.findAllByComune(comune).size());
             assertEquals(2, itinerarioService.getNumeroTappe(itinerario1));
@@ -443,12 +443,12 @@ public class JUnitContenutiTests {
 
         int numeroItinerariComune = itinerarioService.findAllByComune(comune).size();
         Comune finalComune = comune;
-        assertThrows(IllegalArgumentException.class, () -> itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(finalComune, "girodeibar", new PuntoInteresse[]{puntoInteresse1}))));
+        assertThrows(IllegalArgumentException.class, () -> itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(finalComune, "girodeibar", new PuntoInteresseDTO[]{new PuntoInteresseDTO(puntoInteresse1)}))));
         assertEquals(numeroItinerariComune, itinerarioService.findAllByComune(comune).size());
 
         curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse1.getId(), Stato.APPROVATO.asBoolean());
 
-        Itinerario itinerario2 = itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(comune, "giro dei bar", new PuntoInteresse[]{puntoInteresse1})));
+        Itinerario itinerario2 = itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(comune, "giro dei bar", new PuntoInteresseDTO[]{new PuntoInteresseDTO(puntoInteresse1)})));
         assertEquals(numeroItinerariComune + 1, itinerarioService.findAllByComune(comune).size());
         curatoreServiceImpl.eliminaItinerario(curatore.getUsername(), itinerario2.getId());
         assertEquals(numeroItinerariComune, itinerarioService.findAllByComune(comune).size());
@@ -460,7 +460,7 @@ public class JUnitContenutiTests {
         curatoreServiceImpl.eliminaContest(curatore.getUsername(), contest.getId());
         assertEquals(numeroContest, contestService.getContestByCreatore(animatore).size());
 
-        Itinerario itinerario3 = itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(comune, "girodeibar2", new PuntoInteresse[]{puntoInteresse1})));
+        Itinerario itinerario3 = itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(comune, "girodeibar2", new PuntoInteresseDTO[]{new PuntoInteresseDTO(puntoInteresse1)})));
         assertEquals(1, itinerarioService.getNumeroTappe(itinerario3));
         assertTrue(itinerarioService.aggiungiTappa(contributor.getUsername(), itinerario3.getId(), puntoInt2.getId()));
         assertEquals(2, itinerarioService.getNumeroTappe(itinerario3));
@@ -489,7 +489,7 @@ public class JUnitContenutiTests {
      */
     @Test
     @Order(6)
-    public void modificaScadenzaContenuto() throws ConnessioneFallitaException {
+    public void modificaScadenzaContenuto() throws ConnessioneFallitaException, FuoriComuneException {
         Comune comune = null;
         try {
             comune = comuneService.creaComune(new Comune(new RichiestaCreazioneComuneDTO("Milano")));

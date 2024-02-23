@@ -1,5 +1,6 @@
 package ids.unicam.models.contenuti.puntiInteresse;
 
+import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Comune;
 import ids.unicam.models.DTO.PuntoInteresseDTO;
 import ids.unicam.models.Expirable;
@@ -101,10 +102,7 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
 
     public PuntoInteresse(PuntoInteresseDTO poiDTO) {
         this.comune = poiDTO.getCreatore().getComune();
-        if (!poiDTO.getCreatore().getComune().verificaCoordinateComune(poiDTO.getCoordinate())) {
-            logger.error("Non si possono creare punti di interesse fuori dal comune");
-            throw new IllegalArgumentException("Posizione Punto di Interesse Fuori dall'area del comune");
-        }
+
         logger.debug("Creato POI " + nome + " in " + pt);
         this.setStato(poiDTO.getCreatore() instanceof ContributorAutorizzato ? Stato.APPROVATO : Stato.IN_ATTESA);
         this.nome = poiDTO.getNome();
