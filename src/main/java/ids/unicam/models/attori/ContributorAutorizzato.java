@@ -24,4 +24,9 @@ public class ContributorAutorizzato extends Contributor{
     public String toString() {
         return "ContributorAutorizzato "+super.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
 }

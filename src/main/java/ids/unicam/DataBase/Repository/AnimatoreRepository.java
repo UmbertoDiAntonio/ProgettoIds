@@ -13,9 +13,6 @@ import java.util.Optional;
 public interface AnimatoreRepository extends JpaRepository<Animatore, String> {
     List<Animatore> findByCognome(String cognome);
 
-    @Query("select a from Animatore a where a.username=:username")
-    Optional<Animatore> findByUsername(String username);
-
     List<Animatore> findByComune(Comune comune);
 
     List<Animatore> findByComuneNome(String nome_comune);

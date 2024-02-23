@@ -81,13 +81,10 @@ public class TuristaAutenticato extends Turista {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         TuristaAutenticato that = (TuristaAutenticato) o;
-
         if (!Objects.equals(nome, that.nome)) return false;
         if (!username.equals(that.username)) return false;
         if (!Objects.equals(cognome, that.cognome)) return false;
-        if (!Objects.equals(dataNascita, that.dataNascita)) return false;
         return Objects.equals(password, that.password);
     }
 
@@ -96,7 +93,6 @@ public class TuristaAutenticato extends Turista {
         int result = nome != null ? nome.hashCode() : 0;
         result = 31 * result + username.hashCode();
         result = 31 * result + (cognome != null ? cognome.hashCode() : 0);
-        result = 31 * result + (dataNascita != null ? dataNascita.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         return result;
     }

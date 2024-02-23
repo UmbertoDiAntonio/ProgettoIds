@@ -51,9 +51,6 @@ public class ContributorServiceImpl implements ContributorService, Observer {
         return repository.findAll();
     }
 
-
-
-
     @Override
     public List<Notifica> notifica(Contributor contributor) {//TODO notifiche Controller?
         return notificaServiceImpl.getNotifiche(contributor);

@@ -28,7 +28,8 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
     }
 
     @Override
-    public ResponseEntity<?> getById(String username) {
+    @GetMapping("/{username}")
+    public ResponseEntity<?> getById(@PathVariable String username) {
         return ResponseEntity.ok(curatoreService.getById(username));
     }
 
@@ -42,9 +43,10 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
     }
 
     @Override
-    public ResponseEntity<?> delete(String username) {
+    @DeleteMapping("/{username}")
+    public ResponseEntity<?> delete(@PathVariable String username) {
         curatoreService.deleteById(username);
-        return ResponseEntity.ok("{}");
+        return ResponseEntity.ok("Utente: \'"+username+ "\' eliminato");
     }
 
     @DeleteMapping("eliminaItinerario")

@@ -31,7 +31,8 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
 
 
     @Override
-    public ResponseEntity<?> getById(String username) {
+    @GetMapping("/{username}")
+    public ResponseEntity<?> getById(@PathVariable String username) {
         return ResponseEntity.ok(turistaAutenticatoService.getById(username));
     }
 
@@ -47,7 +48,7 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
     @Override
     public ResponseEntity<?> delete(String username) {
         turistaAutenticatoService.deleteById(username);
-        return ResponseEntity.ok("{}");
+        return ResponseEntity.ok("Utente: \'"+username+ "\' eliminato");
     }
 
 

@@ -45,7 +45,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
 
     @Override
     public Optional<Animatore> getById(String username) {
-        return repository.findByUsername(username);
+        return repository.findById(username);
     }
 
     @Override

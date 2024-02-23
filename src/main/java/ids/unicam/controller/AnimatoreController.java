@@ -7,8 +7,7 @@ import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.attori.Ruolo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/Animatore")
@@ -28,7 +27,8 @@ public class AnimatoreController implements ControllerBase<RichiestaCreazioneCon
     }
 
     @Override
-    public ResponseEntity<?> getById(String username) {
+    @GetMapping("/{username}")
+    public ResponseEntity<?> getById(@PathVariable String username) {
         return ResponseEntity.ok(animatoreService.getById(username));
     }
 
@@ -42,8 +42,9 @@ public class AnimatoreController implements ControllerBase<RichiestaCreazioneCon
     }
 
     @Override
-    public ResponseEntity<?> delete(String username) {
+    @DeleteMapping("/{username}")
+    public ResponseEntity<?> delete(@PathVariable String username) {
         animatoreService.deleteById(username);
-        return ResponseEntity.ok("{}");
+        return ResponseEntity.ok("Utente: \'"+username+ "\' eliminato");
     }
 }

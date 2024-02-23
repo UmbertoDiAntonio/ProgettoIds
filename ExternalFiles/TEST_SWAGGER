@@ -1,0 +1,86 @@
+PROBLEMI PROGETTO IDS
+
+MATERIALE CONTROLLER:
+- PUT
+- POST
+- GET
+- DELETE
+- GETALL
+
+
+CONTEST CONTROLLER
+- PUT
+- POST
+- GET
+- DELETE
+- GETALL
+
+
+COMUNE CONTROLLER
+- PUT(cambiaRuolo)  -> funziona
+- POST              -> funziona
+- GET               -> funziona
+- DELETE            -> funziona
+- GETALL            -> funziona
+
+
+TURISTA AUTENTICATO CONTROLLER
+- PUT(partecipaContest)
+- PUT(aggiungiPreferito)
+- PUT(accettaInvito)
+- POST
+- GET
+- DELETE
+- DELETE(rimuoviPreferito)
+- GET(notifhce)
+- GET(preferiti)
+- GETALL
+
+PUNTO DI INTERESSE CONTROLLER
+- PUT(setScadenza)
+- PUT(condividi)
+- POST
+- GET
+- DELETE
+- GET(materiali(idPunto))
+- GETALL
+
+ITINERARIO CONTROLLER
+- PUT(rimuoviTappa)
+- PUT(aggiungiTappa)
+- POST
+- GET
+- DELETE
+- GETALL
+
+CURATORE CONTROLLER
+
+
+CONTRIBUTOR CONTROLLER
+- POST      -> Funziona
+- GET       -> Funziona
+- DELETE    -> Funziona
+- GETALL    -> Funziona
+
+CONTRIBUTOR AUTORIZZATO CONTROLLER
+- POST      -> Funziona
+- GET       -> Funziona
+- DELETE    -> Funziona
+- GETALL    -> Funziona
+
+ANIMATORE CONTROLLER
+- POST      -> Funziona
+- GET       -> Funziona
+- DELETE    -> Funziona
+- GETALL    -> Funziona
+
+
+TURISTA CONTROLLER
+- GET(tagDTO)
+- GET(report)
+- GET(accedi)
+
+
+
+DATA DA RIVEDERE
+-> quando cambi ruolo torna alla mezzanotte del giorno prima

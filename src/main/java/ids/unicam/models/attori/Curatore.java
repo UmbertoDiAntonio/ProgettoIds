@@ -24,13 +24,13 @@ public class Curatore extends ContributorAutorizzato {
     @OneToMany(fetch = FetchType.EAGER)
     private final List<Contributor> osservatori = new ArrayList<>();
 
-
-
-
     @Override
     public String toString() {
         return "Curatore "+super.toString();
     }
 
-
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
 }
