@@ -57,15 +57,13 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
         curatoreService.eliminaItinerario(usernameCuratore, idContest);
     }
 
-
-
-
-
     public void valutaPuntoInteresse(String usernameCuratore,Integer idPunto,Boolean stato){
         curatoreService.valutaPuntoInteresse(usernameCuratore, idPunto,stato);
     }
     public void valutaMateriale(String usernameCuratore,Integer idMateriale,Boolean stato){
         curatoreService.valutaMateriale(usernameCuratore, idMateriale,stato);
     }
+
+
 
 }
