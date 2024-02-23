@@ -31,17 +31,19 @@ public class CuratoreServiceImpl implements CuratoreService {
     private final MaterialeServiceImpl materialeServiceImpl;
     private final ContestServiceImpl contestServiceImpl;
     private final NotificaServiceImpl notificaServiceImpl;
+    private final ContributorServiceImpl contributorService;
 
     @Autowired
     public CuratoreServiceImpl(CuratoreRepository repository, PoiServiceImpl service, ItinerarioServiceImpl itinerarioServiceImpl,
                                MaterialeServiceImpl materialeServiceImpl, ContestServiceImpl contestServiceImpl,
-                               NotificaServiceImpl notificaServiceImpl) {
+                               NotificaServiceImpl notificaServiceImpl, ContributorServiceImpl contributorService) {
         this.repository = repository;
         this.poiServiceImpl = service;
         this.itinerarioServiceImpl = itinerarioServiceImpl;
         this.materialeServiceImpl = materialeServiceImpl;
         this.contestServiceImpl = contestServiceImpl;
         this.notificaServiceImpl = notificaServiceImpl;
+        this.contributorService = contributorService;
     }
 
 
@@ -257,23 +259,62 @@ public class CuratoreServiceImpl implements CuratoreService {
 
 
     @Transactional
-    public void aggiungiOsservatore(Curatore curatore, Contributor osservatore) {
-        if (curatore.getOsservatori().contains(osservatore)) {
-            logger.error(osservatore + " stai già seguendo questo curatore");
-            return;
+    public void aggiungiOsservatore(String usernameCuratore, String usernameContributorOsservatore) {
+        Optional<Curatore> oCuratore = getById(usernameCuratore);
+        if (oCuratore.isPresent()) {
+            Curatore curatore = oCuratore.get();
+            Optional<Contributor> oOsservatore = contributorService.getById(usernameContributorOsservatore);
+            if (oOsservatore.isPresent()) {
+                Contributor osservatore = oOsservatore.get();
+                if (curatore.getOsservatori().contains(osservatore)) {
+                    logger.error(osservatore + " stai già seguendo questo curatore");
+                    return;
+                }
+                curatore.getOsservatori().add(osservatore);
+                save(curatore);
+            } else {
+                logger.error("username del contributor non valido");
+                throw new IllegalArgumentException("username del contributor non valido");
+            }
+        } else {
+            logger.error("username del curatore non valido");
+            throw new IllegalArgumentException("username del curatore non valido");
         }
-        curatore.getOsservatori().add(osservatore);
-        deleteById(curatore.getUsername());
-        save(curatore);
     }
 
 
     @Transactional
-    public void rimuoviOsservatore(Curatore curatore, Contributor osservatore) {
-        curatore.getOsservatori().remove(osservatore);
-        deleteById(curatore.getUsername());
-        save(curatore);
+    public void rimuoviOsservatore(String usernameCuratore, String usernameContributorOsservatore) {
+        Optional<Curatore> oCuratore = getById(usernameCuratore);
+        if (oCuratore.isPresent()) {
+            Curatore curatore = oCuratore.get();
+            Optional<Contributor> oOsservatore = contributorService.getById(usernameContributorOsservatore);
+            if (oOsservatore.isPresent()) {
+                Contributor osservatore = oOsservatore.get();
+                curatore.getOsservatori().remove(osservatore);
+                save(curatore);
+            } else {
+                logger.error("username del contributor non valido");
+                throw new IllegalArgumentException("username del contributor non valido");
+            }
+        } else {
+            logger.error("username del curatore non valido");
+            throw new IllegalArgumentException("username del curatore non valido");
+        }
     }
+
+    @Override
+    public List<Notifica> getNotifiche(String usernameCurature) {
+        Optional<Curatore> oCuratore = getById(usernameCurature);
+        if (oCuratore.isPresent()) {
+            Curatore curatore = oCuratore.get();
+            return notificaServiceImpl.getNotifiche(curatore);
+        } else {
+            logger.error("username del curatore non valido");
+            throw new IllegalArgumentException("username del curatore non valido");
+        }
+    }
+
 
     public List<Contributor> getOsservatori(Curatore curatore) {
         return repository.findOsservatoriByCuratore(curatore.getUsername());
@@ -282,6 +323,7 @@ public class CuratoreServiceImpl implements CuratoreService {
     public int getNumeroOsservatori(Curatore curatore) {
         return repository.countNumeroOsservatori(curatore.getUsername());
     }
+
 
 }
 

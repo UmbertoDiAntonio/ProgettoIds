@@ -72,7 +72,7 @@ public class ContributorServiceImpl implements ContributorService, Observer {
 
 
     @Override
-    public List<Notifica> riceviNotifiche(Contributor contributor) {//TODO notifiche Controller?
+    public List<Notifica> notifica(Contributor contributor) {//TODO notifiche Controller?
         return notificaServiceImpl.getNotifiche(contributor);
     }
 

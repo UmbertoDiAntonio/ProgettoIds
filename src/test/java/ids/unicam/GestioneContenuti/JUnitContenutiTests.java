@@ -168,10 +168,10 @@ public class JUnitContenutiTests {
                 throw new IllegalArgumentException("errore");
 
             int numeroOsservatori = curatoreServiceImpl.getOsservatori(curatore).size();
-            curatoreServiceImpl.aggiungiOsservatore(curatore, contributor1);
+            curatoreServiceImpl.aggiungiOsservatore(curatore.getUsername(), contributor1.getUsername());
             assertEquals(numeroOsservatori + 1, curatoreServiceImpl.getNumeroOsservatori(curatore));
 
-            curatoreServiceImpl.aggiungiOsservatore(curatore, contributor2);
+            curatoreServiceImpl.aggiungiOsservatore(curatore.getUsername(), contributor2.getUsername());
             assertEquals(numeroOsservatori + 2, curatoreServiceImpl.getNumeroOsservatori(curatore));
 
             curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse.getId(), true);
@@ -183,7 +183,7 @@ public class JUnitContenutiTests {
             assertNull(materialeGenerico1.getStato().asBoolean());
             curatoreServiceImpl.valutaMateriale(curatore.getUsername(), materialeGenerico1.getId(), Stato.APPROVATO.asBoolean());
             poiService.aggiungiMateriale(turistaAutenticato, puntoInteresse, materialeGenerico1);
-            curatoreServiceImpl.rimuoviOsservatore(curatore, contributor1);
+            curatoreServiceImpl.rimuoviOsservatore(curatore.getUsername(), contributor1.getUsername());
             assertEquals(numeroOsservatori + 1, curatoreServiceImpl.getNumeroOsservatori(curatore));
         }
     }
