@@ -3,6 +3,7 @@ package ids.unicam.Service;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.attori.Curatore;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
+import ids.unicam.models.contenuti.notifiche.Notifica;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
@@ -34,4 +35,11 @@ public interface CuratoreService {
     Optional<Curatore> getById(String username);
 
     Curatore update(RichiestaCreazioneContributorDTO contributorDTO, String username);
+
+    void aggiungiOsservatore(String usernameCuratore, String usernameContributorOsservatore) ;
+
+    void rimuoviOsservatore(String usernameCuratore, String usernameContributorOsservatore) ;
+
+    List<Notifica> getNotifiche(String usernameCuratore);
+
 }

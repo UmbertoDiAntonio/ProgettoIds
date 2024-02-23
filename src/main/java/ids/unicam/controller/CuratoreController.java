@@ -4,8 +4,7 @@ import ids.unicam.Service.CuratoreService;
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/Curatore")
@@ -45,25 +44,38 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
         return ResponseEntity.ok("{}");
     }
 
-    public void eliminaItinerario(String usernameCuratore, Integer idItinerario){
+    @DeleteMapping("eliminaItinerario")
+    public void eliminaItinerario(@RequestParam String usernameCuratore,@RequestParam Integer idItinerario){
         curatoreService.eliminaItinerario(usernameCuratore, idItinerario);
     }
-
-    public void eliminaPuntoInteresse(String usernameCuratore, Integer idPuntoInteresse){
+    @DeleteMapping("eliminaPuntoIntesse")
+    public void eliminaPuntoInteresse(@RequestParam String usernameCuratore,@RequestParam Integer idPuntoInteresse){
         curatoreService.eliminaItinerario(usernameCuratore, idPuntoInteresse);
     }
-
-    public void eliminaContest(String usernameCuratore, Integer idContest){
+    @DeleteMapping("eliminaContest")
+    public void eliminaContest(@RequestParam String usernameCuratore, @RequestParam Integer idContest){
         curatoreService.eliminaItinerario(usernameCuratore, idContest);
     }
-
-    public void valutaPuntoInteresse(String usernameCuratore,Integer idPunto,Boolean stato){
+    @PutMapping("valutaPuntoInteresse")
+    public void valutaPuntoInteresse(@RequestParam String usernameCuratore,@RequestParam Integer idPunto,@RequestParam Boolean stato){
         curatoreService.valutaPuntoInteresse(usernameCuratore, idPunto,stato);
     }
-    public void valutaMateriale(String usernameCuratore,Integer idMateriale,Boolean stato){
+    @PutMapping("valutaMateriale")
+    public void valutaMateriale(@RequestParam String usernameCuratore,@RequestParam Integer idMateriale,@RequestParam Boolean stato){
         curatoreService.valutaMateriale(usernameCuratore, idMateriale,stato);
     }
 
-
+    @PutMapping("segui/{usernameCuratore}")
+    public void subscribeOsservatore(@PathVariable String usernameCuratore,@RequestParam String usernameContributor){
+        curatoreService.aggiungiOsservatore(usernameCuratore,usernameContributor);
+    }
+    @PutMapping("unsuscribe/{usernameCuratore}")
+    public void unsubscibeOsservatore(@PathVariable String usernameCuratore,@RequestParam String usernameContributor){
+        curatoreService.rimuoviOsservatore(usernameCuratore,usernameContributor);
+    }
+    @PutMapping("getNotifiche/{usernameCuratore}")
+    public void getNotifiche(@PathVariable String usernameCuratore){
+        curatoreService.getNotifiche(usernameCuratore);
+    }
 
 }
