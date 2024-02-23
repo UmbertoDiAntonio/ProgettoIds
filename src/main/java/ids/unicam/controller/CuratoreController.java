@@ -34,7 +34,7 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
     public ResponseEntity<?> create(RichiestaCreazioneContributorDTO contributorDTO) {
         try {
             return new ResponseEntity<>(gestorePiattaformaService.registraContributor(contributorDTO),HttpStatus.OK);
-        } catch (ConnessioneFallitaException e) {
+        } catch (ConnessioneFallitaException  | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }

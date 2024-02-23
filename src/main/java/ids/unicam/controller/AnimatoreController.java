@@ -35,7 +35,7 @@ public class AnimatoreController implements ControllerBase<RichiestaCreazioneCon
     public ResponseEntity<?> create(RichiestaCreazioneContributorDTO contributorDTO) {
         try {
             return new ResponseEntity<>(gestorePiattaformaService.registraContributor(contributorDTO),HttpStatus.OK);
-        } catch (ConnessioneFallitaException e) {
+        } catch (ConnessioneFallitaException  | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
