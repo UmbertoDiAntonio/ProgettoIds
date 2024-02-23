@@ -1,6 +1,7 @@
 package ids.unicam.models.contenuti;
 
 import ids.unicam.models.Comune;
+import ids.unicam.models.DTO.PuntoInteresseDTO;
 import ids.unicam.models.DTO.RichiestaCreazioneItinerarioDTO;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.persistence.*;
@@ -32,7 +33,11 @@ public class Itinerario {
     public Itinerario(RichiestaCreazioneItinerarioDTO itinerarioDTO) {
         this.nome = itinerarioDTO.getNome();
         this.comune = itinerarioDTO.getComune();
-        percorso.addAll(Arrays.stream(itinerarioDTO.getPuntoInteresse()).toList());
+        List<PuntoInteresse> tappe = new ArrayList<>();
+        for(PuntoInteresseDTO puntoInteresseDTO : itinerarioDTO.getPuntoInteresse()){
+            tappe.add(new PuntoInteresse(puntoInteresseDTO));
+        }
+        percorso.addAll(tappe);
     }
 }
 
