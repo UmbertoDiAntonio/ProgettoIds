@@ -10,18 +10,16 @@ public interface ContributorAutorizzatoService {
 
     //Itinerario aggiungiItinerario(Itinerario itinerario);
 
-     //boolean aggiungiTappaItinerario(Itinerario itinerario,PuntoInteresse puntoInteresse);
+    //boolean aggiungiTappaItinerario(Itinerario itinerario,PuntoInteresse puntoInteresse);
 
-     //void aggiungiTappaItinerario(Itinerario itinerario,PuntoInteresse... puntiInteresse);
+    //void aggiungiTappaItinerario(Itinerario itinerario,PuntoInteresse... puntiInteresse);
 
-     //void modificaScadenza(PuntoInteresse puntoInteresse, LocalDate expireDate);
+    //void modificaScadenza(PuntoInteresse puntoInteresse, LocalDate expireDate);
 
-     List<ContributorAutorizzato> getAll();
+    List<ContributorAutorizzato> getAll();
 
-     void deleteById(String username);
+    void deleteById(String username);
 
-     Optional<ContributorAutorizzato> getById(String username);
-
-     ContributorAutorizzato update(RichiestaCreazioneContributorDTO contributorDTO, String username);
+    Optional<ContributorAutorizzato> getById(String username);
 
 }

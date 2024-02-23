@@ -38,12 +38,6 @@ public class MaterialeServiceImpl implements MaterialeService {
     }
 
     @Override
-    public MaterialeGenerico update(MaterialeDTO materialeDTO, int id) {
-        //TODO
-        return null;
-    }
-
-    @Override
     public List<MaterialeGenerico> getAll() {
         return repository.findAll();
     }

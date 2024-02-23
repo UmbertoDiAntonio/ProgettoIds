@@ -180,12 +180,6 @@ public class PoiServiceImpl implements PoiService {
         return repository.findById(id);
     }
 
-    @Override
-    public PuntoInteresse update(PuntoInteresse puntoInteresse, int id) {
-        //TODO
-        return null;
-    }
-
     public List<MaterialeGenerico> getMaterialiPoi(Integer idPunto) {
         return repository.getMateriali(idPunto);
     }

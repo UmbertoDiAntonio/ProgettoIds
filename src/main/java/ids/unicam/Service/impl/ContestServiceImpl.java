@@ -3,7 +3,6 @@ package ids.unicam.Service.impl;
 import ids.unicam.DataBase.Repository.ContestRepository;
 import ids.unicam.Service.ContestService;
 import ids.unicam.exception.ContestException;
-import ids.unicam.exception.MyExceptionHandler;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
@@ -42,12 +41,6 @@ public class ContestServiceImpl implements ContestService {
 
     public Optional<Contest> findById(int id) {
         return repository.findById(id);
-    }
-
-    @Override
-    public Contest update(Contest contest, int id) {
-        //TODO
-        return null;
     }
 
     public List<Contest> findAll() {

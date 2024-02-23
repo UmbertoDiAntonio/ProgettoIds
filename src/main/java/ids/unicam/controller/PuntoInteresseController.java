@@ -36,11 +36,6 @@ public class PuntoInteresseController implements ControllerBase<PuntoInteresseDT
     }
 
     @Override
-    public ResponseEntity<?> update(PuntoInteresseDTO entity, Integer integer) {
-        return null;
-    }
-
-    @Override
     public ResponseEntity<?> delete(Integer integer) {
         return null;
     }

@@ -10,7 +10,6 @@ public interface InvitoService {
 
     void accettaInvito(TuristaAutenticatoDTO turistaDTO, InvitoDTO invitoDTO);
 
-
     boolean isValid(InvitoDTO invitoDTO) ;
 
     List<Invito> getInvitiRicevuti(TuristaAutenticatoDTO turistaDTO) ;

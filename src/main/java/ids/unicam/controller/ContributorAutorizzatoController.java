@@ -41,11 +41,6 @@ public class ContributorAutorizzatoController implements ControllerBase<Richiest
     }
 
     @Override
-    public ResponseEntity<?> update(RichiestaCreazioneContributorDTO contributorDTO, String username) {
-        return ResponseEntity.ok(contributorAutorizzatoService.update(contributorDTO, username));
-    }
-
-    @Override
     public ResponseEntity<?> delete(String username) {
         contributorAutorizzatoService.deleteById(username);
         return ResponseEntity.ok("{}");

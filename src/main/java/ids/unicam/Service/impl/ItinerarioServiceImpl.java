@@ -37,13 +37,6 @@ public class ItinerarioServiceImpl implements ItinerarioService {
         repository.deleteById(id);
     }
 
-    @Override
-    public Itinerario update(Itinerario itinerario, int id) {
-        //TODO
-        return null;
-    }
-
-
     public Itinerario save(Itinerario itinerario) {
         return repository.save(itinerario);
     }

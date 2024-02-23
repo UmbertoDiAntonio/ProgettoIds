@@ -22,6 +22,5 @@ public interface AnimatoreService {
 
     Optional<Animatore> getById(String username);
 
-    Animatore update(RichiestaCreazioneContributorDTO contributorDTO, String username);
 
 }

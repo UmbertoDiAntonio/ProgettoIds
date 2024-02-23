@@ -35,11 +35,6 @@ public class ItinerarioController implements ControllerBase<RichiestaCreazioneIt
     }
 
     @Override
-    public ResponseEntity<?> update(RichiestaCreazioneItinerarioDTO itinerarioDTO, Integer id) {
-        return ResponseEntity.ok(itinerarioService.update(new Itinerario(itinerarioDTO), id));
-    }
-
-    @Override
     public ResponseEntity<?> delete(Integer id) {
         itinerarioService.deleteById(id);
         return ResponseEntity.ok("{}");

@@ -50,12 +50,6 @@ public class AnimatoreServiceImpl implements AnimatoreService {
     }
 
     @Override
-    public Animatore update(RichiestaCreazioneContributorDTO contributorDTO, String username) {
-        //TODO
-        return null;
-    }
-
-    @Override
     public List<Animatore> getAll() {
         return repository.findAll();
     }

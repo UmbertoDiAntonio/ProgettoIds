@@ -39,7 +39,6 @@ public interface TuristaAutenticatoService {
 
     void deleteById(String username);
 
-    TuristaAutenticato update(TuristaAutenticatoDTO turistaDTO, String username);
     public List<Notifica> visualizzaNotifiche(String usernameTurista) ;
 
     }

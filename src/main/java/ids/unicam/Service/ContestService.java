@@ -35,8 +35,6 @@ public interface ContestService {
 
     Optional<Contest> findById(int id);
 
-    Contest update(Contest contest, int id);
-
     void deleteById(int id);
 
 }

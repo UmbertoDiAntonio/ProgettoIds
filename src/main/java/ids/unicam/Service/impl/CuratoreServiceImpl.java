@@ -57,13 +57,6 @@ public class CuratoreServiceImpl implements CuratoreService {
         return repository.findById(username);
     }
 
-    @Override
-    public Curatore update(RichiestaCreazioneContributorDTO contributorDTO, String username) {
-        //TODO
-        return null;
-    }
-
-
     public Curatore save(Curatore curatore) {
         return repository.save(curatore);
     }

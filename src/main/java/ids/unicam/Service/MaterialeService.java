@@ -11,7 +11,7 @@ public interface MaterialeService {
     void approvaMateriale(MaterialeGenerico materialeGenerico, Stato stato);
     List<MaterialeGenerico> getAll();
     Optional<MaterialeGenerico> getById(int id);
-    MaterialeGenerico update(MaterialeDTO materialeDTO, int id);
+
     void deleteById(int id);
 
     Stato getStato(MaterialeGenerico foto);

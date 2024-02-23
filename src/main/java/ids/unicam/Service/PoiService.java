@@ -29,8 +29,6 @@ public interface PoiService {
 
     Optional<PuntoInteresse> getById(int id);
 
-    PuntoInteresse update(PuntoInteresse puntoInteresse, int id);
-
     void deleteById(int id);
 
     void modificaScadenza(String usernameContributor,Integer idPuntoInteresse, LocalDate expireDate) ;

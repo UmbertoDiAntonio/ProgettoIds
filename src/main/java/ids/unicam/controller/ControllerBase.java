@@ -16,9 +16,6 @@ public interface ControllerBase<E, ID>{
     @PostMapping
     ResponseEntity<?> create(@RequestBody E entity);
 
-    @PutMapping("/{id}")
-    ResponseEntity<?> update(@RequestBody E entity, @PathVariable ID id);
-
     @DeleteMapping("/{id}")
     ResponseEntity<?> delete(@PathVariable ID id);
 }

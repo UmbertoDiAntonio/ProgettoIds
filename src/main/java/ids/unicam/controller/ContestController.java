@@ -38,11 +38,6 @@ public class ContestController implements ControllerBase<RichiestaCreazioneConte
     }
 
     @Override
-    public ResponseEntity<?> update(RichiestaCreazioneContestDTO comuneDTO, Integer id) {
-        return ResponseEntity.ok(contestService.update(new Contest(comuneDTO), id));
-    }
-
-    @Override
     public ResponseEntity<?> delete(Integer id) {
         contestService.deleteById(id);
         return ResponseEntity.ok("{}");

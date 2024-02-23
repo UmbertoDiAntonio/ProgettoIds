@@ -33,11 +33,6 @@ public class MaterialeController implements ControllerBase<MaterialeDTO,Integer>
     }
 
     @Override
-    public ResponseEntity<?> update(MaterialeDTO entity, Integer id) {
-        return  ResponseEntity.ok(materialeService.update(entity,id));
-    }
-
-    @Override
     public ResponseEntity<?> delete(Integer id) {
         materialeService.deleteById(id);
         return ResponseEntity.ok("{}");

@@ -45,12 +45,6 @@ public class ComuneServiceImpl implements ComuneService {
     }
 
     @Override
-    public Comune update(Comune comune, int id) {
-        //TODO
-        return null;
-    }
-
-    @Override
     public void deleteByNome(String nomeComune) {
         comuneRepository.deleteByNome(nomeComune);
     }

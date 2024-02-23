@@ -44,11 +44,6 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
     }
 
     @Override
-    public ResponseEntity<?> update(TuristaAutenticatoDTO turistaDTO, String username) {
-        return ResponseEntity.ok(turistaAutenticatoService.update(turistaDTO, username));
-    }
-
-    @Override
     public ResponseEntity<?> delete(String username) {
         turistaAutenticatoService.deleteById(username);
         return ResponseEntity.ok("{}");

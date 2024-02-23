@@ -34,8 +34,6 @@ public interface CuratoreService {
 
     Optional<Curatore> getById(String username);
 
-    Curatore update(RichiestaCreazioneContributorDTO contributorDTO, String username);
-
     void aggiungiOsservatore(String usernameCuratore, String usernameContributorOsservatore) ;
 
     void rimuoviOsservatore(String usernameCuratore, String usernameContributorOsservatore) ;

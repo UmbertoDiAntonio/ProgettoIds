@@ -40,12 +40,6 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
         repository.deleteById(id);
     }
 
-    @Override
-    public TuristaAutenticato update(TuristaAutenticatoDTO turistaDTO, String username) {
-        //TODO
-        return null;
-    }
-
     public void deleteAll() {
         repository.deleteAll();
     }

@@ -21,6 +21,4 @@ public interface ItinerarioService {
 
     void deleteById(int id);
 
-    Itinerario update(Itinerario itinerario, int id);
-
 }

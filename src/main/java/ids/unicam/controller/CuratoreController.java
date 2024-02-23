@@ -40,11 +40,6 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
     }
 
     @Override
-    public ResponseEntity<?> update(RichiestaCreazioneContributorDTO contributorDTO, String username) {
-        return ResponseEntity.ok(curatoreService.update(contributorDTO, username));
-    }
-
-    @Override
     public ResponseEntity<?> delete(String username) {
         curatoreService.deleteById(username);
         return ResponseEntity.ok("{}");

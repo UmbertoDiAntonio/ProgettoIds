@@ -33,8 +33,6 @@ public interface ComuneService {
 
     void deleteById(int id);
 
-    Comune update(Comune comune, int id);
-
     void deleteByNome(String nomeComune);
 
 }

@@ -38,12 +38,6 @@ public class ContributorServiceImpl implements ContributorService, Observer {
         return repository.findById(username);
     }
 
-    @Override
-    public Contributor update(RichiestaCreazioneContributorDTO contributorDTO, String username) {
-        //TODO
-        return null;
-    }
-
     public Contributor save(Contributor contributor) {
         return repository.save(contributor);
     }

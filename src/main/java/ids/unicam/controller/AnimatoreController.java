@@ -41,11 +41,6 @@ public class AnimatoreController implements ControllerBase<RichiestaCreazioneCon
     }
 
     @Override
-    public ResponseEntity<?> update(RichiestaCreazioneContributorDTO contributorDTO, String username) {
-        return ResponseEntity.ok(animatoreService.update(contributorDTO, username));
-    }
-
-    @Override
     public ResponseEntity<?> delete(String username) {
         animatoreService.deleteById(username);
         return ResponseEntity.ok("{}");

@@ -29,13 +29,6 @@ public class ContributorAutorizzatoServiceImpl implements ContributorAutorizzato
         return repository.findById(username);
     }
 
-    @Override
-    public ContributorAutorizzato update(RichiestaCreazioneContributorDTO contributorDTO, String username) {
-        //TODO
-        return null;
-    }
-
-
     public ContributorAutorizzato save(ContributorAutorizzato contributorAutorizzato) {
         contributorAutorizzato = repository.save(contributorAutorizzato);
         return contributorAutorizzato;
