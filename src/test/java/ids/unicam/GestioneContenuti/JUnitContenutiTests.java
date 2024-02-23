@@ -101,13 +101,12 @@ public class JUnitContenutiTests {
          * Creazione di un Punto di Interesse da parte di un contributorTrusted, che di base è approvato
          */
         {
-            gestorePiattaformaService.cambiaRuolo(new RichiestaCreazioneContributorDTO(contributor.getComune(), new TuristaAutenticatoDTO(contributor.getNome(), contributor.getCognome(), contributor.getDataNascita(), contributor.getPassword(), contributor.getUsername()), Ruolo.CONTRIBUTOR), Ruolo.CONTRIBUTOR_AUTORIZZATO);
+            gestorePiattaformaService.cambiaRuolo(contributor.getUsername(), Ruolo.CONTRIBUTOR_AUTORIZZATO);
             ContributorAutorizzato contributorAutorizzato = comuneService.getContributorAutorizzatiDelComune(comune.getNome()).getLast();
             int puntiInteresseComuneIniziali = comuneService.getPuntiInteresseNelComune(comune.getNome()).size();
 
             PuntoInteresse punto2 = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("bar2", new Punto(comune.getPosizione().getLatitudine() + 0.02, comune.getPosizione().getLongitudine() + 0.02), new Orario(), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributorAutorizzato)));
 
-            //il problema qui è avere 2 istanze diverse del Controller
             assertEquals(puntiInteresseComuneIniziali + 1, comuneService.getPuntiInteresseNelComune(comune.getNome()).size());
             assert punto2 != null;
             assertEquals(Boolean.TRUE, punto2.getStato().asBoolean());
@@ -423,7 +422,6 @@ public class JUnitContenutiTests {
     /*
      * Test per modificare la scadenza di un contentuto
      */
-
     @Test
     @Order(6)
     public void modificaScadenzaContenuto() {

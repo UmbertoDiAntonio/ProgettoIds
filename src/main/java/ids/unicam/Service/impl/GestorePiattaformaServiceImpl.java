@@ -9,6 +9,8 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 import static ids.unicam.Main.logger;
 
 @Service
@@ -34,22 +36,29 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
 
     @Transactional
     @Override
-    public TuristaAutenticato cambiaRuolo(RichiestaCreazioneContributorDTO contributorDTO, @NotNull Ruolo ruolo) {
-        rimuoviVecchioRuolo(contributorDTO);
+    public TuristaAutenticato cambiaRuolo(String usernameContributor, @NotNull Ruolo ruolo) {
+        Optional<Contributor> oContributor = contributorServiceImpl.getById(usernameContributor);
+        if(oContributor.isEmpty()){
+            logger.error("username contributor non valido");
+            throw new IllegalArgumentException("username contribor non valido");
+        }
+        Contributor contributor = oContributor.get();
+        rimuoviVecchioRuolo(contributor);
+        TuristaAutenticatoDTO turistaAutenticatoDTO=new TuristaAutenticatoDTO(contributor.getNome(),contributor.getCognome(),contributor.getDataNascita(),contributor.getPassword(),contributor.getUsername());
         Contributor modificato = switch (ruolo) {
             case TURISTA -> {
                 logger.error("Non puoi tornare un turista");
                 yield null;
             }
-            case CURATORE -> curatoreServiceImpl.save(new Curatore(contributorDTO));
-            case ANIMATORE -> animatoreServiceImpl.save(new Animatore(contributorDTO));
+            case CURATORE -> curatoreServiceImpl.save(new Curatore(new RichiestaCreazioneContributorDTO(contributor.getComune(),turistaAutenticatoDTO,Ruolo.CURATORE)));
+            case ANIMATORE -> animatoreServiceImpl.save(new Animatore(new RichiestaCreazioneContributorDTO(contributor.getComune(),turistaAutenticatoDTO,Ruolo.ANIMATORE)));
             case CONTRIBUTOR_AUTORIZZATO ->
-                    contributorAutorizzatoServiceImpl.save(new ContributorAutorizzato(contributorDTO));
-            case CONTRIBUTOR -> contributorServiceImpl.save(new Contributor(contributorDTO));
+                    contributorAutorizzatoServiceImpl.save(new ContributorAutorizzato(new RichiestaCreazioneContributorDTO(contributor.getComune(),turistaAutenticatoDTO,Ruolo.CONTRIBUTOR_AUTORIZZATO)));
+            case CONTRIBUTOR -> contributorServiceImpl.save(new Contributor(new RichiestaCreazioneContributorDTO(contributor.getComune(),turistaAutenticatoDTO,Ruolo.CONTRIBUTOR)));
         };
 
         poiServiceImpl.findAll().stream()
-                .filter(puntoInteresse -> puntoInteresse.getCreatore() != null && puntoInteresse.getCreatore().getUsername().equals(contributorDTO.getTuristaDTO().getUsername()))
+                .filter(puntoInteresse -> puntoInteresse.getCreatore() != null && puntoInteresse.getCreatore().getUsername().equals(contributor.getUsername()))
                 .forEach(puntoInteresse -> {
                     puntoInteresse.setCreatore(modificato);
                     poiServiceImpl.save(puntoInteresse);
@@ -59,13 +68,13 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
     }
 
 
-    private void rimuoviVecchioRuolo(@NotNull RichiestaCreazioneContributorDTO contributorDTO) {
-        switch (contributorDTO.getRuolo()) {
-            case CURATORE -> curatoreServiceImpl.deleteById(contributorDTO.getTuristaDTO().getUsername());
-            case CONTRIBUTOR_AUTORIZZATO ->
-                    contributorAutorizzatoServiceImpl.deleteById(contributorDTO.getTuristaDTO().getUsername());
-            case ANIMATORE -> animatoreServiceImpl.deleteById(contributorDTO.getTuristaDTO().getUsername());
-            case CONTRIBUTOR -> contributorServiceImpl.deleteById(contributorDTO.getTuristaDTO().getUsername());
+    private void rimuoviVecchioRuolo(@NotNull Contributor contributor) {
+        switch (contributor) {
+            case Curatore curatore-> curatoreServiceImpl.deleteById(curatore.getUsername());
+            case ContributorAutorizzato contributorAutorizzato ->
+                    contributorAutorizzatoServiceImpl.deleteById(contributorAutorizzato.getUsername());
+            case Animatore animatore-> animatoreServiceImpl.deleteById(animatore.getUsername());
+            case Contributor contributor1 -> contributorServiceImpl.deleteById(contributor1.getUsername());
         }
     }
 
@@ -114,17 +123,17 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
             case CURATORE-> {
                 Curatore curatore = new Curatore(contributorDTO);
                 curatoreServiceImpl.save(curatore);
-                yield cambiaRuolo(contributorDTO,Ruolo.CURATORE);
+                yield cambiaRuolo(contributorDTO.getTuristaDTO().getUsername(), Ruolo.CURATORE);
             }
             case ANIMATORE -> {
                 Animatore animatore = new Animatore(contributorDTO);
                 animatoreServiceImpl.save(animatore);
-                yield cambiaRuolo(contributorDTO,Ruolo.ANIMATORE);
+                yield cambiaRuolo(contributorDTO.getTuristaDTO().getUsername(), Ruolo.ANIMATORE);
             }
             case CONTRIBUTOR_AUTORIZZATO -> {
                 ContributorAutorizzato contributor = new ContributorAutorizzato(contributorDTO);
                 contributorAutorizzatoServiceImpl.save(contributor);
-                yield cambiaRuolo(contributorDTO,Ruolo.CONTRIBUTOR_AUTORIZZATO);
+                yield cambiaRuolo(contributorDTO.getTuristaDTO().getUsername(),Ruolo.CONTRIBUTOR_AUTORIZZATO);
             }
 
         };

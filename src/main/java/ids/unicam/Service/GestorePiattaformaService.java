@@ -7,7 +7,7 @@ import ids.unicam.models.attori.TuristaAutenticato;
 import org.jetbrains.annotations.NotNull;
 
 public interface GestorePiattaformaService {
-    TuristaAutenticato cambiaRuolo(RichiestaCreazioneContributorDTO contributorDTO, @NotNull Ruolo ruolo);
+    TuristaAutenticato cambiaRuolo(String usernameContributor, @NotNull Ruolo ruolo);
 
 
     TuristaAutenticato registraTurista(TuristaAutenticatoDTO turistaDTO);

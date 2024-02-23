@@ -60,8 +60,8 @@ public class  ComuneController implements ControllerBase<RichiestaCreazioneComun
         return ResponseEntity.ok("{}");
     }
 
-    @PutMapping("/cambioRuolo")
-    public void cambiaRuolo(@RequestBody RichiestaCreazioneContributorDTO contributorDTO, Ruolo ruolo){
-        gestorePiattaformaService.cambiaRuolo(contributorDTO,ruolo);
+    @PutMapping("/cambioRuolo/{usernameContributor}/{ruolo}")
+    public void cambiaRuolo(@PathVariable String usernameContributor,@PathVariable  Ruolo ruolo){
+        gestorePiattaformaService.cambiaRuolo(usernameContributor,ruolo);
     }
 }

@@ -63,20 +63,20 @@ public class JUnitUtentiTest {
 
         Contributor contributor = comuneService.getContributorDelComune(comune.getNome()).getLast();
 
-        gestorePiattaformaService.cambiaRuolo(new RichiestaCreazioneContributorDTO(contributor.getComune(), new TuristaAutenticatoDTO(contributor.getNome(),contributor.getCognome(),contributor.getDataNascita(),contributor.getPassword(), contributor.getUsername()),Ruolo.CONTRIBUTOR), Ruolo.CURATORE);
+        gestorePiattaformaService.cambiaRuolo(contributor.getUsername(), Ruolo.CURATORE);
         assertEquals(numeroContributor + 1, comuneService.getContributorDelComune(comune.getNome()).size());
         assertEquals(numeroCuratori + 1, comuneService.getCuratoriDelComune(comune.getNome()).size());
 
         Curatore curatore = comuneService.getCuratoriDelComune(comune.getNome()).getLast();
 
-        gestorePiattaformaService.cambiaRuolo(new RichiestaCreazioneContributorDTO(curatore.getComune(), new TuristaAutenticatoDTO(curatore.getNome(),curatore.getCognome(),curatore.getDataNascita(),curatore.getPassword(), curatore.getUsername()),Ruolo.CURATORE),Ruolo.CONTRIBUTOR);
+        gestorePiattaformaService.cambiaRuolo(curatore.getUsername(),Ruolo.CONTRIBUTOR);
 
         assertEquals(numeroContributor + 1, comuneService.getContributorDelComune(comune.getNome()).size());
         assertEquals(numeroCuratori, comuneService.getCuratoriDelComune(comune.getNome()).size());
 
         Contributor contributor1 = comuneService.getContributorDelComune(comune.getNome()).getLast();
 
-        gestorePiattaformaService.cambiaRuolo(new RichiestaCreazioneContributorDTO(contributor1.getComune(), new TuristaAutenticatoDTO(contributor1.getNome(),contributor1.getCognome(),contributor1.getDataNascita(),contributor1.getPassword(), contributor1.getUsername()),Ruolo.CONTRIBUTOR), Ruolo.CONTRIBUTOR_AUTORIZZATO);
+        gestorePiattaformaService.cambiaRuolo(contributor1.getUsername(), Ruolo.CONTRIBUTOR_AUTORIZZATO);
 
         assertEquals(numeroContributorAutorizzati + 1, comuneService.getContributorAutorizzatiDelComune(comune.getNome()).size());
         assertEquals(numeroCuratori, comuneService.getCuratoriDelComune(comune.getNome()).size());
@@ -93,7 +93,7 @@ public class JUnitUtentiTest {
             throw new IllegalArgumentException("errore");
         TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO( "andrea", "neri", new GregorianCalendar(2000, GregorianCalendar.MARCH, 17), "5Unico@", "user5"));
 
-        gestorePiattaformaService.cambiaRuolo(new RichiestaCreazioneContributorDTO(contributor.getComune(), new TuristaAutenticatoDTO(contributor.getNome(),contributor.getCognome(),contributor.getDataNascita(),contributor.getPassword(), contributor.getUsername()),Ruolo.CONTRIBUTOR), Ruolo.CONTRIBUTOR_AUTORIZZATO);
+        gestorePiattaformaService.cambiaRuolo(contributor.getUsername(), Ruolo.CONTRIBUTOR_AUTORIZZATO);
         ContributorAutorizzato contributorAutorizzato = comuneService.getContributorAutorizzatiDelComune(comune.getNome()).getFirst();
         PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributorAutorizzato)));
         assertEquals(0, turistaAutenticato.getPreferiti().size());
