@@ -12,6 +12,6 @@ public interface GestorePiattaformaService {
 
     TuristaAutenticato registraTurista(TuristaAutenticatoDTO turistaDTO) throws IllegalArgumentException;
 
-    TuristaAutenticato registraContributor(RichiestaCreazioneContributorDTO contributorDTO) throws IllegalArgumentException, ConnessioneFallitaException;
+    TuristaAutenticato registraContributor(RichiestaCreazioneContributorDTO contributorDTO,Ruolo ruolo) throws IllegalArgumentException, ConnessioneFallitaException;
 
 }

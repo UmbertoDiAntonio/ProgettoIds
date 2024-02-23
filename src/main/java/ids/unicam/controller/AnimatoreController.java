@@ -4,6 +4,7 @@ import ids.unicam.Service.AnimatoreService;
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
+import ids.unicam.models.attori.Ruolo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +35,7 @@ public class AnimatoreController implements ControllerBase<RichiestaCreazioneCon
     @Override
     public ResponseEntity<?> create(RichiestaCreazioneContributorDTO contributorDTO) {
         try {
-            return new ResponseEntity<>(gestorePiattaformaService.registraContributor(contributorDTO),HttpStatus.OK);
+            return new ResponseEntity<>(gestorePiattaformaService.registraContributor(contributorDTO, Ruolo.ANIMATORE),HttpStatus.OK);
         } catch (ConnessioneFallitaException  | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

@@ -68,7 +68,7 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
         return turistaAutenticatoService.findPreferiti(usernameTurista);
     }
 
-    @GetMapping("/rimuoviPreferito")
+    @DeleteMapping("/rimuoviPreferito")
     public void rimuoviPreferito(@RequestParam String usernameTurista, @RequestParam Integer idPunto) {
         turistaAutenticatoService.rimuoviPreferito(usernameTurista,idPunto);
 

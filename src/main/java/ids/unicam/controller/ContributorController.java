@@ -4,6 +4,7 @@ import ids.unicam.Service.ContributorService;
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
+import ids.unicam.models.attori.Ruolo;
 import ids.unicam.models.attori.TuristaAutenticato;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class ContributorController implements ControllerBase<RichiestaCreazioneC
     @Override
     public ResponseEntity<?> create(RichiestaCreazioneContributorDTO contributorDTO) {
         try {
-            TuristaAutenticato contributor = gestorePiattaformaService.registraContributor(contributorDTO);
+            TuristaAutenticato contributor = gestorePiattaformaService.registraContributor(contributorDTO, Ruolo.CONTRIBUTOR);
             return new ResponseEntity<>(contributor, HttpStatus.OK);
         } catch (IllegalArgumentException | ConnessioneFallitaException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

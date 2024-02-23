@@ -4,6 +4,7 @@ import ids.unicam.Service.CuratoreService;
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
+import ids.unicam.models.attori.Ruolo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
     @Override
     public ResponseEntity<?> create(RichiestaCreazioneContributorDTO contributorDTO) {
         try {
-            return new ResponseEntity<>(gestorePiattaformaService.registraContributor(contributorDTO),HttpStatus.OK);
+            return new ResponseEntity<>(gestorePiattaformaService.registraContributor(contributorDTO, Ruolo.CURATORE),HttpStatus.OK);
         } catch (ConnessioneFallitaException  | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

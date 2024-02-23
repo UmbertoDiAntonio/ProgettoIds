@@ -52,11 +52,11 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
                 logger.error("Non puoi tornare un turista");
                 yield null;
             }
-            case CURATORE -> curatoreServiceImpl.save(new Curatore(new RichiestaCreazioneContributorDTO(new RichiestaCreazioneComuneDTO(contributor.getComune().getNome()),turistaAutenticatoDTO,Ruolo.CURATORE)));
-            case ANIMATORE -> animatoreServiceImpl.save(new Animatore(new RichiestaCreazioneContributorDTO(new RichiestaCreazioneComuneDTO(contributor.getComune().getNome()),turistaAutenticatoDTO,Ruolo.ANIMATORE)));
+            case CURATORE -> curatoreServiceImpl.save(new Curatore(new RichiestaCreazioneContributorDTO(new RichiestaCreazioneComuneDTO(contributor.getComune().getNome()),turistaAutenticatoDTO)));
+            case ANIMATORE -> animatoreServiceImpl.save(new Animatore(new RichiestaCreazioneContributorDTO(new RichiestaCreazioneComuneDTO(contributor.getComune().getNome()),turistaAutenticatoDTO)));
             case CONTRIBUTOR_AUTORIZZATO ->
-                    contributorAutorizzatoServiceImpl.save(new ContributorAutorizzato(new RichiestaCreazioneContributorDTO(new RichiestaCreazioneComuneDTO(contributor.getComune().getNome()),turistaAutenticatoDTO,Ruolo.CONTRIBUTOR_AUTORIZZATO)));
-            case CONTRIBUTOR -> contributorServiceImpl.save(new Contributor(new RichiestaCreazioneContributorDTO(new RichiestaCreazioneComuneDTO(contributor.getComune().getNome()),turistaAutenticatoDTO,Ruolo.CONTRIBUTOR)));
+                    contributorAutorizzatoServiceImpl.save(new ContributorAutorizzato(new RichiestaCreazioneContributorDTO(new RichiestaCreazioneComuneDTO(contributor.getComune().getNome()),turistaAutenticatoDTO)));
+            case CONTRIBUTOR -> contributorServiceImpl.save(new Contributor(new RichiestaCreazioneContributorDTO(new RichiestaCreazioneComuneDTO(contributor.getComune().getNome()),turistaAutenticatoDTO)));
         };
 
         poiServiceImpl.findAll().stream()
@@ -121,15 +121,15 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
     }
 
     @Transactional
-    public TuristaAutenticato registraContributor(RichiestaCreazioneContributorDTO contributorDTO) throws IllegalArgumentException, ConnessioneFallitaException {
-        if (contributorDTO.getRuolo() != Ruolo.TURISTA && contributorDTO.getComune() == null) {
+    public TuristaAutenticato registraContributor(RichiestaCreazioneContributorDTO contributorDTO,Ruolo ruolo) throws IllegalArgumentException, ConnessioneFallitaException {
+        if (ruolo != Ruolo.TURISTA && contributorDTO.getComune() == null) {
             logger.error("Il comune non puo' essere nullo, registrazione >= Contributor");
             throw new RuntimeException("Il comune non puo' essere nullo, registrazione >= Contributor");
         }
         if (!validaCredenziali(contributorDTO.getTuristaDTO())) {
             return null;
         }
-        return switch (contributorDTO.getRuolo()) {
+        return switch (ruolo) {
             case TURISTA -> registraTurista(contributorDTO.getTuristaDTO());
             case CONTRIBUTOR -> {
                 Contributor contributor = new Contributor(contributorDTO);
