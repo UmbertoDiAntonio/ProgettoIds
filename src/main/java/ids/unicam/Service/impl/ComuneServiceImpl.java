@@ -99,7 +99,7 @@ public class ComuneServiceImpl implements ComuneService {
 
     @Override
     public @Nullable Comune getComuneByNome(String nomeComune) throws IllegalArgumentException {
-        Optional<Comune> oComune = comuneRepository.findById(nomeComune);
+        Optional<Comune> oComune = comuneRepository.findComuneByNomeIgnoreCase(nomeComune);
         if(oComune.isEmpty())
             throw new IllegalArgumentException("nome comune non valido");
         return oComune.get();
