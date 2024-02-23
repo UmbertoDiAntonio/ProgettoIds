@@ -40,13 +40,9 @@ public class ComuneServiceImpl implements ComuneService {
     }
 
 
-    public void deleteById(int id) {
-        comuneRepository.deleteById(id);
-    }
-
     @Override
-    public void deleteByNome(String nomeComune) {
-        comuneRepository.deleteByNome(nomeComune);
+    public void deleteById(String nomeComune) {
+        comuneRepository.deleteById(nomeComune);
     }
 
 
@@ -61,8 +57,9 @@ public class ComuneServiceImpl implements ComuneService {
 
 
 
-    public Optional<Comune> findById(int id) {
-        return comuneRepository.findById(id);
+    @Override
+    public Optional<Comune> findById(String nomeComune) {
+        return comuneRepository.findById(nomeComune);
     }
 
 
@@ -102,7 +99,7 @@ public class ComuneServiceImpl implements ComuneService {
 
     @Override
     public @Nullable Comune getComuneByNome(String nomeComune) {
-        Optional<Comune> oComune = comuneRepository.findByNome(nomeComune);
+        Optional<Comune> oComune = comuneRepository.findById(nomeComune);
         return oComune.orElse(null);
     }
 

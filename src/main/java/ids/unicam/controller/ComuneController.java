@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/comune")
-public class  ComuneController implements ControllerBase<RichiestaCreazioneComuneDTO, Integer>{
+public class  ComuneController implements ControllerBase<RichiestaCreazioneComuneDTO, String>{
 
     private final ComuneService comuneService;
     private final GestorePiattaformaService gestorePiattaformaService;
@@ -31,18 +31,15 @@ public class  ComuneController implements ControllerBase<RichiestaCreazioneComun
         return ResponseEntity.ok(comuneService.findAll());
     }
 
-    @Override
-    public ResponseEntity<?> getById(Integer id) {
-        return ResponseEntity.ok(comuneService.findById(id));
-    }
 
+
+    @Override
     @GetMapping("/{nomeComune}")
-    public ResponseEntity<?> getByName(@PathVariable String nomeComune) {
+    public ResponseEntity<?> getById(@PathVariable String nomeComune) {
         return ResponseEntity.ok(comuneService.getComuneByNome(nomeComune));
     }
 
     @Override
-
     public ResponseEntity<?> create(RichiestaCreazioneComuneDTO comuneDTO) {
         try {
             return ResponseEntity.ok(comuneService.creaComune(new Comune(comuneDTO)));
@@ -52,15 +49,9 @@ public class  ComuneController implements ControllerBase<RichiestaCreazioneComun
     }
 
 
-    @Override
-    public ResponseEntity<?> delete(Integer id) {
-        comuneService.deleteById(id);
-        return ResponseEntity.ok("{}");
-    }
-
     @DeleteMapping("/{nomeComune}")
     public ResponseEntity<?> delete(@PathVariable String nomeComune) {
-        comuneService.deleteByNome(nomeComune);
+        comuneService.deleteById(nomeComune);
         return ResponseEntity.ok("{}");
     }
 
@@ -69,7 +60,7 @@ public class  ComuneController implements ControllerBase<RichiestaCreazioneComun
         try {
             TuristaAutenticato nuovo = gestorePiattaformaService.cambiaRuolo(username, ruolo);
             return new ResponseEntity<>(nuovo,HttpStatus.OK);
-        } catch (ConnessioneFallitaException e) {
+        } catch (ConnessioneFallitaException  | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }

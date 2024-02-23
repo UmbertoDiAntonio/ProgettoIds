@@ -29,10 +29,8 @@ public interface ComuneService {
 
     List<Comune> findAll();
 
-    Optional<Comune> findById(int id);
+    Optional<Comune> findById(String id);
 
-    void deleteById(int id);
-
-    void deleteByNome(String nomeComune);
+    void deleteById(String nomeComune);
 
 }
