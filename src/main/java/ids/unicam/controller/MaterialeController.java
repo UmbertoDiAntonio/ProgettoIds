@@ -4,8 +4,7 @@ import ids.unicam.Service.AnimatoreService;
 import ids.unicam.Service.MaterialeService;
 import ids.unicam.models.DTO.MaterialeDTO;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/materiali")
@@ -44,7 +43,8 @@ public class MaterialeController implements ControllerBase<MaterialeDTO,Integer>
         return ResponseEntity.ok("{}");
     }
 
-    public void approvaMateriale(String usernameAnimatore, Integer idContest, Integer idMateriale, boolean stato){
+    @PutMapping("/approva/{idMateriale}")
+    public void approvaMateriale(@RequestBody String usernameAnimatore,@RequestBody  Integer idContest, @PathVariable Integer idMateriale,@RequestBody  boolean stato){
         animatoreService.approvaMateriale(usernameAnimatore,idMateriale,idMateriale,stato);
     }
 

@@ -186,8 +186,8 @@ public class PoiServiceImpl implements PoiService {
         return null;
     }
 
-    public List<MaterialeGenerico> getMaterialiPoi(PuntoInteresse puntoInteresse) {
-        return repository.getMateriali(puntoInteresse.getId());
+    public List<MaterialeGenerico> getMaterialiPoi(Integer idPunto) {
+        return repository.getMateriali(idPunto);
     }
 
     public List<PuntoInteresse> findAll() {

@@ -46,14 +46,6 @@ public class InvitoServiceImpl implements InvitoService {
         return repository.findAll();
     }
 
-    public Invito getLast() {
-        return repository.findAll().getLast();
-    }
-
-    public Invito getFirst() {
-        return repository.findAll().getFirst();
-    }
-
 
     public void deleteAll() {
         repository.deleteAll();

@@ -74,13 +74,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
         return repository.findByComuneNome(nomeComune);
     }
 
-    /*
-    @Override
-    public Contest creaContest(RichiestaCreazioneContestDTO contestDTO){
-        return contestService.creaContest(new Contest(contestDTO));
-    }
 
-     */
 
     @Override
     public Invito invitaContest(String usernameAnimatore, Integer idContest, String invitato) {

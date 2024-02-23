@@ -125,7 +125,7 @@ public class ComuneServiceImpl implements ComuneService {
             }
             return puntiInteresseNelComune;
         } else {
-            return Collections.emptyList(); // Nessun comune trovato con quel nome
+            return Collections.emptyList();
         }
     }
 

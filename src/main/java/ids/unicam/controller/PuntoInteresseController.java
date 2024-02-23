@@ -54,4 +54,9 @@ public class PuntoInteresseController implements ControllerBase<PuntoInteresseDT
     public void condividi(@RequestParam String usernameCuratore,@PathVariable Integer idPunto){
         curatoreService.condividi(usernameCuratore,idPunto);
     }
+
+    @GetMapping("/materiali/{idPunto}")
+    public void getMateriali(@PathVariable Integer idPunto){
+        poiService.getMaterialiPoi(idPunto);
+    }
 }

@@ -36,4 +36,6 @@ public interface PoiService {
     void modificaScadenza(String usernameContributor,Integer idPuntoInteresse, LocalDate expireDate) ;
 
     Stato getStato(int idPuntoInteresse);
+
+    List<MaterialeGenerico> getMaterialiPoi(Integer idPunto);
 }

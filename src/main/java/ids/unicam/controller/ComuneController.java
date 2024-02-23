@@ -1,8 +1,11 @@
 package ids.unicam.controller;
 
 import ids.unicam.Service.ComuneService;
+import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.models.Comune;
 import ids.unicam.models.DTO.RichiestaCreazioneComuneDTO;
+import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
+import ids.unicam.models.attori.Ruolo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,9 +15,11 @@ import org.springframework.web.bind.annotation.*;
 public class  ComuneController implements ControllerBase<RichiestaCreazioneComuneDTO, Integer>{
 
     private final ComuneService comuneService;
+    private final GestorePiattaformaService gestorePiattaformaService;
 
-    public ComuneController(ComuneService comuneService) {
+    public ComuneController(ComuneService comuneService, GestorePiattaformaService gestorePiattaformaService) {
         this.comuneService = comuneService;
+        this.gestorePiattaformaService = gestorePiattaformaService;
     }
 
     @Override
@@ -53,5 +58,10 @@ public class  ComuneController implements ControllerBase<RichiestaCreazioneComun
     public ResponseEntity<?> delete(@PathVariable String nomeComune) {
         comuneService.deleteByNome(nomeComune);
         return ResponseEntity.ok("{}");
+    }
+
+    @PutMapping("/cambioRuolo")
+    public void cambiaRuolo(@RequestBody RichiestaCreazioneContributorDTO contributorDTO, Ruolo ruolo){
+        gestorePiattaformaService.cambiaRuolo(contributorDTO,ruolo);
     }
 }

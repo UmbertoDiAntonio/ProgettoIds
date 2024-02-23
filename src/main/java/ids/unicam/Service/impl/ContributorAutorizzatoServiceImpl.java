@@ -54,32 +54,5 @@ public class ContributorAutorizzatoServiceImpl implements ContributorAutorizzato
         return repository.findByComuneNome(nomeComune);
     }
 
-    /*TODO rimosso
-    @Override
-    public Itinerario aggiungiItinerario(Itinerario itinerario) {
-        return itinerarioServiceImpl.creaItinerario(itinerario);
-    }
-
-
-    @Override
-    @Transactional
-    public boolean aggiungiTappaItinerario(Itinerario itinerario, PuntoInteresse puntoInteresse) {
-        return itinerarioServiceImpl.aggiungiTappa(itinerario, puntoInteresse);
-    }
-
-    @Override
-    @Transactional
-    public void aggiungiTappaItinerario(Itinerario itinerario, PuntoInteresse... puntiInteresse) {
-        for (PuntoInteresse puntoInteresse : puntiInteresse) {
-            aggiungiTappaItinerario(itinerario, puntoInteresse);
-        }
-    }
-
-    @Override
-    public void modificaScadenza(PuntoInteresse puntoInteresse, LocalDate expireDate) {
-        puntoInteresse.setExpireDate(expireDate);
-    }
-
-     */
 
 }

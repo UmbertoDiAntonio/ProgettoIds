@@ -57,18 +57,7 @@ public class ContributorServiceImpl implements ContributorService, Observer {
         return repository.findAll();
     }
 
-    /*TODO rimosso
-    @Override
-    public Itinerario aggiungiItinerario(Itinerario itinerario) {
-        return itinerarioServiceImpl.creaItinerario(itinerario);
-    }
 
-    @Transactional
-    @Override
-    public boolean aggiungiTappaItinerario(Itinerario itinerario, PuntoInteresse puntoInteresse) {
-        return itinerarioServiceImpl.aggiungiTappa(itinerario, puntoInteresse);
-    }
-     */
 
 
     @Override
