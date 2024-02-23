@@ -36,7 +36,11 @@ public class  ComuneController implements ControllerBase<RichiestaCreazioneComun
     @Override
     @GetMapping("/{nomeComune}")
     public ResponseEntity<?> getById(@PathVariable String nomeComune) {
-        return ResponseEntity.ok(comuneService.getComuneByNome(nomeComune));
+        try {
+            return ResponseEntity.ok(comuneService.getComuneByNome(nomeComune));
+        } catch (IllegalArgumentException e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Override

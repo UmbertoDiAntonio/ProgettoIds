@@ -106,7 +106,7 @@ public class ComuneServiceImpl implements ComuneService {
     }
 
     @Override
-    public List<PuntoInteresse> getPuntiInteresseNelComune(String nomeComune) {
+    public List<PuntoInteresse> getPuntiInteresseNelComune(String nomeComune) throws IllegalArgumentException {
         Comune comune = getComuneByNome(nomeComune);
         if (comune != null) {
             List<PuntoInteresse> puntiInteresseNelComune = new ArrayList<>();
