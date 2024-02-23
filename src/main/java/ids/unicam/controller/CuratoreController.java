@@ -6,8 +6,6 @@ import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.attori.Ruolo;
-import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
-import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,9 +50,9 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
     @DeleteMapping("eliminaItinerario")
     public ResponseEntity<?> eliminaItinerario(@RequestParam String usernameCuratore, @RequestParam Integer idItinerario) {
         try {
-            curatoreService.eliminaItinerario(usernameCuratore, idItinerario)
+            curatoreService.eliminaItinerario(usernameCuratore, idItinerario);
             return ResponseEntity.ok("{}");
-        } catch (FuoriComuneException e) {
+        } catch (FuoriComuneException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -64,7 +62,7 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
         try {
             curatoreService.eliminaPuntoInteresse(usernameCuratore, idPuntoInteresse);
             return ResponseEntity.ok("{}");
-        } catch (FuoriComuneException e) {
+        } catch (FuoriComuneException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -74,37 +72,48 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
         try {
             curatoreService.eliminaContest(usernameCuratore, idContest);
             return ResponseEntity.ok("{}");
-        } catch (FuoriComuneException e) {
+        } catch (FuoriComuneException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("valutaPuntoInteresse")
-    public ResponseEntity<PuntoInteresse> valutaPuntoInteresse(@RequestParam String usernameCuratore, @RequestParam Integer idPunto, @RequestParam Boolean stato) {
+    public ResponseEntity<?> valutaPuntoInteresse(@RequestParam String usernameCuratore, @RequestParam Integer idPunto, @RequestParam Boolean stato) {
         try {
             return ResponseEntity.ok(curatoreService.valutaPuntoInteresse(usernameCuratore, idPunto, stato));
-        } catch (FuoriComuneException e) {
+        } catch (FuoriComuneException | IllegalArgumentException | UnsupportedOperationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("valutaMateriale")
-    public ResponseEntity<MaterialeGenerico> valutaMateriale(@RequestParam String usernameCuratore, @RequestParam Integer idMateriale, @RequestParam Boolean stato) {
+    public ResponseEntity<?> valutaMateriale(@RequestParam String usernameCuratore, @RequestParam Integer idMateriale, @RequestParam Boolean stato) {
         try {
             return ResponseEntity.ok(curatoreService.valutaMateriale(usernameCuratore, idMateriale, stato));
-        } catch (FuoriComuneException e) {
+        } catch (FuoriComuneException | IllegalArgumentException | UnsupportedOperationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("segui/{usernameCuratore}")
-    public void subscribeOsservatore(@PathVariable String usernameCuratore, @RequestParam String usernameContributor) {
-        curatoreService.aggiungiOsservatore(usernameCuratore, usernameContributor);
+    public ResponseEntity<?> subscribeOsservatore(@PathVariable String usernameCuratore, @RequestParam String usernameContributor) {
+        try {
+            curatoreService.aggiungiOsservatore(usernameCuratore, usernameContributor);
+            return ResponseEntity.ok("{}");
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("unsuscribe/{usernameCuratore}")
-    public void unsubscibeOsservatore(@PathVariable String usernameCuratore, @RequestParam String usernameContributor) {
-        curatoreService.rimuoviOsservatore(usernameCuratore, usernameContributor);
+    public ResponseEntity<?> unsubscibeOsservatore(@PathVariable String usernameCuratore, @RequestParam String usernameContributor) {
+        try {
+            curatoreService.rimuoviOsservatore(usernameCuratore, usernameContributor);
+            return ResponseEntity.ok("{}");
+
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("getNotifiche/{usernameCuratore}")
