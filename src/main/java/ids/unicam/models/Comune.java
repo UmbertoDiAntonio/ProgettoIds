@@ -35,8 +35,7 @@ public class Comune {
      * @throws IllegalArgumentException se il nome del comune non corrisponde a nessun comune
      * @throws RuntimeException         se non è possibile raggiungere il sistema OSM
      */
-    public Comune(RichiestaCreazioneComuneDTO comuneDTO) {
-        try {
+    public Comune(RichiestaCreazioneComuneDTO comuneDTO) throws ConnessioneFallitaException {
             this.posizione = RichiestaOSM.getCoordinateDaComune(comuneDTO.getNome());
             if (posizione == null) {
                 logger.error("Coordinate comune nulle");
@@ -48,10 +47,6 @@ public class Comune {
 
             if (!this.nome.equalsIgnoreCase(comuneDTO.getNome()))
                 throw new IllegalArgumentException("Il nome del comune ricercato non corrisponde con nessun comune reale");
-
-        } catch (ConnessioneFallitaException e) {
-            logger.error("Connessione fallita durante il recupero delle coordinate o del nome del comune da OSM", e);
-        }
     }
 
 

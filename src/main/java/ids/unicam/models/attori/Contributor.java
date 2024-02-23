@@ -1,5 +1,6 @@
 package ids.unicam.models.attori;
 
+import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.models.Comune;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import jakarta.persistence.*;
@@ -19,9 +20,9 @@ public class Contributor extends TuristaAutenticato {
     }
 
 
-    public Contributor(RichiestaCreazioneContributorDTO contributorDTO) {
+    public Contributor(RichiestaCreazioneContributorDTO contributorDTO) throws ConnessioneFallitaException {
         super(contributorDTO.getTuristaDTO());
-        this.comune = contributorDTO.getComune();
+        this.comune = new Comune(contributorDTO.getComune());
     }
 
     @Override

@@ -4,8 +4,10 @@ import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.Service.TuristaAutenticatoService;
 import ids.unicam.models.DTO.InvitoDTO;
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
+import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.notifiche.Notifica;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +39,8 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
 
     @Override
     public ResponseEntity<?> create(TuristaAutenticatoDTO turistaDTO) {
-        return ResponseEntity.ok(gestorePiattaformaService.registraTurista(turistaDTO));
+        TuristaAutenticato turista = gestorePiattaformaService.registraTurista(turistaDTO);
+        return new ResponseEntity<> (turista, HttpStatus.OK);
     }
 
     @Override

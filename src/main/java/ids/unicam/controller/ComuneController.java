@@ -2,12 +2,16 @@ package ids.unicam.controller;
 
 import ids.unicam.Service.ComuneService;
 import ids.unicam.Service.GestorePiattaformaService;
+import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.models.Comune;
 import ids.unicam.models.DTO.RichiestaCreazioneComuneDTO;
-import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.attori.Ruolo;
+import ids.unicam.models.attori.TuristaAutenticato;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+
 
 
 @RestController
@@ -40,12 +44,21 @@ public class  ComuneController implements ControllerBase<RichiestaCreazioneComun
     @Override
 
     public ResponseEntity<?> create(RichiestaCreazioneComuneDTO comuneDTO) {
-        return ResponseEntity.ok(comuneService.creaComune(new Comune(comuneDTO)));
+        try {
+            return ResponseEntity.ok(comuneService.creaComune(new Comune(comuneDTO)));
+        } catch (ConnessioneFallitaException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public ResponseEntity<?> update(RichiestaCreazioneComuneDTO comuneDTO, Integer id) {
-        return ResponseEntity.ok(comuneService.update(new Comune(comuneDTO), id));
+        try {
+            Comune comune = comuneService.update(new Comune(comuneDTO), id);
+            return new ResponseEntity<>(comune, HttpStatus.OK);
+        } catch (ConnessioneFallitaException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+        }
     }
 
     @Override
@@ -62,6 +75,11 @@ public class  ComuneController implements ControllerBase<RichiestaCreazioneComun
 
     @PutMapping("/cambioRuolo/{username}/{ruolo}")
     public ResponseEntity<?> cambiaRuolo(@PathVariable String username,@PathVariable  Ruolo ruolo){
-        return ResponseEntity.ok(gestorePiattaformaService.cambiaRuolo(username,ruolo));
+        try {
+            TuristaAutenticato nuovo = gestorePiattaformaService.cambiaRuolo(username, ruolo);
+            return new ResponseEntity<>(nuovo,HttpStatus.OK);
+        } catch (ConnessioneFallitaException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }

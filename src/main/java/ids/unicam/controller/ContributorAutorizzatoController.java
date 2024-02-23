@@ -2,7 +2,9 @@ package ids.unicam.controller;
 
 import ids.unicam.Service.ContributorAutorizzatoService;
 import ids.unicam.Service.GestorePiattaformaService;
+import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +33,11 @@ public class ContributorAutorizzatoController implements ControllerBase<Richiest
 
     @Override
     public ResponseEntity<?> create(RichiestaCreazioneContributorDTO contributorDTO) {
-        return ResponseEntity.ok(gestorePiattaformaService.registraContributor(contributorDTO));
+        try {
+            return new ResponseEntity<>(gestorePiattaformaService.registraContributor(contributorDTO), HttpStatus.OK);
+        } catch (ConnessioneFallitaException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Override

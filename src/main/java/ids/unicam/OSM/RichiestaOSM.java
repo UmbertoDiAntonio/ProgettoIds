@@ -20,6 +20,7 @@ public class RichiestaOSM {
 
     /**
      * Ottieni il nome del comune alle coordinate inviate
+     *
      * @param punto il punto di cui vogliamo avere informazioni
      * @return il nome del comune a cui appartiene il punto, o null se la connessione è fallita
      */
@@ -27,7 +28,7 @@ public class RichiestaOSM {
         try {
             String apiUrl = buildReverseApiUrl(punto);
             String jsonResponse = richiestaHttp(apiUrl);
-            if(jsonResponse == null)
+            if (jsonResponse == null)
                 return null;
             JsonNode jsonNode = new ObjectMapper().readTree(jsonResponse);
             return jsonNode.path("address").path(jsonNode.path("address").fieldNames().next()).asText();
@@ -44,14 +45,16 @@ public class RichiestaOSM {
      * @return la latitudine e longitudine del centro del comune
      */
     public static @Nullable Punto getCoordinateDaComune(String nome) throws ConnessioneFallitaException {
+        String apiUrl = buildSearchApiUrl(nome);
         try {
-            String apiUrl = buildSearchApiUrl(nome);
             String jsonResponse = richiestaHttp(apiUrl);
-            if(jsonResponse == null)
+
+            if (jsonResponse == null)
                 return null;
             ArrayNode jsonArray = (ArrayNode) new ObjectMapper().readTree(jsonResponse);
+
             if (jsonArray.isEmpty()) {
-                logger.error("la ricerca per il Comune: "+nome+" non ha prodotto risultati");
+                logger.error("la ricerca per il Comune: " + nome + " non ha prodotto risultati");
                 return null;
             }
             JsonNode firstElement = jsonArray.get(0);
@@ -81,7 +84,7 @@ public class RichiestaOSM {
             StringBuilder response = new StringBuilder();
             String line;
 
-            if(reader == null)
+            if (reader == null)
                 return null;
             while ((line = reader.readLine()) != null) {
                 response.append(line);

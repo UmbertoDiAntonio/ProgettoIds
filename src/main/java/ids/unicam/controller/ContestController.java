@@ -3,12 +3,13 @@ package ids.unicam.controller;
 
 import ids.unicam.Service.AnimatoreService;
 import ids.unicam.Service.ContestService;
+import ids.unicam.exception.ContestException;
 import ids.unicam.models.DTO.RichiestaCreazioneContestDTO;
 import ids.unicam.models.Invito;
 import ids.unicam.models.contenuti.Contest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/contest")
@@ -47,9 +48,13 @@ public class ContestController implements ControllerBase<RichiestaCreazioneConte
         return ResponseEntity.ok("{}");
     }
 
-    public Invito invita(String idAnimatore, Integer idContest, String usernameInvitato){
-        return animatoreService.invitaContest(idAnimatore,idContest,usernameInvitato);
-
+    @PutMapping("/invita/{idContest}")
+    public ResponseEntity<?> invita(@RequestBody String idAnimatore, @RequestParam Integer idContest, @RequestBody String usernameInvitato){
+        try {
+            Invito invito = animatoreService.invitaContest(idAnimatore, idContest, usernameInvitato);
+            return new ResponseEntity<>(invito, HttpStatus.OK);
+        } catch (ContestException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
-
 }

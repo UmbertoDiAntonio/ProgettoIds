@@ -1,6 +1,6 @@
 package ids.unicam.exception;
 
-public class ContestException extends RuntimeException {
+public class ContestException extends Exception {
     public ContestException() {
         super();
     }

@@ -1,5 +1,6 @@
 package ids.unicam.Service;
 
+import ids.unicam.exception.ContestException;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
@@ -22,7 +23,7 @@ public interface ContestService {
 
     List<MaterialeGenerico> getMaterialiContest(Contest contest);
 
-    void aggiungiMateriale(MaterialeGenerico materialeGenerico, Contest contest, TuristaAutenticato turistaAutenticato);
+    void aggiungiMateriale(MaterialeGenerico materialeGenerico, Contest contest, TuristaAutenticato turistaAutenticato) throws ContestException;
 
     void aggiungiPartecipante(Contest contest, TuristaAutenticato turistaAutenticato);
 

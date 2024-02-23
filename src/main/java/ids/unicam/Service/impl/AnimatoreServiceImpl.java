@@ -77,7 +77,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
 
 
     @Override
-    public Invito invitaContest(String usernameAnimatore, Integer idContest, String invitato) {
+    public Invito invitaContest(String usernameAnimatore, Integer idContest, String invitato) throws ContestException {
         Optional<Animatore> oAnimatore = getById(usernameAnimatore);
         if (oAnimatore.isPresent()) {
             Animatore animatore = oAnimatore.get();

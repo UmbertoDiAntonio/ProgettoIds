@@ -55,9 +55,6 @@ public class Main implements ApplicationRunner {
             } else if (os.contains("nix") || os.contains("nux")) {
                 // Linux o Unix
                 rt.exec("xdg-open " + url);
-            } else {
-                // Sistema operativo non supportato
-                System.out.println("Apertura URL non supportata su questo sistema operativo.");
             }
         } catch (IOException e) {
             e.printStackTrace();
