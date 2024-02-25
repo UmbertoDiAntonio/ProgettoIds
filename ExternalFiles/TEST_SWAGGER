@@ -1,23 +1,23 @@
 PROBLEMI PROGETTO IDS
 
 MATERIALE CONTROLLER:
-- PUT
+- PUT(approva)  --> DA TESTARE FUNZIONAMENTO
 - POST          --> DA FARE COMPLETAMENTE
-- GET
-- DELETE
-- GETALL
+- GET           --> DA TESTARE FUNZIONAMENTO
+- DELETE        --> DA TESTARE FUNZIONAMENTO
+- GETALL        --> DA TESTARE FUNZIONAMENTO
 
 
 CONTEST CONTROLLER
-- PUT
+- PUT(invita)   --> DA RIVEDERE IL FUNZIONAMENTO
 - POST          --> DA RIFARE ASSOLUTAMENTE
 - GET           -->
-- DELETE
-- GETALL
+- DELETE        --> DA TESTARE FUNZIONAMENTO
+- GETALL        --> DA TESTARE FUNZIONAMENTO
 
 
 COMUNE CONTROLLER
-- PUT(cambiaRuolo)  -> funziona
+- PUT(cambiaRuolo)  -> DA RIVEDERE
 - POST              -> funziona
 - GET               -> funziona
 - DELETE            -> funziona
@@ -40,6 +40,7 @@ PUNTO DI INTERESSE CONTROLLER
 - PUT(setScadenza)
 - PUT(condividi)
 - POST                      --> da inserire menù a tendina per scegliere la tipologia di punto di interesse
+                                creatore, inserire solo username
 - GET
 - DELETE
 - GET(materiali(idPunto))
@@ -48,12 +49,24 @@ PUNTO DI INTERESSE CONTROLLER
 ITINERARIO CONTROLLER
 - PUT(rimuoviTappa)
 - PUT(aggiungiTappa)
-- POST
+- POST                      --> da vedere che dati far inserire, se solamente il nome del comune e un nome dell'itinerario
 - GET
 - DELETE
 - GETALL
 
 CURATORE CONTROLLER
+- PUT(valutaPuntoInteresse)
+- PUT(valutaMateriale)
+- PUT(unsuscribe)
+- PUT(segui)
+- PUT(getNotifiche)             --> da cambiare in GETTERMAPPING?
+- POST                          -->
+- GET(username)
+- DELETE(username)
+- GETALL
+- DELETE(eliminaPuntoInteresse)
+- DELETE(eliminaItinerario)
+- DELETE(eliminaContest)
 
 
 CONTRIBUTOR CONTROLLER
@@ -78,7 +91,7 @@ ANIMATORE CONTROLLER
 TURISTA CONTROLLER
 - GET(tagDTO) -> da rivedere, troppe informazioni richieste
 - GET(report) -> da rivedere, troppe informazioni richieste
-- GET(accedi) -> da eliminare
+
 
 
 

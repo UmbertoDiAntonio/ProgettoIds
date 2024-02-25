@@ -2,7 +2,6 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.MaterialeRepository;
 import ids.unicam.Service.MaterialeService;
-import ids.unicam.models.DTO.MaterialeDTO;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import org.springframework.beans.factory.annotation.Autowired;

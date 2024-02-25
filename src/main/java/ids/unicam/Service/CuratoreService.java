@@ -1,7 +1,6 @@
 package ids.unicam.Service;
 
 import ids.unicam.exception.FuoriComuneException;
-import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.attori.Curatore;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.notifiche.Notifica;

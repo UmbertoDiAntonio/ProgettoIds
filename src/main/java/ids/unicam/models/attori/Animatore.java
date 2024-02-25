@@ -7,8 +7,6 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 
-import java.io.IOException;
-
 @Entity
 @Table(name="ANIMATORI")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)

@@ -2,7 +2,6 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.ContributorRepository;
 import ids.unicam.Service.ContributorService;
-import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.Observer;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.contenuti.notifiche.Notifica;

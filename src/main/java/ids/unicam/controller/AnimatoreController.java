@@ -45,6 +45,6 @@ public class AnimatoreController implements ControllerBase<RichiestaCreazioneCon
     @DeleteMapping("/{username}")
     public ResponseEntity<?> delete(@PathVariable String username) {
         animatoreService.deleteById(username);
-        return ResponseEntity.ok("Utente: \'"+username+ "\' eliminato");
+        return ResponseEntity.ok("Utente: '"+username+ "' eliminato");
     }
 }

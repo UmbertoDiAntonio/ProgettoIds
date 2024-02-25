@@ -4,12 +4,9 @@ import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.Service.TuristaAutenticatoService;
 import ids.unicam.models.DTO.InvitoDTO;
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
-import ids.unicam.models.contenuti.notifiche.Notifica;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/TuristaAutenticato")

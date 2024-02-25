@@ -45,6 +45,6 @@ public class ContributorAutorizzatoController implements ControllerBase<Richiest
     @DeleteMapping("/{username}")
     public ResponseEntity<?> delete(String username) {
         contributorAutorizzatoService.deleteById(username);
-        return ResponseEntity.ok("Utente: \'"+username+ "\' eliminato");
+        return ResponseEntity.ok("Utente: '"+username+ "' eliminato");
     }
 }

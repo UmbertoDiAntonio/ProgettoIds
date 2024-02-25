@@ -1,7 +1,6 @@
 package ids.unicam.models.DTO;
 
 
-import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

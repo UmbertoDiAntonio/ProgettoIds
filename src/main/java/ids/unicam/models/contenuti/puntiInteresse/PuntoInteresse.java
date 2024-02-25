@@ -1,6 +1,5 @@
 package ids.unicam.models.contenuti.puntiInteresse;
 
-import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Comune;
 import ids.unicam.models.DTO.PuntoInteresseDTO;
 import ids.unicam.models.Expirable;

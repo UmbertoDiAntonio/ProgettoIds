@@ -2,14 +2,11 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.Service.TuristaService;
 import ids.unicam.models.DTO.PuntoInteresseDTO;
-import ids.unicam.models.DTO.RichiestaCreazioneTagDTO;
-import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Taggable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TuristaServiceImpl implements TuristaService {

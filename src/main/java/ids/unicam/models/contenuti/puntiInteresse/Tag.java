@@ -1,7 +1,5 @@
 package ids.unicam.models.contenuti.puntiInteresse;
 
-import ids.unicam.exception.FuoriComuneException;
-import ids.unicam.models.DTO.RichiestaCreazioneTagDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

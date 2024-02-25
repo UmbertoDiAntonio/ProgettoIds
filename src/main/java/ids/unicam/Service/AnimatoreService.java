@@ -1,7 +1,6 @@
 package ids.unicam.Service;
 
 import ids.unicam.exception.ContestException;
-import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.Animatore;
 

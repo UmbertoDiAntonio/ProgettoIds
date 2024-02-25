@@ -2,7 +2,6 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.ContributorAutorizzatoRepository;
 import ids.unicam.Service.ContributorAutorizzatoService;
-import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.attori.ContributorAutorizzato;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

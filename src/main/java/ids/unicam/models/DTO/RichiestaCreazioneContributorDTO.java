@@ -1,6 +1,5 @@
 package ids.unicam.models.DTO;
 
-import ids.unicam.models.attori.Ruolo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

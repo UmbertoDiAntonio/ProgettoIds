@@ -51,7 +51,7 @@ public class ContributorController implements ControllerBase<RichiestaCreazioneC
     @DeleteMapping("/{username}")
     public ResponseEntity<?> delete(@PathVariable String username) {
         contributorService.deleteById(username);
-        return ResponseEntity.ok("Utente: \'"+username+ "\' eliminato");
+        return ResponseEntity.ok("Utente: '"+username+ "' eliminato");
     }
 
 

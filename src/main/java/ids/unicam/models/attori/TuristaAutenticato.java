@@ -4,7 +4,10 @@ import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.persistence.*;
 
-import java.util.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "TURISTI")
@@ -16,7 +19,7 @@ public class TuristaAutenticato extends Turista {
     @Id
     private String username="";
     private String cognome ="";
-    private Date dataNascita = new Date();
+    private LocalDate dataNascita;
     private String password="";
     @OneToMany(fetch = FetchType.EAGER)
     private final List<PuntoInteresse> preferiti = new ArrayList<>();
@@ -33,7 +36,7 @@ public class TuristaAutenticato extends Turista {
         return cognome;
     }
 
-    public Date getDataNascita() {
+    public LocalDate getDataNascita() {
         return dataNascita;
     }
 

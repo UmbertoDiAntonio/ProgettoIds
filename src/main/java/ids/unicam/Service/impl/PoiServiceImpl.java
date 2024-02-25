@@ -3,7 +3,6 @@ package ids.unicam.Service.impl;
 import ids.unicam.DataBase.Repository.PoiRepository;
 import ids.unicam.Service.PoiService;
 import ids.unicam.exception.FuoriComuneException;
-import ids.unicam.models.DTO.RichiestaCreazioneTagDTO;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.ContributorAutorizzato;
 import ids.unicam.models.attori.TuristaAutenticato;
