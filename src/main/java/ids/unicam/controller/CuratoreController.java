@@ -47,7 +47,7 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
     @DeleteMapping("/{username}")
     public ResponseEntity<?> delete(@PathVariable String username) {
         curatoreService.deleteById(username);
-        return ResponseEntity.ok("Utente: \'"+username+ "\' eliminato");
+        return ResponseEntity.ok("Utente: '" + username + "' eliminato");
     }
 
     @DeleteMapping("eliminaItinerario")
@@ -119,9 +119,13 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
         }
     }
 
-    @PutMapping("getNotifiche/{usernameCuratore}")
-    public void getNotifiche(@PathVariable String usernameCuratore) {
-        curatoreService.getNotifiche(usernameCuratore);
+    @GetMapping("getNotifiche/{usernameCuratore}")
+    public ResponseEntity<?> getNotifiche(@PathVariable String usernameCuratore) {
+        try {
+            return ResponseEntity.ok(curatoreService.getNotifiche(usernameCuratore));
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

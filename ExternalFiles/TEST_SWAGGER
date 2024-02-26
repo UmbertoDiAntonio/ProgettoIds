@@ -10,7 +10,7 @@ MATERIALE CONTROLLER:
 
 CONTEST CONTROLLER
 - PUT(invita)   --> DA RIVEDERE IL FUNZIONAMENTO
-- POST          --> DA RIFARE ASSOLUTAMENTE
+- POST          -->
 - GET           -->
 - DELETE        --> DA TESTARE FUNZIONAMENTO
 - GETALL        --> DA TESTARE FUNZIONAMENTO
@@ -27,8 +27,8 @@ COMUNE CONTROLLER
 TURISTA AUTENTICATO CONTROLLER
 - PUT(partecipaContest)
 - PUT(aggiungiPreferito)
-- PUT(accettaInvito)            --> da richiedere solamente id dell'invito e username del turista
-- POST                          --> MANCA IL PARAMETRO nomeComune da richiedere
+- PUT(accettaInvito)            -->
+- POST                          -->
 - GET
 - DELETE
 - DELETE(rimuoviPreferito)
@@ -40,26 +40,26 @@ PUNTO DI INTERESSE CONTROLLER
 - PUT(setScadenza)
 - PUT(condividi)
 - POST                      --> da inserire menù a tendina per scegliere la tipologia di punto di interesse
-                                creatore, inserire solo username
+                                creatore, inserire solo username del creatore
 - GET
 - DELETE
 - GET(materiali(idPunto))
 - GETALL
 
 ITINERARIO CONTROLLER
-- PUT(rimuoviTappa)
-- PUT(aggiungiTappa)
-- POST                      --> da vedere che dati far inserire, se solamente il nome del comune e un nome dell'itinerario
-- GET
-- DELETE
-- GETALL
+- PUT(rimuoviTappa)         --> funziona
+- PUT(aggiungiTappa)        --> funziona
+- POST                      --> funziona
+- GET                       --> funziona
+- DELETE                    --> funziona
+- GETALL                    --> funziona
 
 CURATORE CONTROLLER
 - PUT(valutaPuntoInteresse)
 - PUT(valutaMateriale)
 - PUT(unsuscribe)
 - PUT(segui)
-- PUT(getNotifiche)             --> da cambiare in GETTERMAPPING?
+- PUT(getNotifiche)             -->
 - POST                          -->
 - GET(username)
 - DELETE(username)

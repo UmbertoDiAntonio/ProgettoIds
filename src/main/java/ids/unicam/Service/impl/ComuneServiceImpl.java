@@ -98,17 +98,15 @@ public class ComuneServiceImpl implements ComuneService {
     }
 
     @Override
-    public @Nullable Comune getComuneByNome(String nomeComune) throws IllegalArgumentException {
-        Optional<Comune> oComune = comuneRepository.findComuneByNomeIgnoreCase(nomeComune);
-        if(oComune.isEmpty())
-            throw new IllegalArgumentException("nome comune non valido");
-        return oComune.get();
+    public Optional<Comune> getComuneByNome(String nomeComune) throws IllegalArgumentException {
+        return comuneRepository.findComuneByNomeIgnoreCase(nomeComune);
     }
 
     @Override
     public List<PuntoInteresse> getPuntiInteresseNelComune(String nomeComune) throws IllegalArgumentException {
-        Comune comune = getComuneByNome(nomeComune);
-        if (comune != null) {
+        Optional<Comune> oComune = getComuneByNome(nomeComune);
+        if (oComune.isPresent()) {
+            Comune comune = oComune.get();
             List<PuntoInteresse> puntiInteresseNelComune = new ArrayList<>();
             List<PuntoInteresse> tuttiPuntiInteresse = poiServiceImpl.findActive();
             for (PuntoInteresse puntoInteresse : tuttiPuntiInteresse) {

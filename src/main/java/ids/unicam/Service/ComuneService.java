@@ -23,7 +23,7 @@ public interface ComuneService {
 
     void rimuoviContributor(String id);
 
-    @Nullable Comune getComuneByNome(String nomeComune) throws IllegalArgumentException;
+    Optional<Comune> getComuneByNome(String nomeComune) throws IllegalArgumentException;
 
     List<PuntoInteresse> getPuntiInteresseNelComune(String nomeComune)  throws IllegalArgumentException;
 

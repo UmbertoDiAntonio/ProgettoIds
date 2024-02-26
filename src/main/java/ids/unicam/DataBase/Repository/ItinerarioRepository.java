@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ItinerarioRepository extends JpaRepository<Itinerario,Integer> {
@@ -20,6 +21,6 @@ public interface ItinerarioRepository extends JpaRepository<Itinerario,Integer> 
     @Query("SELECT i.percorso FROM Itinerario i  Where i.id = :id")
     List<PuntoInteresse> findTappeByItinerario(@Param("id") int id);
 
-
+    Optional<Itinerario> findByNome(String nome);
 
 }

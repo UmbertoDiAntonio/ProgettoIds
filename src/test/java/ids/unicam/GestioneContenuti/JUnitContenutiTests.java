@@ -244,7 +244,7 @@ public class JUnitContenutiTests {
             PuntoInteresse puntoInteresse2 = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("centro Commerciale", new Punto(comune.getPosizione().getLatitudine() - 0.02, comune.getPosizione().getLongitudine() - 0.02), new Orario(), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributorAutorizzato)));
 
 
-            Itinerario itinerario1 = itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(comune, "girodeibar")));
+            Itinerario itinerario1 = itinerarioService.creaItinerario(contributorAutorizzato.getUsername(), "girodeibar");
 
             assertEquals(numeroItinerariIniziale + 1, itinerarioService.findAllByComune(comune).size());
             assertEquals(0, itinerarioService.getNumeroTappe(itinerario1));
@@ -439,12 +439,12 @@ public class JUnitContenutiTests {
 
         int numeroItinerariComune = itinerarioService.findAllByComune(comune).size();
         Comune finalComune = comune;
-        itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(finalComune, "girodeibar")));
+        itinerarioService.creaItinerario(curatore.getUsername(), "girodeibar");
         assertEquals(numeroItinerariComune+1, itinerarioService.findAllByComune(comune).size());
 
         curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse1.getId(), Stato.APPROVATO.asBoolean());
 
-        Itinerario itinerario2 = itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(comune, "giro dei bar")));
+        Itinerario itinerario2 = itinerarioService.creaItinerario(curatore.getUsername(), "giro dei bar");
         assertEquals(numeroItinerariComune + 2, itinerarioService.findAllByComune(comune).size());
         curatoreServiceImpl.eliminaItinerario(curatore.getUsername(), itinerario2.getId());
         assertEquals(numeroItinerariComune +1, itinerarioService.findAllByComune(comune).size());
@@ -456,7 +456,7 @@ public class JUnitContenutiTests {
         curatoreServiceImpl.eliminaContest(curatore.getUsername(), contest.getId());
         assertEquals(numeroContest, contestService.getContestByCreatore(animatore).size());
 
-        Itinerario itinerario3 = itinerarioService.creaItinerario(new Itinerario(new RichiestaCreazioneItinerarioDTO(comune, "girodeibar2")));
+        Itinerario itinerario3 = itinerarioService.creaItinerario(curatore.getUsername(), "girodeibar2");
         assertEquals(0, itinerarioService.getNumeroTappe(itinerario3));
         assertTrue(itinerarioService.aggiungiTappa(contributor.getUsername(), itinerario3.getId(), puntoInt2.getId()));
         assertEquals(1, itinerarioService.getNumeroTappe(itinerario3));

@@ -2,7 +2,9 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.ItinerarioRepository;
 import ids.unicam.Service.ItinerarioService;
+import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Comune;
+import ids.unicam.models.DTO.RichiestaCreazioneItinerarioDTO;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
@@ -28,6 +30,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
         this.repository = repository;
         this.poiServiceImpl = poiServiceImpl;
         this.contributorService = contributorService;
+
     }
 
 
@@ -42,34 +45,53 @@ public class ItinerarioServiceImpl implements ItinerarioService {
 
     @Override
     @Transactional
-    public boolean aggiungiTappa(String usernameContributor, Integer idItinerario, Integer idPuntoInteresse) throws IllegalArgumentException{
-        Optional<PuntoInteresse> oPoi = poiServiceImpl.findById(idPuntoInteresse);
-        if (oPoi.isPresent()) {
-            PuntoInteresse puntoInteresse = oPoi.get();
-            Optional<Itinerario> oItinerario = getById(idItinerario);
-            if (oItinerario.isPresent()) {
-                Itinerario itinerario = oItinerario.get();
-                if (itinerario.getComune().equals(puntoInteresse.getComune())) {
-                    poiServiceImpl.save(puntoInteresse);
-                    itinerario.getPercorso().add(puntoInteresse);
-                    save(itinerario);
-                    return true;
+    public boolean aggiungiTappa(String usernameContributor, Integer idItinerario, Integer idPuntoInteresse) throws IllegalArgumentException, FuoriComuneException {
+        Optional<Contributor> oContributor = contributorService.getById(usernameContributor);
+        if (oContributor.isPresent()) {
+            Contributor contributor = oContributor.get();
+            Optional<PuntoInteresse> oPoi = poiServiceImpl.findById(idPuntoInteresse);
+            if (oPoi.isPresent()) {
+                PuntoInteresse puntoInteresse = oPoi.get();
+                Optional<Itinerario> oItinerario = getById(idItinerario);
+                if (oItinerario.isPresent()) {
+                    Itinerario itinerario = oItinerario.get();
+                    if (contributor.getComune().getNome().equals(itinerario.getComune().getNome())) {
+                        if (itinerario.getComune().equals(puntoInteresse.getComune())) {
+                            if (!itinerario.getPercorso().contains(puntoInteresse)) {
+
+                                poiServiceImpl.save(puntoInteresse);
+                                itinerario.getPercorso().add(puntoInteresse);
+                                save(itinerario);
+                                return true;
+                            } else {
+                                logger.error("il punto di interesse e' gia' una tappa dell'itinerario");
+                                throw new IllegalArgumentException("il punto di interesse e' gia' una tappa dell'itinerario");
+                            }
+                        } else {
+                            logger.error("il punto di interesse e' fuori dall'itinerario");
+                            throw new IllegalArgumentException("il punto di interesse e' fuori dall'itinerario");
+                        }
+                    } else {
+                        logger.error("il contributor non fa parte del comune dell'itinerario");
+                        throw new FuoriComuneException("il contributor non fa parte del comune dell'itinerario");
+                    }
                 } else {
-                    logger.error("il punto di interesse e' fuori dall'itinerario");
-                    throw new IllegalArgumentException("il punto di interesse e' fuori dall'itinerario");
+                    logger.error("id Itinerario non valido");
+                    throw new IllegalArgumentException("id itinerario non valido");
                 }
             } else {
-                logger.error("id Itinerario non valido");
-                throw new IllegalArgumentException("id itinerario non valido");
+                logger.error("id Punto Interesse non valido");
+                throw new IllegalArgumentException("id Punto Interesse non valido");
             }
         } else {
-            logger.error("id Punto Interesse non valido");
-            throw new IllegalArgumentException("id Punto Interesse non valido");
+            logger.error("username non e' non valido");
+            throw new IllegalArgumentException("username non e' non valido");
         }
     }
 
     @Override
-    public void aggiungiTappa(String usernameContributor, Integer idItinerario, Integer... idPuntiInteresse) {
+    public void aggiungiTappa(String usernameContributor, Integer idItinerario, Integer... idPuntiInteresse) throws
+            FuoriComuneException {
         Optional<Itinerario> oItinerario = getById(idItinerario);
         if (oItinerario.isPresent()) {
             Itinerario itinerario = oItinerario.get();
@@ -81,7 +103,8 @@ public class ItinerarioServiceImpl implements ItinerarioService {
 
 
     @Override
-    public Itinerario rimuoviTappa(String usernameContributor, Integer idItinerario, Integer idPuntoInteresse)throws  IllegalArgumentException {
+    public Itinerario rimuoviTappa(String usernameContributor, Integer idItinerario, Integer idPuntoInteresse) throws
+            IllegalArgumentException {
         Optional<Contributor> oContributor = contributorService.getById(usernameContributor);
         if (oContributor.isPresent()) {
             Contributor contributor = oContributor.get();
@@ -125,8 +148,29 @@ public class ItinerarioServiceImpl implements ItinerarioService {
     }
 
     @Override
-    public Itinerario creaItinerario(Itinerario itinerario)  {
-        return save(itinerario);
+    public Itinerario creaItinerario(String usernameCreatore, String nomeItinerario) throws
+            IllegalArgumentException {
+        Optional<Itinerario> oItinerario = getByNome(nomeItinerario);
+        Optional<Contributor> oContributor = contributorService.getById(usernameCreatore);
+        if (oContributor.isPresent()) {
+            Comune comune = oContributor.get().getComune();
+            if (oItinerario.isPresent()) {
+                Itinerario itinerario = oItinerario.get();
+                if (itinerario.getComune().getNome().equals(comune.getNome())) {
+                    logger.error("L'itinerario esiste gia' nel comune");
+                    throw new IllegalArgumentException("L'itinerario esiste gia' nel comune");
+                }
+            }
+
+            return save(new Itinerario(new RichiestaCreazioneItinerarioDTO(comune, nomeItinerario)));
+        } else {
+            logger.error("Il contributor non e' valido");
+            throw new IllegalArgumentException("Il contributor non e' valido");
+        }
+    }
+
+    public Optional<Itinerario> getByNome(String nome) {
+        return repository.findByNome(nome);
     }
 
     @Override
