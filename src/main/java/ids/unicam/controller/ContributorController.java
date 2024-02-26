@@ -56,8 +56,8 @@ public class ContributorController implements ControllerBase<RichiestaCreazioneC
 
 
     @PutMapping("/accettaInvito")
-    public ResponseEntity<?> accettaInvito(@RequestParam TuristaAutenticatoDTO turistaDTO, @RequestParam InvitoDTO invitoDTO) {
-        return turistaAutenticatoController.accettaInvito(turistaDTO, invitoDTO);
+    public ResponseEntity<?> accettaInvito(@RequestParam String usernameTurista, @RequestParam Integer idInvito) {
+        return turistaAutenticatoController.accettaInvito(usernameTurista, idInvito);
     }
 
 

@@ -5,6 +5,7 @@ import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.Invito;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface InvitoService {
 
@@ -13,4 +14,6 @@ public interface InvitoService {
     boolean isValid(InvitoDTO invitoDTO) ;
 
     List<Invito> getInvitiRicevuti(TuristaAutenticatoDTO turistaDTO) ;
+
+    Optional<Invito> findById(int id);
 }

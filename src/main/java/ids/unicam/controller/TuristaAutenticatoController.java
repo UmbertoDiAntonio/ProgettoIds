@@ -1,12 +1,17 @@
 package ids.unicam.controller;
 
 import ids.unicam.Service.GestorePiattaformaService;
+import ids.unicam.Service.InvitoService;
 import ids.unicam.Service.TuristaAutenticatoService;
 import ids.unicam.models.DTO.InvitoDTO;
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
+import ids.unicam.models.Invito;
+import ids.unicam.models.attori.TuristaAutenticato;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/TuristaAutenticato")
@@ -14,10 +19,12 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
 
     private final TuristaAutenticatoService turistaAutenticatoService;
     private final GestorePiattaformaService gestorePiattaformaService;
+    private final InvitoService invitoService;
 
-    public TuristaAutenticatoController(TuristaAutenticatoService turistaAutenticatoService, GestorePiattaformaService gestorePiattaformaService) {
+    public TuristaAutenticatoController(TuristaAutenticatoService turistaAutenticatoService, GestorePiattaformaService gestorePiattaformaService, InvitoService invitoService) {
         this.turistaAutenticatoService = turistaAutenticatoService;
         this.gestorePiattaformaService = gestorePiattaformaService;
+        this.invitoService = invitoService;
     }
 
 
@@ -50,8 +57,18 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
 
 
     @PutMapping("/accettaInvito")
-    public ResponseEntity<?> accettaInvito(@RequestParam TuristaAutenticatoDTO turistaDTO, @RequestParam InvitoDTO invitoDTO) {
-        turistaAutenticatoService.accettaInvitoContest(turistaDTO, invitoDTO);
+    public ResponseEntity<?> accettaInvito(@RequestParam String usernameTurista, @RequestParam Integer idInvito) {
+        Optional<TuristaAutenticato> oTurista = turistaAutenticatoService.getById(usernameTurista);
+        if(oTurista.isEmpty()){
+            return ResponseEntity.ok("username turista non valido");
+        }
+        TuristaAutenticato turista = oTurista.get();
+        Optional<Invito> oInvito = invitoService.findById(idInvito);
+        if(oInvito.isEmpty()){
+            return ResponseEntity.ok("id invito non valido");
+        }
+        Invito invito = oInvito.get();
+        turistaAutenticatoService.accettaInvitoContest(new TuristaAutenticatoDTO(turista), new InvitoDTO(invito.getContest(),invito.getInvitato()));
         return ResponseEntity.ok("{}");
     }
 
