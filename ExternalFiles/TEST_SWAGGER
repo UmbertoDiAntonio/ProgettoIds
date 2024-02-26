@@ -2,7 +2,7 @@ PROBLEMI PROGETTO IDS
 
 MATERIALE CONTROLLER:
 - PUT(approva)  --> DA TESTARE FUNZIONAMENTO
-- POST          --> DA FARE COMPLETAMENTE
+- POST          --> DA RI-FARE COMPLETAMENTE
 - GET           --> DA TESTARE FUNZIONAMENTO
 - DELETE        --> DA TESTARE FUNZIONAMENTO
 - GETALL        --> DA TESTARE FUNZIONAMENTO
@@ -28,7 +28,7 @@ TURISTA AUTENTICATO CONTROLLER
 - PUT(partecipaContest)
 - PUT(aggiungiPreferito)
 - PUT(accettaInvito)            --> da richiedere solamente id dell'invito e username del turista
-- POST
+- POST                          --> MANCA IL PARAMETRO nomeComune da richiedere
 - GET
 - DELETE
 - DELETE(rimuoviPreferito)
