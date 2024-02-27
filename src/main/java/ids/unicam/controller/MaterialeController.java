@@ -37,12 +37,12 @@ public class MaterialeController{
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(Integer id) {
+    public ResponseEntity<?> getById(@PathVariable Integer id) {
         return ResponseEntity.ok(materialeService.getById(id));
     }
 
     @PostMapping(value = "/caricaMateriale",  consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> fileUpload( @RequestParam("materiale") MultipartFile materiale, String usernameTurista, Integer idContenitore,TipologiaMateriale tipologia) throws IOException {
+    public ResponseEntity<?> fileUpload( @RequestParam("materiale") MultipartFile materiale, @RequestParam String usernameTurista,@RequestParam  Integer idContenitore,@RequestParam TipologiaMateriale tipologia) throws IOException {
         File newFile = new File("src/main/resources/materials/" + materiale.getOriginalFilename());
         if (!newFile.createNewFile())
             return new ResponseEntity<>("Materiale già caricato", HttpStatus.BAD_REQUEST);
@@ -51,9 +51,11 @@ public class MaterialeController{
         fileOutputStream.close();
         try {
             MaterialeGenerico materialeGenerico=materialeService.crea(materiale.getOriginalFilename(),tipologia,usernameTurista);
+
             if(poiService.getById(idContenitore).isEmpty())
                 contestService.aggiungiMateriale(usernameTurista,idContenitore,materialeGenerico);
-            poiService.aggiungiMateriale(usernameTurista,idContenitore,materialeGenerico);
+            else
+                poiService.aggiungiMateriale(usernameTurista,idContenitore,materialeGenerico);
 
         } catch (FuoriComuneException | IllegalArgumentException | ContestException e) {
             throw new RuntimeException(e);
@@ -68,7 +70,7 @@ public class MaterialeController{
     }
 
     @GetMapping("/getBase64/{id}")
-    public ResponseEntity<?> getBase64(Integer id) {
+    public ResponseEntity<?> getBase64(@PathVariable Integer id) {
         return ResponseEntity.ok(materialeService.getBase64ById(id));
     }
 

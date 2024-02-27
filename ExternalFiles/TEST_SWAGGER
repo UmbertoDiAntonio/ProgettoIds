@@ -1,19 +1,19 @@
 PROBLEMI PROGETTO IDS
 
 MATERIALE CONTROLLER:
-- POST          --> DA RI-FARE COMPLETAMENTE
-- GET           --> DA TESTARE FUNZIONAMENTO
-- DELETE        --> DA TESTARE FUNZIONAMENTO
-- GETALL        --> DA TESTARE FUNZIONAMENTO
+- POST          --> FUNZIONA
+- GET           --> FUNZIONA
+- DELETE        --> FUNZIONA
+- GETALL        --> ERRORE
 
 
 CONTEST CONTROLLER
-- PUT(approvaMateriale)  --> DA TESTARE FUNZIONAMENTO
-- PUT(invita)   --> DA TESTARE FUNZIONAMENTO
-- POST          -->
-- GET           -->  DA VERIFICARE (DA ERRORE)
-- DELETE        --> DA TESTARE FUNZIONAMENTO
-- GETALL        --> DA VERIFICARE (DA ERRORE)
+- PUT(approvaMateriale) --> DA TESTARE FUNZIONAMENTO
+- PUT(invita)           --> DA TESTARE FUNZIONAMENTO
+- POST                  --> FUNZIONA
+- GET                   --> FUNZIONA
+- DELETE                --> FUNZIONA
+- GETALL                --> FUNZIONA
 
 
 COMUNE CONTROLLER
