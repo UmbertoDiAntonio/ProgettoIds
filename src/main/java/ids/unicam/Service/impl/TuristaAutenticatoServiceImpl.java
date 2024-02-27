@@ -23,16 +23,14 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
     private final ContestServiceImpl contestServiceImpl;
     private final InvitoServiceImpl invitoServiceImpl;
     private final NotificaServiceImpl notificaService;
-    private final PoiServiceImpl poiService;
 
 
     @Autowired
-    public TuristaAutenticatoServiceImpl(TuristaAutenticatoRepository repository, ContestServiceImpl contestServiceImpl, InvitoServiceImpl invitoServiceImpl, NotificaServiceImpl notificaService, PoiServiceImpl poiService) {
+    public TuristaAutenticatoServiceImpl(TuristaAutenticatoRepository repository, ContestServiceImpl contestServiceImpl, InvitoServiceImpl invitoServiceImpl, NotificaServiceImpl notificaService) {
         this.repository = repository;
         this.contestServiceImpl = contestServiceImpl;
         this.invitoServiceImpl = invitoServiceImpl;
         this.notificaService = notificaService;
-        this.poiService = poiService;
     }
 
     @Override
@@ -71,10 +69,8 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
 
     @Transactional
     @Override
-    public void aggiungiPreferito(String usernameTurista, int idPunto) throws IllegalArgumentException{
-        Optional<PuntoInteresse> oPunto = poiService.findById(idPunto);
-        if (oPunto.isPresent()) {
-            PuntoInteresse puntoInteresse = oPunto.get();
+    public void aggiungiPreferito(String usernameTurista, PuntoInteresse puntoInteresse) throws IllegalArgumentException{
+
             if (Boolean.TRUE.equals(puntoInteresse.getStato().asBoolean())) {
                 Optional<TuristaAutenticato> oTurista = findTuristaByUsername(usernameTurista);
                 if (oTurista.isPresent()) {
@@ -89,10 +85,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
                 logger.error("punto di interesse non approvato");
                 throw new IllegalArgumentException("punto di interesse non approvato");
             }
-        } else {
-            logger.error("id del punto di interesse non valido");
-            throw new IllegalArgumentException("id del punto di interesse non valido");
-        }
+
     }
 
     public boolean logOut() {

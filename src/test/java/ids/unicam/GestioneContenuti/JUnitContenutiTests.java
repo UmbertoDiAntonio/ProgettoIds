@@ -426,8 +426,8 @@ public class JUnitContenutiTests {
         curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse.getId(), Stato.APPROVATO.asBoolean());
         curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInt2.getId(), Stato.APPROVATO.asBoolean());
 
-        turistaAutenticatoService.aggiungiPreferito(turista.getUsername(), puntoInteresse.getId());
-        turistaAutenticatoService.aggiungiPreferito(turista.getUsername(), puntoInt2.getId());
+        turistaAutenticatoService.aggiungiPreferito(turista.getUsername(), puntoInteresse);
+        turistaAutenticatoService.aggiungiPreferito(turista.getUsername(), puntoInt2);
 
         assertEquals(2, turistaAutenticatoService.findPreferiti(turista.getUsername()).size());
 

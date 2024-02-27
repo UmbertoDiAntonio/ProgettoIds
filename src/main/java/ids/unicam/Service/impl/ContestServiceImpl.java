@@ -21,12 +21,10 @@ import static ids.unicam.Main.logger;
 @Service
 public class ContestServiceImpl implements ContestService {
     private final ContestRepository repository;
-    private final MaterialeServiceImpl materialeServiceImpl;
 
     @Autowired
-    public ContestServiceImpl(ContestRepository repository, MaterialeServiceImpl materialeServiceImpl) {
+    public ContestServiceImpl(ContestRepository repository) {
         this.repository = repository;
-        this.materialeServiceImpl = materialeServiceImpl;
 
     }
 
@@ -66,10 +64,7 @@ public class ContestServiceImpl implements ContestService {
         return repository.findContestByCreatore(animatore);
     }
 
-    @Override
-    public void approvaMateriale(MaterialeGenerico materialeGenerico, Stato stato) {
-        materialeServiceImpl.approvaMateriale(materialeGenerico, stato);
-    }
+
 
 
     @Transactional
@@ -80,7 +75,7 @@ public class ContestServiceImpl implements ContestService {
             throw new ContestException("Devi essere iscritto al contest per caricare materiale su di esso");
         }
         contest.addMateriale(materialeGenerico);
-        materialeServiceImpl.save(materialeGenerico);
+       // materialeServiceImpl.save(materialeGenerico);
         save(contest);
     }
 

@@ -120,7 +120,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
                         throw new UnsupportedOperationException("materiale già settato");
                     if (Stato.toStatus(stato) == Stato.IN_ATTESA)
                         throw new UnsupportedOperationException("non puoi settare stato in attesa");
-                    contestService.approvaMateriale(materialeGenerico, Stato.toStatus(stato));
+                    materialeService.approvaMateriale(materialeGenerico, Stato.toStatus(stato));
                     return true;
                 } else {
                     logger.error("id Materiale non valido");

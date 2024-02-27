@@ -130,7 +130,7 @@ public class JUnitUtentiTest {
         PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributorAutorizzato)));
         assertEquals(0, turistaAutenticato.getPreferiti().size());
 
-        turistaAutenticatoService.aggiungiPreferito(turistaAutenticato.getUsername(), puntoInteresse.getId());
+        turistaAutenticatoService.aggiungiPreferito(turistaAutenticato.getUsername(), puntoInteresse);
         assertEquals(1, turistaAutenticatoService.findPreferiti(turistaAutenticato.getUsername()).size());
     }
 

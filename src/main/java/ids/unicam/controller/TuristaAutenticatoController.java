@@ -3,10 +3,12 @@ package ids.unicam.controller;
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.Service.InvitoService;
 import ids.unicam.Service.TuristaAutenticatoService;
+import ids.unicam.Service.impl.PoiServiceImpl;
 import ids.unicam.models.DTO.InvitoDTO;
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.TuristaAutenticato;
+import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +22,13 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
     private final TuristaAutenticatoService turistaAutenticatoService;
     private final GestorePiattaformaService gestorePiattaformaService;
     private final InvitoService invitoService;
+    private final PoiServiceImpl poiService;
 
-    public TuristaAutenticatoController(TuristaAutenticatoService turistaAutenticatoService, GestorePiattaformaService gestorePiattaformaService, InvitoService invitoService) {
+    public TuristaAutenticatoController(TuristaAutenticatoService turistaAutenticatoService, GestorePiattaformaService gestorePiattaformaService, InvitoService invitoService, PoiServiceImpl poiService) {
         this.turistaAutenticatoService = turistaAutenticatoService;
         this.gestorePiattaformaService = gestorePiattaformaService;
         this.invitoService = invitoService;
+        this.poiService = poiService;
     }
 
 
@@ -52,30 +56,35 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
     @Override
     public ResponseEntity<?> delete(String username) {
         turistaAutenticatoService.deleteById(username);
-        return ResponseEntity.ok("Utente: \'"+username+ "\' eliminato");
+        return ResponseEntity.ok("Utente: \'" + username + "\' eliminato");
     }
 
 
     @PutMapping("/accettaInvito")
     public ResponseEntity<?> accettaInvito(@RequestParam String usernameTurista, @RequestParam Integer idInvito) {
         Optional<TuristaAutenticato> oTurista = turistaAutenticatoService.getById(usernameTurista);
-        if(oTurista.isEmpty()){
+        if (oTurista.isEmpty()) {
             return ResponseEntity.ok("username turista non valido");
         }
         TuristaAutenticato turista = oTurista.get();
         Optional<Invito> oInvito = invitoService.findById(idInvito);
-        if(oInvito.isEmpty()){
+        if (oInvito.isEmpty()) {
             return ResponseEntity.ok("id invito non valido");
         }
         Invito invito = oInvito.get();
-        turistaAutenticatoService.accettaInvitoContest(new TuristaAutenticatoDTO(turista), new InvitoDTO(invito.getContest(),invito.getInvitato()));
+        turistaAutenticatoService.accettaInvitoContest(new TuristaAutenticatoDTO(turista), new InvitoDTO(invito.getContest(), invito.getInvitato()));
         return ResponseEntity.ok("{}");
     }
 
     @PutMapping("/aggiungiPuntoPreferito")
     public ResponseEntity<?> aggiungiPreferito(@RequestParam String usernameTurista, @RequestParam Integer idPunto) {
         try {
-            turistaAutenticatoService.aggiungiPreferito(usernameTurista, idPunto);
+            Optional<PuntoInteresse> oPunto = poiService.getById(idPunto);
+            if (oPunto.isEmpty())
+                return new ResponseEntity<>("ID punto non valido", HttpStatus.BAD_REQUEST);
+
+            PuntoInteresse puntoInteresse = oPunto.get();
+            turistaAutenticatoService.aggiungiPreferito(usernameTurista, puntoInteresse);
             return ResponseEntity.ok("{}");
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);

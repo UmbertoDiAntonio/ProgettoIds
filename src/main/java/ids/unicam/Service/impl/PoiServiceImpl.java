@@ -30,15 +30,13 @@ import static ids.unicam.Main.logger;
 @Service
 public class PoiServiceImpl implements PoiService {
     private final PoiRepository repository;
-    private final MaterialeServiceImpl materialeServiceImpl;
     private final TagServiceImpl tagServiceImpl;
     private final ContributorServiceImpl contributorService;
     private final TuristaAutenticatoServiceImpl turistaAutenticatoService;
 
     @Autowired
-    public PoiServiceImpl(PoiRepository repository, MaterialeServiceImpl materialeServiceImpl, TagServiceImpl tagServiceImpl, ContributorServiceImpl contributorService, TuristaAutenticatoServiceImpl turistaAutenticatoService) {
+    public PoiServiceImpl(PoiRepository repository, TagServiceImpl tagServiceImpl, ContributorServiceImpl contributorService, TuristaAutenticatoServiceImpl turistaAutenticatoService) {
         this.repository = repository;
-        this.materialeServiceImpl = materialeServiceImpl;
         this.tagServiceImpl = tagServiceImpl;
         this.contributorService = contributorService;
         this.turistaAutenticatoService = turistaAutenticatoService;
@@ -141,7 +139,6 @@ public class PoiServiceImpl implements PoiService {
     @Transactional
     @Override
     public void aggiungiMateriale(String usernameTurista, Integer idPuntoInteresse, MaterialeGenerico materialeGenerico) throws FuoriComuneException {
-
         Optional<TuristaAutenticato> oTurista=turistaAutenticatoService.getById(usernameTurista);
         if(oTurista.isEmpty()) {
             logger.error("username non valido");
@@ -169,7 +166,7 @@ public class PoiServiceImpl implements PoiService {
         if (turistaAutenticato instanceof ContributorAutorizzato)
             materialeGenerico.setStato(Stato.APPROVATO);
         puntoInteresse.addMateriale(materialeGenerico);
-        materialeServiceImpl.save(materialeGenerico);
+        //materialeServiceImpl.save(materialeGenerico);
         save(puntoInteresse);
     }
 

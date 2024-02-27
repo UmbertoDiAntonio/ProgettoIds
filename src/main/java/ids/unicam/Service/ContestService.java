@@ -19,8 +19,6 @@ public interface ContestService {
 
     List<Contest> getContestByCreatore(Animatore animatore);
 
-    void approvaMateriale(MaterialeGenerico materialeGenerico, Stato stato);
-
     List<MaterialeGenerico> getMaterialiContest(Contest contest);
 
     void aggiungiMateriale(MaterialeGenerico materialeGenerico, Contest contest, TuristaAutenticato turistaAutenticato) throws ContestException;

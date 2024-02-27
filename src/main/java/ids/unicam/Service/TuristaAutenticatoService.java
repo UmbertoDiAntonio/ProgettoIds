@@ -15,7 +15,7 @@ public interface TuristaAutenticatoService {
 
     void rimuoviPreferito(String usernameTurista, int id) throws IllegalArgumentException;
 
-    void aggiungiPreferito(String usernameTurista, int idPunto) throws IllegalArgumentException;
+    void aggiungiPreferito(String usernameTurista, PuntoInteresse puntoInteresse) throws IllegalArgumentException;
 
     List<PuntoInteresse> findPreferiti(String usernameTurista) throws  IllegalArgumentException;
 
