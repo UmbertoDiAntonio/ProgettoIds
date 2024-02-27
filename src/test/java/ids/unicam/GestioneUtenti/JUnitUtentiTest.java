@@ -55,7 +55,7 @@ public class JUnitUtentiTest {
     @Test
     public void generazioneUtenti() throws ConnessioneFallitaException {
 
-        Comune comune = null;
+        Comune comune ;
         try {
             comune = comuneService.creaComune(new Comune(new RichiestaCreazioneComuneDTO("nome")));
         } catch (ConnessioneFallitaException e) {
@@ -109,7 +109,7 @@ public class JUnitUtentiTest {
     @Test
     public void aggiungiPreferito() throws ConnessioneFallitaException, FuoriComuneException {
 
-        Comune comune = null;
+        Comune comune ;
         try {
             comune = comuneService.creaComune(new Comune(new RichiestaCreazioneComuneDTO("Milano")));
         } catch (ConnessioneFallitaException e) {
@@ -137,7 +137,7 @@ public class JUnitUtentiTest {
     @Test
     public void condividiContenuto() throws ConnessioneFallitaException, FuoriComuneException {
 
-        Comune comune = null;
+        Comune comune ;
         try {
             comune = comuneService.creaComune(new Comune(new RichiestaCreazioneComuneDTO("Milano")));
         } catch (ConnessioneFallitaException e) {
@@ -148,16 +148,14 @@ public class JUnitUtentiTest {
             throw new IllegalArgumentException("errore");
         PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("Teatro", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.INTRATTENIMENTO, curatore)));
 
-        assertThrows(UnsupportedOperationException.class, () -> {
-            curatoreServiceImpl.condividi(curatore.getUsername(), puntoInteresse.getId());
-        });
+        assertThrows(UnsupportedOperationException.class, () -> curatoreServiceImpl.condividi(curatore.getUsername(), puntoInteresse.getId()));
         //TODO test condivisione contenuto
     }
 
     @Test
     public void metodoCercaTurista() throws ConnessioneFallitaException, FuoriComuneException {
 
-        Comune comune = null;
+        Comune comune ;
         try {
             comune = comuneService.creaComune(new Comune(new RichiestaCreazioneComuneDTO("Milano")));
         } catch (ConnessioneFallitaException e) {
@@ -204,7 +202,7 @@ public class JUnitUtentiTest {
 
     @Test
     public void aggiungiFoto() throws ConnessioneFallitaException, FuoriComuneException {
-        Comune comune = null;
+        Comune comune ;
         try {
             comune = comuneService.creaComune(new Comune(new RichiestaCreazioneComuneDTO("Milano")));
         } catch (ConnessioneFallitaException e) {
@@ -237,7 +235,7 @@ public class JUnitUtentiTest {
 
     @Test
     public void segnalaContenuto() throws ConnessioneFallitaException, FuoriComuneException {
-        Comune comune = null;
+        Comune comune ;
         try {
             comune = comuneService.creaComune(new Comune(new RichiestaCreazioneComuneDTO("Milano")));
         } catch (ConnessioneFallitaException e) {

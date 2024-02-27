@@ -81,13 +81,13 @@ public class JUnitContenutiTests {
     @Test
     @Order(1)
     public void testPoi() throws ConnessioneFallitaException, FuoriComuneException {
-        Comune comune = null;
+        Comune comune;
         try {
             comune = comuneService.creaComune(new Comune(new RichiestaCreazioneComuneDTO("Milano")));
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
-        TuristaAutenticato turistaTemp = null;
+        TuristaAutenticato turistaTemp;
         try {
             turistaTemp = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(new RichiestaCreazioneComuneDTO(comune.getNome()), new TuristaAutenticatoDTO("Mario", "Rossi", LocalDate.of(2000, 3, 17), "1Unica@", "user1")), Ruolo.CONTRIBUTOR);
         } catch (ConnessioneFallitaException e) {
@@ -132,13 +132,13 @@ public class JUnitContenutiTests {
          */
         {
             int puntiInteresseComuneIniziali = comuneService.getPuntiInteresseNelComune(comune.getNome()).size();
-            Comune comune2 = null;
+            Comune comune2;
             try {
                 comune2 = comuneService.creaComune(new Comune(new RichiestaCreazioneComuneDTO("Roma")));
             } catch (ConnessioneFallitaException e) {
                 throw new RuntimeException(e);
             }
-            TuristaAutenticato turistaTemp2 = null;
+            TuristaAutenticato turistaTemp2 ;
             try {
                 turistaTemp2 = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(new RichiestaCreazioneComuneDTO(comune2.getNome()), new TuristaAutenticatoDTO("Mario", "Rossi", LocalDate.of(2000, Calendar.MARCH, 17), "1Unica@", "user19")), Ruolo.CONTRIBUTOR_AUTORIZZATO);
             } catch (ConnessioneFallitaException e) {
@@ -146,8 +146,8 @@ public class JUnitContenutiTests {
             }
             if (!(turistaTemp2 instanceof ContributorAutorizzato contributorAutorizzato))
                 throw new IllegalArgumentException("errore");
-            Comune finalComune = comune;
-            assertThrows(FuoriComuneException.class, () -> poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("chiesa", new Punto(finalComune.getPosizione().getLatitudine() + 2, finalComune.getPosizione().getLongitudine() + 2), new Orario(), TipologiaPuntoInteresse.LUOGO_DI_CULTO, contributorAutorizzato))));
+
+            assertThrows(FuoriComuneException.class, () -> poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("chiesa", new Punto(comune.getPosizione().getLatitudine() + 2, comune.getPosizione().getLongitudine() + 2), new Orario(), TipologiaPuntoInteresse.LUOGO_DI_CULTO, contributorAutorizzato))));
             assertEquals(puntiInteresseComuneIniziali, comuneService.getPuntiInteresseNelComune(comune.getNome()).size());
         }
 
@@ -224,7 +224,7 @@ public class JUnitContenutiTests {
     @Test
     @Order(2)
     public void testItinerario() throws ConnessioneFallitaException, FuoriComuneException {
-        Comune comune = null;
+        Comune comune ;
         try {
             comune = comuneService.creaComune(new Comune(new RichiestaCreazioneComuneDTO("Milano")));
         } catch (ConnessioneFallitaException e) {
@@ -278,7 +278,7 @@ public class JUnitContenutiTests {
     @Test
     @Order(3)
     public void testContest() throws ConnessioneFallitaException {
-        Comune comune = null;
+        Comune comune ;
         try {
             comune = comuneService.creaComune(new Comune(new RichiestaCreazioneComuneDTO("Milano")));
         } catch (ConnessioneFallitaException e) {
@@ -325,7 +325,7 @@ public class JUnitContenutiTests {
             assertEquals(numeroContestCreatiDaAnimatore + 2, contestService.getContestByCreatore(animatore).size());
 
             TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO("andrea", "neri", LocalDate.of(2000, Calendar.NOVEMBER, 5), "8Unica@", "user8"));
-            Invito invito = null;
+            Invito invito ;
             try {
                 invito = animatoreServiceImpl.invitaContest(animatore.getUsername(), contest.getId(), turistaAutenticato.getUsername());
             } catch (ContestException e) {
@@ -356,7 +356,7 @@ public class JUnitContenutiTests {
     @Test
     @Order(4)
     public void approvaMaterialeByAnimatore() throws ConnessioneFallitaException {
-        Comune comune = null;
+        Comune comune ;
         try {
             comune = comuneService.creaComune(new Comune(new RichiestaCreazioneComuneDTO("Milano")));
         } catch (ConnessioneFallitaException e) {
@@ -398,7 +398,7 @@ public class JUnitContenutiTests {
     @Order(5)
     public void eliminaContenuto() throws ConnessioneFallitaException, FuoriComuneException {
 
-        Comune comune = null;
+        Comune comune;
         try {
             comune = comuneService.creaComune(new Comune(new RichiestaCreazioneComuneDTO("Milano")));
         } catch (ConnessioneFallitaException e) {
@@ -440,7 +440,6 @@ public class JUnitContenutiTests {
         PuntoInteresse puntoInteresse1 = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("parco", new Punto(comune.getPosizione().getLatitudine(), comune.getPosizione().getLongitudine()), new Orario(), TipologiaPuntoInteresse.PARCO, contributor)));
 
         int numeroItinerariComune = itinerarioService.findAllByComune(comune).size();
-        Comune finalComune = comune;
         itinerarioService.creaItinerario(curatore.getUsername(), "girodeibar");
         assertEquals(numeroItinerariComune+1, itinerarioService.findAllByComune(comune).size());
 
@@ -488,7 +487,7 @@ public class JUnitContenutiTests {
     @Test
     @Order(6)
     public void modificaScadenzaContenuto() throws ConnessioneFallitaException, FuoriComuneException {
-        Comune comune = null;
+        Comune comune ;
         try {
             comune = comuneService.creaComune(new Comune(new RichiestaCreazioneComuneDTO("Milano")));
         } catch (ConnessioneFallitaException e) {
