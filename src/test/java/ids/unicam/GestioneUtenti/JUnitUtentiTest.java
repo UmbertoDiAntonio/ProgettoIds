@@ -225,7 +225,8 @@ public class JUnitUtentiTest {
 
 
         assertEquals(0, poiService.getMaterialiPoi(puntoInteresse.getId()).size());
-        MaterialeGenerico foto = materialeService.crea("./testFoto", TipologiaMateriale.FOTO,turistaAutenticato.getUsername());
+        MaterialeGenerico foto = materialeService.crea("./testFoto.jpg", TipologiaMateriale.FOTO,turistaAutenticato.getUsername());
+        foto.getBase64();
         poiService.aggiungiMateriale(turistaAutenticato.getUsername(), puntoInteresse.getId(), foto);
         assertEquals(1, poiService.getMaterialiPoi(puntoInteresse.getId()).size());
         assertNull(materialeService.getStato(foto).asBoolean());

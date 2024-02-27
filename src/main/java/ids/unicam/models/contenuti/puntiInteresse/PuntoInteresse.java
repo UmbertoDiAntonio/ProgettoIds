@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -44,9 +45,11 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
     private final Set<Tag> tags = new HashSet<>();
 
     @Setter
-    private LocalDate expireDate = LocalDate.now().plusDays(30);
+    private @Nullable LocalDate expireDate = null;
 
     public boolean isExpired() {
+        if(expireDate==null)
+            return false;
         return LocalDate.now().isAfter(expireDate);
     }
 
@@ -113,11 +116,11 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
 
 
     public String mostraInformazioniDettagliate() {
-        return getNome() + " " + getOrario();
+        return getNome() + " " + getPt()+" ("+comune.getNome()+") "+getTipo() +" ["+getStato()+"] "+getOrario()+" "+getCreatore().getUsername() ;
     }
 
     public String mostraInformazioniGeneriche() {
-        return getNome();
+        return getNome() + " ["+getStato()+"]";
     }
 
     @Override

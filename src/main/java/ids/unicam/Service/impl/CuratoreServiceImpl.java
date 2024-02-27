@@ -228,7 +228,7 @@ public class CuratoreServiceImpl implements CuratoreService {
     }
 
     @Override
-    public void condividi(String usernameCuratore, Integer idPunto) throws IllegalArgumentException{
+    public void condividi(String usernameCuratore, Integer idPunto) throws IllegalArgumentException,UnsupportedOperationException{
         Optional<Curatore> oCuratore = getById(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();

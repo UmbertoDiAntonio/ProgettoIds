@@ -60,6 +60,16 @@ public class MaterialeServiceImpl implements MaterialeService {
     }
 
     @Override
+    public String getBase64ById(Integer id) {
+        Optional<MaterialeGenerico> oMateriale = getById(id);
+        if(oMateriale.isEmpty()){
+            logger.error("L'id del materiale non e' valido");
+            throw new IllegalArgumentException("L'id del materiale non e' valido");
+        }
+        return oMateriale.get().getBase64();
+    }
+
+    @Override
     public Optional<MaterialeGenerico> getById(int id) {
         return repository.findById(id);
     }

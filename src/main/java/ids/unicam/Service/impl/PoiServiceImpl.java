@@ -3,11 +3,9 @@ package ids.unicam.Service.impl;
 import ids.unicam.DataBase.Repository.PoiRepository;
 import ids.unicam.Service.PoiService;
 import ids.unicam.exception.FuoriComuneException;
-import ids.unicam.models.Comune;
 import ids.unicam.models.DTO.PuntoInteresseDTO;
 import ids.unicam.models.Punto;
 import ids.unicam.models.attori.Contributor;
-import ids.unicam.models.attori.ContributorAutorizzato;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.Taggable;
@@ -21,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -239,7 +238,38 @@ public class PoiServiceImpl implements PoiService {
         return repository.getMateriali(idPunto);
     }
 
+    @Transactional
+    @Override
+    public List<String> getAsList() {
+        List<PuntoInteresse> list = findActive();
+        List<String> result=new ArrayList<>();
+        int i=0;
+        for(PuntoInteresse el :list){
+            i++;
+            result.add(i+". " +el.mostraInformazioniGeneriche());
+        }
+        return result;
+    }
+
+    @Transactional
+    @Override
+    public List<String> getAsListDetailed() {
+        List<PuntoInteresse> list = findActive();
+        List<String> result=new ArrayList<>();
+        int i=0;
+        for(PuntoInteresse el :list){
+            i++;
+            result.add(i+". "+el.mostraInformazioniDettagliate());
+        }
+        return result;
+    }
+
     public List<PuntoInteresse> findAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public void setOrario(Integer idPunto,Orario orario){
+
     }
 }

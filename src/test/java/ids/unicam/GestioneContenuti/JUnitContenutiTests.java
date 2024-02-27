@@ -500,7 +500,7 @@ public class JUnitContenutiTests {
         int numPoi = poiService.findActive().size();
         PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributor)));
         assertEquals(numPoi + 1, poiService.findActive().size());
-        assertEquals(LocalDate.MAX, puntoInteresse.getExpireDate());
+        assertNull(puntoInteresse.getExpireDate());
 
 
         poiService.modificaScadenza(contributor.getUsername(), puntoInteresse.getId(), LocalDate.of(2024, 2, 1));

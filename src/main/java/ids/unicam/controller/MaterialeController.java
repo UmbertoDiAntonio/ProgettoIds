@@ -40,8 +40,8 @@ public class MaterialeController{
 
     @PostMapping(value = "/caricaMateriale",  consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> fileUpload( @RequestParam("materiale") MultipartFile materiale, String usernameTurista, Integer idContenitore,TipologiaMateriale tipologia) throws IOException {
-        File newFile = new File("src/main/resources/" + materiale.getOriginalFilename());
-        if (newFile.createNewFile())
+        File newFile = new File("src/main/resources/materials/" + materiale.getOriginalFilename());
+        if (!newFile.createNewFile())
             return new ResponseEntity<>("Materiale già caricato", HttpStatus.BAD_REQUEST);
         FileOutputStream fileOutputStream = new FileOutputStream(newFile);
         fileOutputStream.write(materiale.getBytes());
@@ -61,6 +61,9 @@ public class MaterialeController{
         return ResponseEntity.ok("{}");
     }
 
-
+    @GetMapping("/getBase64/{id}")
+    public ResponseEntity<?> getBase64(Integer id) {
+        return ResponseEntity.ok(materialeService.getBase64ById(id));
+    }
 
 }

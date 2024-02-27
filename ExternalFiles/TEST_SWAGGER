@@ -73,6 +73,7 @@ CONTRIBUTOR CONTROLLER
 - GET       -> Funziona
 - DELETE    -> Funziona
 - GETALL    -> Funziona
+- GetNotifiche -> da fare
 
 CONTRIBUTOR AUTORIZZATO CONTROLLER
 - POST      -> Funziona
@@ -89,4 +90,4 @@ ANIMATORE CONTROLLER
 
 TURISTA CONTROLLER
 - GET(tagDTO) -> funziona
-- GET(report) -> da rivedere, troppe informazioni richieste
+- GET(report) -> gestire messaggio

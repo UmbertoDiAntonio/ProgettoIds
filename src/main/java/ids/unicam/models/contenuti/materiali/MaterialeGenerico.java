@@ -34,10 +34,10 @@ public abstract class MaterialeGenerico {
     /**
      *@return  le informazioni sul materiale
      */
-    public abstract String get();
+    public abstract String getBase64();
 
     public MaterialeGenerico(MaterialeDTO materialeDTO) {
-        this.file=materialeDTO.getPathFile();
+        this.file ="./src/main/resources/materials/"+materialeDTO.getPathFile();
         this.creatore = materialeDTO.getCreatore();
     }
 

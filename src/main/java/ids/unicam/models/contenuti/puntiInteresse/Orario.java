@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -29,13 +30,37 @@ public class Orario {
     public OrarioApertura getOrarioApertura(DayOfWeek day) {
         return hoursMap.get(day);
     }
-
+/*
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         for (int i = 1; i < 7; i++) {
             DayOfWeek current = DayOfWeek.asDayOfWeek(i);
             builder.append(current.name()).append(" ").append(hoursMap.get(current) == null ? "Chiuso" : hoursMap.get(current)).append("\n");
+        }
+        return builder.toString();
+    }
+
+ */
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        boolean haveCloseDay=false;
+        for (int i = 1; i < 7; i++) {
+            DayOfWeek current = DayOfWeek.asDayOfWeek(i);
+            if(hoursMap.get(current) != null )
+                builder.append(current.name()).append(" ").append(hoursMap.get(current)).append(" ");
+            else
+                haveCloseDay=true;
+        }
+        if(haveCloseDay) {
+            for (int i = 1; i < 7; i++) {
+                DayOfWeek current = DayOfWeek.asDayOfWeek(i);
+                if (hoursMap.get(current) == null)
+                    builder.append(current.name()).append(" ");
+            }
+            builder.append("Chiuso");
         }
         return builder.toString();
     }

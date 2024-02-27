@@ -44,7 +44,7 @@ public class Contest implements Contenitore, Taggable, Expirable {
     private final List<TuristaAutenticato> partecipanti = new ArrayList<>();
 
     @Setter
-    private LocalDate expireDate = LocalDate.MAX;
+    private LocalDate expireDate =null;
 
     @OneToMany (fetch = FetchType.EAGER)
     private final Set<Tag> tags = new HashSet<>();
@@ -69,6 +69,8 @@ public class Contest implements Contenitore, Taggable, Expirable {
 
     @Override
     public boolean isExpired() {
+        if(expireDate==null)
+            return false;
         return LocalDate.now().isAfter(expireDate);
     }
 

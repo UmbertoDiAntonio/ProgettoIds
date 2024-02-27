@@ -18,4 +18,6 @@ public interface MaterialeService {
 
 
     MaterialeGenerico crea(String fileMateriale, TipologiaMateriale tipologiaMateriale, String usernameTuristaAutenticato);
+
+    String getBase64ById(Integer id);
 }

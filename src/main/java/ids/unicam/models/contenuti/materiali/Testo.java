@@ -5,6 +5,10 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.NoArgsConstructor;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 @NoArgsConstructor
 @Entity
 @DiscriminatorValue("Testo")
@@ -14,9 +18,25 @@ public class Testo extends MaterialeGenerico {
     }
 
     @Override
-    public String get() {
-        return "Descrizione: "+getId()+", creata da "+ getCreatore().getNome();
+    public String getBase64() {
+        try {
+            return readFileToString(super.getFile());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
+
+    public static String readFileToString(String filePath) throws IOException {
+        StringBuilder contentBuilder = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                contentBuilder.append(line).append("\n");
+            }
+        }
+        return contentBuilder.toString();
+    }
+
 
     @Override
     public String toString() {
