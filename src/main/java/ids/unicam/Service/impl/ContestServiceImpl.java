@@ -3,10 +3,10 @@ package ids.unicam.Service.impl;
 import ids.unicam.DataBase.Repository.ContestRepository;
 import ids.unicam.Service.ContestService;
 import ids.unicam.exception.ContestException;
+import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
-import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,13 +69,27 @@ public class ContestServiceImpl implements ContestService {
 
     @Transactional
     @Override
-    public void aggiungiMateriale(MaterialeGenerico materialeGenerico, Contest contest, TuristaAutenticato turistaAutenticato) throws ContestException {
-        if (!(getPartecipanti(contest).contains(turistaAutenticato))) {
+    public void aggiungiMateriale(String usernameTurista, Integer idContest, MaterialeGenerico materialeGenerico) throws ContestException, FuoriComuneException {
+        TuristaAutenticato turistaAutenticato =null;
+
+        Optional<Contest> oContest = findById(idContest);
+        if (oContest.isEmpty()) {
+            logger.error("id contest non valido");
+            throw new FuoriComuneException("id contest non valido");
+        }
+
+        Contest contest = oContest.get();
+
+        if(!contest.isOpen())
+            for(TuristaAutenticato turistaAutenticato1 : contest.getPartecipanti()){
+                if(turistaAutenticato1.getUsername().equals(usernameTurista))
+                    turistaAutenticato=turistaAutenticato1;
+            }
+        if(turistaAutenticato==null && !contest.isOpen()) {
             logger.error("Devi essere iscritto al contest per caricare materiale su di esso");
             throw new ContestException("Devi essere iscritto al contest per caricare materiale su di esso");
         }
         contest.addMateriale(materialeGenerico);
-       // materialeServiceImpl.save(materialeGenerico);
         save(contest);
     }
 

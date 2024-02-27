@@ -304,8 +304,8 @@ public class JUnitContenutiTests {
             turistaAutenticatoService.partecipaAlContest(contest.getId(), turistaAutenticato.getUsername());
 
             try {
-                contestService.aggiungiMateriale(materialeService.crea("./testFoto",TipologiaMateriale.FOTO,turistaAutenticato.getUsername()), contest, turistaAutenticato);
-            } catch (ContestException e) {
+                contestService.aggiungiMateriale( turistaAutenticato.getUsername(),contest.getId(), materialeService.crea("./testFoto",TipologiaMateriale.FOTO,turistaAutenticato.getUsername()));
+            } catch (ContestException | FuoriComuneException e) {
                 throw new RuntimeException(e);
             }
 
@@ -373,13 +373,13 @@ public class JUnitContenutiTests {
         Contest contest = contestService.creaContest(new Contest(new RichiestaCreazioneContestDTO("Monumento", "Foto più bella", animatore, true)));
 
         MaterialeGenerico descrizione = materialeService.crea("./testFoto",TipologiaMateriale.FOTO,turistaAutenticato.getUsername());
-        assertThrows(ContestException.class, () -> contestService.aggiungiMateriale(descrizione, contest, turistaAutenticato));
+        assertThrows(ContestException.class, () -> contestService.aggiungiMateriale(turistaAutenticato.getUsername(), contest.getId(), descrizione));
 
         turistaAutenticatoService.partecipaAlContest(contest.getId(), turistaAutenticato.getUsername());
         MaterialeGenerico materialeGenerico = materialeService.crea("./testFoto",TipologiaMateriale.FOTO,turistaAutenticato.getUsername());
         try {
-            contestService.aggiungiMateriale(descrizione, contest, turistaAutenticato);
-        } catch (ContestException e) {
+            contestService.aggiungiMateriale(turistaAutenticato.getUsername(),contest.getId(), descrizione );
+        } catch (ContestException | FuoriComuneException e) {
             throw new RuntimeException(e);
         }
         assertNull(materialeGenerico.getStato().asBoolean());

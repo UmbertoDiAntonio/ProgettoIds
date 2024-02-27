@@ -17,7 +17,7 @@ public interface MaterialeService {
     Stato getStato(MaterialeGenerico foto);
 
 
-    MaterialeGenerico crea(String fileMateriale, TipologiaMateriale tipologiaMateriale, String usernameTuristaAutenticato);
+    MaterialeGenerico crea(String fileMateriale, TipologiaMateriale tipologiaMateriale, String usernameTuristaAutenticato) throws IllegalArgumentException;
 
     String getBase64ById(Integer id);
 }

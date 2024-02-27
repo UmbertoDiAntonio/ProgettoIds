@@ -4,6 +4,7 @@ import ids.unicam.Service.AnimatoreService;
 import ids.unicam.Service.ContestService;
 import ids.unicam.Service.MaterialeService;
 import ids.unicam.Service.PoiService;
+import ids.unicam.exception.ContestException;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.materiali.TipologiaMateriale;
@@ -22,10 +23,12 @@ import java.io.IOException;
 public class MaterialeController{
     private final MaterialeService materialeService;
     private final PoiService poiService;
+    private final ContestService contestService;
 
-    public MaterialeController(MaterialeService materialeService, PoiService poiService) {
+    public MaterialeController(MaterialeService materialeService, PoiService poiService, ContestService contestService) {
         this.materialeService = materialeService;
         this.poiService = poiService;
+        this.contestService = contestService;
     }
 
     @GetMapping("/getAll")
@@ -48,8 +51,11 @@ public class MaterialeController{
         fileOutputStream.close();
         try {
             MaterialeGenerico materialeGenerico=materialeService.crea(materiale.getOriginalFilename(),tipologia,usernameTurista);
+            if(poiService.getById(idContenitore).isEmpty())
+                contestService.aggiungiMateriale(usernameTurista,idContenitore,materialeGenerico);
             poiService.aggiungiMateriale(usernameTurista,idContenitore,materialeGenerico);
-        } catch (FuoriComuneException | IllegalArgumentException e) {
+
+        } catch (FuoriComuneException | IllegalArgumentException | ContestException e) {
             throw new RuntimeException(e);
         }
         return new ResponseEntity<>("Materiale Caricato",HttpStatus.OK);
