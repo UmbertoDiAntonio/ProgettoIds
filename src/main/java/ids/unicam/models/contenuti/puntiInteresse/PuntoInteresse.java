@@ -77,6 +77,7 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
 
     @Embedded
     @Getter
+    @Setter
     private Orario orario;
 
     @Getter

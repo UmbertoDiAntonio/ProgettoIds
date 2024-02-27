@@ -268,8 +268,17 @@ public class PoiServiceImpl implements PoiService {
         return repository.findAll();
     }
 
+    @Transactional
     @Override
-    public void setOrario(Integer idPunto,Orario orario){
-
+    public void setOrario(Integer idPunto, Orario orario) throws IllegalArgumentException{
+        Optional<PuntoInteresse> oPuntoInteresse = getById(idPunto);
+        if (oPuntoInteresse.isPresent()) {
+            PuntoInteresse puntoInteresse = oPuntoInteresse.get();
+            puntoInteresse.setOrario(orario);
+            save(puntoInteresse);
+        } else {
+            logger.error("L'id del punto di interesse non e' valido");
+            throw new IllegalArgumentException("L'id del punto di interesse non e' valido");
+        }
     }
 }
