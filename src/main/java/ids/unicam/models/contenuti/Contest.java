@@ -53,7 +53,7 @@ public class Contest implements Contenitore, Taggable, Expirable {
     private String nomeContest =null;
 
     @OneToMany
-    private final List<MaterialeGenerico> listaMateriali = new ArrayList<>();
+    private final List<MaterialeGenerico> materiali = new ArrayList<>();
 
     @OneToOne
     @Setter
@@ -86,17 +86,17 @@ public class Contest implements Contenitore, Taggable, Expirable {
 
     @Override
     public List<MaterialeGenerico> getMateriali() {
-        return listaMateriali;
+        return materiali;
     }
 
     @Override
     public void addMateriale(MaterialeGenerico materialeGenerico) {
         if(materialeGenerico != null)
-            listaMateriali.add(materialeGenerico);
+            materiali.add(materialeGenerico);
     }
 
     @Override
     public void rimuoviMateriale(MaterialeGenerico materialeGenerico) {
-        listaMateriali.remove(materialeGenerico);
+        materiali.remove(materialeGenerico);
     }
 }

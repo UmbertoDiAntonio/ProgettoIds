@@ -2,7 +2,9 @@ package ids.unicam.models.contenuti.puntiInteresse;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
@@ -22,6 +24,9 @@ public class Orario {
         }
     }
 
+    public void setOrarioApertura(DayOfWeek day, OrarioApertura orario) {
+        hoursMap.put(day, orario);
+    }
     public void setOrarioApertura(DayOfWeek day, LocalTime openingTime, LocalTime closingTime) {
         OrarioApertura hours = new OrarioApertura(openingTime, closingTime);
         hoursMap.put(day, hours);
@@ -66,14 +71,16 @@ public class Orario {
     }
 
     @Embeddable
+    @Getter
+    @Setter
     @NoArgsConstructor
     public static class OrarioApertura {
         private LocalTime openingTime = null;
         private LocalTime closingTime = null;
 
         public OrarioApertura(LocalTime openingTime, LocalTime closingTime) {
-            this.openingTime = openingTime;
-            this.closingTime = closingTime;
+            this.openingTime = LocalTime.of(openingTime.getHour(),openingTime.getMinute());
+            this.closingTime = LocalTime.of(closingTime.getHour(),closingTime.getMinute());
         }
 
 
@@ -88,7 +95,7 @@ public class Orario {
 
         @Override
         public String toString() {
-            return "Apertura: " + openingTime + "\t" + "Chiusura: " + closingTime;
+            return "{Apertura: " + openingTime + "," + "Chiusura: " + closingTime+"}";
         }
     }
 }

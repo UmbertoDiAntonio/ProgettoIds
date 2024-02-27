@@ -23,7 +23,7 @@ public interface PoiRepository extends JpaRepository<PuntoInteresse,Integer> {
     List<Tag> getTags(int idPunto);
 
 
-    @Query("select p.listaMateriali from PuntoInteresse p where p.id=:idPuntoInteresse")
+    @Query("select p.materiali from PuntoInteresse p where p.id=:idPuntoInteresse")
     List<MaterialeGenerico> getMateriali(int idPuntoInteresse);
 
     @Modifying

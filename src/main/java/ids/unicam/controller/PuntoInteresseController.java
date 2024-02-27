@@ -4,15 +4,18 @@ import ids.unicam.Service.CuratoreService;
 import ids.unicam.Service.PoiService;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Punto;
+import ids.unicam.models.contenuti.puntiInteresse.DayOfWeek;
 import ids.unicam.models.contenuti.puntiInteresse.Orario;
 import ids.unicam.models.contenuti.puntiInteresse.Tag;
 import ids.unicam.models.contenuti.puntiInteresse.TipologiaPuntoInteresse;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @RestController
 @RequestMapping("/PuntoInteresse")
@@ -41,9 +44,8 @@ public class PuntoInteresseController {
     }
 
     @PutMapping("/setOrario")
-    public ResponseEntity<?> setOrario(Integer idPunto, Orario orario) {
-        poiService.setOrario(idPunto,orario);
-
+    public ResponseEntity<?> setOrario(Integer idPunto, DayOfWeek day, @Range(from = 0, to = 24) int oraApertura, @Range(from = 0, to = 60) int minutiApertura, @Range(from = 0, to = 24) int oraChiusura, @Range(from = 0, to = 60) int minutiChiusura) {
+        poiService.setOrario(idPunto, day, new Orario.OrarioApertura(LocalTime.of(oraApertura, minutiApertura), LocalTime.of(oraChiusura, minutiChiusura)));
         return ResponseEntity.ok("");
     }
 

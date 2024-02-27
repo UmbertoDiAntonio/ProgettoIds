@@ -5,10 +5,7 @@ import ids.unicam.models.Punto;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.Taggable;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
-import ids.unicam.models.contenuti.puntiInteresse.Orario;
-import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
-import ids.unicam.models.contenuti.puntiInteresse.Tag;
-import ids.unicam.models.contenuti.puntiInteresse.TipologiaPuntoInteresse;
+import ids.unicam.models.contenuti.puntiInteresse.*;
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDate;
@@ -46,5 +43,5 @@ public interface PoiService {
     @Transactional
     List<String> getAsListDetailed();
 
-    void setOrario(Integer idPunto, Orario orario);
+    void setOrario(Integer idPunto, DayOfWeek day, Orario.OrarioApertura orario);
 }

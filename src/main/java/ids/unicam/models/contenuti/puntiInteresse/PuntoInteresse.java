@@ -65,7 +65,7 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
                 ", nome='" + nome + '\'' +
                 ", pt=" + pt +
                 ", creatore=" + creatore +
-                ", listaMateriali=" + listaMateriali +
+                ", listaMateriali=" + materiali +
                 ", tipo=" + tipo +
                 ", id=" + id +
                 ", comune=" + comune +
@@ -77,7 +77,6 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
 
     @Embedded
     @Getter
-    @Setter
     private Orario orario;
 
     @Getter
@@ -97,7 +96,7 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
     }
 
     @OneToMany(fetch = FetchType.EAGER)
-    private final List<MaterialeGenerico> listaMateriali = new ArrayList<>();
+    private final List<MaterialeGenerico> materiali = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Getter
@@ -139,7 +138,7 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
         if (!nome.equals(that.nome)) return false;
         if (!pt.equals(that.pt)) return false;
         if (!creatore.equals(that.creatore)) return false;
-        if (!listaMateriali.equals(that.listaMateriali)) return false;
+        if (!materiali.equals(that.materiali)) return false;
         return tipo == that.tipo;
     }
 
@@ -153,7 +152,7 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
         result = 31 * result + nome.hashCode();
         result = 31 * result + pt.hashCode();
         result = 31 * result + creatore.hashCode();
-        result = 31 * result + listaMateriali.hashCode();
+        result = 31 * result + materiali.hashCode();
         result = 31 * result + tipo.hashCode();
         return result;
     }
@@ -165,17 +164,17 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
 
     @Override
     public List<MaterialeGenerico> getMateriali() {
-        return listaMateriali;
+        return materiali;
     }
 
     @Override
     public void addMateriale(MaterialeGenerico materialeGenerico) {
         if (materialeGenerico != null)
-            listaMateriali.add(materialeGenerico);
+            materiali.add(materialeGenerico);
     }
 
     @Override
     public void rimuoviMateriale(MaterialeGenerico materialeGenerico) {
-        listaMateriali.remove(materialeGenerico);
+        materiali.remove(materialeGenerico);
     }
 }

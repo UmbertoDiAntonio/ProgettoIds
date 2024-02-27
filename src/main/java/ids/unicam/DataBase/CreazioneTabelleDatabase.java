@@ -40,7 +40,7 @@ public class CreazioneTabelleDatabase {
 
     public void eliminaTabelle(@NotNull Connection connection) {
         String[] tableNames = {
-                "NOTIFICA", "CONTEST_LISTA_MATERIALI", "PUNTI_DI_INTERESSE_LISTA_MATERIALI",
+                "NOTIFICA", "CONTEST_MATERIALI", "PUNTI_DI_INTERESSE_MATERIALI",
                 "CURATORI_OSSERVATORI", "CONTEST_TAGS", "TURISTI_PREFERITI", "ITINERARIO_TAGS",
                 "PUNTI_DI_INTERESSE_TAGS", "TAG", "INVITO", "PUNTO_INTERESSE_HOURS_MAP",
                 "ITINERARI_PERCORSO", "CONTEST_PARTECIPANTI", "COMUNI", "MATERIALI",
@@ -63,10 +63,10 @@ public class CreazioneTabelleDatabase {
     private void creaTabellaListaMaterialiPuntoInteresse(@NotNull Connection connection){
 
         String createTableSQL =
-                "CREATE TABLE IF NOT EXISTS PUNTI_DI_INTERESSE_LISTA_MATERIALI(" +
+                "CREATE TABLE IF NOT EXISTS PUNTI_DI_INTERESSE_MATERIALI(" +
                         "id INT AUTO_INCREMENT PRIMARY KEY," +
                         "punto_interesse_id INT," +
-                        " lista_materiali_id INT," +
+                        "materiali_id INT," +
                         "FOREIGN KEY (punto_interesse_id) REFERENCES PUNTI_DI_INTERESSE(id) ON DELETE CASCADE)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
@@ -78,12 +78,12 @@ public class CreazioneTabelleDatabase {
     private void creaTabellaListaMaterialiContest(@NotNull Connection connection){
 
         String createTableSQL =
-                "CREATE TABLE IF NOT EXISTS CONTEST_LISTA_MATERIALI(" +
+                "CREATE TABLE IF NOT EXISTS CONTEST_MATERIALI(" +
                         "contest_id INT," +
-                        "lista_materiali_id INT," +
-                        "PRIMARY KEY (contest_id, lista_materiali_id)," +
+                        "materiali_id INT," +
+                        "PRIMARY KEY (contest_id, materiali_id)," +
                         "FOREIGN KEY (contest_id) REFERENCES CONTEST(id) ON DELETE CASCADE,"+
-                        "FOREIGN KEY (lista_materiali_id) REFERENCES MATERIALI(id) ON DELETE CASCADE)";
+                        "FOREIGN KEY (materiali_id) REFERENCES MATERIALI(id) ON DELETE CASCADE)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {

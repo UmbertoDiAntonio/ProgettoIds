@@ -10,10 +10,7 @@ import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.Taggable;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
-import ids.unicam.models.contenuti.puntiInteresse.Orario;
-import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
-import ids.unicam.models.contenuti.puntiInteresse.Tag;
-import ids.unicam.models.contenuti.puntiInteresse.TipologiaPuntoInteresse;
+import ids.unicam.models.contenuti.puntiInteresse.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -270,11 +267,11 @@ public class PoiServiceImpl implements PoiService {
 
     @Transactional
     @Override
-    public void setOrario(Integer idPunto, Orario orario) throws IllegalArgumentException{
+    public void setOrario(Integer idPunto, DayOfWeek day, Orario.OrarioApertura orario) throws IllegalArgumentException{
         Optional<PuntoInteresse> oPuntoInteresse = getById(idPunto);
         if (oPuntoInteresse.isPresent()) {
             PuntoInteresse puntoInteresse = oPuntoInteresse.get();
-            puntoInteresse.setOrario(orario);
+            puntoInteresse.getOrario().setOrarioApertura(day,orario);
             save(puntoInteresse);
         } else {
             logger.error("L'id del punto di interesse non e' valido");
