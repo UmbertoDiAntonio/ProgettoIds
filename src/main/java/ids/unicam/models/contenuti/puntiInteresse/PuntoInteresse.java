@@ -96,7 +96,7 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
     }
 
     @OneToMany(fetch = FetchType.EAGER)
-    private final List<MaterialeGenerico> materiali = new ArrayList<>();
+    private final Set<MaterialeGenerico> materiali = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     @Getter
@@ -163,7 +163,7 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
     }
 
     @Override
-    public List<MaterialeGenerico> getMateriali() {
+    public Set<MaterialeGenerico> getMateriali() {
         return materiali;
     }
 

@@ -6,6 +6,7 @@ import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ContenitoreServiceImpl implements ContenitoreService{
@@ -21,7 +22,7 @@ public class ContenitoreServiceImpl implements ContenitoreService{
     }
 
     @Override
-    public List<MaterialeGenerico> getMateriali(Contenitore contenitore) {
+    public  Set<MaterialeGenerico> getMateriali(Contenitore contenitore) {
         return contenitore.getMateriali();
     }
 }

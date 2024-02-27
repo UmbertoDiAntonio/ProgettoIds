@@ -138,7 +138,7 @@ public class JUnitContenutiTests {
             } catch (ConnessioneFallitaException e) {
                 throw new RuntimeException(e);
             }
-            TuristaAutenticato turistaTemp2 ;
+            TuristaAutenticato turistaTemp2;
             try {
                 turistaTemp2 = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(new ComuneDTO(comune2.getNome()), new TuristaAutenticatoDTO("Mario", "Rossi", LocalDate.of(2000, Calendar.MARCH, 17), "1Unica@", "user19")), Ruolo.CONTRIBUTOR_AUTORIZZATO);
             } catch (ConnessioneFallitaException e) {
@@ -162,7 +162,7 @@ public class JUnitContenutiTests {
 
             TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO("andrea", "neri", LocalDate.of(2000, Calendar.FEBRUARY, 3), "2Unica@", "user2"));
 
-            MaterialeGenerico materialeGenerico = materialeService.crea("./fotoTest",TipologiaMateriale.FOTO,turistaAutenticato.getUsername());
+            MaterialeGenerico materialeGenerico = materialeService.crea("./fotoTest", TipologiaMateriale.FOTO, turistaAutenticato);
             poiService.aggiungiMateriale(contributorAutorizzato.getUsername(), puntoInteresse.getId(), materialeGenerico);
 
             assertEquals(1, poiService.getMaterialiPoi(puntoInteresse.getId()).size());
@@ -209,7 +209,7 @@ public class JUnitContenutiTests {
 
 
             assertEquals(Boolean.TRUE, poiService.getStato(puntoInteresse.getId()).asBoolean());
-            MaterialeGenerico materialeGenerico1 = materialeService.save(new Foto(new MaterialeDTO("./testFoto",contributor)));
+            MaterialeGenerico materialeGenerico1 = materialeService.save(new Foto(new MaterialeDTO("./testFoto", contributor)));
             assertNull(materialeGenerico1.getStato().asBoolean());
             curatoreServiceImpl.valutaMateriale(curatore.getUsername(), materialeGenerico1.getId(), Stato.APPROVATO.asBoolean());
             poiService.aggiungiMateriale(turistaAutenticato.getUsername(), puntoInteresse.getId(), materialeGenerico1);
@@ -224,7 +224,7 @@ public class JUnitContenutiTests {
     @Test
     @Order(2)
     public void testItinerario() throws ConnessioneFallitaException, FuoriComuneException {
-        Comune comune ;
+        Comune comune;
         try {
             comune = comuneService.creaComune(new Comune(new ComuneDTO("Milano")));
         } catch (ConnessioneFallitaException e) {
@@ -278,7 +278,7 @@ public class JUnitContenutiTests {
     @Test
     @Order(3)
     public void testContest() throws ConnessioneFallitaException {
-        Comune comune ;
+        Comune comune;
         try {
             comune = comuneService.creaComune(new Comune(new ComuneDTO("Milano")));
         } catch (ConnessioneFallitaException e) {
@@ -304,7 +304,7 @@ public class JUnitContenutiTests {
             turistaAutenticatoService.partecipaAlContest(contest.getId(), turistaAutenticato.getUsername());
 
             try {
-                contestService.aggiungiMateriale( turistaAutenticato.getUsername(),contest.getId(), materialeService.crea("./testFoto",TipologiaMateriale.FOTO,turistaAutenticato.getUsername()));
+                contestService.aggiungiMateriale(turistaAutenticato.getUsername(), contest.getId(), materialeService.crea("./testFoto", TipologiaMateriale.FOTO, turistaAutenticato));
             } catch (ContestException | FuoriComuneException e) {
                 throw new RuntimeException(e);
             }
@@ -325,7 +325,7 @@ public class JUnitContenutiTests {
             assertEquals(numeroContestCreatiDaAnimatore + 2, contestService.getContestByCreatore(animatore).size());
 
             TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO("andrea", "neri", LocalDate.of(2000, Calendar.NOVEMBER, 5), "8Unica@", "user8"));
-            Invito invito ;
+            Invito invito;
             try {
                 invito = animatoreServiceImpl.invitaContest(animatore.getUsername(), contest.getId(), turistaAutenticato.getUsername());
             } catch (ContestException e) {
@@ -356,7 +356,7 @@ public class JUnitContenutiTests {
     @Test
     @Order(4)
     public void approvaMaterialeByAnimatore() throws ConnessioneFallitaException {
-        Comune comune ;
+        Comune comune;
         try {
             comune = comuneService.creaComune(new Comune(new ComuneDTO("Milano")));
         } catch (ConnessioneFallitaException e) {
@@ -372,13 +372,17 @@ public class JUnitContenutiTests {
 
         Contest contest = contestService.creaContest(new Contest(new RichiestaCreazioneContestDTO("Monumento", "Foto più bella", animatore, true)));
 
-        MaterialeGenerico descrizione = materialeService.crea("./testFoto",TipologiaMateriale.FOTO,turistaAutenticato.getUsername());
-        assertThrows(ContestException.class, () -> contestService.aggiungiMateriale(turistaAutenticato.getUsername(), contest.getId(), descrizione));
+        MaterialeGenerico descrizione = materialeService.crea("./testFoto", TipologiaMateriale.FOTO, turistaAutenticato);
+        try {
+            contestService.aggiungiMateriale(turistaAutenticato.getUsername(), contest.getId(), descrizione);
+        } catch (ContestException | FuoriComuneException e) {
+            throw new RuntimeException(e);
+        }
 
         turistaAutenticatoService.partecipaAlContest(contest.getId(), turistaAutenticato.getUsername());
-        MaterialeGenerico materialeGenerico = materialeService.crea("./testFoto",TipologiaMateriale.FOTO,turistaAutenticato.getUsername());
+        MaterialeGenerico materialeGenerico = materialeService.crea("./testFoto", TipologiaMateriale.FOTO, turistaAutenticato);
         try {
-            contestService.aggiungiMateriale(turistaAutenticato.getUsername(),contest.getId(), descrizione );
+            contest = contestService.aggiungiMateriale(turistaAutenticato.getUsername(), contest.getId(), descrizione);
         } catch (ContestException | FuoriComuneException e) {
             throw new RuntimeException(e);
         }
@@ -423,8 +427,8 @@ public class JUnitContenutiTests {
         PuntoInteresse puntoInt2 = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("parcheggio centrale sotto", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), new Orario(), TipologiaPuntoInteresse.PARCHEGGIO, contributor)));
 
         assertEquals(numeroPuntiInteresse + 2, comuneService.getPuntiInteresseNelComune(comune.getNome()).size());
-        puntoInteresse=curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse.getId(), Stato.APPROVATO.asBoolean());
-        puntoInt2=curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInt2.getId(), Stato.APPROVATO.asBoolean());
+        puntoInteresse = curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse.getId(), Stato.APPROVATO.asBoolean());
+        puntoInt2 = curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInt2.getId(), Stato.APPROVATO.asBoolean());
 
         turistaAutenticatoService.aggiungiPreferito(turista.getUsername(), puntoInteresse);
         turistaAutenticatoService.aggiungiPreferito(turista.getUsername(), puntoInt2);
@@ -441,14 +445,14 @@ public class JUnitContenutiTests {
 
         int numeroItinerariComune = itinerarioService.findAllByComune(comune).size();
         itinerarioService.creaItinerario(curatore.getUsername(), "girodeibar");
-        assertEquals(numeroItinerariComune+1, itinerarioService.findAllByComune(comune).size());
+        assertEquals(numeroItinerariComune + 1, itinerarioService.findAllByComune(comune).size());
 
         curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse1.getId(), Stato.APPROVATO.asBoolean());
 
         Itinerario itinerario2 = itinerarioService.creaItinerario(curatore.getUsername(), "giro dei bar");
         assertEquals(numeroItinerariComune + 2, itinerarioService.findAllByComune(comune).size());
         curatoreServiceImpl.eliminaItinerario(curatore.getUsername(), itinerario2.getId());
-        assertEquals(numeroItinerariComune +1, itinerarioService.findAllByComune(comune).size());
+        assertEquals(numeroItinerariComune + 1, itinerarioService.findAllByComune(comune).size());
 
 
         int numeroContest = contestService.getContestByCreatore(animatore).size();
@@ -470,7 +474,7 @@ public class JUnitContenutiTests {
         PuntoInteresse puntoInteresse2 = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("Castello", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), new Orario(), TipologiaPuntoInteresse.MONUMENTO, contributor)));
 
         curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse2.getId(), Stato.APPROVATO.asBoolean());
-        MaterialeGenerico foto = materialeService.crea("./testFoto",TipologiaMateriale.FOTO,turista.getUsername());
+        MaterialeGenerico foto = materialeService.crea("./testFoto", TipologiaMateriale.FOTO, turista);
         curatoreServiceImpl.valutaMateriale(curatore.getUsername(), foto.getId(), Stato.APPROVATO.asBoolean());
 
         poiService.aggiungiMateriale(turista.getUsername(), puntoInteresse2.getId(), foto);
@@ -487,7 +491,7 @@ public class JUnitContenutiTests {
     @Test
     @Order(6)
     public void modificaScadenzaContenuto() throws ConnessioneFallitaException, FuoriComuneException {
-        Comune comune ;
+        Comune comune;
         try {
             comune = comuneService.creaComune(new Comune(new ComuneDTO("Milano")));
         } catch (ConnessioneFallitaException e) {

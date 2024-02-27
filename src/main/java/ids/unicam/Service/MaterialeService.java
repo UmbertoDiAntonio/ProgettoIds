@@ -1,5 +1,8 @@
 package ids.unicam.Service;
 
+import ids.unicam.models.attori.TuristaAutenticato;
+import ids.unicam.models.contenuti.Contenitore;
+import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.materiali.TipologiaMateriale;
@@ -17,7 +20,9 @@ public interface MaterialeService {
     Stato getStato(MaterialeGenerico foto);
 
 
-    MaterialeGenerico crea(String fileMateriale, TipologiaMateriale tipologiaMateriale, String usernameTuristaAutenticato) throws IllegalArgumentException;
+    MaterialeGenerico crea(String fileMateriale, TipologiaMateriale tipologiaMateriale, TuristaAutenticato creatore) throws IllegalArgumentException;
 
     String getBase64ById(Integer id);
+
+    void aggiungiMateriale(Contenitore contenitore, MaterialeGenerico materialeGenerico);
 }

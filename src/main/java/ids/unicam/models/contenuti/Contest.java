@@ -53,7 +53,7 @@ public class Contest implements Contenitore, Taggable, Expirable {
     private String nomeContest =null;
 
     @OneToMany(fetch = FetchType.EAGER)
-    private final List<MaterialeGenerico> materiali = new ArrayList<>();
+    private final Set<MaterialeGenerico> materiali = new HashSet<>();
 
     @OneToOne
     @Setter
@@ -85,7 +85,7 @@ public class Contest implements Contenitore, Taggable, Expirable {
     }
 
     @Override
-    public List<MaterialeGenerico> getMateriali() {
+    public Set<MaterialeGenerico> getMateriali() {
         return materiali;
     }
 

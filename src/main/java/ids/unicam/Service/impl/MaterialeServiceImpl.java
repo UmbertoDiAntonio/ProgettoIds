@@ -5,12 +5,16 @@ import ids.unicam.Service.MaterialeService;
 import ids.unicam.models.DTO.MaterialeDTO;
 import ids.unicam.models.attori.ContributorAutorizzato;
 import ids.unicam.models.attori.TuristaAutenticato;
+import ids.unicam.models.contenuti.Contenitore;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static ids.unicam.Main.logger;
@@ -19,13 +23,12 @@ import static ids.unicam.Main.logger;
 public class MaterialeServiceImpl implements MaterialeService {
 
     private final MaterialeRepository repository;
-    private final TuristaAutenticatoServiceImpl turistaAutenticatoService;
+
 
 
     @Autowired
-    public MaterialeServiceImpl(MaterialeRepository repository, TuristaAutenticatoServiceImpl turistaAutenticatoService) {
+    public MaterialeServiceImpl(MaterialeRepository repository) {
         this.repository = repository;
-        this.turistaAutenticatoService = turistaAutenticatoService;
     }
 
     @Override
@@ -39,13 +42,7 @@ public class MaterialeServiceImpl implements MaterialeService {
     }
 
     @Override
-    public MaterialeGenerico crea(String fileMateriale, TipologiaMateriale tipologiaMateriale, String usernameCreatore)throws IllegalArgumentException {
-        Optional<TuristaAutenticato> oTurista = turistaAutenticatoService.getById(usernameCreatore);
-        if (oTurista.isEmpty()) {
-            logger.error("username non valido");
-            throw new IllegalArgumentException("username non valido");
-        }
-        TuristaAutenticato creatore = oTurista.get();
+    public MaterialeGenerico crea(String fileMateriale, TipologiaMateriale tipologiaMateriale, TuristaAutenticato creatore)throws IllegalArgumentException {
 
         MaterialeGenerico materialeGenerico = switch (tipologiaMateriale) {
             case FOTO -> new Foto(new MaterialeDTO(fileMateriale, creatore));
@@ -70,13 +67,24 @@ public class MaterialeServiceImpl implements MaterialeService {
     }
 
     @Override
+    public void aggiungiMateriale(Contenitore contenitore, MaterialeGenerico materialeGenerico) {
+        contenitore.addMateriale(materialeGenerico);
+        save(materialeGenerico);
+    }
+
+    @Override
     public Optional<MaterialeGenerico> getById(int id) {
         return repository.findById(id);
     }
 
     @Override
     public List<MaterialeGenerico> getAll() {
-        return repository.findAll();
+        List<String> file = new ArrayList<>();
+        File folder = new File("src/main/resources/materials");
+        for(File fileMateriale : Objects.requireNonNull(folder.listFiles()))
+            file.add(fileMateriale.getPath());
+        return repository.findAllWithFileExist(file);
+
     }
 
 

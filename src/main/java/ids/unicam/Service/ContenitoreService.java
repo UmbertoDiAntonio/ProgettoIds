@@ -4,6 +4,7 @@ import ids.unicam.models.contenuti.Contenitore;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ContenitoreService {
 
@@ -12,5 +13,5 @@ public interface ContenitoreService {
 
     void rimuoviMateriale(Contenitore contenitore, MaterialeGenerico materialeGenerico);
 
-    List<MaterialeGenerico> getMateriali (Contenitore contenitore);
+    Set<MaterialeGenerico> getMateriali (Contenitore contenitore);
 }

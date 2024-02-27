@@ -21,19 +21,19 @@ import static ids.unicam.Main.logger;
 @Service
 public class ContestServiceImpl implements ContestService {
     private final ContestRepository repository;
+    private final MaterialeServiceImpl materialeService;
 
     @Autowired
-    public ContestServiceImpl(ContestRepository repository) {
+    public ContestServiceImpl(ContestRepository repository, MaterialeServiceImpl materialeService) {
         this.repository = repository;
-
+        this.materialeService = materialeService;
     }
-
 
     public void deleteById(int id) {
         repository.deleteById(id);
     }
 
-    Contest save(Contest contest) {
+    private Contest save(Contest contest) {
         return repository.save(contest);
     }
 
@@ -65,11 +65,8 @@ public class ContestServiceImpl implements ContestService {
     }
 
 
-
-
-    @Transactional
     @Override
-    public void aggiungiMateriale(String usernameTurista, Integer idContest, MaterialeGenerico materialeGenerico) throws ContestException, FuoriComuneException {
+    public Contest aggiungiMateriale(String usernameTurista, Integer idContest, MaterialeGenerico materialeGenerico) throws ContestException, FuoriComuneException {
         TuristaAutenticato turistaAutenticato =null;
 
         Optional<Contest> oContest = findById(idContest);
@@ -89,8 +86,8 @@ public class ContestServiceImpl implements ContestService {
             logger.error("Devi essere iscritto al contest per caricare materiale su di esso");
             throw new ContestException("Devi essere iscritto al contest per caricare materiale su di esso");
         }
-        contest.addMateriale(materialeGenerico);
-        save(contest);
+        materialeService.aggiungiMateriale(contest,materialeGenerico);
+        return save(contest);
     }
 
 

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ContestService {
-    void aggiungiMateriale(String usernameTurista, Integer idContest, MaterialeGenerico materialeGenerico) throws ContestException, FuoriComuneException;
+    Contest aggiungiMateriale(String usernameTurista, Integer idContest, MaterialeGenerico materialeGenerico) throws ContestException, FuoriComuneException;
 
     List<TuristaAutenticato> getPartecipanti(Contest contest);
 

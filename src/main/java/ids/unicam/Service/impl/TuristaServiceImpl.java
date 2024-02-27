@@ -11,13 +11,11 @@ import java.util.List;
 public class TuristaServiceImpl implements TuristaService {
 
     private final PoiServiceImpl poiServiceImpl;
-    private final TuristaAutenticatoServiceImpl turistaAutenticatoServiceImpl;
     private final NotificaReportServiceImpl notificaReportService;
 
     @Autowired
-    public TuristaServiceImpl(PoiServiceImpl poiServiceImpl, TuristaAutenticatoServiceImpl turistaAutenticatoServiceImpl, NotificaReportServiceImpl notificaReportService) {
+    public TuristaServiceImpl(PoiServiceImpl poiServiceImpl, NotificaReportServiceImpl notificaReportService) {
         this.poiServiceImpl = poiServiceImpl;
-        this.turistaAutenticatoServiceImpl = turistaAutenticatoServiceImpl;
         this.notificaReportService = notificaReportService;
     }
 
