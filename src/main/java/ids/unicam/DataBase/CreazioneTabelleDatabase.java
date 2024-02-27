@@ -399,7 +399,8 @@ public class CreazioneTabelleDatabase {
                         "id INT PRIMARY KEY NOT NULL," +
                         "stato VARCHAR(50)," +
                         "creatore_username VARCHAR(50) NOT NULL," +
-                        "tipo VARCHAR(50) NOT NULL)";
+                        "tipo VARCHAR(50) NOT NULL,"+
+                        "file VARCHAR(50))";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {

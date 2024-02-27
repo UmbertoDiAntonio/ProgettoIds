@@ -136,7 +136,6 @@ public class PoiServiceImpl implements PoiService {
         return oScadenza.get();
     }
 
-    @Transactional
     @Override
     public void aggiungiMateriale(String usernameTurista, Integer idPuntoInteresse, MaterialeGenerico materialeGenerico) throws FuoriComuneException {
         Optional<TuristaAutenticato> oTurista=turistaAutenticatoService.getById(usernameTurista);
@@ -171,7 +170,7 @@ public class PoiServiceImpl implements PoiService {
     }
 
 
-    @Transactional
+
     public PuntoInteresse save(PuntoInteresse puntoInteresse) {
         return repository.save(puntoInteresse);
     }
