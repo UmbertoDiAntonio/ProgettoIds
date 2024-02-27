@@ -136,21 +136,22 @@ public class PoiServiceImpl implements PoiService {
         return oScadenza.get();
     }
 
+    @Transactional
     @Override
     public void aggiungiMateriale(String usernameTurista, Integer idPuntoInteresse, MaterialeGenerico materialeGenerico) throws FuoriComuneException {
-        Optional<TuristaAutenticato> oTurista=turistaAutenticatoService.getById(usernameTurista);
-        if(oTurista.isEmpty()) {
+        Optional<TuristaAutenticato> oTurista = turistaAutenticatoService.getById(usernameTurista);
+        if (oTurista.isEmpty()) {
             logger.error("username non valido");
             throw new FuoriComuneException("username non valido");
         }
-        TuristaAutenticato turistaAutenticato=oTurista.get();
+        TuristaAutenticato turistaAutenticato = oTurista.get();
 
-        Optional<PuntoInteresse> oPunto=getById(idPuntoInteresse);
-        if(oPunto.isEmpty()) {
+        Optional<PuntoInteresse> oPunto = getById(idPuntoInteresse);
+        if (oPunto.isEmpty()) {
             logger.error("id punto interesse non valido");
             throw new FuoriComuneException("id punto interesse non valido");
         }
-        PuntoInteresse puntoInteresse=oPunto.get();
+        PuntoInteresse puntoInteresse = oPunto.get();
 
         if (turistaAutenticato instanceof Contributor contributor) {
             if (!contributor.getComune().equals(puntoInteresse.getComune())) {
@@ -162,15 +163,14 @@ public class PoiServiceImpl implements PoiService {
             logger.error("il contributor cerca di caricare il materiale su un punto di interesse non approvato");
             throw new IllegalStateException("il contributor cerca di caricare il materiale su un punto di interesse non approvato");
         }
-        if (turistaAutenticato instanceof ContributorAutorizzato)
-            materialeGenerico.setStato(Stato.APPROVATO);
+
         puntoInteresse.addMateriale(materialeGenerico);
         //materialeServiceImpl.save(materialeGenerico);
         save(puntoInteresse);
     }
 
 
-
+    @Transactional
     public PuntoInteresse save(PuntoInteresse puntoInteresse) {
         return repository.save(puntoInteresse);
     }

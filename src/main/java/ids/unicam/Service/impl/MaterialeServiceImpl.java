@@ -3,6 +3,7 @@ package ids.unicam.Service.impl;
 import ids.unicam.DataBase.Repository.MaterialeRepository;
 import ids.unicam.Service.MaterialeService;
 import ids.unicam.models.DTO.MaterialeDTO;
+import ids.unicam.models.attori.ContributorAutorizzato;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.*;
@@ -40,17 +41,23 @@ public class MaterialeServiceImpl implements MaterialeService {
     @Override
     public MaterialeGenerico crea(String fileMateriale, TipologiaMateriale tipologiaMateriale, String usernameCreatore) {
         Optional<TuristaAutenticato> oTurista = turistaAutenticatoService.getById(usernameCreatore);
-        if(oTurista.isEmpty()){
+        if (oTurista.isEmpty()) {
             logger.error("username non valido");
             throw new IllegalArgumentException("username non valido");
         }
-        TuristaAutenticato creatore=oTurista.get();
-        return switch (tipologiaMateriale){
-            case FOTO -> new Foto(new MaterialeDTO(fileMateriale,creatore));
-            case VIDEO -> new Video(new MaterialeDTO(fileMateriale,creatore));
-            case TESTO -> new Testo(new MaterialeDTO(fileMateriale,creatore));
-            case AUDIO -> new Audio(new MaterialeDTO(fileMateriale,creatore));
+        TuristaAutenticato creatore = oTurista.get();
+
+        MaterialeGenerico materialeGenerico = switch (tipologiaMateriale) {
+            case FOTO -> new Foto(new MaterialeDTO(fileMateriale, creatore));
+            case VIDEO -> new Video(new MaterialeDTO(fileMateriale, creatore));
+            case TESTO -> new Testo(new MaterialeDTO(fileMateriale, creatore));
+            case AUDIO -> new Audio(new MaterialeDTO(fileMateriale, creatore));
         };
+
+        if (creatore instanceof ContributorAutorizzato)
+            materialeGenerico.setStato(Stato.APPROVATO);
+
+        return save(materialeGenerico);
 
     }
 
@@ -63,7 +70,6 @@ public class MaterialeServiceImpl implements MaterialeService {
     public List<MaterialeGenerico> getAll() {
         return repository.findAll();
     }
-
 
 
     public MaterialeGenerico save(MaterialeGenerico materialeGenerico) {
