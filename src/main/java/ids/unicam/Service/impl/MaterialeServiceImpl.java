@@ -53,12 +53,10 @@ public class MaterialeServiceImpl implements MaterialeService {
             case TESTO -> new Testo(new MaterialeDTO(fileMateriale, creatore));
             case AUDIO -> new Audio(new MaterialeDTO(fileMateriale, creatore));
         };
-
         if (creatore instanceof ContributorAutorizzato)
             materialeGenerico.setStato(Stato.APPROVATO);
 
         return save(materialeGenerico);
-
     }
 
     @Override

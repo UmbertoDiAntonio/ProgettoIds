@@ -63,4 +63,12 @@ public class ContestController{
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+    @PutMapping("/approvaMateriale/{idMateriale}")
+    public ResponseEntity<?> approvaMateriale(@RequestBody String usernameAnimatore, @RequestBody  Integer idContest, @PathVariable Integer idMateriale, @RequestBody  boolean stato){
+        try {
+            return ResponseEntity.ok(animatoreService.approvaMateriale(usernameAnimatore, idContest, idMateriale, stato));
+        }catch (UnsupportedOperationException|IllegalArgumentException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

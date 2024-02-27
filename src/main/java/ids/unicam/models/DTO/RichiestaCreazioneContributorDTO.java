@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class RichiestaCreazioneContributorDTO {
-    private RichiestaCreazioneComuneDTO comune;
+    private ComuneDTO comune;
     private TuristaAutenticatoDTO turistaDTO;
     //private Ruolo ruolo;
 }

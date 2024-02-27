@@ -98,9 +98,9 @@ public class PoiServiceImpl implements PoiService {
         Optional<Contributor> oContributor = contributorService.getById(usernameCreatore);
         if (oContributor.isPresent()) {
             Contributor contributor = oContributor.get();
-            Comune comune = contributor.getComune();
             PuntoInteresseDTO puntoInteresseDTO = new PuntoInteresseDTO(nomePOI, punto, new Orario(), tipologiaPuntoInteresse, contributor);
             PuntoInteresse puntoInteresse = new PuntoInteresse(puntoInteresseDTO);
+            puntoInteresse.addTag(tag);
             if (!puntoInteresse.getCreatore().getComune().verificaCoordinateComune(puntoInteresse.getPt())) {
                 logger.error("Non si possono creare punti di interesse fuori dal comune");
                 throw new FuoriComuneException("Posizione Punto di Interesse Fuori dall'area del comune");

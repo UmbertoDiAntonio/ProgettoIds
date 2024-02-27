@@ -2,7 +2,7 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.exception.ConnessioneFallitaException;
-import ids.unicam.models.DTO.RichiestaCreazioneComuneDTO;
+import ids.unicam.models.DTO.ComuneDTO;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.attori.*;
@@ -52,11 +52,11 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
                 logger.error("Non puoi tornare un turista");
                 yield null;
             }
-            case CURATORE -> curatoreServiceImpl.save(new Curatore(new RichiestaCreazioneContributorDTO(new RichiestaCreazioneComuneDTO(contributor.getComune().getNome()),turistaAutenticatoDTO)));
-            case ANIMATORE -> animatoreServiceImpl.save(new Animatore(new RichiestaCreazioneContributorDTO(new RichiestaCreazioneComuneDTO(contributor.getComune().getNome()),turistaAutenticatoDTO)));
+            case CURATORE -> curatoreServiceImpl.save(new Curatore(new RichiestaCreazioneContributorDTO(new ComuneDTO(contributor.getComune().getNome()),turistaAutenticatoDTO)));
+            case ANIMATORE -> animatoreServiceImpl.save(new Animatore(new RichiestaCreazioneContributorDTO(new ComuneDTO(contributor.getComune().getNome()),turistaAutenticatoDTO)));
             case CONTRIBUTOR_AUTORIZZATO ->
-                    contributorAutorizzatoServiceImpl.save(new ContributorAutorizzato(new RichiestaCreazioneContributorDTO(new RichiestaCreazioneComuneDTO(contributor.getComune().getNome()),turistaAutenticatoDTO)));
-            case CONTRIBUTOR -> contributorServiceImpl.save(new Contributor(new RichiestaCreazioneContributorDTO(new RichiestaCreazioneComuneDTO(contributor.getComune().getNome()),turistaAutenticatoDTO)));
+                    contributorAutorizzatoServiceImpl.save(new ContributorAutorizzato(new RichiestaCreazioneContributorDTO(new ComuneDTO(contributor.getComune().getNome()),turistaAutenticatoDTO)));
+            case CONTRIBUTOR -> contributorServiceImpl.save(new Contributor(new RichiestaCreazioneContributorDTO(new ComuneDTO(contributor.getComune().getNome()),turistaAutenticatoDTO)));
         };
 
         poiServiceImpl.findAll().stream()

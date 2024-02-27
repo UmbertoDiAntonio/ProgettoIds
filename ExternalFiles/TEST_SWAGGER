@@ -1,7 +1,6 @@
 PROBLEMI PROGETTO IDS
 
 MATERIALE CONTROLLER:
-- PUT(approva)  --> DA TESTARE FUNZIONAMENTO
 - POST          --> DA RI-FARE COMPLETAMENTE
 - GET           --> DA TESTARE FUNZIONAMENTO
 - DELETE        --> DA TESTARE FUNZIONAMENTO
@@ -9,6 +8,7 @@ MATERIALE CONTROLLER:
 
 
 CONTEST CONTROLLER
+- PUT(approvaMateriale)  --> DA TESTARE FUNZIONAMENTO
 - PUT(invita)   --> DA TESTARE FUNZIONAMENTO
 - POST          -->
 - GET           -->
@@ -39,7 +39,7 @@ TURISTA AUTENTICATO CONTROLLER
 PUNTO DI INTERESSE CONTROLLER
 - PUT(setScadenza)
 - PUT(condividi)
-- POST
+- POST                      --> funziona
 - GET
 - DELETE
 - GET(materiali(idPunto))
@@ -88,5 +88,5 @@ ANIMATORE CONTROLLER
 
 
 TURISTA CONTROLLER
-- GET(tagDTO) -> da rivedere, troppe informazioni richieste
+- GET(tagDTO) -> funziona
 - GET(report) -> da rivedere, troppe informazioni richieste

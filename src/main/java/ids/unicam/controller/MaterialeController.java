@@ -21,15 +21,11 @@ import java.io.IOException;
 @RequestMapping("/materiali")
 public class MaterialeController{
     private final MaterialeService materialeService;
-    private final AnimatoreService animatoreService;
     private final PoiService poiService;
-    private final ContestService contestService;
 
-    public MaterialeController(MaterialeService materialeService, AnimatoreService animatoreService, PoiService poiService, ContestService contestService) {
+    public MaterialeController(MaterialeService materialeService, PoiService poiService) {
         this.materialeService = materialeService;
-        this.animatoreService = animatoreService;
         this.poiService = poiService;
-        this.contestService = contestService;
     }
 
     @GetMapping("/getAll")
@@ -41,15 +37,9 @@ public class MaterialeController{
     public ResponseEntity<?> getById(Integer id) {
         return ResponseEntity.ok(materialeService.getById(id));
     }
-/*
-    @PostMapping("/crea")
-    public ResponseEntity<?> create(MaterialeDTO entity) {
-        return null;//TODO
-    }
 
- */
     @PostMapping(value = "/caricaMateriale",  consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> fileUpload(TipologiaMateriale tipologia, @RequestParam("materiale") MultipartFile materiale, String usernameTurista, Integer idContenitore) throws IOException {
+    public ResponseEntity<?> fileUpload( @RequestParam("materiale") MultipartFile materiale, String usernameTurista, Integer idContenitore,TipologiaMateriale tipologia) throws IOException {
         File newFile = new File("src/main/resources/" + materiale.getOriginalFilename());
         if (newFile.createNewFile())
             return new ResponseEntity<>("Materiale già caricato", HttpStatus.BAD_REQUEST);
@@ -71,13 +61,6 @@ public class MaterialeController{
         return ResponseEntity.ok("{}");
     }
 
-    @PutMapping("/approva/{idMateriale}")
-    public ResponseEntity<?> approvaMateriale(@RequestBody String usernameAnimatore, @RequestBody  Integer idContest, @PathVariable Integer idMateriale, @RequestBody  boolean stato){
-        try {
-            return ResponseEntity.ok(animatoreService.approvaMateriale(usernameAnimatore, idMateriale, idMateriale, stato));
-        }catch (UnsupportedOperationException|IllegalArgumentException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
+
 
 }

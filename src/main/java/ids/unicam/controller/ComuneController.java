@@ -4,7 +4,7 @@ import ids.unicam.Service.ComuneService;
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.models.Comune;
-import ids.unicam.models.DTO.RichiestaCreazioneComuneDTO;
+import ids.unicam.models.DTO.ComuneDTO;
 import ids.unicam.models.attori.Ruolo;
 import ids.unicam.models.attori.TuristaAutenticato;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/comune")
-public class  ComuneController implements ControllerBase<RichiestaCreazioneComuneDTO, String>{
+public class  ComuneController implements ControllerBase<ComuneDTO, String>{
 
     private final ComuneService comuneService;
     private final GestorePiattaformaService gestorePiattaformaService;
@@ -44,7 +44,7 @@ public class  ComuneController implements ControllerBase<RichiestaCreazioneComun
     }
 
     @Override
-    public ResponseEntity<?> create(RichiestaCreazioneComuneDTO comuneDTO) {
+    public ResponseEntity<?> create(ComuneDTO comuneDTO) {
         try {
             return ResponseEntity.ok(comuneService.creaComune(new Comune(comuneDTO)));
         } catch (ConnessioneFallitaException e) {

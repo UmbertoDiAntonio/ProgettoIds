@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RichiestaCreazioneComuneDTO {
+public class ComuneDTO {
     private String nome;
 }
