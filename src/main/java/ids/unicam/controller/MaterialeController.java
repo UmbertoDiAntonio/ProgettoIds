@@ -1,40 +1,72 @@
 package ids.unicam.controller;
 
 import ids.unicam.Service.AnimatoreService;
+import ids.unicam.Service.ContestService;
 import ids.unicam.Service.MaterialeService;
-import ids.unicam.models.DTO.MaterialeDTO;
+import ids.unicam.Service.PoiService;
+import ids.unicam.exception.FuoriComuneException;
+import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
+import ids.unicam.models.contenuti.materiali.TipologiaMateriale;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/materiali")
-public class MaterialeController implements ControllerBase<MaterialeDTO,Integer>{
+public class MaterialeController{
     private final MaterialeService materialeService;
     private final AnimatoreService animatoreService;
+    private final PoiService poiService;
+    private final ContestService contestService;
 
-    public MaterialeController(MaterialeService materialeService, AnimatoreService animatoreService) {
+    public MaterialeController(MaterialeService materialeService, AnimatoreService animatoreService, PoiService poiService, ContestService contestService) {
         this.materialeService = materialeService;
         this.animatoreService = animatoreService;
+        this.poiService = poiService;
+        this.contestService = contestService;
     }
 
-    @Override
+    @GetMapping("/getAll")
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(materialeService.getAll());
     }
 
-    @Override
+    @GetMapping("/{id}")
     public ResponseEntity<?> getById(Integer id) {
         return ResponseEntity.ok(materialeService.getById(id));
     }
-
-    @Override
+/*
+    @PostMapping("/crea")
     public ResponseEntity<?> create(MaterialeDTO entity) {
         return null;//TODO
     }
 
-    @Override
-    public ResponseEntity<?> delete(Integer id) {
+ */
+    @PostMapping(value = "/caricaMateriale",  consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> fileUpload(TipologiaMateriale tipologia, @RequestParam("materiale") MultipartFile materiale, String usernameTurista, Integer idContenitore) throws IOException {
+        File newFile = new File("src/main/resources/" + materiale.getOriginalFilename());
+        if (newFile.createNewFile())
+            return new ResponseEntity<>("Materiale già caricato", HttpStatus.BAD_REQUEST);
+        FileOutputStream fileOutputStream = new FileOutputStream(newFile);
+        fileOutputStream.write(materiale.getBytes());
+        fileOutputStream.close();
+        try {
+            MaterialeGenerico materialeGenerico=materialeService.crea(materiale.getOriginalFilename(),tipologia,usernameTurista);
+            poiService.aggiungiMateriale(usernameTurista,idContenitore,materialeGenerico);
+        } catch (FuoriComuneException e) {
+            throw new RuntimeException(e);
+        }
+        return new ResponseEntity<>("Materiale Caricato",HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Integer id) {
         materialeService.deleteById(id);
         return ResponseEntity.ok("{}");
     }

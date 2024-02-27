@@ -11,6 +11,7 @@ import ids.unicam.models.attori.*;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.Foto;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
+import ids.unicam.models.contenuti.materiali.TipologiaMateriale;
 import ids.unicam.models.contenuti.puntiInteresse.Orario;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import ids.unicam.models.contenuti.puntiInteresse.Tag;
@@ -224,8 +225,8 @@ public class JUnitUtentiTest {
 
 
         assertEquals(0, poiService.getMaterialiPoi(puntoInteresse.getId()).size());
-        MaterialeGenerico foto = materialeService.save(new Foto(new MaterialeDTO(turistaAutenticato)));
-        poiService.aggiungiMateriale(turistaAutenticato, puntoInteresse, foto);
+        MaterialeGenerico foto = materialeService.crea("./testFoto", TipologiaMateriale.FOTO,turistaAutenticato.getUsername());
+        poiService.aggiungiMateriale(turistaAutenticato.getUsername(), puntoInteresse.getId(), foto);
         assertEquals(1, poiService.getMaterialiPoi(puntoInteresse.getId()).size());
         assertNull(materialeService.getStato(foto).asBoolean());
         curatoreServiceImpl.valutaMateriale(curatore1.getUsername(), foto.getId(), Stato.APPROVATO.asBoolean());

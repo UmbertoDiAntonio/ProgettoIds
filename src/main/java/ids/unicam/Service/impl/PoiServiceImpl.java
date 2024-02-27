@@ -9,6 +9,7 @@ import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.Taggable;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
+import ids.unicam.models.contenuti.materiali.TipologiaMateriale;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import ids.unicam.models.contenuti.puntiInteresse.Tag;
 import jakarta.transaction.Transactional;
@@ -28,13 +29,15 @@ public class PoiServiceImpl implements PoiService {
     private final MaterialeServiceImpl materialeServiceImpl;
     private final TagServiceImpl tagServiceImpl;
     private final ContributorServiceImpl contributorService;
+    private final TuristaAutenticatoServiceImpl turistaAutenticatoService;
 
     @Autowired
-    public PoiServiceImpl(PoiRepository repository, MaterialeServiceImpl materialeServiceImpl, TagServiceImpl tagServiceImpl, ContributorServiceImpl contributorService) {
+    public PoiServiceImpl(PoiRepository repository, MaterialeServiceImpl materialeServiceImpl, TagServiceImpl tagServiceImpl, ContributorServiceImpl contributorService, TuristaAutenticatoServiceImpl turistaAutenticatoService) {
         this.repository = repository;
         this.materialeServiceImpl = materialeServiceImpl;
         this.tagServiceImpl = tagServiceImpl;
         this.contributorService = contributorService;
+        this.turistaAutenticatoService = turistaAutenticatoService;
     }
 
 
@@ -113,7 +116,22 @@ public class PoiServiceImpl implements PoiService {
 
     @Transactional
     @Override
-    public void aggiungiMateriale(TuristaAutenticato turistaAutenticato, PuntoInteresse puntoInteresse, MaterialeGenerico materialeGenerico) {
+    public void aggiungiMateriale(String usernameTurista, Integer idPuntoInteresse, MaterialeGenerico materialeGenerico) throws FuoriComuneException {
+
+        Optional<TuristaAutenticato> oTurista=turistaAutenticatoService.getById(usernameTurista);
+        if(oTurista.isEmpty()) {
+            logger.error("username non valido");
+            throw new FuoriComuneException("username non valido");
+        }
+        TuristaAutenticato turistaAutenticato=oTurista.get();
+
+        Optional<PuntoInteresse> oPunto=getById(idPuntoInteresse);
+        if(oPunto.isEmpty()) {
+            logger.error("id punto interesse non valido");
+            throw new FuoriComuneException("id punto interesse non valido");
+        }
+        PuntoInteresse puntoInteresse=oPunto.get();
+
         if (turistaAutenticato instanceof Contributor contributor) {
             if (!contributor.getComune().equals(puntoInteresse.getComune())) {
                 logger.error("il contributor cerca di caricare il materiale fuori dal suo comune");
@@ -124,6 +142,7 @@ public class PoiServiceImpl implements PoiService {
             logger.error("il contributor cerca di caricare il materiale su un punto di interesse non approvato");
             throw new IllegalStateException("il contributor cerca di caricare il materiale su un punto di interesse non approvato");
         }
+
         if (turistaAutenticato instanceof ContributorAutorizzato)
             materialeGenerico.setStato(Stato.APPROVATO);
         puntoInteresse.addMateriale(materialeGenerico);

@@ -1,10 +1,10 @@
 package ids.unicam.Service;
 
 import ids.unicam.exception.FuoriComuneException;
-import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.Taggable;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
+import ids.unicam.models.contenuti.materiali.TipologiaMateriale;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import ids.unicam.models.contenuti.puntiInteresse.Tag;
 
@@ -17,7 +17,7 @@ public interface PoiService {
 
     void eliminaPuntoInteresse(int idPuntoInteresse) ;
 
-    void aggiungiMateriale(TuristaAutenticato turistaAutenticato, PuntoInteresse puntoInteresse, MaterialeGenerico materialeGenerico) ;
+    void aggiungiMateriale(String usernameTurista, Integer idPuntoInteresse, MaterialeGenerico materialeGenerico) throws FuoriComuneException;
 
     List<PuntoInteresse> findActive() ;
 

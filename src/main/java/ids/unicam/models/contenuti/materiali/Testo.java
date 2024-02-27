@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Entity
-@DiscriminatorValue("descrizione")
-public class Descrizione  extends MaterialeGenerico {
-    public Descrizione(MaterialeDTO materialeDTO) {
+@DiscriminatorValue("Testo")
+public class Testo extends MaterialeGenerico {
+    public Testo(MaterialeDTO materialeDTO) {
         super(materialeDTO);
     }
 

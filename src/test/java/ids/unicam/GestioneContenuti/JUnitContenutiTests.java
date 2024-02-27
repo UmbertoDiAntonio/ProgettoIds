@@ -13,9 +13,10 @@ import ids.unicam.models.attori.*;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.Stato;
-import ids.unicam.models.contenuti.materiali.Descrizione;
+import ids.unicam.models.contenuti.materiali.Testo;
 import ids.unicam.models.contenuti.materiali.Foto;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
+import ids.unicam.models.contenuti.materiali.TipologiaMateriale;
 import ids.unicam.models.contenuti.puntiInteresse.DayOfWeek;
 import ids.unicam.models.contenuti.puntiInteresse.Orario;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
@@ -161,8 +162,10 @@ public class JUnitContenutiTests {
             PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributorAutorizzato)));
 
             TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO("andrea", "neri", LocalDate.of(2000, Calendar.FEBRUARY, 3), "2Unica@", "user2"));
-            MaterialeGenerico materialeGenerico = materialeService.save(new Foto(new MaterialeDTO(turistaAutenticato)));
-            poiService.aggiungiMateriale(contributorAutorizzato, puntoInteresse, materialeGenerico);
+
+            MaterialeGenerico materialeGenerico = materialeService.crea("./fotoTest",TipologiaMateriale.FOTO,turistaAutenticato.getUsername());
+            poiService.aggiungiMateriale(contributorAutorizzato.getUsername(), puntoInteresse.getId(), materialeGenerico);
+
             assertEquals(1, poiService.getMaterialiPoi(puntoInteresse.getId()).size());
         }
 
@@ -207,10 +210,10 @@ public class JUnitContenutiTests {
 
 
             assertEquals(Boolean.TRUE, poiService.getStato(puntoInteresse.getId()).asBoolean());
-            MaterialeGenerico materialeGenerico1 = materialeService.save(new Foto(new MaterialeDTO(contributor)));
+            MaterialeGenerico materialeGenerico1 = materialeService.save(new Foto(new MaterialeDTO("./testFoto",contributor)));
             assertNull(materialeGenerico1.getStato().asBoolean());
             curatoreServiceImpl.valutaMateriale(curatore.getUsername(), materialeGenerico1.getId(), Stato.APPROVATO.asBoolean());
-            poiService.aggiungiMateriale(turistaAutenticato, puntoInteresse, materialeGenerico1);
+            poiService.aggiungiMateriale(turistaAutenticato.getUsername(), puntoInteresse.getId(), materialeGenerico1);
             curatoreServiceImpl.rimuoviOsservatore(curatore.getUsername(), contributor1.getUsername());
             assertEquals(numeroOsservatori + 1, curatoreServiceImpl.getNumeroOsservatori(curatore));
         }
@@ -302,7 +305,7 @@ public class JUnitContenutiTests {
             turistaAutenticatoService.partecipaAlContest(contest.getId(), turistaAutenticato.getUsername());
 
             try {
-                contestService.aggiungiMateriale(new Foto(new MaterialeDTO(turistaAutenticato)), contest, turistaAutenticato);
+                contestService.aggiungiMateriale(materialeService.crea("./testFoto",TipologiaMateriale.FOTO,turistaAutenticato.getUsername()), contest, turistaAutenticato);
             } catch (ContestException e) {
                 throw new RuntimeException(e);
             }
@@ -370,11 +373,11 @@ public class JUnitContenutiTests {
 
         Contest contest = contestService.creaContest(new Contest(new RichiestaCreazioneContestDTO("Monumento", "Foto più bella", animatore, true)));
 
-        MaterialeGenerico descrizione = materialeService.save(new Descrizione(new MaterialeDTO(turistaAutenticato)));
+        MaterialeGenerico descrizione = materialeService.crea("./testFoto",TipologiaMateriale.FOTO,turistaAutenticato.getUsername());
         assertThrows(ContestException.class, () -> contestService.aggiungiMateriale(descrizione, contest, turistaAutenticato));
 
         turistaAutenticatoService.partecipaAlContest(contest.getId(), turistaAutenticato.getUsername());
-        MaterialeGenerico materialeGenerico = materialeService.save(new Descrizione(new MaterialeDTO(turistaAutenticato)));
+        MaterialeGenerico materialeGenerico = materialeService.crea("./testFoto",TipologiaMateriale.FOTO,turistaAutenticato.getUsername());
         try {
             contestService.aggiungiMateriale(descrizione, contest, turistaAutenticato);
         } catch (ContestException e) {
@@ -469,10 +472,10 @@ public class JUnitContenutiTests {
         PuntoInteresse puntoInteresse2 = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("Castello", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), new Orario(), TipologiaPuntoInteresse.MONUMENTO, contributor)));
 
         curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse2.getId(), Stato.APPROVATO.asBoolean());
-        MaterialeGenerico foto = materialeService.save(new Foto(new MaterialeDTO(turista)));
+        MaterialeGenerico foto = materialeService.crea("./testFoto",TipologiaMateriale.FOTO,turista.getUsername());
         curatoreServiceImpl.valutaMateriale(curatore.getUsername(), foto.getId(), Stato.APPROVATO.asBoolean());
 
-        poiService.aggiungiMateriale(turista, puntoInteresse2, foto);
+        poiService.aggiungiMateriale(turista.getUsername(), puntoInteresse2.getId(), foto);
         assertEquals(1, poiService.getMaterialiPoi(puntoInteresse2.getId()).size());
         curatoreServiceImpl.elimina(curatore, foto);
         assertEquals(0, poiService.getMaterialiPoi(puntoInteresse2.getId()).size());

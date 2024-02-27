@@ -6,6 +6,7 @@ import ids.unicam.models.contenuti.Stato;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Getter
@@ -26,6 +27,8 @@ public abstract class MaterialeGenerico {
     @Setter
     private Stato stato = Stato.IN_ATTESA;
 
+    private String file;
+
     public MaterialeGenerico() {
     }
 
@@ -35,6 +38,7 @@ public abstract class MaterialeGenerico {
     public abstract String get();
 
     public MaterialeGenerico(MaterialeDTO materialeDTO) {
+        this.file=materialeDTO.getPathFile();
         this.creatore = materialeDTO.getCreatore();
     }
 
