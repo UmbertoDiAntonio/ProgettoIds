@@ -52,7 +52,7 @@ public class Contest implements Contenitore, Taggable, Expirable {
     @Column(name = "nome")
     private String nomeContest =null;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private final List<MaterialeGenerico> materiali = new ArrayList<>();
 
     @OneToOne

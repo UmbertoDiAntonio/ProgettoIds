@@ -49,7 +49,7 @@ public class MaterialeController{
         try {
             MaterialeGenerico materialeGenerico=materialeService.crea(materiale.getOriginalFilename(),tipologia,usernameTurista);
             poiService.aggiungiMateriale(usernameTurista,idContenitore,materialeGenerico);
-        } catch (FuoriComuneException e) {
+        } catch (FuoriComuneException | IllegalArgumentException e) {
             throw new RuntimeException(e);
         }
         return new ResponseEntity<>("Materiale Caricato",HttpStatus.OK);

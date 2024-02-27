@@ -39,7 +39,7 @@ public class MaterialeServiceImpl implements MaterialeService {
     }
 
     @Override
-    public MaterialeGenerico crea(String fileMateriale, TipologiaMateriale tipologiaMateriale, String usernameCreatore) {
+    public MaterialeGenerico crea(String fileMateriale, TipologiaMateriale tipologiaMateriale, String usernameCreatore)throws IllegalArgumentException {
         Optional<TuristaAutenticato> oTurista = turistaAutenticatoService.getById(usernameCreatore);
         if (oTurista.isEmpty()) {
             logger.error("username non valido");

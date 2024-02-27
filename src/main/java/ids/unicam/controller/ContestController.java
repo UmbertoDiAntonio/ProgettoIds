@@ -32,7 +32,7 @@ public class ContestController{
     }
 
     @GetMapping("/{idContest}")
-    public ResponseEntity<?> getById(Integer idContest) {
+    public ResponseEntity<?> getById(@PathVariable Integer idContest) {
         return ResponseEntity.ok(contestService.findById(idContest));
     }
 
@@ -49,7 +49,7 @@ public class ContestController{
 
 
     @DeleteMapping("/{idContest}")
-    public ResponseEntity<?> delete(Integer idContest) {
+    public ResponseEntity<?> delete(@PathVariable Integer idContest) {
         contestService.deleteById(idContest);
         return ResponseEntity.ok("Il contest con id '"+idContest+"' e' stato eliminato.");
     }
