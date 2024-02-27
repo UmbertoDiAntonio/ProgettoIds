@@ -27,7 +27,7 @@ public class TuristaServiceImpl implements TuristaService {
     }
 
     @Override
-    public void report(int idPuntoInteresse, String messaggio){
+    public void report(int idPuntoInteresse, String messaggio) throws IllegalArgumentException{
         notificaReportService.creaNotificaReport(idPuntoInteresse,messaggio);
     }
 

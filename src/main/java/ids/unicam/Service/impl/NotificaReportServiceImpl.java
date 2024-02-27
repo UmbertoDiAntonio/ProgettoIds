@@ -20,7 +20,7 @@ public class NotificaReportServiceImpl {
         this.poiService = poiService;
     }
 
-    public void creaNotificaReport(int idPuntoInteresse, String messaggio)  {
+    public void creaNotificaReport(int idPuntoInteresse, String messaggio)  throws IllegalArgumentException{
         Optional<PuntoInteresse> oPuntoInteresse = poiService.getById(idPuntoInteresse);
         if(oPuntoInteresse.isPresent()){
             PuntoInteresse puntoInteresse = oPuntoInteresse.get();

@@ -17,7 +17,7 @@ CONTEST CONTROLLER
 
 
 COMUNE CONTROLLER
-- PUT(cambiaRuolo)  -> DA RIVEDERE
+- PUT(cambiaRuolo)  -> funziona
 - POST              -> funziona
 - GET               -> funziona
 - DELETE            -> funziona
@@ -32,7 +32,7 @@ TURISTA AUTENTICATO CONTROLLER
 - GET
 - DELETE
 - DELETE(rimuoviPreferito)
-- GET(notifhce)
+- GET(notifiche)
 - GET(preferiti)
 - GETALL
 

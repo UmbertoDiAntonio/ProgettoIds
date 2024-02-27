@@ -38,19 +38,24 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
 
     @Transactional
     @Override
-    public TuristaAutenticato cambiaRuolo(String usernameContributor, @NotNull Ruolo ruolo) throws IllegalArgumentException, ConnessioneFallitaException {
-        Optional<Contributor> oContributor = contributorServiceImpl.getById(usernameContributor);
-        if(oContributor.isEmpty()){
+    public TuristaAutenticato cambiaRuolo(String usernameContributor, @NotNull Ruolo ruolo) throws IllegalArgumentException, ConnessioneFallitaException,UnsupportedOperationException {
+        Optional<TuristaAutenticato> oTurista = turistaAutenticatoServiceImpl.getById(usernameContributor);
+        if(oTurista.isEmpty()){
             logger.error("username non valido");
             throw new IllegalArgumentException("username non valido");
         }
-        Contributor contributor = oContributor.get();
+        TuristaAutenticato turistaAutenticato = oTurista.get();
+
+        if(!( turistaAutenticato instanceof Contributor contributor)){
+            logger.error("il turista non puo' cambiare ruolo");
+            throw new UnsupportedOperationException("il turista non puo' cambiare ruolo");
+        }
         rimuoviVecchioRuolo(contributor);
         TuristaAutenticatoDTO turistaAutenticatoDTO=new TuristaAutenticatoDTO(contributor.getNome(),contributor.getCognome(),contributor.getDataNascita(),contributor.getPassword(),contributor.getUsername());
         Contributor modificato = switch (ruolo) {
             case TURISTA -> {
                 logger.error("Non puoi tornare un turista");
-                yield null;
+                throw new UnsupportedOperationException("Non puoi tornare un turista");
             }
             case CURATORE -> curatoreServiceImpl.save(new Curatore(new RichiestaCreazioneContributorDTO(new ComuneDTO(contributor.getComune().getNome()),turistaAutenticatoDTO)));
             case ANIMATORE -> animatoreServiceImpl.save(new Animatore(new RichiestaCreazioneContributorDTO(new ComuneDTO(contributor.getComune().getNome()),turistaAutenticatoDTO)));
@@ -117,7 +122,7 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
     }
 
     @Transactional
-    public TuristaAutenticato registraContributor(RichiestaCreazioneContributorDTO contributorDTO,Ruolo ruolo) throws IllegalArgumentException, ConnessioneFallitaException,RuntimeException {
+    public TuristaAutenticato registraContributor(RichiestaCreazioneContributorDTO contributorDTO,Ruolo ruolo) throws ConnessioneFallitaException,RuntimeException {
         if (ruolo != Ruolo.TURISTA && contributorDTO.getComune() == null) {
             logger.error("Il comune non puo' essere nullo, registrazione >= Contributor");
             throw new IllegalArgumentException("Il comune non puo' essere nullo, registrazione >= Contributor");

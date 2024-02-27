@@ -64,7 +64,7 @@ public class  ComuneController implements ControllerBase<ComuneDTO, String>{
         try {
             TuristaAutenticato nuovo = gestorePiattaformaService.cambiaRuolo(username, ruolo);
             return new ResponseEntity<>(nuovo,HttpStatus.OK);
-        } catch (ConnessioneFallitaException  | IllegalArgumentException e) {
+        } catch (ConnessioneFallitaException  | IllegalArgumentException|UnsupportedOperationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }

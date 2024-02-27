@@ -2,6 +2,8 @@ package ids.unicam.controller;
 
 import ids.unicam.Service.TuristaService;
 import ids.unicam.models.contenuti.Taggable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,13 +19,18 @@ public class TuristaController  {
     }
 
     @GetMapping("/{tag}")
-    public List<Taggable> getByTag(@PathVariable String tag){
-        return turistaService.findByTag(tag);
+    public ResponseEntity<?> getByTag(@PathVariable String tag){
+        return ResponseEntity.ok(turistaService.findByTag(tag));
     }
 
     @GetMapping("/report")
-    public void report(@RequestParam int idPuntoInteresse, @RequestParam String messaggio){
-        turistaService.report(idPuntoInteresse, messaggio);
+    public ResponseEntity<?> report(@RequestParam int idPuntoInteresse, @RequestParam String messaggio){
+        try {
+            turistaService.report(idPuntoInteresse, messaggio);
+            return ResponseEntity.ok("Il Punto di interesse con id '"+idPuntoInteresse+"' è stato segnalato.");
+        }catch (IllegalArgumentException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
 }
