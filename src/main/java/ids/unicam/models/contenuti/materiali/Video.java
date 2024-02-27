@@ -4,7 +4,6 @@ import ids.unicam.models.DTO.MaterialeDTO;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 @NoArgsConstructor
 @Entity

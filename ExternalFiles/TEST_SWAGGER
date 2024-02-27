@@ -9,7 +9,7 @@ MATERIALE CONTROLLER:
 
 
 CONTEST CONTROLLER
-- PUT(invita)   --> DA RIVEDERE IL FUNZIONAMENTO
+- PUT(invita)   --> DA TESTARE FUNZIONAMENTO
 - POST          -->
 - GET           -->
 - DELETE        --> DA TESTARE FUNZIONAMENTO
@@ -39,8 +39,7 @@ TURISTA AUTENTICATO CONTROLLER
 PUNTO DI INTERESSE CONTROLLER
 - PUT(setScadenza)
 - PUT(condividi)
-- POST                      --> da inserire menù a tendina per scegliere la tipologia di punto di interesse
-                                creatore, inserire solo username del creatore
+- POST
 - GET
 - DELETE
 - GET(materiali(idPunto))
@@ -91,9 +90,3 @@ ANIMATORE CONTROLLER
 TURISTA CONTROLLER
 - GET(tagDTO) -> da rivedere, troppe informazioni richieste
 - GET(report) -> da rivedere, troppe informazioni richieste
-
-
-
-
-DATA DA RIVEDERE
--> quando cambi ruolo torna alla mezzanotte del giorno prima

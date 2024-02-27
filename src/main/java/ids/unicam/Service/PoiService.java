@@ -1,12 +1,13 @@
 package ids.unicam.Service;
 
 import ids.unicam.exception.FuoriComuneException;
+import ids.unicam.models.Punto;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.Taggable;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
-import ids.unicam.models.contenuti.materiali.TipologiaMateriale;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import ids.unicam.models.contenuti.puntiInteresse.Tag;
+import ids.unicam.models.contenuti.puntiInteresse.TipologiaPuntoInteresse;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 public interface PoiService {
     PuntoInteresse creaPuntoInteresse(PuntoInteresse puntoInteresse) throws FuoriComuneException;
+    PuntoInteresse creaPuntoInteresse(String nomePOI, Punto punto, String usernameCreatore, Tag tag,  TipologiaPuntoInteresse tipologiaPuntoInteresse) throws FuoriComuneException;
 
     void eliminaPuntoInteresse(int idPuntoInteresse) ;
 
@@ -21,7 +23,7 @@ public interface PoiService {
 
     List<PuntoInteresse> findActive() ;
 
-    void aggiungiTag(PuntoInteresse puntoInteresse, Tag tag) ;
+    void aggiungiTag(int idPuntoInteresse, Tag tag) ;
 
     List<Taggable> findByTag(String tag);
 

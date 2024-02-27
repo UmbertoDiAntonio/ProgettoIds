@@ -2,7 +2,6 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.MaterialeRepository;
 import ids.unicam.Service.MaterialeService;
-import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.DTO.MaterialeDTO;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Stato;

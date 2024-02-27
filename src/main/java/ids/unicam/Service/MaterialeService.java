@@ -1,6 +1,5 @@
 package ids.unicam.Service;
 
-import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.materiali.TipologiaMateriale;

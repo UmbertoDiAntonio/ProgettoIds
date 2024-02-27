@@ -3,15 +3,19 @@ package ids.unicam.Service.impl;
 import ids.unicam.DataBase.Repository.PoiRepository;
 import ids.unicam.Service.PoiService;
 import ids.unicam.exception.FuoriComuneException;
+import ids.unicam.models.Comune;
+import ids.unicam.models.DTO.PuntoInteresseDTO;
+import ids.unicam.models.Punto;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.ContributorAutorizzato;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.Taggable;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
-import ids.unicam.models.contenuti.materiali.TipologiaMateriale;
+import ids.unicam.models.contenuti.puntiInteresse.Orario;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import ids.unicam.models.contenuti.puntiInteresse.Tag;
+import ids.unicam.models.contenuti.puntiInteresse.TipologiaPuntoInteresse;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -75,7 +79,7 @@ public class PoiServiceImpl implements PoiService {
     @Override
     public Stato getStato(int idPunto) throws IllegalArgumentException {
         Optional<Stato> oStato = repository.getStatoById(idPunto);
-        if(oStato.isEmpty())
+        if (oStato.isEmpty())
             throw new IllegalArgumentException("id punto non valido");
         return oStato.get();
     }
@@ -88,6 +92,26 @@ public class PoiServiceImpl implements PoiService {
             throw new FuoriComuneException("Posizione Punto di Interesse Fuori dall'area del comune");
         }
         return save(puntoInteresse);
+    }
+
+    @Transactional
+    @Override
+    public PuntoInteresse creaPuntoInteresse(String nomePOI, Punto punto, String usernameCreatore, Tag tag, TipologiaPuntoInteresse tipologiaPuntoInteresse) throws FuoriComuneException {
+        Optional<Contributor> oContributor = contributorService.getById(usernameCreatore);
+        if (oContributor.isPresent()) {
+            Contributor contributor = oContributor.get();
+            Comune comune = contributor.getComune();
+            PuntoInteresseDTO puntoInteresseDTO = new PuntoInteresseDTO(nomePOI, punto, new Orario(), tipologiaPuntoInteresse, contributor);
+            PuntoInteresse puntoInteresse = new PuntoInteresse(puntoInteresseDTO);
+            if (!puntoInteresse.getCreatore().getComune().verificaCoordinateComune(puntoInteresse.getPt())) {
+                logger.error("Non si possono creare punti di interesse fuori dal comune");
+                throw new FuoriComuneException("Posizione Punto di Interesse Fuori dall'area del comune");
+            }
+            return save(puntoInteresse);
+        } else {
+            logger.error("l'username del creatore del punto di interesse non e' presente nel comune");
+            throw new FuoriComuneException("l'username del creatore del punto di interesse non e' presente nel comune");
+        }
     }
 
 
@@ -109,7 +133,7 @@ public class PoiServiceImpl implements PoiService {
 
     public LocalDate getScadenza(int idPunto) throws IllegalArgumentException {
         Optional<LocalDate> oScadenza = repository.getExpireDateById(idPunto);
-        if(oScadenza.isEmpty())
+        if (oScadenza.isEmpty())
             throw new IllegalArgumentException("id punto non valido");
         return oScadenza.get();
     }
@@ -142,7 +166,6 @@ public class PoiServiceImpl implements PoiService {
             logger.error("il contributor cerca di caricare il materiale su un punto di interesse non approvato");
             throw new IllegalStateException("il contributor cerca di caricare il materiale su un punto di interesse non approvato");
         }
-
         if (turistaAutenticato instanceof ContributorAutorizzato)
             materialeGenerico.setStato(Stato.APPROVATO);
         puntoInteresse.addMateriale(materialeGenerico);
@@ -183,15 +206,22 @@ public class PoiServiceImpl implements PoiService {
 
     @Transactional
     @Override
-    public void aggiungiTag(PuntoInteresse puntoInteresse, Tag tag) {
-        if (tagServiceImpl.haveTag(puntoInteresse, tag)) {
-            logger.warn("Tag già aggiunto");
-            return;
-        }
-        if (!puntoInteresse.isExpired())
-            tagServiceImpl.aggiungiTag(puntoInteresse, tag);
+    public void aggiungiTag(int idPuntoInteresse, Tag tag) {
+        Optional<PuntoInteresse> oPuntoInteresse = getById(idPuntoInteresse);
+        if (oPuntoInteresse.isPresent()) {
+            PuntoInteresse puntoInteresse = oPuntoInteresse.get();
+            if (tagServiceImpl.haveTag(puntoInteresse, tag)) {
+                logger.warn("Tag già aggiunto");
+                return;
+            }
+            if (!puntoInteresse.isExpired())
+                tagServiceImpl.aggiungiTag(puntoInteresse, tag);
 
-        save(puntoInteresse);
+            save(puntoInteresse);
+        } else {
+            logger.error("L'id del punto di interesse non e' valido");
+            throw new IllegalArgumentException("L'id del punto di interesse non e' valido");
+        }
     }
 
     @Override

@@ -1,22 +1,36 @@
 package ids.unicam.Service.impl;
 
-import ids.unicam.models.DTO.PuntoInteresseDTO;
 import ids.unicam.models.contenuti.notifiche.NotificaBuilder;
+import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+import static ids.unicam.Main.logger;
 
 @Service
 public class NotificaReportServiceImpl {
     private final CuratoreServiceImpl curatoreService;
-private final NotificaServiceImpl notificaService;
-    public NotificaReportServiceImpl(CuratoreServiceImpl curatoreService, NotificaServiceImpl notificaService) {
+    private final NotificaServiceImpl notificaService;
+    private final PoiServiceImpl poiService;
+
+    public NotificaReportServiceImpl(CuratoreServiceImpl curatoreService, NotificaServiceImpl notificaService, PoiServiceImpl poiService) {
         this.curatoreService = curatoreService;
         this.notificaService = notificaService;
+        this.poiService = poiService;
     }
 
-    public void creaNotificaReport(PuntoInteresseDTO poiDTO, String messaggio) {
-        curatoreService.findByNomeComune(poiDTO.getCreatore().getComune().getNome()).forEach( curatore ->
-                notificaService.save(new NotificaBuilder().withTitolo("Segnalazione: " + poiDTO.getNome())
-                        .withDescrizione(messaggio)
-                        .withDestinatario(curatore).build()));
+    public void creaNotificaReport(int idPuntoInteresse, String messaggio)  {
+        Optional<PuntoInteresse> oPuntoInteresse = poiService.getById(idPuntoInteresse);
+        if(oPuntoInteresse.isPresent()){
+            PuntoInteresse puntoInteresse = oPuntoInteresse.get();
+            curatoreService.findByNomeComune(puntoInteresse.getCreatore().getComune().getNome()).forEach(curatore ->
+                    notificaService.save(new NotificaBuilder().withTitolo("Segnalazione: " + puntoInteresse.getNome())
+                            .withDescrizione(messaggio)
+                            .withDestinatario(curatore).build()));
+        }else {
+            logger.error("L'ID punto di interesse non e' valido");
+            throw new IllegalArgumentException("L'ID punto di interesse non e' valido");
+        }
     }
 }

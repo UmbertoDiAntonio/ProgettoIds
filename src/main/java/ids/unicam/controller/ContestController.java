@@ -55,7 +55,7 @@ public class ContestController{
     }
 
     @PutMapping("/invita/{idContest}")
-    public ResponseEntity<?> invita(@RequestBody String idAnimatore, @RequestParam Integer idContest, @RequestBody String usernameInvitato){
+    public ResponseEntity<?> invita(@RequestParam String idAnimatore, @RequestParam Integer idContest, @RequestParam String usernameInvitato){
         try {
             Invito invito = animatoreService.invitaContest(idAnimatore, idContest, usernameInvitato);
             return new ResponseEntity<>(invito, HttpStatus.OK);

@@ -3,8 +3,10 @@ package ids.unicam.controller;
 import ids.unicam.Service.CuratoreService;
 import ids.unicam.Service.PoiService;
 import ids.unicam.exception.FuoriComuneException;
-import ids.unicam.models.DTO.PuntoInteresseDTO;
-import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
+import ids.unicam.models.Punto;
+import ids.unicam.models.contenuti.puntiInteresse.Tag;
+import ids.unicam.models.contenuti.puntiInteresse.TipologiaPuntoInteresse;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +15,7 @@ import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/PuntoInteresse")
-public class PuntoInteresseController implements ControllerBase<PuntoInteresseDTO, Integer> {
+public class PuntoInteresseController {
     private final PoiService poiService;
     private final CuratoreService curatoreService;
 
@@ -22,28 +24,40 @@ public class PuntoInteresseController implements ControllerBase<PuntoInteresseDT
         this.curatoreService = curatoreService;
     }
 
-    @Override
+    @GetMapping("/getAll")
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(poiService.findActive());
     }
 
-    @Override
+    @GetMapping("/{id}")
     public ResponseEntity<?> getById(Integer id) {
         return ResponseEntity.ok(poiService.getById(id));
     }
 
-    @Override
-    public ResponseEntity<?> create(PuntoInteresseDTO poiDTO) {
+    @PostMapping
+    public ResponseEntity<?> create(@RequestParam String nomePOI, @RequestParam double latitudine, @RequestParam double longitudine, @RequestParam String usernameCreatore, @RequestParam @Nullable String tag, @RequestParam TipologiaPuntoInteresse tipologiaPuntoInteresse) {
         try {
-            return ResponseEntity.ok(poiService.creaPuntoInteresse(new PuntoInteresse(poiDTO)));
+            return ResponseEntity.ok(poiService.creaPuntoInteresse(nomePOI, new Punto(latitudine,longitudine), usernameCreatore, new Tag(tag), tipologiaPuntoInteresse));
         } catch (FuoriComuneException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    @Override
-    public ResponseEntity<?> delete(Integer integer) {
-        return null;
+    @PutMapping("/addTag")
+    public ResponseEntity<?> aggiungiTag(@RequestParam String nomeTag, @RequestParam Integer idPuntoInteresse){
+        try {
+            poiService.aggiungiTag(idPuntoInteresse, new Tag(nomeTag));
+            return ResponseEntity.ok("{}");
+        }catch (UnsupportedOperationException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(Integer id) {
+        poiService.deleteById(id);
+        return ResponseEntity.ok("Punto Interesse: '" + id + "' eliminato");
     }
 
     @PutMapping("/setScadenza")

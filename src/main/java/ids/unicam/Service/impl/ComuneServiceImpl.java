@@ -8,7 +8,6 @@ import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.ContributorAutorizzato;
 import ids.unicam.models.attori.Curatore;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

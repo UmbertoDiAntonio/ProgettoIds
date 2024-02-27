@@ -2,8 +2,6 @@ package ids.unicam.controller;
 
 import ids.unicam.Service.ItinerarioService;
 import ids.unicam.exception.FuoriComuneException;
-import ids.unicam.models.DTO.RichiestaCreazioneItinerarioDTO;
-import ids.unicam.models.contenuti.Itinerario;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

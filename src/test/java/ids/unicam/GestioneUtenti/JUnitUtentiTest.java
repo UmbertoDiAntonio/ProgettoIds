@@ -5,11 +5,13 @@ import ids.unicam.Service.impl.*;
 import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Comune;
-import ids.unicam.models.DTO.*;
+import ids.unicam.models.DTO.PuntoInteresseDTO;
+import ids.unicam.models.DTO.RichiestaCreazioneComuneDTO;
+import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
+import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.Punto;
 import ids.unicam.models.attori.*;
 import ids.unicam.models.contenuti.Stato;
-import ids.unicam.models.contenuti.materiali.Foto;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.materiali.TipologiaMateriale;
 import ids.unicam.models.contenuti.puntiInteresse.Orario;
@@ -176,13 +178,13 @@ public class JUnitUtentiTest {
         int numeroTagEdicolaIniziale = turistaService.findByTag("Edicola").size();
 
 
-        poiService.aggiungiTag(puntoInteresse, new Tag("Edicola"));
+        poiService.aggiungiTag(puntoInteresse.getId(), new Tag("Edicola"));
         assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag("Edicola").size());
 
         curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse.getId(), Stato.APPROVATO.asBoolean());
 
 
-        poiService.aggiungiTag(puntoInteresse, new Tag("Tabaccheria"));
+        poiService.aggiungiTag(puntoInteresse.getId(), new Tag("Tabaccheria"));
 
         assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag("Edicola").size());
 
@@ -190,7 +192,7 @@ public class JUnitUtentiTest {
         assertEquals("Tabaccheria", poiService.getTags(puntoInteresse).getLast().getValore());
 
 
-        poiService.aggiungiTag(puntoInteresse, new Tag("Bar"));
+        poiService.aggiungiTag(puntoInteresse.getId(), new Tag("Bar"));
 
         assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag("Edicola").size());
 
@@ -253,7 +255,7 @@ public class JUnitUtentiTest {
         if (!(turista2 instanceof Curatore curatore))
             throw new ClassCastException("Non è possibile trasformare il turista " + turista2 + " in un Curatore");
         assertEquals(0, turistaAutenticatoService.visualizzaNotifiche(curatore.getUsername()).size());
-        turistaService.report(new PuntoInteresseDTO(puntoInteresse.getNome(),puntoInteresse.getPt(),puntoInteresse.getOrario(), puntoInteresse.getTipo(), puntoInteresse.getCreatore()), "Nome Sbagliato");
+        turistaService.report(puntoInteresse.getId(), "Nome Sbagliato");
 
         assertEquals(1, turistaAutenticatoService.visualizzaNotifiche(curatore.getUsername()).size());
 
