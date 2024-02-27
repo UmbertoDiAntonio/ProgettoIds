@@ -182,11 +182,6 @@ public class PoiServiceImpl implements PoiService {
     public List<PuntoInteresse> findActive() {
         return repository.findAll().stream()
                 .filter(puntoInteresse -> !puntoInteresse.isExpired() || Boolean.TRUE.equals(puntoInteresse.getStato().asBoolean()))
-                .peek(puntoInteresse -> {
-                    if (puntoInteresse.isExpired()) {
-                        repository.deleteById(puntoInteresse.getId());
-                    }
-                })
                 .collect(Collectors.toList());
     }
 
@@ -239,11 +234,11 @@ public class PoiServiceImpl implements PoiService {
     @Override
     public List<String> getAsList() {
         List<PuntoInteresse> list = findActive();
-        List<String> result=new ArrayList<>();
-        int i=0;
-        for(PuntoInteresse el :list){
+        List<String> result = new ArrayList<>();
+        int i = 0;
+        for (PuntoInteresse el : list) {
             i++;
-            result.add(i+". " +el.mostraInformazioniGeneriche());
+            result.add(i + ". " + el.mostraInformazioniGeneriche());
         }
         return result;
     }
@@ -252,11 +247,11 @@ public class PoiServiceImpl implements PoiService {
     @Override
     public List<String> getAsListDetailed() {
         List<PuntoInteresse> list = findActive();
-        List<String> result=new ArrayList<>();
-        int i=0;
-        for(PuntoInteresse el :list){
+        List<String> result = new ArrayList<>();
+        int i = 0;
+        for (PuntoInteresse el : list) {
             i++;
-            result.add(i+". "+el.mostraInformazioniDettagliate());
+            result.add(i + ". " + el.mostraInformazioniDettagliate());
         }
         return result;
     }

@@ -56,7 +56,7 @@ public class  ComuneController implements ControllerBase<ComuneDTO, String>{
     @DeleteMapping("/{nomeComune}")
     public ResponseEntity<?> delete(@PathVariable String nomeComune) {
         comuneService.deleteById(nomeComune);
-        return ResponseEntity.ok("{}");
+        return ResponseEntity.ok("Il comune '"+nomeComune+"' e' stato eliminato.");
     }
 
     @PutMapping("/cambioRuolo/{username}/{ruolo}")

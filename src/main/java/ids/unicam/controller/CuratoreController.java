@@ -54,7 +54,7 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
     public ResponseEntity<?> eliminaItinerario(@RequestParam String usernameCuratore, @RequestParam Integer idItinerario) {
         try {
             curatoreService.eliminaItinerario(usernameCuratore, idItinerario);
-            return ResponseEntity.ok("{}");
+            return ResponseEntity.ok("L'itinerario con id '"+idItinerario+"' e' stato eliminato da username con id '"+usernameCuratore+"' .");
         } catch (FuoriComuneException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -64,7 +64,7 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
     public ResponseEntity<?> eliminaPuntoInteresse(@RequestParam String usernameCuratore, @RequestParam Integer idPuntoInteresse) {
         try {
             curatoreService.eliminaPuntoInteresse(usernameCuratore, idPuntoInteresse);
-            return ResponseEntity.ok("{}");
+            return ResponseEntity.ok("Il punto di interesse con id '"+idPuntoInteresse+"' e' stato eliminato da username con id '"+usernameCuratore+"' .");
         } catch (FuoriComuneException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -74,7 +74,7 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
     public ResponseEntity<?> eliminaContest(@RequestParam String usernameCuratore, @RequestParam Integer idContest) {
         try {
             curatoreService.eliminaContest(usernameCuratore, idContest);
-            return ResponseEntity.ok("{}");
+            return ResponseEntity.ok("Il contest con id '"+idContest+"' e' stato eliminato da username con id '"+usernameCuratore+"' .");
         } catch (FuoriComuneException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -102,7 +102,7 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
     public ResponseEntity<?> subscribeOsservatore(@PathVariable String usernameCuratore, @RequestParam String usernameContributor) {
         try {
             curatoreService.aggiungiOsservatore(usernameCuratore, usernameContributor);
-            return ResponseEntity.ok("{}");
+            return ResponseEntity.ok("L'utente con id '"+usernameContributor+"' ha iniziato a seguire l'utente con id '"+usernameCuratore+"' .");
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -112,7 +112,7 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
     public ResponseEntity<?> unsubscibeOsservatore(@PathVariable String usernameCuratore, @RequestParam String usernameContributor) {
         try {
             curatoreService.rimuoviOsservatore(usernameCuratore, usernameContributor);
-            return ResponseEntity.ok("{}");
+            return ResponseEntity.ok("L'utente con id '"+usernameContributor+"' ha smesso di seguire l'utente con id '"+usernameCuratore+"' .");
 
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

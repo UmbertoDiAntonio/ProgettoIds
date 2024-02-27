@@ -85,7 +85,7 @@ public class PuntoInteresseController {
     public ResponseEntity<?> modificaScadenza(@RequestParam String usernameContributor, @RequestParam Integer idPuntoInteresse, @RequestParam LocalDate scadenza) {
         try {
             poiService.modificaScadenza(usernameContributor, idPuntoInteresse, scadenza);
-            return ResponseEntity.ok("{}");
+            return ResponseEntity.ok("Il contributor con id '"+usernameContributor+"' ha aggionrato la scadenza a '"+scadenza+ "' del punto di interesse con id '"+idPuntoInteresse+"' .");
         } catch (UnsupportedOperationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -96,7 +96,7 @@ public class PuntoInteresseController {
     public ResponseEntity<?> condividi(@RequestParam String usernameCuratore, @PathVariable Integer idPunto) {
         try {
             curatoreService.condividi(usernameCuratore, idPunto);
-            return ResponseEntity.ok("{}");
+            return ResponseEntity.ok("L'utente con id '"+usernameCuratore+"' ha condiviso il punto di interesse con id '"+usernameCuratore+"' .");
         } catch (IllegalArgumentException | UnsupportedOperationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

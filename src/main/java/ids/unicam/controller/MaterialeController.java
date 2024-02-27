@@ -58,7 +58,7 @@ public class MaterialeController{
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
         materialeService.deleteById(id);
-        return ResponseEntity.ok("{}");
+        return ResponseEntity.ok("Il materiale con id '"+id+"' e' stato eliminato.");
     }
 
     @GetMapping("/getBase64/{id}")

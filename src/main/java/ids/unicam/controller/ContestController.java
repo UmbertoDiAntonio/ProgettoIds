@@ -51,7 +51,7 @@ public class ContestController{
     @DeleteMapping("/{idContest}")
     public ResponseEntity<?> delete(Integer idContest) {
         contestService.deleteById(idContest);
-        return ResponseEntity.ok("{}");
+        return ResponseEntity.ok("Il contest con id '"+idContest+"' e' stato eliminato.");
     }
 
     @PutMapping("/invita/{idContest}")
