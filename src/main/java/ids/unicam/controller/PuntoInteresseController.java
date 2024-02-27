@@ -47,7 +47,7 @@ public class PuntoInteresseController {
     public ResponseEntity<?> aggiungiTag(@RequestParam String nomeTag, @RequestParam Integer idPuntoInteresse){
         try {
             poiService.aggiungiTag(idPuntoInteresse, new Tag(nomeTag));
-            return ResponseEntity.ok("{}");
+            return ResponseEntity.ok("Aggiunto tag '"+nomeTag+"' al punto di interesse: '"+idPuntoInteresse+"' .");
         }catch (UnsupportedOperationException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

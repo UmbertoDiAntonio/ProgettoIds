@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -20,12 +21,12 @@ public class Notifica {
     private String usernameDestinatario;
     private String titolo;
     private String descrizione;
-    private LocalDateTime data;
+    private LocalDate data;
 
     Notifica(String titolo, String descrizione, String usernameDestinatario) {
         this.titolo = titolo;
         this.descrizione = descrizione;
-        this.data = LocalDateTime.now();
+        this.data = LocalDate.now();
         this.usernameDestinatario = usernameDestinatario;
     }
 
@@ -36,6 +37,6 @@ public class Notifica {
                 "\n destinatario = " + usernameDestinatario +
                 "\n titolo       = " + titolo +
                 "\n descrizione  = " + descrizione +
-                "\n data         = " + data.format(DateTimeFormatter.ISO_DATE);
+                "\n data         = " + data;
     }
 }

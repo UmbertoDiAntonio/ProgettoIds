@@ -44,7 +44,7 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
     private final Set<Tag> tags = new HashSet<>();
 
     @Setter
-    private LocalDate expireDate = LocalDate.MAX;
+    private LocalDate expireDate = LocalDate.now().plusDays(30);
 
     public boolean isExpired() {
         return LocalDate.now().isAfter(expireDate);
