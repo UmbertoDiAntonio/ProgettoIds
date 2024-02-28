@@ -62,7 +62,7 @@ CURATORE CONTROLLER
 - POST                          -->
 - GET(username)
 - DELETE(username)
-- GETALL
+- GETALL                        --> funziona
 - DELETE(eliminaPuntoInteresse)
 - DELETE(eliminaItinerario)
 - DELETE(eliminaContest)
@@ -90,4 +90,4 @@ ANIMATORE CONTROLLER
 
 TURISTA CONTROLLER
 - GET(tagDTO) -> funziona
-- GET(report) -> gestire messaggio
+- GET(report) -> funziona

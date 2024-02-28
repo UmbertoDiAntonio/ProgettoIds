@@ -81,9 +81,16 @@ public class MaterialeServiceImpl implements MaterialeService {
     public List<MaterialeGenerico> getAll() {
         List<String> file = new ArrayList<>();
         File folder = new File("src/main/resources/materials");
-        for(File fileMateriale : Objects.requireNonNull(folder.listFiles()))
-            file.add(fileMateriale.getPath());
-        return repository.findAllWithFileExist(file);
+        for(File fileMateriale : Objects.requireNonNull(folder.listFiles())) {
+
+            file.add("."+fileMateriale.getPath().replace("\\","/"));
+            System.out.println("M "+file.getLast());
+        }
+
+        System.out.println(List.of("./src/main/resources/materials/logoUnicam.jpg").contains(file.getLast()));
+        List<MaterialeGenerico> temp = repository.findAllByFileIn(file);
+        System.out.println(temp.size());
+        return temp;
 
     }
 
