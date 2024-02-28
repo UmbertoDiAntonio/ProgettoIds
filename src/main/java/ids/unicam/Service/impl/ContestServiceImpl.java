@@ -135,11 +135,14 @@ public class ContestServiceImpl implements ContestService {
         if (!contest.getMateriali().contains(materiale)) {
             throw new ContestException("il materiale non risulta tra i materiali del contest");
         }
-
+        if(contest.getPartecipanti().contains(materiale.getCreatore()))
+            setVincitoreContest(contest, materiale);
+        else {
+            throw new ContestException("Vincitore non valido, non puoi terminare il contest senza avere un vincitore valido");
+        }
         for(TuristaAutenticato turistaAutenticato:contest.getPartecipanti())
             notificaService.creaNotifica(contest.getCreatore(),contest,turistaAutenticato);
 
-        setVincitoreContest(contest, materiale);
 
         contest.getPartecipanti().clear();
         save(contest);

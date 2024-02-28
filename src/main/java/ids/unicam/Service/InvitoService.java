@@ -13,7 +13,7 @@ public interface InvitoService {
 
     boolean isValid(InvitoDTO invitoDTO) ;
 
-    List<Invito> getInvitiRicevuti(TuristaAutenticatoDTO turistaDTO) ;
+    List<Invito> getInvitiRicevuti(String usernameTurista) ;
 
     Optional<Invito> findById(int id);
 }

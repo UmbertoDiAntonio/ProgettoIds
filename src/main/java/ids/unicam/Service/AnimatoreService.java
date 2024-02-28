@@ -14,11 +14,14 @@ public interface AnimatoreService {
 
     boolean approvaMateriale(String usernameAnimatore,Integer idContest, Integer idMaterialeGenerico, boolean stato) throws UnsupportedOperationException,IllegalArgumentException ;
 
+
     List<Animatore> getAll();
 
     void deleteById(String username);
 
     Optional<Animatore> getById(String username);
 
+
+    void terminaContest(String idAnimatore, Integer idContest, Integer idMateriale) throws ContestException,UnsupportedOperationException,IllegalArgumentException;
 
 }

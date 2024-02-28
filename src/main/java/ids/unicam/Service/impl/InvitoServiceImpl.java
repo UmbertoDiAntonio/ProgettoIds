@@ -78,7 +78,7 @@ public class InvitoServiceImpl implements InvitoService {
     }
 
     @Override
-    public List<Invito> getInvitiRicevuti(TuristaAutenticatoDTO turistaDTO) {
-        return repository.findInvitiByTurista(turistaDTO.getUsername());
+    public List<Invito> getInvitiRicevuti(String usernameTurista) {
+        return repository.findInvitiByTurista(usernameTurista);
     }
 }

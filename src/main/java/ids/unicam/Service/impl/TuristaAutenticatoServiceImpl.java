@@ -4,6 +4,7 @@ import ids.unicam.DataBase.Repository.TuristaAutenticatoRepository;
 import ids.unicam.Service.TuristaAutenticatoService;
 import ids.unicam.models.DTO.InvitoDTO;
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
+import ids.unicam.models.Invito;
 import ids.unicam.models.Observer;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
@@ -57,13 +58,13 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
 
     @Transactional
     @Override
-    public void rimuoviPreferito(String usernameTurista, int id) throws IllegalArgumentException{
+    public void rimuoviPreferito(String usernameTurista, int id) throws IllegalArgumentException {
         Optional<TuristaAutenticato> oTurista = findTuristaByUsername(usernameTurista);
         if (oTurista.isPresent()) {
             TuristaAutenticato turistaAutenticato = oTurista.get();
             turistaAutenticato.getPreferiti().removeIf(puntoInteresse -> puntoInteresse.getId() == id);
             save(turistaAutenticato);
-        }else {
+        } else {
             logger.error("username del turista non valido");
             throw new IllegalArgumentException("username del turista non valido");
         }
@@ -71,22 +72,22 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
 
     @Transactional
     @Override
-    public void aggiungiPreferito(String usernameTurista, PuntoInteresse puntoInteresse) throws IllegalArgumentException{
+    public void aggiungiPreferito(String usernameTurista, PuntoInteresse puntoInteresse) throws IllegalArgumentException {
 
-            if (Boolean.TRUE.equals(puntoInteresse.getStato().asBoolean())) {
-                Optional<TuristaAutenticato> oTurista = findTuristaByUsername(usernameTurista);
-                if (oTurista.isPresent()) {
-                    TuristaAutenticato turistaAutenticato = oTurista.get();
-                    turistaAutenticato.getPreferiti().add(puntoInteresse);
-                    save(turistaAutenticato);
-                } else {
-                    logger.error("username del turista non valido");
-                    throw new IllegalArgumentException("username del turista non valido");
-                }
+        if (Boolean.TRUE.equals(puntoInteresse.getStato().asBoolean())) {
+            Optional<TuristaAutenticato> oTurista = findTuristaByUsername(usernameTurista);
+            if (oTurista.isPresent()) {
+                TuristaAutenticato turistaAutenticato = oTurista.get();
+                turistaAutenticato.getPreferiti().add(puntoInteresse);
+                save(turistaAutenticato);
             } else {
-                logger.error("punto di interesse non approvato");
-                throw new IllegalArgumentException("punto di interesse non approvato");
+                logger.error("username del turista non valido");
+                throw new IllegalArgumentException("username del turista non valido");
             }
+        } else {
+            logger.error("punto di interesse non approvato");
+            throw new IllegalArgumentException("punto di interesse non approvato");
+        }
 
     }
 
@@ -100,7 +101,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
     }
 
     @Override
-    public List<PuntoInteresse> findPreferiti(String usernameTurista) throws IllegalArgumentException{
+    public List<PuntoInteresse> findPreferiti(String usernameTurista) throws IllegalArgumentException {
         Optional<TuristaAutenticato> oTurista = findTuristaByUsername(usernameTurista);
         if (oTurista.isPresent()) {
             TuristaAutenticato turistaAutenticato = oTurista.get();
@@ -113,7 +114,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
 
     @Transactional
     @Override
-    public void partecipaAlContest(Integer idContest, String usernameTurista) throws UnsupportedOperationException,IllegalArgumentException{
+    public void partecipaAlContest(Integer idContest, String usernameTurista) throws UnsupportedOperationException, IllegalArgumentException {
         Optional<Contest> oContest = contestServiceImpl.findById(idContest);
         if (oContest.isPresent()) {
             Contest contest = oContest.get();
@@ -125,6 +126,30 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
                     throw new UnsupportedOperationException("Il contest non è aperto");
                 }
                 contestServiceImpl.aggiungiPartecipante(contest, turistaAutenticato);
+            } else {
+                logger.error("username del turista non valido");
+                throw new IllegalArgumentException("username del turista non valido");
+            }
+        } else {
+            logger.error("id del contest non valido");
+            throw new IllegalArgumentException("id del contest non valido");
+        }
+    }
+
+    @Transactional
+    @Override
+    public void cancellaPartecipazioneContest(Integer idContest, String usernameTurista) throws IllegalArgumentException {
+        Optional<Contest> oContest = contestServiceImpl.findById(idContest);
+        if (oContest.isPresent()) {
+            Contest contest = oContest.get();
+            Optional<TuristaAutenticato> oTurista = findTuristaByUsername(usernameTurista);
+            if (oTurista.isPresent()) {
+                TuristaAutenticato turistaAutenticato = oTurista.get();
+                if (!contest.getPartecipanti().contains(turistaAutenticato)) {
+                    logger.warn("Non sei un membro del contest");
+                } else {
+                    contestServiceImpl.rimuoviPartecipante(contest, turistaAutenticato);
+                }
             } else {
                 logger.error("username del turista non valido");
                 throw new IllegalArgumentException("username del turista non valido");
@@ -163,7 +188,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
 
 
     @Override
-    public List<Notifica> visualizzaNotifiche(String usernameTurista)  throws IllegalArgumentException{
+    public List<Notifica> visualizzaNotifiche(String usernameTurista) throws IllegalArgumentException {
         Optional<TuristaAutenticato> oTurista = findTuristaByUsername(usernameTurista);
         if (oTurista.isPresent()) {
             TuristaAutenticato turistaAutenticato = oTurista.get();
@@ -171,6 +196,11 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
         }
         logger.error("username del turista non valido");
         throw new IllegalArgumentException("username del turista non valido");
+    }
+
+    @Override
+    public List<Invito> getInviti(String usernameTurista) {
+        return invitoServiceImpl.getInvitiRicevuti(usernameTurista);
     }
 
 

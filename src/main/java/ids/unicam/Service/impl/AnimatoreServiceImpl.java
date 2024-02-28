@@ -49,6 +49,33 @@ public class AnimatoreServiceImpl implements AnimatoreService {
     }
 
     @Override
+    public void terminaContest(String idAnimatore, Integer idContest, Integer idMateriale) throws ContestException,UnsupportedOperationException,IllegalArgumentException {
+        Optional<Animatore> oAnimatore = getById(idAnimatore);
+        if (oAnimatore.isPresent()) {
+            Animatore animatore = oAnimatore.get();
+            Optional<Contest> oContest = contestService.findById(idContest);
+            if (oContest.isPresent()) {
+                Contest contest = oContest.get();
+                if(animatore.equals(contest.getCreatore()))
+                    contestService.terminaContest(contest,idMateriale);
+                else {
+                    logger.error("L'animatore deve essere il creatore del contest");
+                    throw new UnsupportedOperationException("L'animatore deve essere il creatore del contest");
+                }
+            } else {
+                logger.error("id Contest non valido");
+                throw new IllegalArgumentException("id Contest non valido");
+            }
+
+        } else {
+            logger.error("Username Animatore non valido");
+            throw new IllegalArgumentException("Username Animatore non valido");
+
+        }
+
+    }
+
+    @Override
     public List<Animatore> getAll() {
         return repository.findAll();
     }

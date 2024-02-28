@@ -9,6 +9,8 @@ import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -120,6 +122,31 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
             turistaAutenticatoService.partecipaAlContest(idContest, usernameTurista);
             return ResponseEntity.ok("L'utente con id '" + usernameTurista + "' ha iniziato a partecipare al contest con id '" + idContest + "' .");
         } catch (IllegalArgumentException | UnsupportedOperationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+        }
+    }
+    @PutMapping("/cancellaIscrizioneContest")
+    @Operation(summary = "Annulla iscrizione a un Contest",
+            description = "Annulla iscrizione a un Contest.")
+    public ResponseEntity<?> cencellaIscrizioneContest(
+            @Parameter(description = "id del Contest")  @RequestParam Integer idContest,
+            @Parameter(description = "Username del Turista") @RequestParam String usernameTurista) {
+        try {
+            turistaAutenticatoService.cancellaPartecipazioneContest(idContest, usernameTurista);
+            return ResponseEntity.ok("L'utente con id '" + usernameTurista + "' ha smesso di partecipare al contest con id '" + idContest + "' .");
+        } catch (IllegalArgumentException | UnsupportedOperationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+        }
+    }
+
+    @GetMapping("/getAllInviti/{usernameTurista}")
+    @Operation(summary = "Ottieni i tuoi inviti ai contest",
+            description = "Ottieni i tuoi inviti ai contest.")
+    public ResponseEntity<?> getInviti(
+            @Parameter(description = "Username del turista") @PathVariable String usernameTurista) {
+        try {
+            return ResponseEntity.ok(turistaAutenticatoService.getInviti(usernameTurista));
+        } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         }
     }

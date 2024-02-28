@@ -2,9 +2,11 @@ package ids.unicam.Service;
 
 import ids.unicam.models.DTO.InvitoDTO;
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
+import ids.unicam.models.Invito;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.notifiche.Notifica;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +25,9 @@ public interface TuristaAutenticatoService {
     void partecipaAlContest(Integer idContest, String usernameTurista) throws  UnsupportedOperationException,IllegalArgumentException;
 
 
+    @Transactional
+    void cancellaPartecipazioneContest(Integer idContest, String usernameTurista) throws IllegalArgumentException;
+
     Optional<TuristaAutenticato> findTuristaByUsername(String username);
 
     boolean verificaPassword(String password, String username);
@@ -37,4 +42,5 @@ public interface TuristaAutenticatoService {
 
     public List<Notifica> visualizzaNotifiche(String usernameTurista) throws IllegalArgumentException;
 
-    }
+    List<Invito> getInviti(String usernameTurista);
+}

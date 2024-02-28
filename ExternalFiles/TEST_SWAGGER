@@ -15,7 +15,7 @@ CONTEST CONTROLLER
 - DELETE                --> FUNZIONA
 - GETALL                --> FUNZIONA
 - ANNULLA INVITO        --> DA FARE
-- Termina               --> DA FARE
+- Termina               --> DA TESTARE
 
 COMUNE CONTROLLER
 - PUT(cambiaRuolo)  -> funziona
@@ -36,7 +36,9 @@ TURISTA AUTENTICATO CONTROLLER
 - GET(notifiche)
 - GET(preferiti)                   --> funziona ma fare un getAsList
 - GETALL                           --> funziona
-- GETINVITI                        --> DA FARE
+- GETINVITI                        --> DA TESTARE
+- ANNULLA PARTECIPAZIONE           --> DA TESTARE
+
 
 PUNTO DI INTERESSE CONTROLLER
 - PUT(setScadenza)          --> funziona
