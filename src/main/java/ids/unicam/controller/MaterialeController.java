@@ -1,6 +1,9 @@
 package ids.unicam.controller;
 
-import ids.unicam.Service.*;
+import ids.unicam.Service.ContestService;
+import ids.unicam.Service.MaterialeService;
+import ids.unicam.Service.PoiService;
+import ids.unicam.Service.TuristaAutenticatoService;
 import ids.unicam.exception.ContestException;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.attori.TuristaAutenticato;

@@ -1,14 +1,11 @@
 package ids.unicam.controller;
 
 import ids.unicam.Service.TuristaService;
-import ids.unicam.models.contenuti.Taggable;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequestMapping("/Turista")
 @RestController

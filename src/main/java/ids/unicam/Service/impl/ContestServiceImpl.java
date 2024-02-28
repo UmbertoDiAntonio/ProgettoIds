@@ -5,21 +5,16 @@ import ids.unicam.Service.ContestService;
 import ids.unicam.exception.ContestException;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.attori.Animatore;
-import ids.unicam.models.attori.Contributor;
-import ids.unicam.models.attori.Curatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import jakarta.transaction.Transactional;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-
-import static ids.unicam.Main.logger;
 
 @Service
 public class ContestServiceImpl implements ContestService {

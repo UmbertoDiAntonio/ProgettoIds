@@ -2,9 +2,7 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.ContributorRepository;
 import ids.unicam.Service.ContributorService;
-import ids.unicam.models.Observer;
 import ids.unicam.models.attori.Contributor;
-import ids.unicam.models.contenuti.notifiche.Notifica;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +12,11 @@ import java.util.Optional;
 @Service
 public class ContributorServiceImpl implements ContributorService{
     private final ContributorRepository repository;
-    private final NotificaServiceImpl notificaServiceImpl;
+
 
     @Autowired
-    public ContributorServiceImpl(ContributorRepository repository,
-                                  NotificaServiceImpl notificaServiceImpl) {
+    public ContributorServiceImpl(ContributorRepository repository) {
         this.repository = repository;
-        this.notificaServiceImpl = notificaServiceImpl;
     }
 
     public List<Contributor> findByNomeComune(String nomeComune) {
@@ -51,8 +47,6 @@ public class ContributorServiceImpl implements ContributorService{
     }
 
 
-    public List<Notifica> notifica(Contributor contributor) {//TODO notifiche Controller?
-        return notificaServiceImpl.getNotifiche(contributor);
-    }
+
 
 }

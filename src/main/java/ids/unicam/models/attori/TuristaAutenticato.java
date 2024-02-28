@@ -1,7 +1,6 @@
 package ids.unicam.models.attori;
 
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
-import ids.unicam.models.Observer;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.persistence.*;
 

@@ -3,7 +3,6 @@ package ids.unicam.Service;
 import ids.unicam.models.contenuti.Contenitore;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 
-import java.util.List;
 import java.util.Set;
 
 public interface ContenitoreService {

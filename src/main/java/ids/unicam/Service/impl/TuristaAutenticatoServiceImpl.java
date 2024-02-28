@@ -89,12 +89,6 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
             throw new IllegalArgumentException("punto di interesse non approvato");
         }
 
-    }
-
-    public boolean logOut() {
-        //TODO
-        return true;
-    }
 
     public List<TuristaAutenticato> findTuristiConPreferiti() {
         return repository.findTuristiConPreferiti();

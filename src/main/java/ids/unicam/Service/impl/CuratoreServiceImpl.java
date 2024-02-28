@@ -4,7 +4,6 @@ import ids.unicam.DataBase.Repository.CuratoreRepository;
 import ids.unicam.Service.CuratoreService;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Comune;
-import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.Curatore;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.Itinerario;

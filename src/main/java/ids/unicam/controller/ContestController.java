@@ -5,7 +5,6 @@ import ids.unicam.Service.AnimatoreService;
 import ids.unicam.Service.ContestService;
 import ids.unicam.exception.ContestException;
 import ids.unicam.models.DTO.RichiestaCreazioneContestDTO;
-import ids.unicam.models.Invito;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.contenuti.Contest;
 import io.swagger.v3.oas.annotations.Operation;
@@ -113,6 +112,4 @@ public class ContestController {
         }
     }
 
-    //TODO termina contest
-    //TODO setFineContest
 }
