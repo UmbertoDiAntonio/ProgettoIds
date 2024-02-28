@@ -70,7 +70,7 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
             @Parameter(description = "id dell'itinerario da eliminare") @RequestParam Integer idItinerario) {
         try {
             curatoreService.eliminaItinerario(usernameCuratore, idItinerario);
-            return ResponseEntity.ok("L'itinerario con id '" + idItinerario + "' e' stato eliminato da username con id '" + usernameCuratore + "' .");
+            return ResponseEntity.ok("L'itinerario con id '" + idItinerario + "' e' stato eliminato da utente con username '" + usernameCuratore + "' .");
         } catch (FuoriComuneException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -84,7 +84,7 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
             @Parameter(description = "id del punto di interesse da eliminare") @RequestParam Integer idPuntoInteresse) {
         try {
             curatoreService.eliminaPuntoInteresse(usernameCuratore, idPuntoInteresse);
-            return ResponseEntity.ok("Il punto di interesse con id '" + idPuntoInteresse + "' e' stato eliminato da username con id '" + usernameCuratore + "' .");
+            return ResponseEntity.ok("Il punto di interesse con id '" + idPuntoInteresse + "' e' stato eliminato da utente con username '" + usernameCuratore + "' .");
         } catch (FuoriComuneException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -98,7 +98,7 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
             @Parameter(description = "id del contest da eliminare") @RequestParam Integer idContest) {
         try {
             curatoreService.eliminaContest(usernameCuratore, idContest);
-            return ResponseEntity.ok("Il contest con id '" + idContest + "' e' stato eliminato da username con id '" + usernameCuratore + "' .");
+            return ResponseEntity.ok("Il contest con id '" + idContest + "' e' stato eliminato da utente con username '" + usernameCuratore + "' .");
         } catch (FuoriComuneException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -112,7 +112,7 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
             @Parameter(description = "id del materiale da eliminare")@RequestParam Integer idMateriale) {
         try {
             curatoreService.eliminaMateriale(usernameCuratore, idMateriale);
-            return ResponseEntity.ok("Il materiale con id '"+idMateriale+"' e' stato eliminato da username con id '"+usernameCuratore+"' .");
+            return ResponseEntity.ok("Il materiale con id '"+idMateriale+"' e' stato eliminato da utente con username '"+usernameCuratore+"' .");
         } catch (FuoriComuneException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

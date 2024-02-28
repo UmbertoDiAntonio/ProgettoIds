@@ -42,11 +42,12 @@ public class NotificaServiceImpl {
                                 "il materiale con id " + materialeGenerico.getId())
                         .withDestinatario(materialeGenerico.getCreatore()).build());
     }
+
     public Notifica creaNotifica(Animatore animatore, Contest contest, MaterialeGenerico vincitore) {
         return notificaRepository.save(
                 new NotificaBuilder()
                         .withTitolo("Vittoria Contest: " + vincitore.getCreatore().getUsername())
-                        .withDescrizione("Hai vinto il contest "+contest.getNomeContest()+" creato da "+animatore.getUsername()+ " con il materiale " + vincitore.getId())
+                        .withDescrizione("Hai vinto il contest " + contest.getNomeContest() + " creato da " + animatore.getUsername() + " con il materiale " + vincitore.getId())
                         .withDestinatario(vincitore.getCreatore()).build());
     }
 
@@ -54,7 +55,7 @@ public class NotificaServiceImpl {
         return notificaRepository.save(
                 new NotificaBuilder()
                         .withTitolo("Info Contest: " + contest.getNomeContest())
-                        .withDescrizione("il contest "+contest.getNomeContest()+((LocalDate.now().isAfter(contest.getExpireDate()))?" è terminato ":("terminerà il "+contest.getExpireDate())))
+                        .withDescrizione("il contest " + contest.getNomeContest() + (contest.getMaterialeVincitore() != null ? " è terminato " : (" terminerà il " + contest.getExpireDate())))
                         .withDestinatario(destinatario).build());
     }
 

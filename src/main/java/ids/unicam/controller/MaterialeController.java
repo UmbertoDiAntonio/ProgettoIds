@@ -76,10 +76,10 @@ public class MaterialeController {
             else
                 poiService.aggiungiMateriale(usernameTurista, idContenitore, materialeGenerico);
 
+            return new ResponseEntity<>("Il Materiale con id '" + materialeGenerico.getId()+"' e' stato caricato dall'utente con username '"+usernameTurista+"'", HttpStatus.OK);
         } catch (FuoriComuneException | IllegalArgumentException | ContestException e) {
             throw new RuntimeException(e);
         }
-        return new ResponseEntity<>("Materiale Caricato", HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

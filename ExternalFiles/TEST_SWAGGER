@@ -14,85 +14,83 @@ CONTEST CONTROLLER
 - GET                   --> FUNZIONA
 - DELETE                --> FUNZIONA
 - GETALL                --> FUNZIONA
-- ANNULLA INVITO        --> DA FARE
-- Termina               --> DA TESTARE
+- ANNULLA INVITO        --> DA FARE (cambia isValid)
+- Termina               --> FUNZIONA
 
 COMUNE CONTROLLER
-- PUT(cambiaRuolo)  -> funziona
-- POST              -> funziona
-- GET               -> funziona
-- DELETE            -> funziona
-- GETALL            -> funziona
+- PUT(cambiaRuolo)  -> FUNZIONA
+- POST              -> FUNZIONA
+- GET               -> FUNZIONA
+- DELETE            -> FUNZIONA
+- GETALL            -> FUNZIONA
 
 
 TURISTA AUTENTICATO CONTROLLER
-- PUT(partecipaContest)            --> funziona
-- PUT(aggiungiPreferito)           --> funziona
-- PUT(accettaInvito)               --> funziona
-- POST                             --> funziona
-- GET                              --> funziona
-- DELETE                           --> funziona
-- DELETE(rimuoviPreferito)         --> funziona
-- GET(notifiche)
-- GET(preferiti)                   --> funziona
-- GETALL                           --> funziona
-- GETINVITI                        --> DA TESTARE
-- ANNULLA PARTECIPAZIONE           --> DA TESTARE
+- PUT(partecipaContest)            --> FUNZIONA
+- PUT(aggiungiPreferito)           --> FUNZIONA
+- PUT(accettaInvito)               --> FUNZIONA
+- POST                             --> FUNZIONA
+- GET                              --> FUNZIONA
+- DELETE                           --> FUNZIONA
+- DELETE(rimuoviPreferito)         --> FUNZIONA
+- GET(notifiche)                   --> FUNZIONA
+- GET(preferiti)                   --> FUNZIONA
+- GETALL                           --> FUNZIONA
+- GETINVITI                        --> FUNZIONA
+- ANNULLA PARTECIPAZIONE           --> FUNZIONA
 
 
 PUNTO DI INTERESSE CONTROLLER
-- PUT(setScadenza)          --> funziona
+- PUT(setScadenza)          --> FUNZIONA
 - PUT(condividi)            --> ok
-- POST                      --> funziona
-- GET                       --> funziona
-- DELETE                    --> funziona
-- GET(materiali(idPunto))   --> migliorare il ritorno
-- GETALL                    --> funziona
+- POST                      --> FUNZIONA
+- GET                       --> FUNZIONA
+- DELETE                    --> FUNZIONA
+- GET(materiali(idPunto))   --> FUNZIONA migliorare il ritorno
+- GETALL                    --> FUNZIONA
 
 ITINERARIO CONTROLLER
-- PUT(rimuoviTappa)         --> funziona
-- PUT(aggiungiTappa)        --> funziona
-- POST                      --> funziona
-- GET                       --> funziona
-- DELETE                    --> funziona
-- GETALL                    --> funziona
+- PUT(rimuoviTappa)         --> FUNZIONA
+- PUT(aggiungiTappa)        --> FUNZIONA
+- POST                      --> FUNZIONA
+- GET                       --> FUNZIONA
+- DELETE                    --> FUNZIONA
+- GETALL                    --> FUNZIONA
 
 CURATORE CONTROLLER
-- PUT(valutaPuntoInteresse)     --> Funziona
-- PUT(valutaMateriale)          --> Funziona
-- PUT(unsuscribe)
-- PUT(segui)
+- PUT(valutaPuntoInteresse)     --> FUNZIONA
+- PUT(valutaMateriale)          --> FUNZIONA
 - PUT(getNotifiche)             -->
-- POST                          --> Funziona
-- GET(username)                 --> Funziona
-- DELETE(username)
-- GETALL                        --> funziona
-- DELETE(eliminaPuntoInteresse) --> funziona
-- DELETE(eliminaItinerario)     --> funziona
-- DELETE(eliminaContest)        --> funziona
-- DELETE(eliminaMateriale)      --> DA TESTARE
-
+- POST                          --> FUNZIONA
+- GET(username)                 --> FUNZIONA
+- DELETE(username)              --> FUNZIONA
+- GETALL                        --> FUNZIONA
+- DELETE(eliminaPuntoInteresse) --> FUNZIONA
+- DELETE(eliminaItinerario)     --> FUNZIONA
+- DELETE(eliminaContest)        --> FUNZIONA
+- DELETE(eliminaMateriale)      --> FUNZIONA
 
 CONTRIBUTOR CONTROLLER
-- POST      -> Funziona
-- GET       -> Funziona
-- DELETE    -> Funziona
-- GETALL    -> Funziona
-- GetNotifiche -> da fare
+- POST          --> FUNZIONA
+- GET           --> FUNZIONA
+- DELETE        --> FUNZIONA
+- GETALL        --> FUNZIONA
+- GetNotifiche  --> DA FARE
 
 CONTRIBUTOR AUTORIZZATO CONTROLLER
-- POST      -> Funziona
-- GET       -> Funziona
-- DELETE    -> Funziona
-- GETALL    -> Funziona
+- POST      -> FUNZIONA
+- GET       -> FUNZIONA
+- DELETE    -> FUNZIONA
+- GETALL    -> FUNZIONA
 
 ANIMATORE CONTROLLER
-- POST      -> Funziona
-- GET       -> Funziona
-- DELETE    -> Funziona
-- GETALL    -> Funziona
+- POST      -> FUNZIONA
+- GET       -> FUNZIONA
+- DELETE    -> FUNZIONA
+- GETALL    -> FUNZIONA
+- APPROVA MATERIALE -> DA FARE
 
 
 TURISTA CONTROLLER
-- GET(tagDTO) -> funziona
-- GET(report) -> funziona
+- GET(tagDTO) -> FUNZIONA
+- GET(report) -> FUNZIONA

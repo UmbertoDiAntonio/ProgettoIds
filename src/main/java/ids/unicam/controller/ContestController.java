@@ -92,7 +92,7 @@ public class ContestController {
             @Parameter(description = "id del Materiale Vincitore") @RequestParam Integer idMateriale) {
         try {
             animatoreService.terminaContest(idAnimatore, idContest, idMateriale);
-            return ResponseEntity.ok("Contest Terminato");
+            return ResponseEntity.ok("Contest Terminato con vincitore "+idMateriale);
         } catch (ContestException | UnsupportedOperationException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

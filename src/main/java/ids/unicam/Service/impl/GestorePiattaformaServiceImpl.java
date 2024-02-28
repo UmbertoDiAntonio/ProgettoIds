@@ -151,10 +151,6 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
                 contributorAutorizzatoServiceImpl.save(contributor);
                 yield cambiaRuolo(contributorDTO.getTuristaDTO().getUsername(),Ruolo.CONTRIBUTOR_AUTORIZZATO);
             }
-
         };
-
     }
-
-
 }

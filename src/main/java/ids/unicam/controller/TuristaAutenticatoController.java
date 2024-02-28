@@ -35,6 +35,9 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
 
 
     @Override
+    @GetMapping("/getAll")
+    @Operation(summary = "Ottieni tutti i Turisti",
+            description = "Ottieni Tutti i turisti e superiori.")
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(turistaAutenticatoService.getAll());
     }
