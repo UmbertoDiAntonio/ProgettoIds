@@ -46,7 +46,7 @@ public class AnimatoreController implements ControllerBase<RichiestaCreazioneCon
     @PostMapping("/crea")
     @Operation(summary = "Creazione di un nuovo utente animatore",
             description = "Crea un nuovo utente con ruolo di animatore.")
-    public ResponseEntity<?> create(@RequestParam RichiestaCreazioneContributorDTO contributorDTO) {
+    public ResponseEntity<?> create(@RequestBody RichiestaCreazioneContributorDTO contributorDTO) {
         try {
             return new ResponseEntity<>(gestorePiattaformaService.registraContributor(contributorDTO, Ruolo.ANIMATORE),HttpStatus.OK);
         } catch (ConnessioneFallitaException  | IllegalArgumentException e) {

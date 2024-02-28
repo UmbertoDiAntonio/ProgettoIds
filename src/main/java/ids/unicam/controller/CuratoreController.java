@@ -44,7 +44,7 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
     @Override
     @Operation(summary = "Creazione di un nuovo utente curatore",
             description = "Crea un nuovo utente curatore.")
-    public ResponseEntity<?> create(@RequestParam RichiestaCreazioneContributorDTO contributorDTO) {
+    public ResponseEntity<?> create(@RequestBody RichiestaCreazioneContributorDTO contributorDTO) {
         try {
             return new ResponseEntity<>(gestorePiattaformaService.registraContributor(contributorDTO, Ruolo.CURATORE), HttpStatus.OK);
         } catch (ConnessioneFallitaException | IllegalArgumentException e) {

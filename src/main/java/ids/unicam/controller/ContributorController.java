@@ -48,7 +48,7 @@ public class ContributorController implements ControllerBase<RichiestaCreazioneC
     @PostMapping("/crea")
     @Operation(summary = "Creazione di un nuovo utente contributor",
             description = "Crea un nuovo utente con ruolo di contributor.")
-    public ResponseEntity<?> create(@RequestParam RichiestaCreazioneContributorDTO contributorDTO) {
+    public ResponseEntity<?> create(@RequestBody RichiestaCreazioneContributorDTO contributorDTO) {
         try {
             TuristaAutenticato contributor = gestorePiattaformaService.registraContributor(contributorDTO, Ruolo.CONTRIBUTOR);
             return new ResponseEntity<>(contributor, HttpStatus.OK);

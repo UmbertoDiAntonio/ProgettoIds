@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/comune")
-public class ComuneController implements ControllerBase<ComuneDTO, String> {
+public class ComuneController {
 
     private final ComuneService comuneService;
     private final GestorePiattaformaService gestorePiattaformaService;
@@ -26,7 +26,7 @@ public class ComuneController implements ControllerBase<ComuneDTO, String> {
         this.gestorePiattaformaService = gestorePiattaformaService;
     }
 
-    @Override
+
     @GetMapping("/getAll")
     @Operation(summary = "Elenco dei comuni",
             description = "Un elenco dei comuni che sono salvati nel database.")
@@ -35,7 +35,7 @@ public class ComuneController implements ControllerBase<ComuneDTO, String> {
     }
 
 
-    @Override
+
     @GetMapping("/{nomeComune}")
     @Operation(summary = "Comune dall'identificatore univoco 'id'",
             description = "Comune dall'identificatore univoco 'id' salvato nel database.")
@@ -48,13 +48,14 @@ public class ComuneController implements ControllerBase<ComuneDTO, String> {
         }
     }
 
-    @Override
+
     @PostMapping("/crea")
     @Operation(summary = "Creazione di un nuovo comune",
             description = "Crea un nuovo comune.")
-    public ResponseEntity<?> create(@RequestParam ComuneDTO comuneDTO) {
+    public ResponseEntity<?> create(
+            @Parameter(description = "nome del comune")@RequestParam String nomeComune) {
         try {
-            return ResponseEntity.ok(comuneService.creaComune(new Comune(comuneDTO)));
+            return ResponseEntity.ok(comuneService.creaComune(new Comune(new ComuneDTO(nomeComune))));
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }

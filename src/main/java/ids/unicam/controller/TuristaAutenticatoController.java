@@ -54,7 +54,7 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
     @Operation(summary = "Crea un utente Turista",
             description = "Crea un utente con il ruolo di turista.")
     public ResponseEntity<?> create(
-            @RequestParam TuristaAutenticatoDTO turistaDTO) {
+            @RequestBody TuristaAutenticatoDTO turistaDTO) {
         try {
             return ResponseEntity.ok(gestorePiattaformaService.registraTurista(turistaDTO));
         } catch (IllegalArgumentException e) {
@@ -182,7 +182,7 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
         }
     }
 
-    @GetMapping("/notifiche/{usernameTurista}")
+    @GetMapping("/notifiche/{username}")
     @Operation(summary = "Ottieni tutte le Notifiche",
             description = "Ottieni tutte le tue Notifiche .")
     public ResponseEntity<?> getNotifiche(

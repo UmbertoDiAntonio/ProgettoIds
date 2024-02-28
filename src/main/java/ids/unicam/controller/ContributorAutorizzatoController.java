@@ -43,7 +43,7 @@ public class ContributorAutorizzatoController implements ControllerBase<Richiest
     @Override
     @Operation(summary = "Creazione di un nuovo utente contributor autorizzato",
             description = "Crea un nuovo utente contributor autorizzato.")
-    public ResponseEntity<?> create(@RequestParam RichiestaCreazioneContributorDTO contributorDTO) {
+    public ResponseEntity<?> create(@RequestBody RichiestaCreazioneContributorDTO contributorDTO) {
         try {
             return new ResponseEntity<>(gestorePiattaformaService.registraContributor(contributorDTO, Ruolo.CONTRIBUTOR_AUTORIZZATO), HttpStatus.OK);
         } catch (ConnessioneFallitaException | IllegalArgumentException e) {
