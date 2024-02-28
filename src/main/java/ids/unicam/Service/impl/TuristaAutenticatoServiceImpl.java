@@ -89,7 +89,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
             throw new IllegalArgumentException("punto di interesse non approvato");
         }
 
-
+    }
     public List<TuristaAutenticato> findTuristiConPreferiti() {
         return repository.findTuristiConPreferiti();
     }
