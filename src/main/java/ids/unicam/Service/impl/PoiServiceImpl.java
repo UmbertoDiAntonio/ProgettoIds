@@ -12,6 +12,7 @@ import ids.unicam.models.contenuti.Taggable;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.puntiInteresse.*;
 import jakarta.transaction.Transactional;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -229,9 +230,19 @@ public class PoiServiceImpl implements PoiService {
     @Override
     public List<String> getAsList() {
         List<PuntoInteresse> list = findActive();
+        return generateList(list);
+    }
+
+    @Override
+    public List<String> getAsList(List<PuntoInteresse> preferiti) {
+        return generateList(preferiti);
+    }
+
+    @NotNull
+    private List<String> generateList(List<PuntoInteresse> preferiti) {
         List<String> result = new ArrayList<>();
         int i = 0;
-        for (PuntoInteresse el : list) {
+        for (PuntoInteresse el : preferiti) {
             i++;
             result.add(i + ". " + el.mostraInformazioniGeneriche());
         }
@@ -268,4 +279,6 @@ public class PoiServiceImpl implements PoiService {
             throw new IllegalArgumentException("L'id del punto di interesse non e' valido");
         }
     }
+
+
 }

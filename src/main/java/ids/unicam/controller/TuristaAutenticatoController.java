@@ -100,7 +100,7 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
     @GetMapping("/getPreferiti/{usernameTurista}")
     public ResponseEntity<?> getPreferiti(@PathVariable String usernameTurista) {
         try {
-            return ResponseEntity.ok(turistaAutenticatoService.findPreferiti(usernameTurista));
+            return ResponseEntity.ok(poiService.getAsList(turistaAutenticatoService.findPreferiti(usernameTurista)));
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         }

@@ -44,4 +44,7 @@ public interface PoiService {
     List<String> getAsListDetailed();
 
     void setOrario(Integer idPunto, DayOfWeek day, Orario.OrarioApertura orario);
+
+    List<String> getAsList(List<PuntoInteresse> preferiti);
+
 }
