@@ -231,7 +231,7 @@ public class CuratoreServiceImpl implements CuratoreService {
             Optional<PuntoInteresse> oPoi = poiServiceImpl.findById(idPunto);
             if (oPoi.isPresent()) {
                 PuntoInteresse puntoInteresse = oPoi.get();
-                throw new UnsupportedOperationException(puntoInteresse.getId() + "non può ancora essere condiviso da " + curatore);
+                throw new UnsupportedOperationException(puntoInteresse.getId() + " non può ancora essere condiviso da " + curatore.getUsername());
                 //TODO
             } else {
                 logger.error("id del punto di interesse non valido");

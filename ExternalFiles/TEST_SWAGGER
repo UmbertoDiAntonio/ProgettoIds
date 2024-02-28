@@ -15,6 +15,7 @@ CONTEST CONTROLLER
 - DELETE                --> FUNZIONA
 - GETALL                --> FUNZIONA
 - ANNULLA INVITO        --> DA FARE
+- Termina               --> DA FARE
 
 COMUNE CONTROLLER
 - PUT(cambiaRuolo)  -> funziona
@@ -31,7 +32,7 @@ TURISTA AUTENTICATO CONTROLLER
 - POST                             --> funziona
 - GET                              --> funziona
 - DELETE                           --> funziona
-- DELETE(rimuoviPreferito)         --
+- DELETE(rimuoviPreferito)         --> funziona
 - GET(notifiche)
 - GET(preferiti)                   --> funziona ma fare un getAsList
 - GETALL                           --> funziona
@@ -39,34 +40,35 @@ TURISTA AUTENTICATO CONTROLLER
 
 PUNTO DI INTERESSE CONTROLLER
 - PUT(setScadenza)          --> funziona
-- PUT(condividi)
-- POST                      --> funziona
+- PUT(condividi)            --> ok
+- POST                      --> funziona mettere facoltativo il tag
 - GET                       --> funziona
-- DELETE
+- DELETE                    --> funziona
 - GET(materiali(idPunto))   --> migliorare il ritorno
 - GETALL                    --> funziona
 
 ITINERARIO CONTROLLER
 - PUT(rimuoviTappa)         --> funziona
-- PUT(aggiungiTappa)        --> funziona
+- PUT(aggiungiTappa)        --> funziona cambiare messaggio
 - POST                      --> funziona
 - GET                       --> funziona
 - DELETE                    --> funziona
 - GETALL                    --> funziona
 
 CURATORE CONTROLLER
-- PUT(valutaPuntoInteresse)
-- PUT(valutaMateriale)
+- PUT(valutaPuntoInteresse)     --> Funziona
+- PUT(valutaMateriale)          --> Funziona
 - PUT(unsuscribe)
 - PUT(segui)
 - PUT(getNotifiche)             -->
-- POST                          -->
-- GET(username)
+- POST                          --> Funziona
+- GET(username)                 --> Funziona
 - DELETE(username)
 - GETALL                        --> funziona
-- DELETE(eliminaPuntoInteresse)
-- DELETE(eliminaItinerario)
-- DELETE(eliminaContest)
+- DELETE(eliminaPuntoInteresse) --> funziona
+- DELETE(eliminaItinerario)     --> funziona
+- DELETE(eliminaContest)        --> funziona
+- DELETE(eliminaMateriale)      --> da fare
 
 
 CONTRIBUTOR CONTROLLER

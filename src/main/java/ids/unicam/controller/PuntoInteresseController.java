@@ -10,6 +10,7 @@ import ids.unicam.models.contenuti.puntiInteresse.Tag;
 import ids.unicam.models.contenuti.puntiInteresse.TipologiaPuntoInteresse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.constraints.Max;
@@ -74,7 +75,15 @@ public class PuntoInteresseController {
     }
 
     @PostMapping("/crea")
-    public ResponseEntity<?> create(@RequestParam String nomePOI, @RequestParam double latitudine, @RequestParam double longitudine, @RequestParam String usernameCreatore, @RequestParam @Nullable String tag, @RequestParam TipologiaPuntoInteresse tipologiaPuntoInteresse) {
+    @Operation(summary = "Creazione di un nuovo punto di interesse",
+            description = "Crea un nuovo punto di interesse.")
+    public ResponseEntity<?> create(
+            @Parameter(description = "Nome del punto di interesse") @RequestParam String nomePOI,
+            @Parameter(description = "Latitudine del punto di interesse") @RequestParam double latitudine,
+            @Parameter(description = "Longitudine del punto di interesse") @RequestParam double longitudine,
+            @Parameter(description = "Username del creatore del punto di interesse") @RequestParam String usernameCreatore,
+            @Parameter(description = "Tag del punto di interesse", schema = @Schema(implementation = String.class)) @RequestParam(required = false) String tag,
+            @Parameter(description = "Tipologia del punto di interesse", schema = @Schema(implementation = TipologiaPuntoInteresse.class)) @RequestParam TipologiaPuntoInteresse tipologiaPuntoInteresse) {
         try {
             return ResponseEntity.ok(poiService.creaPuntoInteresse(nomePOI, new Punto(latitudine, longitudine), usernameCreatore, new Tag(tag), tipologiaPuntoInteresse));
         } catch (FuoriComuneException e) {

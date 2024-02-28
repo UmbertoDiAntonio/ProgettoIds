@@ -95,7 +95,7 @@ public class PoiServiceImpl implements PoiService {
             Contributor contributor = oContributor.get();
             PuntoInteresseDTO puntoInteresseDTO = new PuntoInteresseDTO(nomePOI, punto, new Orario(), tipologiaPuntoInteresse, contributor);
             PuntoInteresse puntoInteresse = new PuntoInteresse(puntoInteresseDTO);
-            puntoInteresse.addTag(tag);
+            tagServiceImpl.aggiungiTag(puntoInteresse, tag);
             if (!puntoInteresse.getCreatore().getComune().verificaCoordinateComune(puntoInteresse.getPt())) {
                 throw new FuoriComuneException("Posizione Punto di Interesse Fuori dall'area del comune");
             }
@@ -257,11 +257,11 @@ public class PoiServiceImpl implements PoiService {
 
     @Transactional
     @Override
-    public void setOrario(Integer idPunto, DayOfWeek day, Orario.OrarioApertura orario) throws IllegalArgumentException{
+    public void setOrario(Integer idPunto, DayOfWeek day, Orario.OrarioApertura orario) throws IllegalArgumentException {
         Optional<PuntoInteresse> oPuntoInteresse = getById(idPunto);
         if (oPuntoInteresse.isPresent()) {
             PuntoInteresse puntoInteresse = oPuntoInteresse.get();
-            puntoInteresse.getOrario().setOrarioApertura(day,orario);
+            puntoInteresse.getOrario().setOrarioApertura(day, orario);
             save(puntoInteresse);
         } else {
             logger.error("L'id del punto di interesse non e' valido");
