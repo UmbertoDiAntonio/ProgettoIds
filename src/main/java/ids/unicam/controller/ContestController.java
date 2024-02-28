@@ -29,20 +29,30 @@ public class ContestController {
 
 
     @GetMapping("/getAll")
+    @Operation(summary = "Elenco dei contest",
+            description = "Un elenco dei contest che sono salvati nel database.")
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(contestService.findAll());
     }
 
     @GetMapping("/{idContest}")
-    public ResponseEntity<?> getById(@PathVariable Integer idContest) {
+    @Operation(summary = "Contest dall'identificatore univoco 'id'",
+            description = "Contest dall'identificatore univoco 'id' salvato nel database.")
+    public ResponseEntity<?> getById(
+            @Parameter(description = "id del contest") @PathVariable Integer idContest) {
         return ResponseEntity.ok(contestService.findById(idContest));
     }
 
-
     @PostMapping("/crea")
-    public ResponseEntity<?> create(String nomeContest, String obiettivo, String usernameCreatore, boolean open) {
+    @Operation(summary = "Creazione di un nuovo contest",
+            description = "Crea un nuovo contest.")
+    public ResponseEntity<?> create(
+            @Parameter(description = "nome del Contest")@RequestParam String nomeContest,
+            @Parameter(description = "obiettivo del contest")@RequestParam String obiettivo,
+            @Parameter(description = "username del creatore del contest")@RequestParam String usernameCreatore,
+            @Parameter(description = "accessibilita' del contest") @RequestParam boolean open) {
         Optional<Animatore> oAnimatore = animatoreService.getById(usernameCreatore);
-        if (oAnimatore.isEmpty())
+        if(oAnimatore.isEmpty())
             return new ResponseEntity<>("username creatore non valido", HttpStatus.BAD_REQUEST);
         Animatore creatore = oAnimatore.get();
         RichiestaCreazioneContestDTO contestDTO = new RichiestaCreazioneContestDTO(nomeContest, obiettivo, creatore, open);
@@ -51,13 +61,21 @@ public class ContestController {
 
 
     @DeleteMapping("/{idContest}")
-    public ResponseEntity<?> delete(@PathVariable Integer idContest) {
+    @Operation(summary = "Elimina contest",
+            description = "Elimina di un contest dall'id.")
+    public ResponseEntity<?> delete(
+            @Parameter(description = "id del contest")@PathVariable Integer idContest) {
         contestService.deleteById(idContest);
         return ResponseEntity.ok("Il contest con id '" + idContest + "' e' stato eliminato.");
     }
 
     @PutMapping("/invita/{idContest}")
-    public ResponseEntity<?> invita(@RequestParam String idAnimatore, @RequestParam Integer idContest, @RequestParam String usernameInvitato) {
+    @Operation(summary = "Invita utente al contest",
+            description = "Invita un utente al contest.")
+    public ResponseEntity<?> invita(
+            @Parameter(description = "id dell'utente animatore")@RequestParam String idAnimatore,
+            @Parameter(description = "id del contest")@RequestParam Integer idContest,
+            @Parameter(description = "username dell'utente da invitare")@RequestParam String usernameInvitato) {
         try {
             return ResponseEntity.ok(animatoreService.invitaContest(idAnimatore, idContest, usernameInvitato));
         } catch (ContestException | IllegalStateException | IllegalArgumentException e) {
@@ -81,7 +99,13 @@ public class ContestController {
     }
 
     @PutMapping("/approvaMateriale/{idMateriale}")
-    public ResponseEntity<?> approvaMateriale(@RequestBody String usernameAnimatore, @RequestBody Integer idContest, @PathVariable Integer idMateriale, @RequestBody boolean stato) {
+    @Operation(summary = "Approva un materiale",
+            description = "L'utente curatore approva un materiale caricato.")
+    public ResponseEntity<?> approvaMateriale(
+            @Parameter(description = "username dell'animatore")@RequestBody String usernameAnimatore,
+            @Parameter(description = "id del contest")@RequestBody Integer idContest,
+            @Parameter(description = "id del materiale da approvare")@PathVariable Integer idMateriale,
+            @Parameter(description = "scelta di approvare o non il materiale")@RequestBody boolean stato) {
         try {
             return ResponseEntity.ok(animatoreService.approvaMateriale(usernameAnimatore, idContest, idMateriale, stato));
         } catch (UnsupportedOperationException | IllegalArgumentException e) {

@@ -2,6 +2,7 @@ package ids.unicam.models.contenuti.puntiInteresse;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.FetchType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +15,7 @@ import java.util.Map;
 
 @Component
 public class Orario {
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private final Map<DayOfWeek, OrarioApertura> hoursMap;
 
     public Orario() {

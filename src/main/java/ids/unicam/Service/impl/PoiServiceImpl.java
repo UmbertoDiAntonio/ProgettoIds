@@ -96,7 +96,7 @@ public class PoiServiceImpl implements PoiService {
             Contributor contributor = oContributor.get();
             PuntoInteresseDTO puntoInteresseDTO = new PuntoInteresseDTO(nomePOI, punto, new Orario(), tipologiaPuntoInteresse, contributor);
             PuntoInteresse puntoInteresse = new PuntoInteresse(puntoInteresseDTO);
-            tagServiceImpl.aggiungiTag(puntoInteresse, tag);
+            tagServiceImpl.aggiungiTag(puntoInteresse,tag);
             if (!puntoInteresse.getCreatore().getComune().verificaCoordinateComune(puntoInteresse.getPt())) {
                 throw new FuoriComuneException("Posizione Punto di Interesse Fuori dall'area del comune");
             }
@@ -268,7 +268,7 @@ public class PoiServiceImpl implements PoiService {
 
     @Transactional
     @Override
-    public void setOrario(Integer idPunto, DayOfWeek day, Orario.OrarioApertura orario) throws IllegalArgumentException {
+    public void setOrario(Integer idPunto, Orario.OrarioApertura orario, DayOfWeek day) throws IllegalArgumentException {
         Optional<PuntoInteresse> oPuntoInteresse = getById(idPunto);
         if (oPuntoInteresse.isPresent()) {
             PuntoInteresse puntoInteresse = oPuntoInteresse.get();

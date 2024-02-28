@@ -6,6 +6,8 @@ import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.attori.Ruolo;
 import ids.unicam.models.attori.TuristaAutenticato;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,18 +27,28 @@ public class ContributorController implements ControllerBase<RichiestaCreazioneC
     }
 
     @Override
+    @GetMapping("/getAll")
+    @Operation(summary = "Elenco degli utenti contributor",
+            description = "Un elenco degli utenti contributor che sono salvati nel database.")
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(contributorService.getAll());
     }
 
+
     @Override
     @GetMapping("/{username}")
-    public ResponseEntity<?> getById(@PathVariable String username) {
+    @Operation(summary = "Contributor dall'identificatore univoco 'username'",
+            description = "Contributor dall'identificatore univoco 'username' salvato nel database.")
+    public ResponseEntity<?> getById(
+            @Parameter(description = "username del contributor") @PathVariable String username) {
         return ResponseEntity.ok(contributorService.getById(username));
     }
 
     @Override
-    public ResponseEntity<?> create(RichiestaCreazioneContributorDTO contributorDTO) {
+    @PostMapping("/crea")
+    @Operation(summary = "Creazione di un nuovo utente contributor",
+            description = "Crea un nuovo utente con ruolo di contributor.")
+    public ResponseEntity<?> create(@RequestParam RichiestaCreazioneContributorDTO contributorDTO) {
         try {
             TuristaAutenticato contributor = gestorePiattaformaService.registraContributor(contributorDTO, Ruolo.CONTRIBUTOR);
             return new ResponseEntity<>(contributor, HttpStatus.OK);
@@ -47,15 +59,22 @@ public class ContributorController implements ControllerBase<RichiestaCreazioneC
 
     @Override
     @DeleteMapping("/{username}")
-    public ResponseEntity<?> delete(@PathVariable String username) {
+    @Operation(summary = "Elimina contributor",
+            description = "Elimina di un utente contributor dall'username.")
+    public ResponseEntity<?> delete(
+            @Parameter(description = "username del contributor") @PathVariable String username) {
         contributorService.deleteById(username);
-        return ResponseEntity.ok("Utente: '"+username+ "' eliminato");
+        return ResponseEntity.ok("Utente: '" + username + "' eliminato");
     }
 
 
     @PutMapping("/accettaInvito")
-    public ResponseEntity<?> accettaInvito(@RequestParam String usernameTurista, @RequestParam Integer idInvito) {
-        return turistaAutenticatoController.accettaInvito(usernameTurista, idInvito);
+    @Operation(summary = "Accetta invito per partecipare ad un contest",
+            description = "Accetta invito per partecipare ad un contest da parte di un utente animatore.")
+    public ResponseEntity<?> accettaInvito(
+            @Parameter(description = "username dell'invitato") @RequestParam String usernameInvitato,
+            @Parameter(description = "id del contest a cui partecipare") @RequestParam Integer idInvito) {
+        return turistaAutenticatoController.accettaInvito(usernameInvitato, idInvito);
     }
 
 

@@ -15,10 +15,6 @@ public interface MaterialeRepository extends JpaRepository<MaterialeGenerico, In
     @Query("select m.stato from MaterialeGenerico m where m.id=:id")
     Stato getStatoById(int id);
 
-
     List<MaterialeGenerico> findAllByFileIn(List<String> file);
 
-
-    @Query("select m.file from MaterialeGenerico m")
-    List<String> getPaths();
 }

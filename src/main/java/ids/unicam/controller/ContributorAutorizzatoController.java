@@ -5,6 +5,8 @@ import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.attori.Ruolo;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,18 +24,26 @@ public class ContributorAutorizzatoController implements ControllerBase<Richiest
     }
 
     @Override
+    @GetMapping("/getAll")
+    @Operation(summary = "Elenco degli utenti contributor autorizzati",
+            description = "Un elenco degli utenti contributor autorizzati che sono salvati nel database.")
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(contributorAutorizzatoService.getAll());
     }
 
     @Override
     @GetMapping("/{username}")
-    public ResponseEntity<?> getById(@PathVariable String username) {
+    @Operation(summary = "Contributor Autorizzato dall'identificatore univoco 'id'",
+            description = "Contributor Autorizzato dall'identificatore univoco 'id' salvato nel database.")
+    public ResponseEntity<?> getById(
+            @Parameter(description = "username del contributor autorizzato") @PathVariable String username) {
         return ResponseEntity.ok(contributorAutorizzatoService.getById(username));
     }
 
     @Override
-    public ResponseEntity<?> create(RichiestaCreazioneContributorDTO contributorDTO) {
+    @Operation(summary = "Creazione di un nuovo utente contributor autorizzato",
+            description = "Crea un nuovo utente contributor autorizzato.")
+    public ResponseEntity<?> create(@RequestParam RichiestaCreazioneContributorDTO contributorDTO) {
         try {
             return new ResponseEntity<>(gestorePiattaformaService.registraContributor(contributorDTO, Ruolo.CONTRIBUTOR_AUTORIZZATO), HttpStatus.OK);
         } catch (ConnessioneFallitaException | IllegalArgumentException e) {
@@ -43,8 +53,11 @@ public class ContributorAutorizzatoController implements ControllerBase<Richiest
 
     @Override
     @DeleteMapping("/{username}")
-    public ResponseEntity<?> delete(String username) {
+    @Operation(summary = "Elimina utente contributor autorizzato",
+            description = "Elimina di un utente contributor autorizzato dall'username.")
+    public ResponseEntity<?> delete(
+            @Parameter(description = "username del contributor autorizzato") @PathVariable String username) {
         contributorAutorizzatoService.deleteById(username);
-        return ResponseEntity.ok("Utente: '"+username+ "' eliminato");
+        return ResponseEntity.ok("Utente: '" + username + "' eliminato");
     }
 }

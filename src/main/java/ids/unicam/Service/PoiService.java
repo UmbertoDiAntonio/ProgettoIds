@@ -43,7 +43,7 @@ public interface PoiService {
     @Transactional
     List<String> getAsListDetailed();
 
-    void setOrario(Integer idPunto, DayOfWeek day, Orario.OrarioApertura orario);
+    void setOrario(Integer idPunto, Orario.OrarioApertura orario, DayOfWeek day);
 
     List<String> getAsList(List<PuntoInteresse> preferiti);
 

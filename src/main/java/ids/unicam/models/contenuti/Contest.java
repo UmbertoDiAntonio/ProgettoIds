@@ -91,8 +91,9 @@ public class Contest implements Contenitore, Taggable, Expirable {
 
     @Override
     public void addMateriale(MaterialeGenerico materialeGenerico) {
-        if(materialeGenerico != null)
+        if(materialeGenerico != null){
             materiali.add(materialeGenerico);
+        }
     }
 
     @Override

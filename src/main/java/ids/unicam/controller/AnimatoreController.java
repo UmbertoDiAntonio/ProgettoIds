@@ -5,6 +5,10 @@ import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.attori.Ruolo;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,18 +26,27 @@ public class AnimatoreController implements ControllerBase<RichiestaCreazioneCon
     }
 
     @Override
+    @GetMapping("/getAll")
+    @Operation(summary = "Elenco degli utenti animatore",
+            description = "Un elenco degli utenti animatore che sono salvati nel database.")
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(animatoreService.getAll());
     }
 
     @Override
     @GetMapping("/{username}")
-    public ResponseEntity<?> getById(@PathVariable String username) {
+    @Operation(summary = "Animatore dall'identificatore univoco 'id'",
+            description = "Animatore dall'identificatore univoco 'id' salvato nel database.")
+    public ResponseEntity<?> getById(
+            @Parameter(description = "Username dell'animatore")@PathVariable String username) {
         return ResponseEntity.ok(animatoreService.getById(username));
     }
 
     @Override
-    public ResponseEntity<?> create(RichiestaCreazioneContributorDTO contributorDTO) {
+    @PostMapping("/crea")
+    @Operation(summary = "Creazione di un nuovo utente animatore",
+            description = "Crea un nuovo utente con ruolo di animatore.")
+    public ResponseEntity<?> create(@RequestParam RichiestaCreazioneContributorDTO contributorDTO) {
         try {
             return new ResponseEntity<>(gestorePiattaformaService.registraContributor(contributorDTO, Ruolo.ANIMATORE),HttpStatus.OK);
         } catch (ConnessioneFallitaException  | IllegalArgumentException e) {
@@ -43,7 +56,10 @@ public class AnimatoreController implements ControllerBase<RichiestaCreazioneCon
 
     @Override
     @DeleteMapping("/{username}")
-    public ResponseEntity<?> delete(@PathVariable String username) {
+    @Operation(summary = "Elimina utente Animatore",
+            description = "Elimina di un utente con ruolo di Animatore.")
+    public ResponseEntity<?> delete(
+            @Parameter(description = "username dell'Animatore") @PathVariable String username) {
         animatoreService.deleteById(username);
         return ResponseEntity.ok("Utente: '"+username+ "' eliminato");
     }

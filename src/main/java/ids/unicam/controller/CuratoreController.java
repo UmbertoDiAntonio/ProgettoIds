@@ -26,18 +26,25 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
     }
 
     @Override
+    @Operation(summary = "Elenco degli utenti curatore",
+            description = "Un elenco degli utenti con ruolo di curatore.")
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(curatoreService.getAll());
     }
 
     @Override
     @GetMapping("/{username}")
-    public ResponseEntity<?> getById(@PathVariable String username) {
+    @Operation(summary = "Curatore dall'username",
+            description = "Curatre dall'identificatore univoco username salvato nel database.")
+    public ResponseEntity<?> getById(
+            @Parameter(description = "username del curatore") @PathVariable String username) {
         return ResponseEntity.ok(curatoreService.getById(username));
     }
 
     @Override
-    public ResponseEntity<?> create(RichiestaCreazioneContributorDTO contributorDTO) {
+    @Operation(summary = "Creazione di un nuovo utente curatore",
+            description = "Crea un nuovo utente curatore.")
+    public ResponseEntity<?> create(@RequestParam RichiestaCreazioneContributorDTO contributorDTO) {
         try {
             return new ResponseEntity<>(gestorePiattaformaService.registraContributor(contributorDTO, Ruolo.CURATORE), HttpStatus.OK);
         } catch (ConnessioneFallitaException | IllegalArgumentException e) {
@@ -47,42 +54,57 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
 
     @Override
     @DeleteMapping("/{username}")
-    public ResponseEntity<?> delete(@PathVariable String username) {
+    @Operation(summary = "Elimina utente curatore",
+            description = "Eliminazione di un utente con ruolo di curatore dall'username univoco.")
+    public ResponseEntity<?> delete(
+            @Parameter(description = "username del curatore") @PathVariable String username) {
         curatoreService.deleteById(username);
         return ResponseEntity.ok("Utente: '" + username + "' eliminato");
     }
 
-    @DeleteMapping("eliminaItinerario")
-    public ResponseEntity<?> eliminaItinerario(@RequestParam String usernameCuratore, @RequestParam Integer idItinerario) {
+    @DeleteMapping("/eliminaItinerario")
+    @Operation(summary = "Elimina un itinerario",
+            description = "Eliminazione di un itinerario dall'id univoco.")
+    public ResponseEntity<?> eliminaItinerario(
+            @Parameter(description = "username del curatore") @RequestParam String usernameCuratore,
+            @Parameter(description = "id dell'itinerario da eliminare") @RequestParam Integer idItinerario) {
         try {
             curatoreService.eliminaItinerario(usernameCuratore, idItinerario);
-            return ResponseEntity.ok("L'itinerario con id '"+idItinerario+"' e' stato eliminato da username con id '"+usernameCuratore+"' .");
+            return ResponseEntity.ok("L'itinerario con id '" + idItinerario + "' e' stato eliminato da username con id '" + usernameCuratore + "' .");
         } catch (FuoriComuneException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    @DeleteMapping("eliminaPuntoIntesse")
-    public ResponseEntity<?> eliminaPuntoInteresse(@RequestParam String usernameCuratore, @RequestParam Integer idPuntoInteresse) {
+    @DeleteMapping("/eliminaPuntoIntesse")
+    @Operation(summary = "Elimina un punto di interesse",
+            description = "Eliminazione di un punto di interesse dall'id univoco.")
+    public ResponseEntity<?> eliminaPuntoInteresse(
+            @Parameter(description = "username del curatore") @RequestParam String usernameCuratore,
+            @Parameter(description = "id del punto di interesse da eliminare") @RequestParam Integer idPuntoInteresse) {
         try {
             curatoreService.eliminaPuntoInteresse(usernameCuratore, idPuntoInteresse);
-            return ResponseEntity.ok("Il punto di interesse con id '"+idPuntoInteresse+"' e' stato eliminato da username con id '"+usernameCuratore+"' .");
+            return ResponseEntity.ok("Il punto di interesse con id '" + idPuntoInteresse + "' e' stato eliminato da username con id '" + usernameCuratore + "' .");
         } catch (FuoriComuneException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    @DeleteMapping("eliminaContest")
-    public ResponseEntity<?> eliminaContest(@RequestParam String usernameCuratore, @RequestParam Integer idContest) {
+    @DeleteMapping("/eliminaContest")
+    @Operation(summary = "Elimina un contest",
+            description = "Eliminazione di un contest dall'id univoco.")
+    public ResponseEntity<?> eliminaContest(
+            @Parameter(description = "username del curatore") @RequestParam String usernameCuratore,
+            @Parameter(description = "id del contest da eliminare") @RequestParam Integer idContest) {
         try {
             curatoreService.eliminaContest(usernameCuratore, idContest);
-            return ResponseEntity.ok("Il contest con id '"+idContest+"' e' stato eliminato da username con id '"+usernameCuratore+"' .");
+            return ResponseEntity.ok("Il contest con id '" + idContest + "' e' stato eliminato da username con id '" + usernameCuratore + "' .");
         } catch (FuoriComuneException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    @DeleteMapping("eliminaContest")
+    @DeleteMapping("/eliminaMateriale")
     @Operation(summary = "Elimina un Materiale",
             description = "Eliminazione di un Materiale dall'ID.")
     public ResponseEntity<?> eliminaMateriale(
@@ -96,8 +118,13 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
         }
     }
 
-    @PutMapping("valutaPuntoInteresse")
-    public ResponseEntity<?> valutaPuntoInteresse(@RequestParam String usernameCuratore, @RequestParam Integer idPunto, @RequestParam Stato stato) {
+    @PutMapping("/valutaPuntoInteresse")
+    @Operation(summary = "Valutazione di un Punto di Interesse",
+            description = "Cambio dello stato di un punto di interesse dall'id univoco.")
+    public ResponseEntity<?> valutaPuntoInteresse(
+            @Parameter(description = "username del curatore") @RequestParam String usernameCuratore,
+            @Parameter(description = "id del punto di interesse da valutare") @RequestParam Integer idPunto,
+            @Parameter(description = "approvazione o non del punto di interesse") @RequestParam Stato stato) {
         try {
             return ResponseEntity.ok(curatoreService.valutaPuntoInteresse(usernameCuratore, idPunto, stato.asBoolean()));
         } catch (FuoriComuneException | IllegalArgumentException | UnsupportedOperationException e) {
@@ -105,8 +132,13 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
         }
     }
 
-    @PutMapping("valutaMateriale")
-    public ResponseEntity<?> valutaMateriale(@RequestParam String usernameCuratore, @RequestParam Integer idMateriale, @RequestParam Stato stato) {
+    @PutMapping("/valutaMateriale")
+    @Operation(summary = "Valutazione di un Materiale",
+            description = "Cambio dello stato di un materiale caricato dall'id univoco.")
+    public ResponseEntity<?> valutaMateriale(
+            @Parameter(description = "username del curatore") @RequestParam String usernameCuratore,
+            @Parameter(description = "id del materiale da valutare") @RequestParam Integer idMateriale,
+            @Parameter(description = "approvazione o non del materiale") @RequestParam Stato stato) {
         try {
             return ResponseEntity.ok(curatoreService.valutaMateriale(usernameCuratore, idMateriale, stato.asBoolean()));
         } catch (FuoriComuneException | IllegalArgumentException | UnsupportedOperationException e) {
@@ -115,8 +147,11 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
     }
 
 
-    @GetMapping("getNotifiche/{usernameCuratore}")
-    public ResponseEntity<?> getNotifiche(@PathVariable String usernameCuratore) {
+    @GetMapping("/getNotifiche/{usernameCuratore}")
+    @Operation(summary = "Elenco delle notifiche di un utente Curatore",
+            description = "Elenco delle notifiche di un utente Curatore dall'identificatore username univoco.")
+    public ResponseEntity<?> getNotifiche(
+            @Parameter(description = "username del curatore") @PathVariable String usernameCuratore) {
         try {
             return ResponseEntity.ok(curatoreService.getNotifiche(usernameCuratore));
         } catch (IllegalArgumentException e) {

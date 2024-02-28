@@ -19,9 +19,5 @@ public interface CuratoreRepository  extends JpaRepository<Curatore,String> {
     @Query("SELECT c FROM Curatore c WHERE c.comune.nome = :nome_comune")
     List<Curatore> findCuratoreByComuneNome(String nome_comune);
 
-    @Query("select c.osservatori from Curatore c where c.username = :usernameCuratore")
-    List<Contributor> findOsservatoriByCuratore(String usernameCuratore);
-    @Query("SELECT Count(c) FROM Curatore c JOIN  c.osservatori  Where c.username = :usernameCuratore")
-    Integer countNumeroOsservatori( String usernameCuratore);
 
 }
