@@ -1,5 +1,7 @@
 package ids.unicam.exception;
 
+import static ids.unicam.Main.logger;
+
 public class ContestException extends Exception {
     public ContestException() {
         super();
@@ -7,6 +9,7 @@ public class ContestException extends Exception {
 
     public ContestException(String message) {
         super(message);
+        logger.error(message);
     }
 
     public ContestException(String message, Throwable cause) {

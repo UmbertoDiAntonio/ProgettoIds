@@ -67,8 +67,8 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     public Contest aggiungiMateriale(String usernameTurista, Integer idContest, MaterialeGenerico materialeGenerico) throws ContestException, FuoriComuneException {
-        TuristaAutenticato turistaAutenticato =null;
-
+        TuristaAutenticato turistaAutenticato = null;
+//TODO eventualmente aggiungere osservatore se contest aperto
         Optional<Contest> oContest = findById(idContest);
         if (oContest.isEmpty()) {
             logger.error("id contest non valido");
@@ -76,17 +76,20 @@ public class ContestServiceImpl implements ContestService {
         }
 
         Contest contest = oContest.get();
-
-        if(!contest.isOpen())
-            for(TuristaAutenticato turistaAutenticato1 : contest.getPartecipanti()){
-                if(turistaAutenticato1.getUsername().equals(usernameTurista))
-                    turistaAutenticato=turistaAutenticato1;
+        if (contest.isExpired()) {
+            logger.error("Il Contest e' Terminato");
+            throw new ContestException("il Contest e' Terminato");
+        }
+        if (!contest.isOpen())
+            for (TuristaAutenticato turistaAutenticato1 : contest.getPartecipanti()) {
+                if (turistaAutenticato1.getUsername().equals(usernameTurista))
+                    turistaAutenticato = turistaAutenticato1;
             }
-        if(turistaAutenticato==null && !contest.isOpen()) {
+        if (turistaAutenticato == null && !contest.isOpen()) {
             logger.error("Devi essere iscritto al contest per caricare materiale su di esso");
             throw new ContestException("Devi essere iscritto al contest per caricare materiale su di esso");
         }
-        materialeService.aggiungiMateriale(contest,materialeGenerico);
+        materialeService.aggiungiMateriale(contest, materialeGenerico);
         return save(contest);
     }
 
@@ -100,6 +103,7 @@ public class ContestServiceImpl implements ContestService {
     @Transactional
     public void aggiungiPartecipante(Contest contest, TuristaAutenticato turistaAutenticato) {
         contest.getPartecipanti().add(turistaAutenticato);
+        //TODO eventualmente aggiungere osservatore
         save(contest);
     }
 
@@ -107,18 +111,30 @@ public class ContestServiceImpl implements ContestService {
     @Override
     public void setVincitoreContest(Contest contest, MaterialeGenerico materialeGenerico) {
         contest.setMaterialeVincitore(materialeGenerico);
+        //TODO eventualmente notifica vincituro
         save(contest);
     }
 
     @Transactional
     @Override
-    public void terminaContest(Contest contest) {
+    public void terminaContest(Contest contest, Integer idMateriale) throws ContestException {
         contest.setExpireDate(LocalDate.now());
+        Optional<MaterialeGenerico> oMateriale = materialeService.getById(idMateriale);
+        if (oMateriale.isEmpty()) {
+            throw new ContestException("id materiale non valido");
+        }
+        MaterialeGenerico materiale = oMateriale.get();
+        if (!contest.getMateriali().contains(materiale)) {
+            throw new ContestException("il materiale non risulta tra i materiali del contest");
+        }
+        setVincitoreContest(contest, materiale);
+        //TODO eventualmente notifica osservatori
+        //TODO eventualmente svuotare osservatori
         save(contest);
     }
 
     @Override
-    public  List<MaterialeGenerico> getMaterialiContest(Contest contenutoGenerico) {
+    public List<MaterialeGenerico> getMaterialiContest(Contest contenutoGenerico) {
         return repository.getMateriali(contenutoGenerico.getId());
 
     }

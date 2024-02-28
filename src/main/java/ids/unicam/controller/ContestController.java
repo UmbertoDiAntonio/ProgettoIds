@@ -71,4 +71,7 @@ public class ContestController{
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    //TODO termina contest
+    //TODO setFineContest
 }

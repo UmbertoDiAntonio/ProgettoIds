@@ -68,8 +68,8 @@ public class ItinerarioServiceImpl implements ItinerarioService {
                                 throw new IllegalArgumentException("il punto di interesse e' gia' una tappa dell'itinerario");
                             }
                         } else {
-                            logger.error("il punto di interesse e' fuori dall'itinerario");
-                            throw new IllegalArgumentException("il punto di interesse e' fuori dall'itinerario");
+                            logger.error("il punto di interesse e' fuori dal comune");
+                            throw new IllegalArgumentException("il punto di interesse e' fuori dal comune");
                         }
                     } else {
                         logger.error("il contributor non fa parte del comune dell'itinerario");

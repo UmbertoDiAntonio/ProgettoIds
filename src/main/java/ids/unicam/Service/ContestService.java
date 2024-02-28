@@ -30,7 +30,7 @@ public interface ContestService {
 
     void setVincitoreContest(Contest contest,  MaterialeGenerico materialeGenerico);
 
-    void terminaContest(Contest contest);
+    void terminaContest(Contest contest,Integer idMaterialeVincitore) throws ContestException;
 
     List<Contest>findAll();
 

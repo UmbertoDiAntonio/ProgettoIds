@@ -4,7 +4,7 @@ MATERIALE CONTROLLER:
 - POST          --> FUNZIONA
 - GET           --> FUNZIONA
 - DELETE        --> FUNZIONA
-- GETALL        --> ERRORE
+- GETALL        --> ERRORE da VUOTO
 
 
 CONTEST CONTROLLER
@@ -28,22 +28,22 @@ TURISTA AUTENTICATO CONTROLLER
 - PUT(partecipaContest)
 - PUT(aggiungiPreferito)
 - PUT(accettaInvito)            -->
-- POST                          -->
-- GET
-- DELETE
+- POST                             --> funziona
+- GET          --> funziona
+- DELETE          --> funziona
 - DELETE(rimuoviPreferito)
 - GET(notifiche)
 - GET(preferiti)
-- GETALL
+- GETALL                    --> funziona
 
 PUNTO DI INTERESSE CONTROLLER
 - PUT(setScadenza)
 - PUT(condividi)
 - POST                      --> funziona
-- GET
+- GET                       --> funziona
 - DELETE
-- GET(materiali(idPunto))
-- GETALL
+- GET(materiali(idPunto)) --> migliorare il ritorno
+- GETALL                    --> funziona
 
 ITINERARIO CONTROLLER
 - PUT(rimuoviTappa)         --> funziona
