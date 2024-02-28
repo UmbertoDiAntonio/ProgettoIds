@@ -209,20 +209,35 @@ public class CuratoreServiceImpl implements CuratoreService {
 
     @Override
     @Transactional
-    public void elimina(Curatore curatore, MaterialeGenerico materialeGenerico) throws IllegalArgumentException, FuoriComuneException {
-        List<PuntoInteresse> listPuntoInteresse = poiServiceImpl.findActive();
-        for (PuntoInteresse puntoInteresse : listPuntoInteresse) {
-            if (!puntoInteresse.getComune().equals(curatore.getComune())) {
-                throw new FuoriComuneException(curatore.getUsername() + " non può eliminare materiali fuori dal suo comune ");
+    public void eliminaMateriale(String usernameCuratore, int idMateriale) throws IllegalArgumentException, FuoriComuneException {
+        Optional<Curatore> oCuratore = getById(usernameCuratore);
+        if (oCuratore.isPresent()) {
+            Curatore curatore = oCuratore.get();
+            Optional<MaterialeGenerico> oMateriale = materialeServiceImpl.getById(idMateriale);
+            if (oMateriale.isPresent()) {
+                MaterialeGenerico materialeGenerico = oMateriale.get();
+
+                List<PuntoInteresse> listPuntoInteresse = poiServiceImpl.findActive();
+                for (PuntoInteresse puntoInteresse : listPuntoInteresse) {
+                    if (!puntoInteresse.getComune().equals(curatore.getComune())) {
+                        throw new FuoriComuneException(curatore.getUsername() + " non può eliminare materiali fuori dal suo comune ");
+                    }
+                    puntoInteresse.rimuoviMateriale(materialeGenerico);
+                    poiServiceImpl.save(puntoInteresse);
+                }
+                materialeServiceImpl.deleteById(materialeGenerico.getId());
+            }else {
+                logger.error("Id del materiale non valido");
+                throw new IllegalArgumentException("Id del materiale non valido");
             }
-            puntoInteresse.rimuoviMateriale(materialeGenerico);
-            poiServiceImpl.save(puntoInteresse);
+        } else {
+            logger.error("username curatore non valido");
+            throw new IllegalArgumentException("username curatore non valido");
         }
-        materialeServiceImpl.deleteById(materialeGenerico.getId());
     }
 
     @Override
-    public void condividi(String usernameCuratore, Integer idPunto) throws IllegalArgumentException,UnsupportedOperationException{
+    public void condividi(String usernameCuratore, Integer idPunto) throws IllegalArgumentException, UnsupportedOperationException {
         Optional<Curatore> oCuratore = getById(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
@@ -243,11 +258,8 @@ public class CuratoreServiceImpl implements CuratoreService {
     }
 
 
-
-
-
     @Override
-    public List<Notifica> getNotifiche(String usernameCurature) throws IllegalArgumentException{
+    public List<Notifica> getNotifiche(String usernameCurature) throws IllegalArgumentException {
         Optional<Curatore> oCuratore = getById(usernameCurature);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
@@ -257,11 +269,6 @@ public class CuratoreServiceImpl implements CuratoreService {
             throw new IllegalArgumentException("username del curatore non valido");
         }
     }
-
-
-
-
-
 
 
 }

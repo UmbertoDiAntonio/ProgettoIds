@@ -7,6 +7,8 @@ import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.attori.Ruolo;
 import ids.unicam.models.contenuti.Stato;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -75,6 +77,20 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
         try {
             curatoreService.eliminaContest(usernameCuratore, idContest);
             return ResponseEntity.ok("Il contest con id '"+idContest+"' e' stato eliminato da username con id '"+usernameCuratore+"' .");
+        } catch (FuoriComuneException | IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("eliminaContest")
+    @Operation(summary = "Elimina un Materiale",
+            description = "Eliminazione di un Materiale dall'ID.")
+    public ResponseEntity<?> eliminaMateriale(
+            @Parameter(description = "Username del curatore")@RequestParam String usernameCuratore,
+            @Parameter(description = "id del materiale da eliminare")@RequestParam Integer idMateriale) {
+        try {
+            curatoreService.eliminaMateriale(usernameCuratore, idMateriale);
+            return ResponseEntity.ok("Il materiale con id '"+idMateriale+"' e' stato eliminato da username con id '"+usernameCuratore+"' .");
         } catch (FuoriComuneException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

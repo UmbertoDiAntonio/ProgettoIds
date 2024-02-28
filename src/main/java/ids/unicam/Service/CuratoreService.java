@@ -5,7 +5,6 @@ import ids.unicam.models.attori.Curatore;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.notifiche.Notifica;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
-import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -21,11 +20,11 @@ public interface CuratoreService {
     void eliminaItinerario(String usernameCuratore,Integer idItinerario) throws IllegalArgumentException, FuoriComuneException;
 
     void eliminaContest(String usernameCuratore,Integer idContest) throws IllegalArgumentException, FuoriComuneException;
+    void eliminaMateriale(String usernameCuratore, int idMateriale) throws IllegalArgumentException, FuoriComuneException;
 
     void condividi(String usernameCuratore, Integer idPunto)throws IllegalArgumentException;
 
-    @Transactional
-    void elimina(Curatore curatore, MaterialeGenerico materialeGenerico) throws FuoriComuneException;
+
 
 
     List<Curatore> getAll();

@@ -13,7 +13,6 @@ import ids.unicam.models.attori.*;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.Stato;
-import ids.unicam.models.contenuti.materiali.Foto;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.materiali.TipologiaMateriale;
 import ids.unicam.models.contenuti.puntiInteresse.DayOfWeek;
@@ -483,7 +482,7 @@ public class JUnitContenutiTests {
 
         poiService.aggiungiMateriale(turista.getUsername(), puntoInteresse2.getId(), foto);
         assertEquals(1, poiService.getMaterialiPoi(puntoInteresse2.getId()).size());
-        curatoreServiceImpl.elimina(curatore, foto);
+        curatoreServiceImpl.eliminaMateriale(curatore.getUsername(), foto.getId());
         assertEquals(0, poiService.getMaterialiPoi(puntoInteresse2.getId()).size());
 
     }

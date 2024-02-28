@@ -34,7 +34,7 @@ TURISTA AUTENTICATO CONTROLLER
 - DELETE                           --> funziona
 - DELETE(rimuoviPreferito)         --> funziona
 - GET(notifiche)
-- GET(preferiti)                   --> funziona ma fare un getAsList
+- GET(preferiti)                   --> funziona
 - GETALL                           --> funziona
 - GETINVITI                        --> DA TESTARE
 - ANNULLA PARTECIPAZIONE           --> DA TESTARE
@@ -43,7 +43,7 @@ TURISTA AUTENTICATO CONTROLLER
 PUNTO DI INTERESSE CONTROLLER
 - PUT(setScadenza)          --> funziona
 - PUT(condividi)            --> ok
-- POST                      --> funziona mettere facoltativo il tag
+- POST                      --> funziona
 - GET                       --> funziona
 - DELETE                    --> funziona
 - GET(materiali(idPunto))   --> migliorare il ritorno
@@ -51,7 +51,7 @@ PUNTO DI INTERESSE CONTROLLER
 
 ITINERARIO CONTROLLER
 - PUT(rimuoviTappa)         --> funziona
-- PUT(aggiungiTappa)        --> funziona cambiare messaggio
+- PUT(aggiungiTappa)        --> funziona
 - POST                      --> funziona
 - GET                       --> funziona
 - DELETE                    --> funziona
@@ -70,7 +70,7 @@ CURATORE CONTROLLER
 - DELETE(eliminaPuntoInteresse) --> funziona
 - DELETE(eliminaItinerario)     --> funziona
 - DELETE(eliminaContest)        --> funziona
-- DELETE(eliminaMateriale)      --> da fare
+- DELETE(eliminaMateriale)      --> DA TESTARE
 
 
 CONTRIBUTOR CONTROLLER
