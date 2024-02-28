@@ -51,7 +51,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
     @Override
     public void accettaInvitoContest(TuristaAutenticatoDTO turistaDTO, InvitoDTO invitoDTO) throws IllegalArgumentException {
         invitoServiceImpl.accettaInvito(turistaDTO, invitoDTO);
-        repository.save(new TuristaAutenticato(turistaDTO));
+        //repository.save(new TuristaAutenticato(turistaDTO));
     }
 
     @Transactional

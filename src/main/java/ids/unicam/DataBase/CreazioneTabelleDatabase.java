@@ -168,7 +168,6 @@ public class CreazioneTabelleDatabase {
                 "CREATE TABLE IF NOT EXISTS TURISTI_PREFERITI(" +
                         "TURISTA_AUTENTICATO_USERNAME VARCHAR(50)," +
                         "PREFERITI_ID INT," +
-                        "FOREIGN KEY (TURISTA_AUTENTICATO_USERNAME) REFERENCES TURISTI(username)," +
                         "FOREIGN KEY (PREFERITI_ID) REFERENCES PUNTI_DI_INTERESSE(ID) ON DELETE CASCADE)";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
@@ -295,8 +294,7 @@ public class CreazioneTabelleDatabase {
                 "CREATE TABLE IF NOT EXISTS CONTEST_PARTECIPANTI(" +
                         "contest_id INT NOT NULL," +
                         "partecipanti_username VARCHAR(50)," +
-                        "FOREIGN KEY (contest_id) REFERENCES CONTEST(id)," +
-                        "FOREIGN KEY (partecipanti_username) REFERENCES TURISTI(username))";
+                        "FOREIGN KEY (contest_id) REFERENCES CONTEST(id))";
 
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();

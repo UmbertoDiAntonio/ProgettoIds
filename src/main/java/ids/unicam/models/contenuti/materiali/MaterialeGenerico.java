@@ -39,7 +39,6 @@ public abstract class MaterialeGenerico {
     public MaterialeGenerico(MaterialeDTO materialeDTO) {
         this.file ="./src/main/resources/materials/"+materialeDTO.getPathFile();
         this.creatore = materialeDTO.getCreatore();
-        System.out.println("----"+file);
     }
 
     @Override

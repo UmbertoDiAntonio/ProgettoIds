@@ -57,8 +57,7 @@ public class ContestController{
     @PutMapping("/invita/{idContest}")
     public ResponseEntity<?> invita(@RequestParam String idAnimatore, @RequestParam Integer idContest, @RequestParam String usernameInvitato){
         try {
-            Invito invito = animatoreService.invitaContest(idAnimatore, idContest, usernameInvitato);
-            return new ResponseEntity<>(invito, HttpStatus.OK);
+            return ResponseEntity.ok( animatoreService.invitaContest(idAnimatore, idContest, usernameInvitato));
         } catch (ContestException |IllegalStateException|IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

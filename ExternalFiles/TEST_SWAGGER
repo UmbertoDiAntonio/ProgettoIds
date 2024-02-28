@@ -8,13 +8,13 @@ MATERIALE CONTROLLER:
 
 
 CONTEST CONTROLLER
-- PUT(approvaMateriale) --> DA TESTARE FUNZIONAMENTO
-- PUT(invita)           --> DA TESTARE FUNZIONAMENTO
+- PUT(approvaMateriale) --> FUNZIONA
+- PUT(invita)           --> FUNZIONA(forse non devi poter invitare il creatore del contest) e risposta da abbreviare
 - POST                  --> FUNZIONA
 - GET                   --> FUNZIONA
 - DELETE                --> FUNZIONA
 - GETALL                --> FUNZIONA
-
+- ANNULLA INVITO        --> DA FARE
 
 COMUNE CONTROLLER
 - PUT(cambiaRuolo)  -> funziona
@@ -27,22 +27,23 @@ COMUNE CONTROLLER
 TURISTA AUTENTICATO CONTROLLER
 - PUT(partecipaContest)
 - PUT(aggiungiPreferito)
-- PUT(accettaInvito)            -->
+- PUT(accettaInvito)               --> funziona
 - POST                             --> funziona
-- GET          --> funziona
-- DELETE          --> funziona
+- GET                              --> funziona
+- DELETE                           --> funziona
 - DELETE(rimuoviPreferito)
 - GET(notifiche)
 - GET(preferiti)
-- GETALL                    --> funziona
+- GETALL                           --> funziona
+- GETINVITI                        --> DA FARE
 
 PUNTO DI INTERESSE CONTROLLER
-- PUT(setScadenza)
+- PUT(setScadenza)          --> funziona
 - PUT(condividi)
 - POST                      --> funziona
 - GET                       --> funziona
 - DELETE
-- GET(materiali(idPunto)) --> migliorare il ritorno
+- GET(materiali(idPunto))   --> migliorare il ritorno
 - GETALL                    --> funziona errore
 
 ITINERARIO CONTROLLER

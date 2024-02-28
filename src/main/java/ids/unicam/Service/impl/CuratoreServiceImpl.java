@@ -242,8 +242,8 @@ public class CuratoreServiceImpl implements CuratoreService {
                 throw new IllegalArgumentException("id del punto di interesse non valido");
             }
         } else {
-            logger.error("username del curatore non valido");
-            throw new IllegalArgumentException("username del curatore non valido");
+            logger.error("username non valido");
+            throw new IllegalArgumentException("username non valido");
         }
 
     }

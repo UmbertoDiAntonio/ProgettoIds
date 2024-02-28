@@ -68,9 +68,8 @@ public class AnimatoreServiceImpl implements AnimatoreService {
     }
 
 
-
     @Override
-    public Invito invitaContest(String usernameAnimatore, Integer idContest, String invitato) throws ContestException,IllegalStateException,IllegalArgumentException {
+    public Invito invitaContest(String usernameAnimatore, Integer idContest, String invitato) throws ContestException, IllegalStateException, IllegalArgumentException {
         Optional<Animatore> oAnimatore = getById(usernameAnimatore);
         if (oAnimatore.isPresent()) {
             Animatore animatore = oAnimatore.get();
@@ -82,39 +81,41 @@ public class AnimatoreServiceImpl implements AnimatoreService {
                     throw new IllegalStateException("L'animatore non e' il creatore del contest.");
                 }
                 Optional<TuristaAutenticato> oTurista = turistaAutenticatoService.getById(invitato);
-                if (oTurista.isPresent())
-                {
+                if (oTurista.isPresent()) {
                     TuristaAutenticato turistaAutenticato = oTurista.get();
                     if (contestService.getPartecipanti(contest).contains(turistaAutenticato)) {
                         logger.error("Il turista autenticato fa gia' parte del contest");
                         throw new ContestException("Il turista autenticato fa gia' parte del contest");
-                    }
-                    return invitoServiceImpl.save(new Invito(new InvitoDTO(contest, turistaAutenticato)));
+                    } else
+                        return invitoServiceImpl.save(new Invito(new InvitoDTO(contest, turistaAutenticato)));
+                } else {
+                    logger.error("username del turista invitato non valido");
+                    throw new IllegalArgumentException("username del turista invitato non valido");
                 }
-                logger.error("username del turista invitato non valido");
-                throw new IllegalArgumentException("username del turista invitato non valido");
+            } else {
+                logger.error("id del contest non valido");
+                throw new IllegalArgumentException("id del contest non valido");
             }
-            logger.error("id del contest non valido");
-            throw new IllegalArgumentException("id del contest non valido");
+        } else {
+            logger.error("username dell'animatore non valido");
+            throw new IllegalArgumentException("username dell'animatore non valido");
         }
-        logger.error("username dell'animatore non valido");
-        throw new IllegalArgumentException("username dell'animatore non valido");
     }
 
     @Override
-    public boolean approvaMateriale(String usernameAnimatore, Integer idContest, Integer idMaterialeGenerico, boolean stato) throws UnsupportedOperationException,IllegalArgumentException {
+    public boolean approvaMateriale(String usernameAnimatore, Integer idContest, Integer idMaterialeGenerico, boolean stato) throws UnsupportedOperationException, IllegalArgumentException {
         Optional<Animatore> oAnimatore = getById(usernameAnimatore);
-        if(oAnimatore.isPresent()) {
+        if (oAnimatore.isPresent()) {
             Animatore animatore = oAnimatore.get();
             Optional<Contest> oContest = contestService.findById(idContest);
-            if(oContest.isPresent()) {
+            if (oContest.isPresent()) {
                 Contest contest = oContest.get();
                 if (!contest.getCreatore().equals(animatore)) {
                     logger.warn(animatore + "  non è autorizzato ad approvare nel contest " + contest);
                     throw new UnsupportedOperationException(animatore + "  non è autorizzato ad approvare nel contest " + contest);
                 }
                 Optional<MaterialeGenerico> oMateriale = materialeService.getById(idMaterialeGenerico);
-                if(oMateriale.isPresent()) {
+                if (oMateriale.isPresent()) {
                     MaterialeGenerico materialeGenerico = oMateriale.get();
                     if (materialeGenerico.getStato() != Stato.IN_ATTESA)
                         throw new UnsupportedOperationException("materiale già settato");
@@ -126,11 +127,11 @@ public class AnimatoreServiceImpl implements AnimatoreService {
                     logger.error("id Materiale non valido");
                     throw new IllegalArgumentException("id Materiale non valido");
                 }
-            }else{
+            } else {
                 logger.error("id Contest non valido");
                 throw new IllegalArgumentException("id Contest non valido");
             }
-        }else{
+        } else {
             logger.error("username Animatore non valido");
             throw new IllegalArgumentException("username Animatore non valido");
         }
