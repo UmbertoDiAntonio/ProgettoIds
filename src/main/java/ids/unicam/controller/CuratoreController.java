@@ -98,26 +98,6 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
         }
     }
 
-    @PutMapping("segui/{usernameCuratore}")
-    public ResponseEntity<?> subscribeOsservatore(@PathVariable String usernameCuratore, @RequestParam String usernameContributor) {
-        try {
-            curatoreService.aggiungiOsservatore(usernameCuratore, usernameContributor);
-            return ResponseEntity.ok("L'utente con id '"+usernameContributor+"' ha iniziato a seguire l'utente con id '"+usernameCuratore+"' .");
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @PutMapping("unsuscribe/{usernameCuratore}")
-    public ResponseEntity<?> unsubscibeOsservatore(@PathVariable String usernameCuratore, @RequestParam String usernameContributor) {
-        try {
-            curatoreService.rimuoviOsservatore(usernameCuratore, usernameContributor);
-            return ResponseEntity.ok("L'utente con id '"+usernameContributor+"' ha smesso di seguire l'utente con id '"+usernameCuratore+"' .");
-
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
 
     @GetMapping("getNotifiche/{usernameCuratore}")
     public ResponseEntity<?> getNotifiche(@PathVariable String usernameCuratore) {

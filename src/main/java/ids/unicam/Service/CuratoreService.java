@@ -34,10 +34,6 @@ public interface CuratoreService {
 
     Optional<Curatore> getById(String username);
 
-    void aggiungiOsservatore(String usernameCuratore, String usernameContributorOsservatore) throws IllegalArgumentException;
-
-    void rimuoviOsservatore(String usernameCuratore, String usernameContributorOsservatore)throws IllegalArgumentException ;
-
     List<Notifica> getNotifiche(String usernameCuratore) throws IllegalArgumentException;
 
 }

@@ -5,10 +5,13 @@ import ids.unicam.Service.ContestService;
 import ids.unicam.exception.ContestException;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.attori.Animatore;
+import ids.unicam.models.attori.Contributor;
+import ids.unicam.models.attori.Curatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import jakarta.transaction.Transactional;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +25,13 @@ import static ids.unicam.Main.logger;
 public class ContestServiceImpl implements ContestService {
     private final ContestRepository repository;
     private final MaterialeServiceImpl materialeService;
+    private final NotificaServiceImpl notificaService;
 
     @Autowired
-    public ContestServiceImpl(ContestRepository repository, MaterialeServiceImpl materialeService) {
+    public ContestServiceImpl(ContestRepository repository, MaterialeServiceImpl materialeService, NotificaServiceImpl notificaService) {
         this.repository = repository;
         this.materialeService = materialeService;
+        this.notificaService = notificaService;
     }
 
     public void deleteById(int id) {
@@ -68,7 +73,6 @@ public class ContestServiceImpl implements ContestService {
     @Override
     public Contest aggiungiMateriale(String usernameTurista, Integer idContest, MaterialeGenerico materialeGenerico) throws ContestException, FuoriComuneException {
         TuristaAutenticato turistaAutenticato = null;
-//TODO eventualmente aggiungere osservatore se contest aperto
         Optional<Contest> oContest = findById(idContest);
         if (oContest.isEmpty()) {
             throw new FuoriComuneException("id contest non valido");
@@ -86,6 +90,7 @@ public class ContestServiceImpl implements ContestService {
         if (turistaAutenticato == null && !contest.isOpen()) {
             throw new ContestException("Devi essere iscritto al contest per caricare materiale su di esso");
         }
+
         materialeService.aggiungiMateriale(contest, materialeGenerico);
         return save(contest);
     }
@@ -100,15 +105,21 @@ public class ContestServiceImpl implements ContestService {
     @Transactional
     public void aggiungiPartecipante(Contest contest, TuristaAutenticato turistaAutenticato) {
         contest.getPartecipanti().add(turistaAutenticato);
-        //TODO eventualmente aggiungere osservatore
         save(contest);
+    }
+
+    @Transactional
+    public void rimuoviPartecipante(Contest contest, TuristaAutenticato turistaAutenticato) throws IllegalArgumentException{
+       contest.getPartecipanti().remove(turistaAutenticato);
+       save(contest);
     }
 
     @Transactional
     @Override
     public void setVincitoreContest(Contest contest, MaterialeGenerico materialeGenerico) {
         contest.setMaterialeVincitore(materialeGenerico);
-        //TODO eventualmente notifica vincituro
+        if(contest.getPartecipanti().contains(materialeGenerico.getCreatore()))
+            notificaService.creaNotifica(contest.getCreatore(),contest,contest.getMaterialeVincitore());
         save(contest);
     }
 
@@ -124,9 +135,13 @@ public class ContestServiceImpl implements ContestService {
         if (!contest.getMateriali().contains(materiale)) {
             throw new ContestException("il materiale non risulta tra i materiali del contest");
         }
+
+        for(TuristaAutenticato turistaAutenticato:contest.getPartecipanti())
+            notificaService.creaNotifica(contest.getCreatore(),contest,turistaAutenticato);
+
         setVincitoreContest(contest, materiale);
-        //TODO eventualmente notifica osservatori
-        //TODO eventualmente svuotare osservatori
+
+        contest.getPartecipanti().clear();
         save(contest);
     }
 

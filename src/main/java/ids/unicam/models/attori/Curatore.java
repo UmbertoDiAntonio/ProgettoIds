@@ -20,10 +20,6 @@ public class Curatore extends ContributorAutorizzato {
     public Curatore(RichiestaCreazioneContributorDTO contributorDTO) throws ConnessioneFallitaException,IllegalArgumentException,RuntimeException {
         super(contributorDTO);
     }
-
-    @OneToMany(fetch = FetchType.EAGER)
-    private final List<Contributor> osservatori = new ArrayList<>();
-
     @Override
     public String toString() {
         return "Curatore "+super.toString();

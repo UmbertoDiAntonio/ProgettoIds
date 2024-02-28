@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ContributorServiceImpl implements ContributorService, Observer {
+public class ContributorServiceImpl implements ContributorService{
     private final ContributorRepository repository;
     private final NotificaServiceImpl notificaServiceImpl;
 
@@ -50,7 +50,7 @@ public class ContributorServiceImpl implements ContributorService, Observer {
         return repository.findAll();
     }
 
-    @Override
+
     public List<Notifica> notifica(Contributor contributor) {//TODO notifiche Controller?
         return notificaServiceImpl.getNotifiche(contributor);
     }

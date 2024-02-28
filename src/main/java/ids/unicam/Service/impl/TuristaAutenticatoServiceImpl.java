@@ -4,6 +4,7 @@ import ids.unicam.DataBase.Repository.TuristaAutenticatoRepository;
 import ids.unicam.Service.TuristaAutenticatoService;
 import ids.unicam.models.DTO.InvitoDTO;
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
+import ids.unicam.models.Observer;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.notifiche.Notifica;
@@ -18,7 +19,7 @@ import java.util.Optional;
 import static ids.unicam.Main.logger;
 
 @Service
-public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService {
+public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService, Observer {
     private final TuristaAutenticatoRepository repository;
     private final ContestServiceImpl contestServiceImpl;
     private final InvitoServiceImpl invitoServiceImpl;
@@ -161,6 +162,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
     }
 
 
+    @Override
     public List<Notifica> visualizzaNotifiche(String usernameTurista)  throws IllegalArgumentException{
         Optional<TuristaAutenticato> oTurista = findTuristaByUsername(usernameTurista);
         if (oTurista.isPresent()) {
@@ -170,5 +172,6 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
         logger.error("username del turista non valido");
         throw new IllegalArgumentException("username del turista non valido");
     }
+
 
 }

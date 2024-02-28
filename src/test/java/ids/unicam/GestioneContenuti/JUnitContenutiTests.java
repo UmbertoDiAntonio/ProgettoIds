@@ -192,13 +192,15 @@ public class JUnitContenutiTests {
             TuristaAutenticato turistaTemp3 = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(new ComuneDTO(comune.getNome()), new TuristaAutenticatoDTO("Pietro", "Pier", LocalDate.of(2000, Calendar.MARCH, 11), "4Unica@", "user45")), Ruolo.CONTRIBUTOR);
             if (!(turistaTemp3 instanceof Contributor contributor2))
                 throw new IllegalArgumentException("errore");
-
+/*
             int numeroOsservatori = curatoreServiceImpl.getOsservatori(curatore).size();
             curatoreServiceImpl.aggiungiOsservatore(curatore.getUsername(), contributor1.getUsername());
             assertEquals(numeroOsservatori + 1, curatoreServiceImpl.getNumeroOsservatori(curatore));
 
             curatoreServiceImpl.aggiungiOsservatore(curatore.getUsername(), contributor2.getUsername());
             assertEquals(numeroOsservatori + 2, curatoreServiceImpl.getNumeroOsservatori(curatore));
+
+
 
             try {
                 curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse.getId(), true);
@@ -215,6 +217,8 @@ public class JUnitContenutiTests {
             poiService.aggiungiMateriale(turistaAutenticato.getUsername(), puntoInteresse.getId(), materialeGenerico1);
             curatoreServiceImpl.rimuoviOsservatore(curatore.getUsername(), contributor1.getUsername());
             assertEquals(numeroOsservatori + 1, curatoreServiceImpl.getNumeroOsservatori(curatore));
+
+ */
         }
     }
 

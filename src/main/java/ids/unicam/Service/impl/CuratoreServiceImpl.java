@@ -31,19 +31,17 @@ public class CuratoreServiceImpl implements CuratoreService {
     private final MaterialeServiceImpl materialeServiceImpl;
     private final ContestServiceImpl contestServiceImpl;
     private final NotificaServiceImpl notificaServiceImpl;
-    private final ContributorServiceImpl contributorService;
 
     @Autowired
     public CuratoreServiceImpl(CuratoreRepository repository, PoiServiceImpl service, ItinerarioServiceImpl itinerarioServiceImpl,
                                MaterialeServiceImpl materialeServiceImpl, ContestServiceImpl contestServiceImpl,
-                               NotificaServiceImpl notificaServiceImpl, ContributorServiceImpl contributorService) {
+                               NotificaServiceImpl notificaServiceImpl) {
         this.repository = repository;
         this.poiServiceImpl = service;
         this.itinerarioServiceImpl = itinerarioServiceImpl;
         this.materialeServiceImpl = materialeServiceImpl;
         this.contestServiceImpl = contestServiceImpl;
         this.notificaServiceImpl = notificaServiceImpl;
-        this.contributorService = contributorService;
     }
 
 
@@ -245,50 +243,8 @@ public class CuratoreServiceImpl implements CuratoreService {
     }
 
 
-    @Transactional
-    public void aggiungiOsservatore(String usernameCuratore, String usernameContributorOsservatore) throws IllegalArgumentException {
-        Optional<Curatore> oCuratore = getById(usernameCuratore);
-        if (oCuratore.isPresent()) {
-            Curatore curatore = oCuratore.get();
-            Optional<Contributor> oOsservatore = contributorService.getById(usernameContributorOsservatore);
-            if (oOsservatore.isPresent()) {
-                Contributor osservatore = oOsservatore.get();
-                if (curatore.getOsservatori().contains(osservatore)) {
-                    logger.warn(osservatore + " stai già seguendo questo curatore");
-                    return;
-                }
-                curatore.getOsservatori().add(osservatore);
-                save(curatore);
-            } else {
-                logger.error("username del contributor non valido");
-                throw new IllegalArgumentException("username del contributor non valido");
-            }
-        } else {
-            logger.error("username del curatore non valido");
-            throw new IllegalArgumentException("username del curatore non valido");
-        }
-    }
 
 
-    @Transactional
-    public void rimuoviOsservatore(String usernameCuratore, String usernameContributorOsservatore) throws IllegalArgumentException{
-        Optional<Curatore> oCuratore = getById(usernameCuratore);
-        if (oCuratore.isPresent()) {
-            Curatore curatore = oCuratore.get();
-            Optional<Contributor> oOsservatore = contributorService.getById(usernameContributorOsservatore);
-            if (oOsservatore.isPresent()) {
-                Contributor osservatore = oOsservatore.get();
-                curatore.getOsservatori().remove(osservatore);
-                save(curatore);
-            } else {
-                logger.error("username del contributor non valido");
-                throw new IllegalArgumentException("username del contributor non valido");
-            }
-        } else {
-            logger.error("username del curatore non valido");
-            throw new IllegalArgumentException("username del curatore non valido");
-        }
-    }
 
     @Override
     public List<Notifica> getNotifiche(String usernameCurature) throws IllegalArgumentException{
@@ -303,13 +259,9 @@ public class CuratoreServiceImpl implements CuratoreService {
     }
 
 
-    public List<Contributor> getOsservatori(Curatore curatore) {
-        return repository.findOsservatoriByCuratore(curatore.getUsername());
-    }
 
-    public int getNumeroOsservatori(Curatore curatore) {
-        return repository.countNumeroOsservatori(curatore.getUsername());
-    }
+
+
 
 
 }
