@@ -25,7 +25,7 @@ COMUNE CONTROLLER
 
 
 TURISTA AUTENTICATO CONTROLLER
-- PUT(partecipaContest)
+- PUT(partecipaContest)            --> funziona
 - PUT(aggiungiPreferito)
 - PUT(accettaInvito)               --> funziona
 - POST                             --> funziona
@@ -44,7 +44,7 @@ PUNTO DI INTERESSE CONTROLLER
 - GET                       --> funziona
 - DELETE
 - GET(materiali(idPunto))   --> migliorare il ritorno
-- GETALL                    --> funziona errore
+- GETALL                    --> funziona
 
 ITINERARIO CONTROLLER
 - PUT(rimuoviTappa)         --> funziona

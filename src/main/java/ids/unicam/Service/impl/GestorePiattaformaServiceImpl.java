@@ -94,15 +94,15 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
 
     private boolean validaCredenziali(TuristaAutenticatoDTO turistaDTO) throws IllegalArgumentException{
         if (!turistaDTO.getPassword().matches("^(?=.*[A-Z])(?=.*[@#$%^&+=])(?=.*[0-9])(?=.*[a-zA-Z]).{6,}$")) {
-            logger.error("Password non valida");
-            throw new IllegalArgumentException("Password non valida");
+            logger.error("Password non valida, deve essere lunga almeno 6 catteri, di cui almeno 1 numero, 1 maiuscola e un carattere speciale");
+            throw new IllegalArgumentException("Password non valida, deve essere lunga almeno 6 catteri, di cui almeno 1 numero, 1 maiuscola e un carattere speciale");
 
 
             //TODO messaggio da parte dell'interfaccia
         }
         if (!turistaDTO.getUsername().matches("^.{5,}$")) {
-            logger.error("Username non valido");
-            throw new IllegalArgumentException("Username non valido");
+            logger.error("Username non valido, deve essere lungo almeno 5 caratteri");
+            throw new IllegalArgumentException("Username non valido, deve essere lungo almeno 5 caratteri");
             //TODO messaggio da parte dell'interfaccia
         }
         if (!turistaAutenticatoServiceImpl.isUsernameUnique(turistaDTO.getUsername())) {
