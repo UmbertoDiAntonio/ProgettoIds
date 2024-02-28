@@ -175,7 +175,6 @@ public class CuratoreServiceImpl implements CuratoreService {
                 if (controllaSeInComune(curatore, itinerario.getComune())) {
                     itinerarioServiceImpl.deleteById(itinerario.getId());
                 } else {
-                    logger.error("L'itinerario e' fuori dal comune del curatore");
                     throw new FuoriComuneException("L'itinerario e' fuori dal comune del curatore");
                 }
             } else {

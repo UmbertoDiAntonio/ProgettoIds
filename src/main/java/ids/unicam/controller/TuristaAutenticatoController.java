@@ -89,7 +89,7 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
 
             PuntoInteresse puntoInteresse = oPunto.get();
             turistaAutenticatoService.aggiungiPreferito(usernameTurista, puntoInteresse);
-            return ResponseEntity.ok("L'utente con id '" + usernameTurista + "' ha aggiunto ai suoi preferiti il punto di interesse con id '" + puntoInteresse + "' .");
+            return ResponseEntity.ok("L'utente con id '" + usernameTurista + "' ha aggiunto ai suoi preferiti il punto di interesse con id '" + puntoInteresse.getId() + "' .");
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         }

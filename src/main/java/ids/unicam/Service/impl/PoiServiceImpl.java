@@ -137,14 +137,12 @@ public class PoiServiceImpl implements PoiService {
     public void aggiungiMateriale(String usernameTurista, Integer idPuntoInteresse, MaterialeGenerico materialeGenerico) throws FuoriComuneException {
         Optional<TuristaAutenticato> oTurista = turistaAutenticatoService.getById(usernameTurista);
         if (oTurista.isEmpty()) {
-            logger.error("username non valido");
             throw new FuoriComuneException("username non valido");
         }
         TuristaAutenticato turistaAutenticato = oTurista.get();
 
         Optional<PuntoInteresse> oPunto = getById(idPuntoInteresse);
         if (oPunto.isEmpty()) {
-            logger.error("id punto interesse non valido");
             throw new FuoriComuneException("id punto interesse non valido");
         }
         PuntoInteresse puntoInteresse = oPunto.get();

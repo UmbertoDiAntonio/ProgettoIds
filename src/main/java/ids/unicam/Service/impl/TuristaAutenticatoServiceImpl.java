@@ -62,9 +62,10 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService 
             TuristaAutenticato turistaAutenticato = oTurista.get();
             turistaAutenticato.getPreferiti().removeIf(puntoInteresse -> puntoInteresse.getId() == id);
             save(turistaAutenticato);
+        }else {
+            logger.error("username del turista non valido");
+            throw new IllegalArgumentException("username del turista non valido");
         }
-        logger.error("username del turista non valido");
-        throw new IllegalArgumentException("username del turista non valido");
     }
 
     @Transactional

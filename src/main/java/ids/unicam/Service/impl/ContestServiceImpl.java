@@ -71,13 +71,11 @@ public class ContestServiceImpl implements ContestService {
 //TODO eventualmente aggiungere osservatore se contest aperto
         Optional<Contest> oContest = findById(idContest);
         if (oContest.isEmpty()) {
-            logger.error("id contest non valido");
             throw new FuoriComuneException("id contest non valido");
         }
 
         Contest contest = oContest.get();
         if (contest.isExpired()) {
-            logger.error("Il Contest e' Terminato");
             throw new ContestException("il Contest e' Terminato");
         }
         if (!contest.isOpen())
@@ -86,7 +84,6 @@ public class ContestServiceImpl implements ContestService {
                     turistaAutenticato = turistaAutenticato1;
             }
         if (turistaAutenticato == null && !contest.isOpen()) {
-            logger.error("Devi essere iscritto al contest per caricare materiale su di esso");
             throw new ContestException("Devi essere iscritto al contest per caricare materiale su di esso");
         }
         materialeService.aggiungiMateriale(contest, materialeGenerico);
