@@ -12,12 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 import static ids.unicam.Main.logger;
+
 
 @Service
 public class MaterialeServiceImpl implements MaterialeService {
@@ -82,16 +80,9 @@ public class MaterialeServiceImpl implements MaterialeService {
         List<String> file = new ArrayList<>();
         File folder = new File("src/main/resources/materials");
         for(File fileMateriale : Objects.requireNonNull(folder.listFiles())) {
-
-            file.add("."+fileMateriale.getPath().replace("\\","/"));
-            System.out.println("M "+file.getLast());
+            file.add("./"+fileMateriale.getPath().replace("\\","/"));
         }
-
-        System.out.println(List.of("./src/main/resources/materials/logoUnicam.jpg").contains(file.getLast()));
-        List<MaterialeGenerico> temp = repository.findAllByFileIn(file);
-        System.out.println(temp.size());
-        return temp;
-
+        return repository.findAllByFileIn(file);
     }
 
 

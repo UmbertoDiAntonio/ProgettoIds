@@ -43,7 +43,7 @@ PUNTO DI INTERESSE CONTROLLER
 - GET                       --> funziona
 - DELETE
 - GET(materiali(idPunto)) --> migliorare il ritorno
-- GETALL                    --> funziona
+- GETALL                    --> funziona errore
 
 ITINERARIO CONTROLLER
 - PUT(rimuoviTappa)         --> funziona

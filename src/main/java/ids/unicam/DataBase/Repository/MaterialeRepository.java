@@ -19,4 +19,6 @@ public interface MaterialeRepository extends JpaRepository<MaterialeGenerico, In
     List<MaterialeGenerico> findAllByFileIn(List<String> file);
 
 
+    @Query("select m.file from MaterialeGenerico m")
+    List<String> getPaths();
 }
