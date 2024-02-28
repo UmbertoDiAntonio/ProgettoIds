@@ -4,7 +4,7 @@ MATERIALE CONTROLLER:
 - POST          --> FUNZIONA
 - GET           --> FUNZIONA
 - DELETE        --> FUNZIONA
-- GETALL        --> ERRORE da VUOTO
+- GETALL        --> FUNZIONA
 
 
 CONTEST CONTROLLER

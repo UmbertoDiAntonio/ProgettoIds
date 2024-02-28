@@ -53,17 +53,18 @@ public class InvitoServiceImpl implements InvitoService {
 
     @Transactional
     @Override
-    public void accettaInvito(TuristaAutenticatoDTO turistaDTO, InvitoDTO invitoDTO) {
+    public void accettaInvito(TuristaAutenticatoDTO turistaDTO, InvitoDTO invitoDTO) throws IllegalArgumentException{
         if (isValid(invitoDTO)) {
             if (invitoDTO.getInvitato().getUsername().equals(turistaDTO.getUsername())) {
                 contestServiceImpl.aggiungiPartecipante(invitoDTO.getContest(), new TuristaAutenticato(turistaDTO));
             } else {
                 logger.error("Non sei Invitato");
-                //TODO
+                throw new IllegalArgumentException("Non sei Invitato");
             }
-        } else
+        } else {
             logger.warn("Invito non valido");
-        //TODO
+            throw new IllegalArgumentException("Invito non valido");
+        }
     }
 
 

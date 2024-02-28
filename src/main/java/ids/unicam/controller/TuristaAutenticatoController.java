@@ -72,8 +72,12 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
             return ResponseEntity.ok("id invito non valido");
         }
         Invito invito = oInvito.get();
-        turistaAutenticatoService.accettaInvitoContest(new TuristaAutenticatoDTO(turista), new InvitoDTO(invito.getContest(), invito.getInvitato()));
-        return ResponseEntity.ok("Il turista con id '"+usernameTurista+"' ha accettato l'invito con id '"+idInvito+"' .");
+        try {
+            turistaAutenticatoService.accettaInvitoContest(new TuristaAutenticatoDTO(turista), new InvitoDTO(invito.getContest(), invito.getInvitato()));
+            return ResponseEntity.ok("Il turista con id '" + usernameTurista + "' ha accettato l'invito con id '" + idInvito + "' .");
+        }catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+        }
     }
 
     @PutMapping("/aggiungiPuntoPreferito")
@@ -85,7 +89,7 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
 
             PuntoInteresse puntoInteresse = oPunto.get();
             turistaAutenticatoService.aggiungiPreferito(usernameTurista, puntoInteresse);
-            return ResponseEntity.ok("L'utente con id '"+usernameTurista+"' ha aggiunto ai suoi preferiti il punto di interesse con id '"+puntoInteresse+"' .");
+            return ResponseEntity.ok("L'utente con id '" + usernameTurista + "' ha aggiunto ai suoi preferiti il punto di interesse con id '" + puntoInteresse + "' .");
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         }
@@ -104,7 +108,7 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
     public ResponseEntity<?> rimuoviPreferito(@RequestParam String usernameTurista, @RequestParam Integer idPunto) {
         try {
             turistaAutenticatoService.rimuoviPreferito(usernameTurista, idPunto);
-            return ResponseEntity.ok("L'utente con id '"+usernameTurista+"' ha eliminato dai suoi preferiti il punto di interesse con id '"+idPunto+"' .");
+            return ResponseEntity.ok("L'utente con id '" + usernameTurista + "' ha eliminato dai suoi preferiti il punto di interesse con id '" + idPunto + "' .");
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         }
@@ -114,7 +118,7 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
     public ResponseEntity<?> partecipaAlContest(@RequestParam Integer idContest, @RequestParam String usernameTurista) {
         try {
             turistaAutenticatoService.partecipaAlContest(idContest, usernameTurista);
-            return ResponseEntity.ok("L'utente con id '"+usernameTurista+"' ha iniziato a partecipare al contest con id '"+idContest+"' .");
+            return ResponseEntity.ok("L'utente con id '" + usernameTurista + "' ha iniziato a partecipare al contest con id '" + idContest + "' .");
         } catch (IllegalArgumentException | UnsupportedOperationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         }
