@@ -64,19 +64,19 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
     public ResponseEntity<?> accettaInvito(@RequestParam String usernameTurista, @RequestParam Integer idInvito) {
         Optional<TuristaAutenticato> oTurista = turistaAutenticatoService.getById(usernameTurista);
         if (oTurista.isEmpty()) {
-            return ResponseEntity.ok("username turista non valido");
+            return new ResponseEntity<>("username turista non valido", HttpStatus.BAD_REQUEST);
         }
         TuristaAutenticato turista = oTurista.get();
         Optional<Invito> oInvito = invitoService.findById(idInvito);
         if (oInvito.isEmpty()) {
-            return ResponseEntity.ok("id invito non valido");
+            return new ResponseEntity<>("id invito non valido", HttpStatus.BAD_REQUEST);
         }
         Invito invito = oInvito.get();
         try {
             turistaAutenticatoService.accettaInvitoContest(new TuristaAutenticatoDTO(turista), new InvitoDTO(invito.getContest(), invito.getInvitato()));
             return ResponseEntity.ok("Il turista con id '" + usernameTurista + "' ha accettato l'invito con id '" + idInvito + "' .");
         }catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
