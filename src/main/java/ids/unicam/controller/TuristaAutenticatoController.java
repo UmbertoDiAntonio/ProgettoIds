@@ -42,12 +42,19 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
 
     @Override
     @GetMapping("/{username}")
-    public ResponseEntity<?> getById(@PathVariable String username) {
+    @Operation(summary = "Ottieni Turista",
+            description = "Ottieni un Turista dal suo Username.")
+    public ResponseEntity<?> getById(
+            @Parameter(description = "username del turista") @PathVariable String username) {
         return ResponseEntity.ok(turistaAutenticatoService.getById(username));
     }
 
     @Override
-    public ResponseEntity<?> create(TuristaAutenticatoDTO turistaDTO) {
+    @PostMapping("/crea")
+    @Operation(summary = "Crea un utente Turista",
+            description = "Crea un utente con il ruolo di turista.")
+    public ResponseEntity<?> create(
+            @RequestParam TuristaAutenticatoDTO turistaDTO) {
         try {
             return ResponseEntity.ok(gestorePiattaformaService.registraTurista(turistaDTO));
         } catch (IllegalArgumentException e) {
@@ -56,14 +63,22 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
     }
 
     @Override
-    public ResponseEntity<?> delete(String username) {
+    @DeleteMapping("/{username}")
+    @Operation(summary = "Elimina un Turista",
+            description = "Eliminazione di un Turista dall'username.")
+    public ResponseEntity<?> delete(
+            @Parameter(description = "username del turista") @PathVariable String username) {
         turistaAutenticatoService.deleteById(username);
         return ResponseEntity.ok("Utente: '" + username + "' eliminato");
     }
 
 
     @PutMapping("/accettaInvito")
-    public ResponseEntity<?> accettaInvito(@RequestParam String usernameTurista, @RequestParam Integer idInvito) {
+    @Operation(summary = "Accetta Invito a Contest",
+            description = "Accetta l'invito a partecipare a un contest da parte di un Animatore.")
+    public ResponseEntity<?> accettaInvito(
+            @Parameter(description = "username del turista") @RequestParam String usernameTurista,
+            @Parameter(description = "id dell'invito") @RequestParam Integer idInvito) {
         Optional<TuristaAutenticato> oTurista = turistaAutenticatoService.getById(usernameTurista);
         if (oTurista.isEmpty()) {
             return new ResponseEntity<>("username turista non valido", HttpStatus.BAD_REQUEST);
@@ -77,13 +92,17 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
         try {
             turistaAutenticatoService.accettaInvitoContest(new TuristaAutenticatoDTO(turista), new InvitoDTO(invito.getContest(), invito.getInvitato()));
             return ResponseEntity.ok("Il turista con id '" + usernameTurista + "' ha accettato l'invito con id '" + idInvito + "' .");
-        }catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("/aggiungiPuntoPreferito")
-    public ResponseEntity<?> aggiungiPreferito(@RequestParam String usernameTurista, @RequestParam Integer idPunto) {
+    @Operation(summary = "Aggiungi Preferito",
+            description = "Aggiungi un Punto di Interesse alla tua lista dei preferiti, se esiste.")
+    public ResponseEntity<?> aggiungiPreferito(
+            @Parameter(description = "username del turista")  @RequestParam String usernameTurista,
+            @Parameter(description = "id del Punto di Interesse") @RequestParam Integer idPunto) {
         try {
             Optional<PuntoInteresse> oPunto = poiService.getById(idPunto);
             if (oPunto.isEmpty())
@@ -98,7 +117,10 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
     }
 
     @GetMapping("/getPreferiti/{usernameTurista}")
-    public ResponseEntity<?> getPreferiti(@PathVariable String usernameTurista) {
+    @Operation(summary = "Ottieni Preferiti",
+            description = "Ottieni la lista di Punti di Interesse preferiti.")
+    public ResponseEntity<?> getPreferiti(
+            @Parameter(description = "username del turista") @PathVariable String usernameTurista) {
         try {
             return ResponseEntity.ok(poiService.getAsList(turistaAutenticatoService.findPreferiti(usernameTurista)));
         } catch (IllegalArgumentException e) {
@@ -107,7 +129,11 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
     }
 
     @DeleteMapping("/rimuoviPreferito")
-    public ResponseEntity<?> rimuoviPreferito(@RequestParam String usernameTurista, @RequestParam Integer idPunto) {
+    @Operation(summary = "Rimuovi Preferito",
+            description = "Rimuovi un Punto di Interesse dalla tua lista dei preferiti, se presente.")
+    public ResponseEntity<?> rimuoviPreferito(
+            @Parameter(description = "username del turista") @RequestParam String usernameTurista,
+            @Parameter(description = "id del Punto di Interesse") @RequestParam Integer idPunto) {
         try {
             turistaAutenticatoService.rimuoviPreferito(usernameTurista, idPunto);
             return ResponseEntity.ok("L'utente con id '" + usernameTurista + "' ha eliminato dai suoi preferiti il punto di interesse con id '" + idPunto + "' .");
@@ -117,7 +143,11 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
     }
 
     @PutMapping("/partecipaContest")
-    public ResponseEntity<?> partecipaAlContest(@RequestParam Integer idContest, @RequestParam String usernameTurista) {
+    @Operation(summary = "Partecipa a un Contest",
+            description = "Partecipa a un Contest se Aperto.")
+    public ResponseEntity<?> partecipaAlContest(
+            @Parameter(description = "id del Contest") @RequestParam Integer idContest,
+            @Parameter(description = "Username del Turista") @RequestParam String usernameTurista) {
         try {
             turistaAutenticatoService.partecipaAlContest(idContest, usernameTurista);
             return ResponseEntity.ok("L'utente con id '" + usernameTurista + "' ha iniziato a partecipare al contest con id '" + idContest + "' .");
@@ -125,11 +155,12 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         }
     }
+
     @PutMapping("/cancellaIscrizioneContest")
     @Operation(summary = "Annulla iscrizione a un Contest",
             description = "Annulla iscrizione a un Contest.")
     public ResponseEntity<?> cencellaIscrizioneContest(
-            @Parameter(description = "id del Contest")  @RequestParam Integer idContest,
+            @Parameter(description = "id del Contest") @RequestParam Integer idContest,
             @Parameter(description = "Username del Turista") @RequestParam String usernameTurista) {
         try {
             turistaAutenticatoService.cancellaPartecipazioneContest(idContest, usernameTurista);
@@ -152,9 +183,12 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
     }
 
     @GetMapping("/notifiche/{usernameTurista}")
-    public ResponseEntity<?> getNotifiche(@PathVariable String usernameTurista) {
+    @Operation(summary = "Ottieni tutte le Notifiche",
+            description = "Ottieni tutte le tue Notifiche .")
+    public ResponseEntity<?> getNotifiche(
+            @Parameter(description = "Username del turista") @PathVariable String username) {
         try {
-            return ResponseEntity.ok(turistaAutenticatoService.visualizzaNotifiche(usernameTurista));
+            return ResponseEntity.ok(turistaAutenticatoService.visualizzaNotifiche(username));
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         }
