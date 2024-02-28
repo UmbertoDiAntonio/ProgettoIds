@@ -72,7 +72,6 @@ public class ItinerarioServiceImpl implements ItinerarioService {
                             throw new IllegalArgumentException("il punto di interesse e' fuori dal comune");
                         }
                     } else {
-                        logger.error("il contributor non fa parte del comune dell'itinerario");
                         throw new FuoriComuneException("il contributor non fa parte del comune dell'itinerario");
                     }
                 } else {

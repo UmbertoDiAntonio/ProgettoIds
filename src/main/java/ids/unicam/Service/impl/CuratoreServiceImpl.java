@@ -151,7 +151,6 @@ public class CuratoreServiceImpl implements CuratoreService {
                 if (controllaSeInComune(curatore, puntoInteresse.getComune())) {
                     poiServiceImpl.eliminaPuntoInteresse(idPuntoInteresse);
                 } else {
-                    logger.error("Il punto di interesse e' fuori dal comune del curatore");
                     throw new FuoriComuneException("Il punto di interesse e' fuori dal comune del curatore");
                 }
             } else {
@@ -198,7 +197,6 @@ public class CuratoreServiceImpl implements CuratoreService {
                 if (controllaSeInComune(curatore, contest.getComune())) {
                     contestServiceImpl.deleteById(contest.getId());
                 } else {
-                    logger.error("Il contest e' fuori dal comune del curatore");
                     throw new FuoriComuneException("Il contest e' fuori dal comune del curatore");
                 }
             } else {
@@ -217,7 +215,6 @@ public class CuratoreServiceImpl implements CuratoreService {
         List<PuntoInteresse> listPuntoInteresse = poiServiceImpl.findActive();
         for (PuntoInteresse puntoInteresse : listPuntoInteresse) {
             if (!puntoInteresse.getComune().equals(curatore.getComune())) {
-                logger.error(curatore.getUsername() + " non può eliminare materiali fuori dal suo comune ");
                 throw new FuoriComuneException(curatore.getUsername() + " non può eliminare materiali fuori dal suo comune ");
             }
             puntoInteresse.rimuoviMateriale(materialeGenerico);

@@ -82,7 +82,6 @@ public class PoiServiceImpl implements PoiService {
     @Override
     public PuntoInteresse creaPuntoInteresse(PuntoInteresse puntoInteresse) throws FuoriComuneException {
         if (!puntoInteresse.getCreatore().getComune().verificaCoordinateComune(puntoInteresse.getPt())) {
-            logger.error("Non si possono creare punti di interesse fuori dal comune");
             throw new FuoriComuneException("Posizione Punto di Interesse Fuori dall'area del comune");
         }
         return save(puntoInteresse);
@@ -98,12 +97,10 @@ public class PoiServiceImpl implements PoiService {
             PuntoInteresse puntoInteresse = new PuntoInteresse(puntoInteresseDTO);
             puntoInteresse.addTag(tag);
             if (!puntoInteresse.getCreatore().getComune().verificaCoordinateComune(puntoInteresse.getPt())) {
-                logger.error("Non si possono creare punti di interesse fuori dal comune");
                 throw new FuoriComuneException("Posizione Punto di Interesse Fuori dall'area del comune");
             }
             return save(puntoInteresse);
         } else {
-            logger.error("l'username del creatore del punto di interesse non e' presente nel comune");
             throw new FuoriComuneException("l'username del creatore del punto di interesse non e' presente nel comune");
         }
     }
