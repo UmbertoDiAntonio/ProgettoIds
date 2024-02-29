@@ -19,6 +19,9 @@ public class GestoreDatabase {
         this.creazioneTabelleDatabase = creazioneTabelleDatabase;
     }
 
+    /**
+     * Elimina le tabella del Database se esistono
+     */
     public void eliminaTabelleDB() {
         try (Connection connection = getConnessioneDatabase().connessioneAlDatabase()) {
             if (connection == null) {
@@ -32,6 +35,9 @@ public class GestoreDatabase {
     }
 
 
+    /**
+     * Stabilisce una connessione con il Database e ne genera le tabelle se non esistono
+     */
     public void inizializzaDatabase() {
         try (Connection connection = getConnessioneDatabase().connessioneAlDatabase()) {
             if (connection == null) {

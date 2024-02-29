@@ -3,7 +3,7 @@ package ids.unicam.controller;
 import ids.unicam.Service.ContributorService;
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.exception.ConnessioneFallitaException;
-import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
+import ids.unicam.models.DTO.ContributorDTO;
 import ids.unicam.models.attori.Ruolo;
 import ids.unicam.models.attori.TuristaAutenticato;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/Contributor")
-public class ContributorController implements ControllerBase<RichiestaCreazioneContributorDTO, String> {
+public class ContributorController implements ControllerBase<ContributorDTO, String> {
 
     private final ContributorService contributorService;
     private final GestorePiattaformaService gestorePiattaformaService;
@@ -41,14 +41,14 @@ public class ContributorController implements ControllerBase<RichiestaCreazioneC
             description = "Contributor dall'identificatore univoco 'username' salvato nel database.")
     public ResponseEntity<?> getById(
             @Parameter(description = "username del contributor") @PathVariable String username) {
-        return ResponseEntity.ok(contributorService.getById(username));
+        return ResponseEntity.ok(contributorService.getByUsername(username));
     }
 
     @Override
     @PostMapping("/crea")
     @Operation(summary = "Creazione di un nuovo utente contributor",
             description = "Crea un nuovo utente con ruolo di contributor.")
-    public ResponseEntity<?> create(@RequestBody RichiestaCreazioneContributorDTO contributorDTO) {
+    public ResponseEntity<?> create(@RequestBody ContributorDTO contributorDTO) {
         try {
             TuristaAutenticato contributor = gestorePiattaformaService.registraContributor(contributorDTO, Ruolo.CONTRIBUTOR);
             return new ResponseEntity<>(contributor, HttpStatus.OK);
@@ -63,7 +63,7 @@ public class ContributorController implements ControllerBase<RichiestaCreazioneC
             description = "Elimina di un utente contributor dall'username.")
     public ResponseEntity<?> delete(
             @Parameter(description = "username del contributor") @PathVariable String username) {
-        contributorService.deleteById(username);
+        contributorService.deleteByUsername(username);
         return ResponseEntity.ok("Utente: '" + username + "' eliminato");
     }
 

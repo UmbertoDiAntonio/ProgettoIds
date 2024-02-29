@@ -2,6 +2,7 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.TuristaAutenticatoRepository;
 import ids.unicam.Service.TuristaAutenticatoService;
+import ids.unicam.exception.ContestException;
 import ids.unicam.models.Invito;
 import ids.unicam.models.Observer;
 import ids.unicam.models.attori.TuristaAutenticato;
@@ -34,22 +35,20 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
     }
 
     @Override
-    public void deleteById(String id) {
+    public void deleteByUsername(String id) {
         repository.deleteById(id);
     }
 
-    public void deleteAll() {
-        repository.deleteAll();
-    }
 
-    public TuristaAutenticato save(TuristaAutenticato turistaAutenticato) {
+
+    TuristaAutenticato save(TuristaAutenticato turistaAutenticato) {
         turistaAutenticato = repository.save(turistaAutenticato);
         return turistaAutenticato;
     }
 
     @Transactional
     @Override
-    public void accettaInvitoContest(TuristaAutenticato turistaAutenticato, Invito invito) throws IllegalArgumentException {
+    public void accettaInvitoContest(TuristaAutenticato turistaAutenticato, Invito invito) throws IllegalArgumentException, ContestException {
         invitoServiceImpl.accettaInvito(turistaAutenticato, invito);
     }
 
@@ -102,7 +101,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
 
     @Transactional
     @Override
-    public void partecipaAlContest(Integer idContest, String usernameTurista) throws UnsupportedOperationException, IllegalArgumentException {
+    public void partecipaAlContest(int idContest, String usernameTurista) throws UnsupportedOperationException, IllegalArgumentException, ContestException {
         Optional<Contest> oContest = contestServiceImpl.findById(idContest);
         if (oContest.isPresent()) {
             Contest contest = oContest.get();
@@ -126,7 +125,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
 
     @Transactional
     @Override
-    public void cancellaPartecipazioneContest(Integer idContest, String usernameTurista) throws IllegalArgumentException {
+    public void cancellaPartecipazioneContest(int idContest, String usernameTurista) throws IllegalArgumentException {
         Optional<Contest> oContest = contestServiceImpl.findById(idContest);
         if (oContest.isPresent()) {
             Contest contest = oContest.get();
@@ -164,7 +163,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
     }
 
     @Override
-    public Optional<TuristaAutenticato> getById(String username) {
+    public Optional<TuristaAutenticato> getByUsername(String username) {
         return repository.findById(username);
     }
 

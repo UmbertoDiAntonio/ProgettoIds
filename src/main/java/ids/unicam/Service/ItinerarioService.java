@@ -8,11 +8,11 @@ import java.util.Optional;
 
 public interface ItinerarioService {
 
-    boolean aggiungiTappa(String usernameContributor, Integer idItinerario, Integer idPuntoInteresse) throws IllegalArgumentException, FuoriComuneException;
+    boolean aggiungiTappa(String usernameContributor, int idItinerario, int idPuntoInteresse) throws IllegalArgumentException, FuoriComuneException;
 
-    void aggiungiTappa(String usernameContributor, Integer idItinerario, Integer... idPuntiInteresse) throws IllegalArgumentException, FuoriComuneException;
+    void aggiungiTappa(String usernameContributor, int idItinerario, int... idPuntiInteresse) throws IllegalArgumentException, FuoriComuneException;
 
-    void rimuoviTappa(String usernameContributor, Integer idItinerario, Integer idPuntoInteresse) throws IllegalArgumentException;
+    void rimuoviTappa(String usernameContributor, int idItinerario, int idPuntoInteresse) throws IllegalArgumentException;
 
     Itinerario creaItinerario(String nomeCreatore, String nomeItinerario) throws IllegalArgumentException;
 

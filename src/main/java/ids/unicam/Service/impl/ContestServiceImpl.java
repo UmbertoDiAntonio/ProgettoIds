@@ -4,6 +4,7 @@ import ids.unicam.DataBase.Repository.ContestRepository;
 import ids.unicam.Service.ContestService;
 import ids.unicam.exception.ContestException;
 import ids.unicam.exception.FuoriComuneException;
+import ids.unicam.models.Comune;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
@@ -33,7 +34,7 @@ public class ContestServiceImpl implements ContestService {
         repository.deleteById(id);
     }
 
-    private Contest save(Contest contest) {
+    Contest save(Contest contest) {
         return repository.save(contest);
     }
 
@@ -45,13 +46,10 @@ public class ContestServiceImpl implements ContestService {
         return repository.findAll();
     }
 
-    public void deleteAll() {
-        repository.deleteAll();
-    }
 
     @Override
-    public Contest creaContest(Contest contest) {
-        return save(contest);
+    public Contest creaContest(String nomeContest,String obiettivo,Animatore creatore, boolean open) {
+        return save(new Contest(nomeContest, obiettivo, creatore, open));
     }
 
     @Override
@@ -61,7 +59,7 @@ public class ContestServiceImpl implements ContestService {
 
 
     @Override
-    public Contest aggiungiMateriale(String usernameTurista, Integer idContest, MaterialeGenerico materialeGenerico) throws ContestException, FuoriComuneException {
+    public void aggiungiMateriale(String usernameTurista, int idContest, MaterialeGenerico materialeGenerico) throws ContestException, FuoriComuneException {
         TuristaAutenticato turistaAutenticato = null;
         Optional<Contest> oContest = findById(idContest);
         if (oContest.isEmpty()) {
@@ -82,7 +80,7 @@ public class ContestServiceImpl implements ContestService {
         }
 
         materialeService.aggiungiMateriale(contest, materialeGenerico);
-        return save(contest);
+        save(contest);
     }
 
 
@@ -93,8 +91,12 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     @Transactional
-    public void aggiungiPartecipante(Contest contest, TuristaAutenticato turistaAutenticato) {
+    public void aggiungiPartecipante(Contest contest, TuristaAutenticato turistaAutenticato) throws ContestException {
+        if (contest.isExpired()) {
+            throw new ContestException("il Contest e' Terminato");
+        }
         contest.getPartecipanti().add(turistaAutenticato);
+        notificaService.creaNotificaIngressoContest(contest,turistaAutenticato);
         save(contest);
     }
 
@@ -106,35 +108,46 @@ public class ContestServiceImpl implements ContestService {
 
     @Transactional
     @Override
-    public void setVincitoreContest(Contest contest, MaterialeGenerico materialeGenerico) {
-        contest.setMaterialeVincitore(materialeGenerico);
-        if (contest.getPartecipanti().contains(materialeGenerico.getCreatore()))
-            notificaService.creaNotifica(contest.getCreatore(), contest, contest.getMaterialeVincitore());
-        save(contest);
-    }
-
-    @Transactional
-    @Override
-    public void terminaContest(Contest contest, Integer idMateriale) throws ContestException {
-        contest.setExpireDate(LocalDate.now());
-        Optional<MaterialeGenerico> oMateriale = materialeService.getById(idMateriale);
-        if (oMateriale.isEmpty()) {
-            throw new ContestException("id materiale non valido");
-        }
-        MaterialeGenerico materiale = oMateriale.get();
+    public void setVincitoreContest(Contest contest, MaterialeGenerico materiale) throws ContestException {
         if (!contest.getMateriali().contains(materiale)) {
             throw new ContestException("il materiale non risulta tra i materiali del contest");
         }
+
+
         if (contest.getPartecipanti().contains(materiale.getCreatore()))
             setVincitoreContest(contest, materiale);
         else {
-            throw new ContestException("Vincitore non valido, non puoi terminare il contest senza avere un vincitore valido");
+            throw new ContestException("Vincitore non valido, l'utente ha lasciato il Contest");
         }
+
+        if(!contest.isExpired()){
+            throw  new ContestException("Il Contest deve essere terminato per decretare un vincitore");
+        }
+        contest.setMaterialeVincitore(materiale);
+        if (contest.getPartecipanti().contains(materiale.getCreatore()))
+            notificaService.creaNotificaVittoriaContest(contest.getCreatore(), contest, contest.getMaterialeVincitore());
+        save(contest);
+    }
+
+    public void setFineContest(Contest contest,LocalDate dataFine){
+        contest.setExpireDate(dataFine);
+        save(contest);
+    }
+
+
+    /**
+     * Termina un Contest, successivamente l'animatore dovrà decretare il vincitore
+     * @param contest il contest da terminare
+     * @throws ContestException
+     */
+    @Transactional
+    @Override
+    public void terminaContest(Contest contest) {
+        contest.setExpireDate(LocalDate.now());
+
         for (TuristaAutenticato turistaAutenticato : contest.getPartecipanti())
-            notificaService.creaNotifica(contest, turistaAutenticato);
+            notificaService.creaNotificaTermineContest(contest, turistaAutenticato);
 
-
-        contest.getPartecipanti().clear();
         save(contest);
     }
 
@@ -146,6 +159,17 @@ public class ContestServiceImpl implements ContestService {
 
     public Optional<Contest> getContestContainingMaterial(MaterialeGenerico materialeGenerico) {
         return repository.findContestByMaterialiContaining(materialeGenerico);
+    }
+
+    @Transactional
+    public void checkIfIsExpired(Contest contest) {
+        if(contest.isExpired()){
+            terminaContest(contest);
+        }
+    }
+
+    public List<Contest> getContestByComune(Comune comune) {
+        return repository.findContestByComune(comune);
     }
 }
 

@@ -13,7 +13,6 @@ import ids.unicam.models.attori.*;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.Stato;
-import ids.unicam.models.contenuti.materiali.Foto;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.materiali.TipologiaMateriale;
 import ids.unicam.models.contenuti.puntiInteresse.DayOfWeek;
@@ -89,7 +88,7 @@ public class JUnitContenutiTests {
         }
         TuristaAutenticato turistaTemp;
         try {
-            turistaTemp = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(new ComuneDTO(comune.getNome()), new TuristaAutenticatoDTO("Mario", "Rossi", LocalDate.of(2000, 3, 17), "1Unica@", "user1")), Ruolo.CONTRIBUTOR);
+            turistaTemp = gestorePiattaformaService.registraContributor(new ContributorDTO(new ComuneDTO(comune.getNome()), new TuristaAutenticatoDTO("Mario", "Rossi", LocalDate.of(2000, 3, 17), "1Unica@", "user1")), Ruolo.CONTRIBUTOR);
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
@@ -140,7 +139,7 @@ public class JUnitContenutiTests {
             }
             TuristaAutenticato turistaTemp2;
             try {
-                turistaTemp2 = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(new ComuneDTO(comune2.getNome()), new TuristaAutenticatoDTO("Mario", "Rossi", LocalDate.of(2000, Calendar.MARCH, 17), "1Unica@", "user19")), Ruolo.CONTRIBUTOR_AUTORIZZATO);
+                turistaTemp2 = gestorePiattaformaService.registraContributor(new ContributorDTO(new ComuneDTO(comune2.getNome()), new TuristaAutenticatoDTO("Mario", "Rossi", LocalDate.of(2000, Calendar.MARCH, 17), "1Unica@", "user19")), Ruolo.CONTRIBUTOR_AUTORIZZATO);
             } catch (ConnessioneFallitaException e) {
                 throw new RuntimeException(e);
             }
@@ -177,7 +176,7 @@ public class JUnitContenutiTests {
          */
         {
             TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO("andrea", "neri", LocalDate.of(2000, Calendar.FEBRUARY, 3), "3Unica@", "user3"));
-            TuristaAutenticato turistaTemp1 = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(new ComuneDTO(comune.getNome()), new TuristaAutenticatoDTO("Peppe", "Peppe", LocalDate.of(2000, Calendar.MARCH, 11), "4Unica@", "user4")), Ruolo.CURATORE);
+            TuristaAutenticato turistaTemp1 = gestorePiattaformaService.registraContributor(new ContributorDTO(new ComuneDTO(comune.getNome()), new TuristaAutenticatoDTO("Peppe", "Peppe", LocalDate.of(2000, Calendar.MARCH, 11), "4Unica@", "user4")), Ruolo.CURATORE);
             if (!(turistaTemp1 instanceof Curatore curatore))
                 throw new IllegalArgumentException("errore");
 
@@ -185,7 +184,7 @@ public class JUnitContenutiTests {
             orarioAccademia.setOrarioApertura(DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(18, 0));
             PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("Accademia", new Punto(comune.getPosizione().getLatitudine() + 0.0, comune.getPosizione().getLongitudine() + 0.0), orarioAccademia, TipologiaPuntoInteresse.CENTRO_SPORTIVO, contributor)));
             assertNull(poiService.getStato(puntoInteresse.getId()).asBoolean());
-            TuristaAutenticato turistaTemp2 = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(new ComuneDTO(comune.getNome()), new TuristaAutenticatoDTO("Peppe", "Paol", LocalDate.of(2000, Calendar.MARCH, 11), "4Unica@", "user44")), Ruolo.CONTRIBUTOR);
+            TuristaAutenticato turistaTemp2 = gestorePiattaformaService.registraContributor(new ContributorDTO(new ComuneDTO(comune.getNome()), new TuristaAutenticatoDTO("Peppe", "Paol", LocalDate.of(2000, Calendar.MARCH, 11), "4Unica@", "user44")), Ruolo.CONTRIBUTOR);
 
             try {
                 curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse.getId(), true);
@@ -224,7 +223,7 @@ public class JUnitContenutiTests {
 
         {
             int numeroItinerariIniziale = itinerarioService.findAllByComune(comune).size();
-            TuristaAutenticato turistaTemp = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(new ComuneDTO(comune.getNome()), new TuristaAutenticatoDTO("Mario", "Rossi", LocalDate.of(2000, Calendar.MARCH, 11), "5Unica@", "user5")), Ruolo.CONTRIBUTOR_AUTORIZZATO);
+            TuristaAutenticato turistaTemp = gestorePiattaformaService.registraContributor(new ContributorDTO(new ComuneDTO(comune.getNome()), new TuristaAutenticatoDTO("Mario", "Rossi", LocalDate.of(2000, Calendar.MARCH, 11), "5Unica@", "user5")), Ruolo.CONTRIBUTOR_AUTORIZZATO);
             if (!(turistaTemp instanceof ContributorAutorizzato contributorAutorizzato))
                 throw new IllegalArgumentException("errore");
 
@@ -261,7 +260,7 @@ public class JUnitContenutiTests {
 
     @Test
     @Order(3)
-    public void testContest() throws ConnessioneFallitaException {
+    public void testContest() throws ConnessioneFallitaException, ContestException {
         Comune comune;
         try {
             comune = comuneService.creaComune(new Comune(new ComuneDTO("Milano")));
@@ -269,7 +268,7 @@ public class JUnitContenutiTests {
             throw new RuntimeException(e);
         }
 
-        TuristaAutenticato turistaTemp = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(new ComuneDTO(comune.getNome()), new TuristaAutenticatoDTO("mario", "rossi", LocalDate.of(2000, Calendar.APRIL, 7), "6Unica@", "user6")), Ruolo.ANIMATORE);
+        TuristaAutenticato turistaTemp = gestorePiattaformaService.registraContributor(new ContributorDTO(new ComuneDTO(comune.getNome()), new TuristaAutenticatoDTO("mario", "rossi", LocalDate.of(2000, Calendar.APRIL, 7), "6Unica@", "user6")), Ruolo.ANIMATORE);
         if (!(turistaTemp instanceof Animatore animatore))
             throw new IllegalArgumentException("errore");
         int numeroContestCreatiDaAnimatore = contestService.getContestByCreatore(animatore).size();
@@ -279,7 +278,7 @@ public class JUnitContenutiTests {
          */
         {
 
-            Contest contest = contestService.creaContest(new Contest("Monumento", "Foto più bella", animatore, true));
+            Contest contest = contestService.creaContest("Monumento", "Foto più bella", animatore, true);
 
             assertEquals(numeroContestCreatiDaAnimatore + 1, contestService.getContestByCreatore(animatore).size());
 
@@ -305,7 +304,7 @@ public class JUnitContenutiTests {
          * Accettazione invito da parte del turista
          */
         {
-            Contest contest = contestService.creaContest(new Contest("Monumento", "Foto più bella", animatore, false));
+            Contest contest = contestService.creaContest("Monumento", "Foto più bella", animatore, false);
             assertEquals(numeroContestCreatiDaAnimatore + 2, contestService.getContestByCreatore(animatore).size());
 
             TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO("andrea", "neri", LocalDate.of(2000, Calendar.NOVEMBER, 5), "8Unica@", "user8"));
@@ -332,14 +331,14 @@ public class JUnitContenutiTests {
      */
     @Test
     @Order(4)
-    public void approvaMaterialeByAnimatore() throws ConnessioneFallitaException {
+    public void approvaMaterialeByAnimatore() throws ConnessioneFallitaException, ContestException {
         Comune comune;
         try {
             comune = comuneService.creaComune(new Comune(new ComuneDTO("Milano")));
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
-        TuristaAutenticato turistaTemp = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(new ComuneDTO(comune.getNome()), new TuristaAutenticatoDTO("mario", "rossi", LocalDate.of(2000, Calendar.OCTOBER, 1), "9Unica@", "user9")), Ruolo.ANIMATORE);
+        TuristaAutenticato turistaTemp = gestorePiattaformaService.registraContributor(new ContributorDTO(new ComuneDTO(comune.getNome()), new TuristaAutenticatoDTO("mario", "rossi", LocalDate.of(2000, Calendar.OCTOBER, 1), "9Unica@", "user9")), Ruolo.ANIMATORE);
 
         TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO("andrea", "neri", LocalDate.of(2000, Calendar.DECEMBER, 3), "10Unica@", "user10"));
 
@@ -347,7 +346,7 @@ public class JUnitContenutiTests {
             throw new IllegalArgumentException("errore");
 
 
-        Contest contest = contestService.creaContest(new Contest("Monumento", "Foto più bella", animatore, true));
+        Contest contest = contestService.creaContest("Monumento", "Foto più bella", animatore, true);
 
         MaterialeGenerico descrizione = materialeService.crea("/testFoto", TipologiaMateriale.FOTO, turistaAutenticato);
         try {
@@ -359,7 +358,7 @@ public class JUnitContenutiTests {
         turistaAutenticatoService.partecipaAlContest(contest.getId(), turistaAutenticato.getUsername());
         MaterialeGenerico materialeGenerico = materialeService.crea("/testFoto", TipologiaMateriale.FOTO, turistaAutenticato);
         try {
-            contest = contestService.aggiungiMateriale(turistaAutenticato.getUsername(), contest.getId(), descrizione);
+            contestService.aggiungiMateriale(turistaAutenticato.getUsername(), contest.getId(), descrizione);
         } catch (ContestException | FuoriComuneException e) {
             throw new RuntimeException(e);
         }
@@ -386,15 +385,15 @@ public class JUnitContenutiTests {
             throw new RuntimeException(e);
         }
         int numeroPuntiInteresse = comuneService.getPuntiInteresseNelComune(comune.getNome()).size();
-        TuristaAutenticato turistaTemp = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(new ComuneDTO(comune.getNome()), new TuristaAutenticatoDTO("mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 5), "11Unica@", "user11")), Ruolo.ANIMATORE);
+        TuristaAutenticato turistaTemp = gestorePiattaformaService.registraContributor(new ContributorDTO(new ComuneDTO(comune.getNome()), new TuristaAutenticatoDTO("mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 5), "11Unica@", "user11")), Ruolo.ANIMATORE);
         if (!(turistaTemp instanceof Contributor contributor))
             throw new IllegalArgumentException("errore");
 
-        TuristaAutenticato turistaTemp2 = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(new ComuneDTO(comune.getNome()), new TuristaAutenticatoDTO("Leonardo", "rosso", LocalDate.of(2000, Calendar.MARCH, 11), "12Unica@", "user12")), Ruolo.CURATORE);
+        TuristaAutenticato turistaTemp2 = gestorePiattaformaService.registraContributor(new ContributorDTO(new ComuneDTO(comune.getNome()), new TuristaAutenticatoDTO("Leonardo", "rosso", LocalDate.of(2000, Calendar.MARCH, 11), "12Unica@", "user12")), Ruolo.CURATORE);
         if (!(turistaTemp2 instanceof Curatore curatore))
             throw new IllegalArgumentException("errore");
 
-        TuristaAutenticato turistaTemp3 = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(new ComuneDTO(comune.getNome()), new TuristaAutenticatoDTO("Fede", "Verde", LocalDate.of(2000, Calendar.MARCH, 11), "13Unica@", "user13")), Ruolo.ANIMATORE);
+        TuristaAutenticato turistaTemp3 = gestorePiattaformaService.registraContributor(new ContributorDTO(new ComuneDTO(comune.getNome()), new TuristaAutenticatoDTO("Fede", "Verde", LocalDate.of(2000, Calendar.MARCH, 11), "13Unica@", "user13")), Ruolo.ANIMATORE);
         if (!(turistaTemp3 instanceof Animatore animatore))
             throw new IllegalArgumentException("errore");
 
@@ -433,7 +432,7 @@ public class JUnitContenutiTests {
 
 
         int numeroContest = contestService.getContestByCreatore(animatore).size();
-        Contest contest = contestService.creaContest(new Contest("contest", "spiaggia", animatore, true));
+        Contest contest = contestService.creaContest("contest", "spiaggia", animatore, true);
         assertEquals(numeroContest + 1, contestService.getContestByCreatore(animatore).size());
         curatoreServiceImpl.eliminaContest(curatore.getUsername(), contest.getId());
         assertEquals(numeroContest, contestService.getContestByCreatore(animatore).size());
@@ -475,7 +474,7 @@ public class JUnitContenutiTests {
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
-        TuristaAutenticato turistaTemp = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(new ComuneDTO(comune.getNome()), new TuristaAutenticatoDTO("mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 11), "15Unica@", "user15")), Ruolo.CONTRIBUTOR);
+        TuristaAutenticato turistaTemp = gestorePiattaformaService.registraContributor(new ContributorDTO(new ComuneDTO(comune.getNome()), new TuristaAutenticatoDTO("mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 11), "15Unica@", "user15")), Ruolo.CONTRIBUTOR);
         if (!(turistaTemp instanceof Contributor contributor))
             throw new IllegalArgumentException("errore");
 

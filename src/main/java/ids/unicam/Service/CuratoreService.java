@@ -11,23 +11,23 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CuratoreService {
-    PuntoInteresse valutaPuntoInteresse(String usernameCuratore, @NotNull Integer idPuntoInteresse, Boolean stato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException;
+    PuntoInteresse valutaPuntoInteresse(String usernameCuratore, @NotNull int idPuntoInteresse, Boolean stato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException;
 
-    MaterialeGenerico valutaMateriale(String usernameCuratore, Integer idMaterialeGenerico, Boolean stato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException;
+    MaterialeGenerico valutaMateriale(String usernameCuratore, int idMaterialeGenerico, Boolean stato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException;
 
-    void eliminaPuntoInteresse(String usernameCuratore, Integer idPuntoInteresse) throws IllegalArgumentException, FuoriComuneException;
+    void eliminaPuntoInteresse(String usernameCuratore, int idPuntoInteresse) throws IllegalArgumentException, FuoriComuneException;
 
-    void eliminaItinerario(String usernameCuratore, Integer idItinerario) throws IllegalArgumentException, FuoriComuneException;
+    void eliminaItinerario(String usernameCuratore, int idItinerario) throws IllegalArgumentException, FuoriComuneException;
 
-    void eliminaContest(String usernameCuratore, Integer idContest) throws IllegalArgumentException, FuoriComuneException;
+    void eliminaContest(String usernameCuratore, int idContest) throws IllegalArgumentException, FuoriComuneException;
 
     void eliminaMateriale(String usernameCuratore, int idMateriale) throws IllegalArgumentException, FuoriComuneException;
 
     List<Curatore> getAll();
 
-    void deleteById(String username);
+    void deleteByUsername(String username);
 
-    Optional<Curatore> getById(String username);
+    Optional<Curatore> getByUsername(String username);
 
     List<Notifica> getNotifiche(String usernameCuratore) throws IllegalArgumentException;
 

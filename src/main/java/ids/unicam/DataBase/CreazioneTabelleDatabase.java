@@ -12,6 +12,10 @@ import static ids.unicam.Main.logger;
 @Component
 public class CreazioneTabelleDatabase {
 
+    /**
+     * Genera le tabelle nel Database se non esistono
+     * @param connection La connessione al Database
+     */
     public void inizializzaDatabase(@NotNull Connection connection) {
         creaTabellaTuristi(connection);
         creaTabellaContributor(connection);
@@ -38,6 +42,10 @@ public class CreazioneTabelleDatabase {
         creaTabellaNotifica(connection);
     }
 
+    /**
+     * Fa il Drop di tutte le tabelle del Database se esistono
+     * @param connection La Connessione al Database
+     */
     public void eliminaTabelle(@NotNull Connection connection) {
         String[] tableNames = {
                 "NOTIFICA", "CONTEST_MATERIALI", "PUNTI_DI_INTERESSE_MATERIALI",
@@ -62,7 +70,6 @@ public class CreazioneTabelleDatabase {
     }
 
     private void creaTabellaListaMaterialiPuntoInteresse(@NotNull Connection connection) {
-
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS PUNTI_DI_INTERESSE_MATERIALI(" +
                         "id INT AUTO_INCREMENT PRIMARY KEY," +

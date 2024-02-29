@@ -19,30 +19,31 @@ import java.util.Optional;
 @Service
 public class ComuneServiceImpl implements ComuneService {
     private final ComuneRepository repository;
-    private final AnimatoreServiceImpl animatoreServiceImpl;
-    private final ContributorServiceImpl contributorServiceImpl;
-    private final ContributorAutorizzatoServiceImpl contributorAutorizzatoServiceImpl;
-    private final CuratoreServiceImpl curatoreServiceImpl;
-    private final PoiServiceImpl poiServiceImpl;
+    private final AnimatoreServiceImpl animatoreService;
+    private final ContributorServiceImpl contributorService;
+    private final ContributorAutorizzatoServiceImpl contributorAutorizzatoService;
+    private final CuratoreServiceImpl curatoreService;
+    private final PoiServiceImpl poiService;
 
     @Autowired
-    public ComuneServiceImpl(ComuneRepository repository, AnimatoreServiceImpl animatoreServiceImpl,
-                             ContributorServiceImpl contributorServiceImpl,
-                             ContributorAutorizzatoServiceImpl contributorAutorizzatoServiceImpl,
-                             CuratoreServiceImpl curatoreServiceImpl, PoiServiceImpl poiServiceImpl) {
+    public ComuneServiceImpl(ComuneRepository repository, AnimatoreServiceImpl animatoreService,
+                             ContributorServiceImpl contributorService,
+                             ContributorAutorizzatoServiceImpl contributorAutorizzatoService,
+                             CuratoreServiceImpl curatoreService, PoiServiceImpl poiService) {
         this.repository = repository;
-        this.animatoreServiceImpl = animatoreServiceImpl;
-        this.contributorServiceImpl = contributorServiceImpl;
-        this.contributorAutorizzatoServiceImpl = contributorAutorizzatoServiceImpl;
-        this.curatoreServiceImpl = curatoreServiceImpl;
-        this.poiServiceImpl = poiServiceImpl;
+        this.animatoreService = animatoreService;
+        this.contributorService = contributorService;
+        this.contributorAutorizzatoService = contributorAutorizzatoService;
+        this.curatoreService = curatoreService;
+        this.poiService = poiService;
     }
 
 
     @Override
-    public void deleteById(String nomeComune) {
-        repository.deleteById(nomeComune);
-    }
+    public void deleteByNome(String nomeComune){
+            repository.deleteById(nomeComune);
+        }
+
 
 
     public Comune save(Comune comune) {
@@ -64,28 +65,24 @@ public class ComuneServiceImpl implements ComuneService {
         return repository.findAll();
     }
 
-    public void deleteAll() {
-        repository.deleteAll();
-    }
-
     @Override
     public List<Animatore> getAnimatoriDelComune(String nome_comune) {
-        return animatoreServiceImpl.findByNomeComune(nome_comune);
+        return animatoreService.findByNomeComune(nome_comune);
     }
 
     @Override
     public List<Contributor> getContributorDelComune(String nome_comune) {
-        return contributorServiceImpl.findByNomeComune(nome_comune);
+        return contributorService.findByNomeComune(nome_comune);
     }
 
     @Override
     public List<ContributorAutorizzato> getContributorAutorizzatiDelComune(String nome_comune) {
-        return contributorAutorizzatoServiceImpl.findByNomeComune(nome_comune);
+        return contributorAutorizzatoService.findByNomeComune(nome_comune);
     }
 
     @Override
     public List<Curatore> getCuratoriDelComune(String nome_comune) {
-        return curatoreServiceImpl.findByNomeComune(nome_comune);
+        return curatoreService.findByNomeComune(nome_comune);
     }
 
 
@@ -100,7 +97,7 @@ public class ComuneServiceImpl implements ComuneService {
         if (oComune.isPresent()) {
             Comune comune = oComune.get();
             List<PuntoInteresse> puntiInteresseNelComune = new ArrayList<>();
-            List<PuntoInteresse> tuttiPuntiInteresse = poiServiceImpl.findActive();
+            List<PuntoInteresse> tuttiPuntiInteresse = poiService.findActive();
             for (PuntoInteresse puntoInteresse : tuttiPuntiInteresse) {
                 if (comune.verificaCoordinateComune(puntoInteresse.getPt())) {
                     puntiInteresseNelComune.add(puntoInteresse);
@@ -111,4 +108,5 @@ public class ComuneServiceImpl implements ComuneService {
             return Collections.emptyList();
         }
     }
+
 }

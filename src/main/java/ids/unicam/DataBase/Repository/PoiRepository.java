@@ -1,5 +1,6 @@
 package ids.unicam.DataBase.Repository;
 
+import ids.unicam.models.Comune;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.Taggable;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
@@ -38,4 +39,6 @@ public interface PoiRepository extends JpaRepository<PuntoInteresse, Integer> {
 
 
     Optional<PuntoInteresse> findPuntoInteresseByMaterialiContaining(MaterialeGenerico materialeGenerico);
+
+    List<PuntoInteresse> findPoiByComune(Comune comune);
 }

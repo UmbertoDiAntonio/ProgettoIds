@@ -66,7 +66,7 @@ public class ComuneController {
             description = "Eliminazione di un comune dal nome univoco.")
     public ResponseEntity<?> delete(
             @Parameter(description = "nome del comune") @PathVariable String nomeComune) {
-        comuneService.deleteById(nomeComune);
+        comuneService.deleteByNome(nomeComune);
         return ResponseEntity.ok("Il comune '" + nomeComune + "' e' stato eliminato.");
     }
 

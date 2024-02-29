@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class MaterialeDTO {
     private String pathFile;
-    private TuristaAutenticato creatore;
+    private TuristaAutenticatoDTO creatore;
 }

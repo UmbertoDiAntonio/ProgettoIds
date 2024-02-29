@@ -11,23 +11,23 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ContestService {
-    Contest aggiungiMateriale(String usernameTurista, Integer idContest, MaterialeGenerico materialeGenerico) throws ContestException, FuoriComuneException;
+    void aggiungiMateriale(String usernameTurista, int idContest, MaterialeGenerico materialeGenerico) throws ContestException, FuoriComuneException;
 
     List<TuristaAutenticato> getPartecipanti(Contest contest);
 
-    Contest creaContest(Contest contest);
+    Contest creaContest(String nomeContest,String obiettivo,Animatore creatore, boolean open);
 
     List<Contest> getContestByCreatore(Animatore animatore);
 
     List<MaterialeGenerico> getMaterialiContest(Contest contest);
 
-    void aggiungiPartecipante(Contest contest, TuristaAutenticato turistaAutenticato);
+    void aggiungiPartecipante(Contest contest, TuristaAutenticato turistaAutenticato) throws ContestException;
 
     void rimuoviPartecipante(Contest contest, TuristaAutenticato turistaAutenticato);
 
-    void setVincitoreContest(Contest contest, MaterialeGenerico materialeGenerico);
+    void setVincitoreContest(Contest contest, MaterialeGenerico materialeGenerico) throws ContestException;
 
-    void terminaContest(Contest contest, Integer idMaterialeVincitore) throws ContestException;
+    void terminaContest(Contest contest) throws ContestException;
 
     List<Contest> findAll();
 

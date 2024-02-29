@@ -19,23 +19,20 @@ public class ContributorAutorizzatoServiceImpl implements ContributorAutorizzato
     }
 
     @Override
-    public void deleteById(String id) {
+    public void deleteByUsername(String id) {
         repository.deleteById(id);
     }
 
     @Override
-    public Optional<ContributorAutorizzato> getById(String username) {
+    public Optional<ContributorAutorizzato> getByUsername(String username) {
         return repository.findById(username);
     }
 
-    public ContributorAutorizzato save(ContributorAutorizzato contributorAutorizzato) {
-        contributorAutorizzato = repository.save(contributorAutorizzato);
-        return contributorAutorizzato;
+    ContributorAutorizzato save(ContributorAutorizzato contributorAutorizzato) {
+        return  repository.save(contributorAutorizzato);
     }
 
-    public void deleteAll() {
-        repository.deleteAll();
-    }
+
 
     @Override
     public List<ContributorAutorizzato> getAll() {

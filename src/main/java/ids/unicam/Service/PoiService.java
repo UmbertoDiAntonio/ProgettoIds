@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface PoiService {
     PuntoInteresse creaPuntoInteresse(PuntoInteresse puntoInteresse) throws FuoriComuneException;
@@ -18,7 +19,7 @@ public interface PoiService {
 
     void eliminaPuntoInteresse(int idPuntoInteresse) ;
 
-    void aggiungiMateriale(String usernameTurista, Integer idPuntoInteresse, MaterialeGenerico materialeGenerico) throws FuoriComuneException;
+    void aggiungiMateriale(String usernameTurista, int idPuntoInteresse, MaterialeGenerico materialeGenerico) throws FuoriComuneException;
 
     List<PuntoInteresse> findActive() ;
 
@@ -32,18 +33,18 @@ public interface PoiService {
 
     void deleteById(int id);
 
-    void modificaScadenza(String usernameContributor,Integer idPuntoInteresse, LocalDate expireDate) throws IllegalArgumentException;
+    void modificaScadenza(String usernameContributor,int idPuntoInteresse, LocalDate expireDate) throws IllegalArgumentException;
 
     Stato getStato(int idPuntoInteresse);
 
-    List<MaterialeGenerico> getMaterialiPoi(Integer idPunto);
+    Set<MaterialeGenerico> getMaterialiPoi(int idPunto) throws IllegalArgumentException;
 
     List<String> getAsList();
 
     @Transactional
     List<String> getAsListDetailed();
 
-    void setOrario(Integer idPunto, Orario.OrarioApertura orario, DayOfWeek day);
+    void setOrario(int idPunto, Orario.OrarioApertura orario, DayOfWeek day);
 
     List<String> getAsList(List<PuntoInteresse> preferiti);
 

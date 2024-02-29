@@ -67,7 +67,7 @@ public class MaterialeController {
         fileOutputStream.write(materiale.getBytes());
         fileOutputStream.close();
         try {
-            Optional<TuristaAutenticato> oTurista = turistaAutenticatoService.getById(usernameTurista);
+            Optional<TuristaAutenticato> oTurista = turistaAutenticatoService.getByUsername(usernameTurista);
             if (oTurista.isEmpty()) {
                 return new ResponseEntity<>("Username non valido", HttpStatus.BAD_REQUEST);
             }

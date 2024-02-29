@@ -4,6 +4,7 @@ import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.Service.InvitoService;
 import ids.unicam.Service.TuristaAutenticatoService;
 import ids.unicam.Service.impl.PoiServiceImpl;
+import ids.unicam.exception.ContestException;
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.TuristaAutenticato;
@@ -48,7 +49,7 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
             description = "Ottieni un Turista dal suo Username.")
     public ResponseEntity<?> getById(
             @Parameter(description = "username del turista") @PathVariable String username) {
-        return ResponseEntity.ok(turistaAutenticatoService.getById(username));
+        return ResponseEntity.ok(turistaAutenticatoService.getByUsername(username));
     }
 
     @Override
@@ -70,7 +71,7 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
             description = "Eliminazione di un Turista dall'username.")
     public ResponseEntity<?> delete(
             @Parameter(description = "username del turista") @PathVariable String username) {
-        turistaAutenticatoService.deleteById(username);
+        turistaAutenticatoService.deleteByUsername(username);
         return ResponseEntity.ok("Utente: '" + username + "' eliminato");
     }
 
@@ -81,7 +82,7 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
     public ResponseEntity<?> accettaInvito(
             @Parameter(description = "username del turista") @RequestParam String usernameTurista,
             @Parameter(description = "id dell'invito") @RequestParam Integer idInvito) {
-        Optional<TuristaAutenticato> oTurista = turistaAutenticatoService.getById(usernameTurista);
+        Optional<TuristaAutenticato> oTurista = turistaAutenticatoService.getByUsername(usernameTurista);
         if (oTurista.isEmpty()) {
             return new ResponseEntity<>("username turista non valido", HttpStatus.BAD_REQUEST);
         }
@@ -94,7 +95,7 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
         try {
             turistaAutenticatoService.accettaInvitoContest(turista, invito);
             return ResponseEntity.ok("Il turista con id '" + usernameTurista + "' ha accettato l'invito con id '" + idInvito + "' .");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException |ContestException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -166,7 +167,7 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
         try {
             turistaAutenticatoService.partecipaAlContest(idContest, usernameTurista);
             return ResponseEntity.ok("L'utente con username '" + usernameTurista + "' ha iniziato a partecipare al contest con id '" + idContest + "' .");
-        } catch (IllegalArgumentException | UnsupportedOperationException e) {
+        } catch (IllegalArgumentException | UnsupportedOperationException |ContestException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         }
     }

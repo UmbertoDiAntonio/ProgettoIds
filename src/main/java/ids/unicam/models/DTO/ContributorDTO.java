@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class RichiestaCreazioneContributorDTO {
+public class ContributorDTO {
     private ComuneDTO comune;
     private TuristaAutenticatoDTO turistaDTO;
 }

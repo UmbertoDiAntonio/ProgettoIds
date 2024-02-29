@@ -3,9 +3,8 @@ package ids.unicam.controller;
 import ids.unicam.Service.AnimatoreService;
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.exception.ConnessioneFallitaException;
-import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
+import ids.unicam.models.DTO.ContributorDTO;
 import ids.unicam.models.attori.Ruolo;
-import ids.unicam.models.contenuti.Stato;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.http.HttpStatus;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/Animatore")
-public class AnimatoreController implements ControllerBase<RichiestaCreazioneContributorDTO, String> {
+public class AnimatoreController implements ControllerBase<ContributorDTO, String> {
 
     private final AnimatoreService animatoreService;
     private final GestorePiattaformaService gestorePiattaformaService;
@@ -38,14 +37,14 @@ public class AnimatoreController implements ControllerBase<RichiestaCreazioneCon
             description = "Animatore dall'identificatore univoco id salvato nel database.")
     public ResponseEntity<?> getById(
             @Parameter(description = "Username dell'animatore") @PathVariable String username) {
-        return ResponseEntity.ok(animatoreService.getById(username));
+        return ResponseEntity.ok(animatoreService.getByUsername(username));
     }
 
     @Override
     @PostMapping("/crea")
     @Operation(summary = "Creazione di un nuovo utente animatore",
             description = "Crea un nuovo utente con ruolo di animatore.")
-    public ResponseEntity<?> create(@RequestBody RichiestaCreazioneContributorDTO contributorDTO) {
+    public ResponseEntity<?> create(@RequestBody ContributorDTO contributorDTO) {
         try {
             return new ResponseEntity<>(gestorePiattaformaService.registraContributor(contributorDTO, Ruolo.ANIMATORE), HttpStatus.OK);
         } catch (ConnessioneFallitaException | IllegalArgumentException e) {
@@ -59,9 +58,22 @@ public class AnimatoreController implements ControllerBase<RichiestaCreazioneCon
             description = "Elimina di un utente con ruolo di Animatore.")
     public ResponseEntity<?> delete(
             @Parameter(description = "username dell'Animatore") @PathVariable String username) {
-        animatoreService.deleteById(username);
+        animatoreService.deleteByUsername(username);
         return ResponseEntity.ok("Utente: '" + username + "' eliminato");
     }
 
-
+    @PutMapping("/approvaMateriale/{idMateriale}")
+    @Operation(summary = "Approva un materiale",
+            description = "L'utente curatore approva un materiale caricato.")
+    public ResponseEntity<?> approvaMateriale(
+            @Parameter(description = "username dell'animatore") @RequestBody String usernameAnimatore,
+            @Parameter(description = "id del contest") @RequestBody Integer idContest,
+            @Parameter(description = "id del materiale da approvare") @PathVariable Integer idMateriale,
+            @Parameter(description = "scelta di approvare o non il materiale") @RequestBody boolean stato) {
+        try {
+            return ResponseEntity.ok(animatoreService.approvaMateriale(usernameAnimatore, idContest, idMateriale, stato));
+        } catch (UnsupportedOperationException | IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

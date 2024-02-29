@@ -1,7 +1,7 @@
 package ids.unicam.models.attori;
 
 import ids.unicam.exception.ConnessioneFallitaException;
-import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
+import ids.unicam.models.DTO.ContributorDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
@@ -10,6 +10,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
+/**
+ * Classe Curatore, il Curatore è una figura del comune che si occupa della valutazione di punti di interesse e
+ * di materiali.
+ */
 @Getter
 @Entity
 @NoArgsConstructor
@@ -17,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Curatore extends ContributorAutorizzato {
 
-    public Curatore(RichiestaCreazioneContributorDTO contributorDTO) throws ConnessioneFallitaException, RuntimeException {
+    public Curatore(ContributorDTO contributorDTO) throws ConnessioneFallitaException, RuntimeException {
         super(contributorDTO);
     }
 

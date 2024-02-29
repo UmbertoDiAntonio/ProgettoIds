@@ -1,5 +1,6 @@
 package ids.unicam.DataBase.Repository;
 
+import ids.unicam.models.Comune;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
@@ -26,4 +27,6 @@ public interface ContestRepository extends JpaRepository<Contest, Integer> {
 
     Optional<Contest> findContestByMaterialiContaining(MaterialeGenerico materialeGenerico);
 
+
+    List<Contest> findContestByComune(Comune comune);
 }

@@ -1,7 +1,9 @@
 package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.InvitoRepository;
+import ids.unicam.Service.ContestService;
 import ids.unicam.Service.InvitoService;
+import ids.unicam.exception.ContestException;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.TuristaAutenticato;
 import jakarta.transaction.Transactional;
@@ -16,12 +18,12 @@ import static ids.unicam.Main.logger;
 @Service
 public class InvitoServiceImpl implements InvitoService {
     private final InvitoRepository repository;
-    private final ContestServiceImpl contestServiceImpl;
+    private final ContestService contestService;
 
     @Autowired
-    public InvitoServiceImpl(InvitoRepository repository, ContestServiceImpl contestServiceImpl) {
+    public InvitoServiceImpl(InvitoRepository repository, ContestService contestService) {
         this.repository = repository;
-        this.contestServiceImpl = contestServiceImpl;
+        this.contestService = contestService;
     }
 
 
@@ -30,6 +32,7 @@ public class InvitoServiceImpl implements InvitoService {
     }
 
 
+    @Override
     public Invito save(Invito invito) {
         return repository.save(invito);
     }
@@ -45,16 +48,12 @@ public class InvitoServiceImpl implements InvitoService {
     }
 
 
-    public void deleteAll() {
-        repository.deleteAll();
-    }
-
     @Transactional
     @Override
-    public void accettaInvito(TuristaAutenticato turistaAutenticato, Invito invito) throws IllegalArgumentException {
+    public void accettaInvito(TuristaAutenticato turistaAutenticato, Invito invito) throws IllegalArgumentException, ContestException {
         if (isValid(invito)) {
             if (invito.getInvitato().getUsername().equals(turistaAutenticato.getUsername())) {
-                contestServiceImpl.aggiungiPartecipante(invito.getContest(), turistaAutenticato);
+                contestService.aggiungiPartecipante(invito.getContest(), turistaAutenticato);
             } else {
                 logger.error("Non sei Invitato");
                 throw new IllegalArgumentException("Non sei Invitato");
@@ -68,7 +67,7 @@ public class InvitoServiceImpl implements InvitoService {
     @Override
     public boolean isValid(Invito invito) {
         return !invito.getContest().isOpen()
-                && !contestServiceImpl.getPartecipanti(invito.getContest()).contains(invito.getInvitato())
+                && !contestService.getPartecipanti(invito.getContest()).contains(invito.getInvitato())
                 && invito.isValido();
     }
 

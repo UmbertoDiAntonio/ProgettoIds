@@ -3,18 +3,25 @@ package ids.unicam.models.attori;
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Classe Turista Autenticato, il Turista Autenticato è un utente che non contribuisce in nessun comune,
+ * possono partecipare a contest, salvare punti di interesse tra i preferiti, caricare materiali su punti di interesse
+ * (i materiali caricati sono posti in stato "IN_ATTESA").
+ */
+@Getter
 @Entity
 @Table(name = "TURISTI")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @DiscriminatorColumn(name = "TIPO")
 @DiscriminatorValue("TuristaAutenticato")
-public class TuristaAutenticato extends Turista {
+public class TuristaAutenticato  {
     @OneToMany(fetch = FetchType.EAGER)
     private final List<PuntoInteresse> preferiti = new ArrayList<>();
     private String nome = "";
@@ -34,30 +41,6 @@ public class TuristaAutenticato extends Turista {
         this.dataNascita = turistaDTO.getDataNascita();
         this.password = turistaDTO.getPassword();
         this.username = turistaDTO.getUsername();
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public String getCognome() {
-        return cognome;
-    }
-
-    public LocalDate getDataNascita() {
-        return dataNascita;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public List<PuntoInteresse> getPreferiti() {
-        return preferiti;
     }
 
     @Override

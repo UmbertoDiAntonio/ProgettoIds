@@ -1,7 +1,7 @@
 package ids.unicam.models.attori;
 
 /**
- * Gradi di un Contributor all'interno del Comune
+ * Gradi di un Utente  all'interno della Piattaforma
  */
 public enum Ruolo {
     CONTRIBUTOR,
@@ -9,5 +9,4 @@ public enum Ruolo {
     CONTRIBUTOR_AUTORIZZATO,
     ANIMATORE,
     CURATORE
-
 }

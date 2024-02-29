@@ -1,5 +1,6 @@
 package ids.unicam.Service;
 
+import ids.unicam.exception.ContestException;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.notifiche.Notifica;
@@ -11,7 +12,7 @@ import java.util.Optional;
 
 public interface TuristaAutenticatoService {
 
-    void accettaInvitoContest(TuristaAutenticato turistaAutenticato, Invito invito);
+    void accettaInvitoContest(TuristaAutenticato turistaAutenticato, Invito invito) throws ContestException;
 
     void rimuoviPreferito(String usernameTurista, int id) throws IllegalArgumentException;
 
@@ -20,11 +21,11 @@ public interface TuristaAutenticatoService {
     List<PuntoInteresse> findPreferiti(String usernameTurista) throws  IllegalArgumentException;
 
 
-    void partecipaAlContest(Integer idContest, String usernameTurista) throws  UnsupportedOperationException,IllegalArgumentException;
+    void partecipaAlContest(int idContest, String usernameTurista) throws UnsupportedOperationException, IllegalArgumentException, ContestException;
 
 
     @Transactional
-    void cancellaPartecipazioneContest(Integer idContest, String usernameTurista) throws IllegalArgumentException;
+    void cancellaPartecipazioneContest(int idContest, String usernameTurista) throws IllegalArgumentException;
 
     Optional<TuristaAutenticato> findTuristaByUsername(String username);
 
@@ -32,9 +33,9 @@ public interface TuristaAutenticatoService {
 
     List<TuristaAutenticato> getAll();
 
-    Optional<TuristaAutenticato> getById(String username);
+    Optional<TuristaAutenticato> getByUsername(String username);
 
-    void deleteById(String username);
+    void deleteByUsername(String username);
 
     List<Notifica> visualizzaNotifiche(String usernameTurista) throws IllegalArgumentException;
 

@@ -29,6 +29,6 @@ public interface ComuneService {
 
     Optional<Comune> findById(String id);
 
-    void deleteById(String nomeComune);
+    void deleteByNome(String nomeComune);
 
 }

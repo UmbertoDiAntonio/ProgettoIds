@@ -13,6 +13,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.Timer;
 
 
 @RestController
@@ -39,6 +40,8 @@ public class Main implements ApplicationRunner {
 
         openUrl(urlToOpen);
         openUrl(urlToDB);
+
+
     }
 
     private static void openUrl(String url) {

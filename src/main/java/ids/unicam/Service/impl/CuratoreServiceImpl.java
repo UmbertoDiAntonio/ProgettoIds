@@ -45,22 +45,20 @@ public class CuratoreServiceImpl implements CuratoreService {
 
 
     @Override
-    public void deleteById(String id) {
+    public void deleteByUsername(String id) {
         repository.deleteById(id);
     }
 
     @Override
-    public Optional<Curatore> getById(String username) {
+    public Optional<Curatore> getByUsername(String username) {
         return repository.findById(username);
     }
 
-    public Curatore save(Curatore curatore) {
+    Curatore save(Curatore curatore) {
         return repository.save(curatore);
     }
 
-    public void deleteAll() {
-        repository.deleteAll();
-    }
+
 
     public List<Curatore> findByNomeComune(String nomeComune) {
         return repository.findCuratoreByComuneNome(nomeComune);
@@ -79,8 +77,8 @@ public class CuratoreServiceImpl implements CuratoreService {
 
     @Override
     @Transactional
-    public PuntoInteresse valutaPuntoInteresse(String usernameCuratore, @NotNull Integer idPuntoInteresse, @Nullable Boolean bStato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException {
-        Optional<Curatore> oCuratore = getById(usernameCuratore);
+    public PuntoInteresse valutaPuntoInteresse(String usernameCuratore, @NotNull int idPuntoInteresse, @Nullable Boolean bStato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException {
+        Optional<Curatore> oCuratore = getByUsername(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
             Optional<PuntoInteresse> oPoi = poiServiceImpl.findById(idPuntoInteresse);
@@ -94,7 +92,7 @@ public class CuratoreServiceImpl implements CuratoreService {
                 if (stato == Stato.IN_ATTESA)
                     throw new UnsupportedOperationException("non puoi impostare stato in attesa");
                 puntoInteresse.setStato(stato);
-                Notifica notifica = notificaServiceImpl.creaNotifica(curatore, puntoInteresse, stato);
+                Notifica notifica = notificaServiceImpl.creaNotificaApprovazione(curatore, puntoInteresse, stato);
                 return poiServiceImpl.save(puntoInteresse);
             } else {
                 logger.error("Id del punto di interesse non valido");
@@ -108,8 +106,8 @@ public class CuratoreServiceImpl implements CuratoreService {
 
 
     @Override
-    public MaterialeGenerico valutaMateriale(String usernameCuratore, Integer idMaterialeGenerico, Boolean bStato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException {
-        Optional<Curatore> oCuratore = getById(usernameCuratore);
+    public MaterialeGenerico valutaMateriale(String usernameCuratore, int idMaterialeGenerico, Boolean bStato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException {
+        Optional<Curatore> oCuratore = getByUsername(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
             Optional<MaterialeGenerico> oMateriale = materialeServiceImpl.getById(idMaterialeGenerico);
@@ -135,7 +133,7 @@ public class CuratoreServiceImpl implements CuratoreService {
                 if (stato == Stato.IN_ATTESA)
                     throw new UnsupportedOperationException("non puoi impostare stato in attesa");
                 materialeGenerico.setStato(stato);
-                Notifica notifica = notificaServiceImpl.creaNotifica(curatore, materialeGenerico, stato);
+                Notifica notifica = notificaServiceImpl.creaNotificaApprovazione(curatore, materialeGenerico, stato);
                 return materialeServiceImpl.save(materialeGenerico);
 
             } else {
@@ -150,8 +148,8 @@ public class CuratoreServiceImpl implements CuratoreService {
 
 
     @Override
-    public void eliminaPuntoInteresse(String usernameCuratore, Integer idPuntoInteresse) throws IllegalArgumentException, FuoriComuneException {
-        Optional<Curatore> oCuratore = getById(usernameCuratore);
+    public void eliminaPuntoInteresse(String usernameCuratore, int idPuntoInteresse) throws IllegalArgumentException, FuoriComuneException {
+        Optional<Curatore> oCuratore = getByUsername(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
             Optional<PuntoInteresse> oPoi = poiServiceImpl.getById(idPuntoInteresse);
@@ -173,8 +171,8 @@ public class CuratoreServiceImpl implements CuratoreService {
     }
 
     @Override
-    public void eliminaItinerario(String usernameCuratore, Integer idItinerario) throws IllegalArgumentException, FuoriComuneException {
-        Optional<Curatore> oCuratore = getById(usernameCuratore);
+    public void eliminaItinerario(String usernameCuratore, int idItinerario) throws IllegalArgumentException, FuoriComuneException {
+        Optional<Curatore> oCuratore = getByUsername(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
             Optional<Itinerario> oItinerario = itinerarioServiceImpl.getById(idItinerario);
@@ -196,8 +194,8 @@ public class CuratoreServiceImpl implements CuratoreService {
     }
 
     @Override
-    public void eliminaContest(String usernameCuratore, Integer idContest) throws IllegalArgumentException, FuoriComuneException {
-        Optional<Curatore> oCuratore = getById(usernameCuratore);
+    public void eliminaContest(String usernameCuratore, int idContest) throws IllegalArgumentException, FuoriComuneException {
+        Optional<Curatore> oCuratore = getByUsername(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
             Optional<Contest> oContest = contestServiceImpl.findById(idContest);
@@ -221,20 +219,33 @@ public class CuratoreServiceImpl implements CuratoreService {
     @Override
     @Transactional
     public void eliminaMateriale(String usernameCuratore, int idMateriale) throws IllegalArgumentException, FuoriComuneException {
-        Optional<Curatore> oCuratore = getById(usernameCuratore);
+        Optional<Curatore> oCuratore = getByUsername(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
             Optional<MaterialeGenerico> oMateriale = materialeServiceImpl.getById(idMateriale);
             if (oMateriale.isPresent()) {
                 MaterialeGenerico materialeGenerico = oMateriale.get();
 
-                List<PuntoInteresse> listPuntoInteresse = poiServiceImpl.findActive();
-                for (PuntoInteresse puntoInteresse : listPuntoInteresse) {
+                Optional<PuntoInteresse> oPoi = poiServiceImpl.getPoiContainingMaterial(materialeGenerico);
+                if (oPoi.isPresent()) {
+                    PuntoInteresse puntoInteresse = oPoi.get();
                     if (!puntoInteresse.getComune().equals(curatore.getComune())) {
                         throw new FuoriComuneException(curatore.getUsername() + " non può eliminare materiali fuori dal suo comune ");
                     }
                     puntoInteresse.rimuoviMateriale(materialeGenerico);
                     poiServiceImpl.save(puntoInteresse);
+                } else {
+                    Optional<Contest> oContest = contestServiceImpl.getContestContainingMaterial(materialeGenerico);
+                    if (oContest.isPresent()) {
+                        Contest contest = oContest.get();
+                        if (!contest.getComune().equals(curatore.getComune())) {
+                            throw new FuoriComuneException(curatore.getUsername() + " non può eliminare materiali fuori dal suo comune ");
+                        }
+                        contest.rimuoviMateriale(materialeGenerico);
+                        contestServiceImpl.save(contest);
+                    } else {
+                        logger.warn("Il Materiale non è associato a nessun Punto o Contest");
+                    }
                 }
                 materialeServiceImpl.deleteById(materialeGenerico.getId());
             } else {
@@ -250,7 +261,7 @@ public class CuratoreServiceImpl implements CuratoreService {
 
     @Override
     public List<Notifica> getNotifiche(String usernameCurature) throws IllegalArgumentException {
-        Optional<Curatore> oCuratore = getById(usernameCurature);
+        Optional<Curatore> oCuratore = getByUsername(usernameCurature);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
             return notificaServiceImpl.getNotifiche(curatore);

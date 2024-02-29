@@ -8,8 +8,8 @@ import java.util.Optional;
 public interface ContributorService {
     List<Contributor> getAll();
 
-    void deleteById(String username);
+    void deleteByUsername(String username);
 
-    Optional<Contributor> getById(String username);
+    Optional<Contributor> getByUsername(String username);
 
 }

@@ -4,7 +4,7 @@ import ids.unicam.Service.CuratoreService;
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.exception.FuoriComuneException;
-import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
+import ids.unicam.models.DTO.ContributorDTO;
 import ids.unicam.models.attori.Ruolo;
 import ids.unicam.models.contenuti.Stato;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/Curatore")
-public class CuratoreController implements ControllerBase<RichiestaCreazioneContributorDTO, String> {
+public class CuratoreController implements ControllerBase<ContributorDTO, String> {
 
     private final CuratoreService curatoreService;
     private final GestorePiattaformaService gestorePiattaformaService;
@@ -38,13 +38,13 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
             description = "Curatre dall'identificatore univoco username salvato nel database.")
     public ResponseEntity<?> getById(
             @Parameter(description = "username del curatore") @PathVariable String username) {
-        return ResponseEntity.ok(curatoreService.getById(username));
+        return ResponseEntity.ok(curatoreService.getByUsername(username));
     }
 
     @Override
     @Operation(summary = "Creazione di un nuovo utente curatore",
             description = "Crea un nuovo utente curatore.")
-    public ResponseEntity<?> create(@RequestBody RichiestaCreazioneContributorDTO contributorDTO) {
+    public ResponseEntity<?> create(@RequestBody ContributorDTO contributorDTO) {
         try {
             return new ResponseEntity<>(gestorePiattaformaService.registraContributor(contributorDTO, Ruolo.CURATORE), HttpStatus.OK);
         } catch (ConnessioneFallitaException | IllegalArgumentException e) {
@@ -58,7 +58,7 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
             description = "Eliminazione di un utente con ruolo di curatore dall'username univoco.")
     public ResponseEntity<?> delete(
             @Parameter(description = "username del curatore") @PathVariable String username) {
-        curatoreService.deleteById(username);
+        curatoreService.deleteByUsername(username);
         return ResponseEntity.ok("Utente: '" + username + "' eliminato");
     }
 

@@ -26,7 +26,8 @@ public class NotificaServiceImpl {
         this.repository = repository;
     }
 
-    public Notifica creaNotifica(@NotNull Curatore curatore, PuntoInteresse puntoInteresse, @NotNull Stato stato) {
+
+    public Notifica creaNotificaApprovazione(@NotNull Curatore curatore, PuntoInteresse puntoInteresse, @NotNull Stato stato) {
         return repository.save(new NotificaBuilder().withTitolo("Valutazione: " + puntoInteresse.getNome())
                 .withDescrizione(curatore.getUsername() + " " + (Boolean.TRUE.equals(stato.asBoolean()) ? "ha approvato " : "non ha approvato ") +
                         "\"" + puntoInteresse.getNome() + "\"")
@@ -34,7 +35,7 @@ public class NotificaServiceImpl {
     }
 
 
-    public Notifica creaNotifica(Curatore curatore, MaterialeGenerico materialeGenerico, Stato stato) {
+    public Notifica creaNotificaApprovazione(Curatore curatore, MaterialeGenerico materialeGenerico, Stato stato) {
         return repository.save(
                 new NotificaBuilder()
                         .withTitolo("Valutazione del materiale creato da: " + materialeGenerico.getCreatore().getUsername())
@@ -43,7 +44,7 @@ public class NotificaServiceImpl {
                         .withDestinatario(materialeGenerico.getCreatore()).build());
     }
 
-    public Notifica creaNotifica(Animatore animatore, Contest contest, MaterialeGenerico vincitore) {
+    public Notifica creaNotificaVittoriaContest(Animatore animatore, Contest contest, MaterialeGenerico vincitore) {
         return repository.save(
                 new NotificaBuilder()
                         .withTitolo("Vittoria Contest: " + vincitore.getCreatore().getUsername())
@@ -51,7 +52,7 @@ public class NotificaServiceImpl {
                         .withDestinatario(vincitore.getCreatore()).build());
     }
 
-    public Notifica creaNotifica(Contest contest, TuristaAutenticato destinatario) {
+    public Notifica creaNotificaTermineContest(Contest contest, TuristaAutenticato destinatario) {
         return repository.save(
                 new NotificaBuilder()
                         .withTitolo("Info Contest: " + contest.getNomeContest())
@@ -59,7 +60,7 @@ public class NotificaServiceImpl {
                         .withDestinatario(destinatario).build());
     }
 
-    public Notifica creaNotifica(Animatore animatore, Contest contest, TuristaAutenticato destinatario) {
+    public Notifica creaNotificaInvitoContest(Animatore animatore, Contest contest, TuristaAutenticato destinatario) {
         return repository.save(
                 new NotificaBuilder()
                         .withTitolo("Info Contest: " + contest.getNomeContest())
@@ -67,6 +68,13 @@ public class NotificaServiceImpl {
                         .withDestinatario(destinatario).build());
     }
 
+    public Notifica creaNotificaIngressoContest(Contest contest, TuristaAutenticato turista) {
+        return repository.save(
+                new NotificaBuilder()
+                        .withTitolo("Info Contest: " + contest.getNomeContest())
+                        .withDescrizione(turista.getUsername()+" si è unito al Contest: "+contest.getNomeContest())
+                        .withDestinatario(contest.getCreatore()).build());
+    }
 
     public List<Notifica> getNotifiche(TuristaAutenticato turistaAutenticato) {
         return repository.findByUsernameDestinatario(turistaAutenticato.getUsername());
@@ -81,4 +89,6 @@ public class NotificaServiceImpl {
     public void rimuoviNotificheByUsername(String usernameTurista) {
         repository.deleteByUsernameDestinatario(usernameTurista);
     }
+
+
 }

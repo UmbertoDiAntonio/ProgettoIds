@@ -24,23 +24,21 @@ public class ContributorServiceImpl implements ContributorService {
     }
 
     @Override
-    public void deleteById(String id) {
+    public void deleteByUsername(String id) {
         repository.deleteById(id);
     }
 
     @Override
-    public Optional<Contributor> getById(String username) {
+    public Optional<Contributor> getByUsername(String username) {
         return repository.findById(username);
     }
 
-    public Contributor save(Contributor contributor) {
+    Contributor save(Contributor contributor) {
         return repository.save(contributor);
     }
 
 
-    public void deleteAll() {
-        repository.deleteAll();
-    }
+
 
     @Override
     public List<Contributor> getAll() {

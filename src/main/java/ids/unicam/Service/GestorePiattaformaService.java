@@ -1,7 +1,7 @@
 package ids.unicam.Service;
 
 import ids.unicam.exception.ConnessioneFallitaException;
-import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
+import ids.unicam.models.DTO.ContributorDTO;
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.attori.Ruolo;
 import ids.unicam.models.attori.TuristaAutenticato;
@@ -12,6 +12,6 @@ public interface GestorePiattaformaService {
 
     TuristaAutenticato registraTurista(TuristaAutenticatoDTO turistaDTO) throws IllegalArgumentException;
 
-    TuristaAutenticato registraContributor(RichiestaCreazioneContributorDTO contributorDTO, Ruolo ruolo) throws IllegalArgumentException, ConnessioneFallitaException;
+    TuristaAutenticato registraContributor(ContributorDTO contributorDTO, Ruolo ruolo) throws IllegalArgumentException, ConnessioneFallitaException;
 
 }

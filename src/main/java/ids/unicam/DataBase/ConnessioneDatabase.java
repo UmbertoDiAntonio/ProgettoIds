@@ -20,6 +20,10 @@ public class ConnessioneDatabase {
         this.env = env;
     }
 
+    /**
+     * Stabilisci una connessione con il Database
+     * @return la Connessione
+     */
     public @Nullable Connection connessioneAlDatabase() {
         Connection connection;
         try {
@@ -31,7 +35,6 @@ public class ConnessioneDatabase {
             throw new RuntimeException("Impossibile Stabilire una connessione al Database", e);
         }
         return connection;
-
     }
 }
 

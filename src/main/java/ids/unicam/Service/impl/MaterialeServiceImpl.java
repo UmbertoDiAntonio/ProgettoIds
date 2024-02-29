@@ -3,6 +3,7 @@ package ids.unicam.Service.impl;
 import ids.unicam.DataBase.Repository.MaterialeRepository;
 import ids.unicam.Service.MaterialeService;
 import ids.unicam.models.DTO.MaterialeDTO;
+import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.attori.ContributorAutorizzato;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contenitore;
@@ -43,12 +44,12 @@ public class MaterialeServiceImpl implements MaterialeService {
 
     @Override
     public MaterialeGenerico crea(String fileMateriale, TipologiaMateriale tipologiaMateriale, TuristaAutenticato creatore) throws IllegalArgumentException {
-
+        TuristaAutenticatoDTO creatoreDTO = new TuristaAutenticatoDTO(creatore.getNome(), creatore.getCognome(), creatore.getDataNascita(), creatore.getPassword(), creatore.getUsername());
         MaterialeGenerico materialeGenerico = switch (tipologiaMateriale) {
-            case FOTO -> new Foto(new MaterialeDTO(fileMateriale, creatore));
-            case VIDEO -> new Video(new MaterialeDTO(fileMateriale, creatore));
-            case TESTO -> new Testo(new MaterialeDTO(fileMateriale, creatore));
-            case AUDIO -> new Audio(new MaterialeDTO(fileMateriale, creatore));
+            case FOTO -> new Foto(new MaterialeDTO(fileMateriale, creatoreDTO));
+            case VIDEO -> new Video(new MaterialeDTO(fileMateriale, creatoreDTO));
+            case TESTO -> new Testo(new MaterialeDTO(fileMateriale, creatoreDTO));
+            case AUDIO -> new Audio(new MaterialeDTO(fileMateriale, creatoreDTO));
         };
         if (creatore instanceof ContributorAutorizzato)
             materialeGenerico.setStato(Stato.APPROVATO);
@@ -57,7 +58,7 @@ public class MaterialeServiceImpl implements MaterialeService {
     }
 
     @Override
-    public String getBase64ById(Integer id) {
+    public String getBase64ById(int id) {
         Optional<MaterialeGenerico> oMateriale = getById(id);
         if (oMateriale.isEmpty()) {
             logger.error("L'id del materiale non e' valido");
@@ -87,9 +88,12 @@ public class MaterialeServiceImpl implements MaterialeService {
         return repository.findAllByFileIn(file);
     }
 
-    public MaterialeGenerico save(MaterialeGenerico materialeGenerico) {
+
+    MaterialeGenerico save(MaterialeGenerico materialeGenerico) {
         return repository.save(materialeGenerico);
     }
+
+
 
     @Override
     public void approvaMateriale(MaterialeGenerico materialeGenerico, Stato stato) {

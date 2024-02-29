@@ -14,7 +14,6 @@ import lombok.Setter;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo")
 public abstract class MaterialeGenerico {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenza_materiali")
     @SequenceGenerator(name = "sequenza_materiali", sequenceName = "MATERIALE_SEQ", allocationSize = 1)
@@ -33,7 +32,7 @@ public abstract class MaterialeGenerico {
 
     public MaterialeGenerico(MaterialeDTO materialeDTO) {
         this.file = "./src/main/resources/materials/" + materialeDTO.getPathFile();
-        this.creatore = materialeDTO.getCreatore();
+        this.creatore = new TuristaAutenticato(materialeDTO.getCreatore());
     }
 
     /**

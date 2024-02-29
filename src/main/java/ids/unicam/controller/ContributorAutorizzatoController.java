@@ -3,7 +3,7 @@ package ids.unicam.controller;
 import ids.unicam.Service.ContributorAutorizzatoService;
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.exception.ConnessioneFallitaException;
-import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
+import ids.unicam.models.DTO.ContributorDTO;
 import ids.unicam.models.attori.Ruolo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/ContributorAutorizzato")
-public class ContributorAutorizzatoController implements ControllerBase<RichiestaCreazioneContributorDTO, String> {
+public class ContributorAutorizzatoController implements ControllerBase<ContributorDTO, String> {
 
     private final ContributorAutorizzatoService contributorAutorizzatoService;
     private final GestorePiattaformaService gestorePiattaformaService;
@@ -37,13 +37,13 @@ public class ContributorAutorizzatoController implements ControllerBase<Richiest
             description = "Contributor Autorizzato dall'identificatore univoco id salvato nel database.")
     public ResponseEntity<?> getById(
             @Parameter(description = "username del contributor autorizzato") @PathVariable String username) {
-        return ResponseEntity.ok(contributorAutorizzatoService.getById(username));
+        return ResponseEntity.ok(contributorAutorizzatoService.getByUsername(username));
     }
 
     @Override
     @Operation(summary = "Creazione di un nuovo utente contributor autorizzato",
             description = "Crea un nuovo utente contributor autorizzato.")
-    public ResponseEntity<?> create(@RequestBody RichiestaCreazioneContributorDTO contributorDTO) {
+    public ResponseEntity<?> create(@RequestBody ContributorDTO contributorDTO) {
         try {
             return new ResponseEntity<>(gestorePiattaformaService.registraContributor(contributorDTO, Ruolo.CONTRIBUTOR_AUTORIZZATO), HttpStatus.OK);
         } catch (ConnessioneFallitaException | IllegalArgumentException e) {
@@ -57,7 +57,7 @@ public class ContributorAutorizzatoController implements ControllerBase<Richiest
             description = "Elimina di un utente contributor autorizzato dall'username.")
     public ResponseEntity<?> delete(
             @Parameter(description = "username del contributor autorizzato") @PathVariable String username) {
-        contributorAutorizzatoService.deleteById(username);
+        contributorAutorizzatoService.deleteByUsername(username);
         return ResponseEntity.ok("Utente: '" + username + "' eliminato");
     }
 }

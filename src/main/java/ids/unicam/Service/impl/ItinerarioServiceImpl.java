@@ -38,14 +38,14 @@ public class ItinerarioServiceImpl implements ItinerarioService {
         repository.deleteById(id);
     }
 
-    public Itinerario save(Itinerario itinerario) {
+    Itinerario save(Itinerario itinerario) {
         return repository.save(itinerario);
     }
 
     @Override
     @Transactional
-    public boolean aggiungiTappa(String usernameContributor, Integer idItinerario, Integer idPuntoInteresse) throws IllegalArgumentException, FuoriComuneException {
-        Optional<Contributor> oContributor = contributorService.getById(usernameContributor);
+    public boolean aggiungiTappa(String usernameContributor, int idItinerario, int idPuntoInteresse) throws IllegalArgumentException, FuoriComuneException {
+        Optional<Contributor> oContributor = contributorService.getByUsername(usernameContributor);
         if (oContributor.isPresent()) {
             Contributor contributor = oContributor.get();
             Optional<PuntoInteresse> oPoi = poiServiceImpl.findById(idPuntoInteresse);
@@ -88,12 +88,12 @@ public class ItinerarioServiceImpl implements ItinerarioService {
     }
 
     @Override
-    public void aggiungiTappa(String usernameContributor, Integer idItinerario, Integer... idPuntiInteresse) throws
+    public void aggiungiTappa(String usernameContributor, int idItinerario, int... idPuntiInteresse) throws
             FuoriComuneException {
         Optional<Itinerario> oItinerario = getById(idItinerario);
         if (oItinerario.isPresent()) {
             Itinerario itinerario = oItinerario.get();
-            for (Integer idPuntoInteresse : idPuntiInteresse) {
+            for (int idPuntoInteresse : idPuntiInteresse) {
                 aggiungiTappa(usernameContributor, itinerario.getId(), idPuntoInteresse);
             }
         }
@@ -101,9 +101,9 @@ public class ItinerarioServiceImpl implements ItinerarioService {
 
 
     @Override
-    public void rimuoviTappa(String usernameContributor, Integer idItinerario, Integer idPuntoInteresse) throws
+    public void rimuoviTappa(String usernameContributor, int idItinerario, int idPuntoInteresse) throws
             IllegalArgumentException {
-        Optional<Contributor> oContributor = contributorService.getById(usernameContributor);
+        Optional<Contributor> oContributor = contributorService.getByUsername(usernameContributor);
         if (oContributor.isPresent()) {
             Contributor contributor = oContributor.get();
             Optional<Itinerario> oItinerario = getById(idItinerario);
@@ -133,9 +133,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
         }
     }
 
-    public void deleteAll() {
-        repository.deleteAll();
-    }
+
 
     public List<Itinerario> findAllByComune(Comune comune) {
         return repository.findAllByComune(comune);
@@ -149,7 +147,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
     public Itinerario creaItinerario(String usernameCreatore, String nomeItinerario) throws
             IllegalArgumentException {
         Optional<Itinerario> oItinerario = getByNome(nomeItinerario);
-        Optional<Contributor> oContributor = contributorService.getById(usernameCreatore);
+        Optional<Contributor> oContributor = contributorService.getByUsername(usernameCreatore);
         if (oContributor.isPresent()) {
             Comune comune = oContributor.get().getComune();
             if (oItinerario.isPresent()) {
