@@ -96,7 +96,7 @@ public class PoiServiceImpl implements PoiService {
             Contributor contributor = oContributor.get();
             PuntoInteresseDTO puntoInteresseDTO = new PuntoInteresseDTO(nomePOI, punto, new Orario(), tipologiaPuntoInteresse, contributor);
             PuntoInteresse puntoInteresse = new PuntoInteresse(puntoInteresseDTO);
-            tagServiceImpl.aggiungiTag(puntoInteresse,tag);
+            tagServiceImpl.aggiungiTag(puntoInteresse, tag);
             if (!puntoInteresse.getCreatore().getComune().verificaCoordinateComune(puntoInteresse.getPt())) {
                 throw new FuoriComuneException("Posizione Punto di Interesse Fuori dall'area del comune");
             }
@@ -111,14 +111,6 @@ public class PoiServiceImpl implements PoiService {
     @Override
     public void eliminaPuntoInteresse(int idPuntoInteresse) {
         repository.deleteById(idPuntoInteresse);
-/*TODO
-        // Rileva l'eliminazione e aggiorna le liste di preferiti dei turisti
-        List<TuristaAutenticato> turisti = turistaAutenticatoServiceImpl.findTuristiConPreferiti();
-        for (TuristaAutenticato turista : turisti) {
-            turistaAutenticatoServiceImpl.rimuoviPreferito(turista.getUsername(), idPuntoInteresse);
-
-        }
- */
     }
 
     public LocalDate getScadenza(int idPunto) throws IllegalArgumentException {
