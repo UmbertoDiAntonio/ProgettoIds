@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 @Table(name="ANIMATORI")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Animatore extends Contributor {
-    public Animatore(RichiestaCreazioneContributorDTO contributorDTO) throws ConnessioneFallitaException,IllegalArgumentException,RuntimeException {
+    public Animatore(RichiestaCreazioneContributorDTO contributorDTO) throws ConnessioneFallitaException, RuntimeException {
         super(contributorDTO);
     }
 

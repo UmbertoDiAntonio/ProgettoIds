@@ -18,9 +18,6 @@ public interface ItinerarioRepository extends JpaRepository<Itinerario,Integer> 
     @Query("SELECT Count(i) FROM Itinerario i JOIN  i.percorso Where i.id = :id")
     Integer countNumeroTappeItinerario(@Param("id") int id);
 
-    @Query("SELECT i.percorso FROM Itinerario i  Where i.id = :id")
-    List<PuntoInteresse> findTappeByItinerario(@Param("id") int id);
-
     Optional<Itinerario> findByNome(String nome);
 
 }

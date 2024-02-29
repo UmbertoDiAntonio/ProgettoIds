@@ -1,6 +1,5 @@
 package ids.unicam.controller;
 
-import ids.unicam.Service.CuratoreService;
 import ids.unicam.Service.PoiService;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Punto;
@@ -25,11 +24,9 @@ import java.time.LocalTime;
 @RequestMapping("/PuntoInteresse")
 public class PuntoInteresseController {
     private final PoiService poiService;
-    private final CuratoreService curatoreService;
 
-    public PuntoInteresseController(PoiService poiService, CuratoreService curatoreService) {
+    public PuntoInteresseController(PoiService poiService) {
         this.poiService = poiService;
-        this.curatoreService = curatoreService;
     }
 
     @GetMapping("/getAll")
@@ -72,7 +69,7 @@ public class PuntoInteresseController {
     @Operation(summary = "Punto di interesse dall'identificatore univoco 'id'",
             description = "Punto di interesse dall'identificatore univoco 'id' salvato nel database.")
     public ResponseEntity<?> getById(
-            @Parameter(description = "Id del punto di interesse") @RequestParam Integer id) {
+            @Parameter(description = "Id del punto di interesse") @PathVariable Integer id) {
         return ResponseEntity.ok(poiService.getById(id));
     }
 

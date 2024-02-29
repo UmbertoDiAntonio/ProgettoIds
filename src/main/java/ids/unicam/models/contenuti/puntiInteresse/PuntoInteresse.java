@@ -107,13 +107,14 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
     public PuntoInteresse(PuntoInteresseDTO poiDTO) {
         this.comune = poiDTO.getCreatore().getComune();
 
-        logger.debug("Creato POI " + nome + " in " + pt);
+
         this.setStato(poiDTO.getCreatore() instanceof ContributorAutorizzato ? Stato.APPROVATO : Stato.IN_ATTESA);
         this.nome = poiDTO.getNome();
         this.pt = poiDTO.getCoordinate();
         this.orario = poiDTO.getOrario();
         this.tipo = poiDTO.getTipologiaPuntoInteresse();
         this.creatore = poiDTO.getCreatore();
+        logger.debug("Creato POI " + nome + " in " + pt);
     }
 
 
