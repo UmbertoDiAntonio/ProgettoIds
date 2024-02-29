@@ -1,7 +1,6 @@
 package ids.unicam.models.contenuti.puntiInteresse;
 
 import ids.unicam.models.Comune;
-import ids.unicam.models.DTO.PuntoInteresseDTO;
 import ids.unicam.models.Expirable;
 import ids.unicam.models.Punto;
 import ids.unicam.models.attori.Contributor;
@@ -61,16 +60,16 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
     @Getter
     private TipologiaPuntoInteresse tipo;
 
-    public PuntoInteresse(PuntoInteresseDTO poiDTO) {
-        this.comune = poiDTO.getCreatore().getComune();
+    public PuntoInteresse(String nome,Punto posizione, Orario orario,TipologiaPuntoInteresse tipologiaPuntoInteresse,Contributor autore) {
+        this.comune = autore.getComune();
 
 
-        this.setStato(poiDTO.getCreatore() instanceof ContributorAutorizzato ? Stato.APPROVATO : Stato.IN_ATTESA);
-        this.nome = poiDTO.getNome();
-        this.pt = poiDTO.getCoordinate();
-        this.orario = poiDTO.getOrario();
-        this.tipo = poiDTO.getTipologiaPuntoInteresse();
-        this.creatore = poiDTO.getCreatore();
+        this.setStato(autore instanceof ContributorAutorizzato ? Stato.APPROVATO : Stato.IN_ATTESA);
+        this.nome = nome;
+        this.pt = posizione;
+        this.orario = orario;
+        this.tipo = tipologiaPuntoInteresse;
+        this.creatore = autore;
         logger.debug("Creato POI " + nome + " in " + pt);
     }
 

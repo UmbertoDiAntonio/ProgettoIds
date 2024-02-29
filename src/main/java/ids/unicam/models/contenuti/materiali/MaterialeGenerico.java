@@ -1,6 +1,6 @@
 package ids.unicam.models.contenuti.materiali;
 
-import ids.unicam.models.DTO.MaterialeDTO;
+import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Stato;
 import jakarta.persistence.*;
@@ -30,9 +30,9 @@ public abstract class MaterialeGenerico {
     public MaterialeGenerico() {
     }
 
-    public MaterialeGenerico(MaterialeDTO materialeDTO) {
-        this.file = "./src/main/resources/materials/" + materialeDTO.getPathFile();
-        this.creatore = new TuristaAutenticato(materialeDTO.getCreatore());
+    public MaterialeGenerico(String file, TuristaAutenticatoDTO turistaAutenticatoDTO) {
+        this.file = "./src/main/resources/materials/" + file;
+        this.creatore = new TuristaAutenticato(turistaAutenticatoDTO);
     }
 
     /**

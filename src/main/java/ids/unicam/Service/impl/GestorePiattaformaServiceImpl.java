@@ -2,7 +2,6 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.Service.*;
 import ids.unicam.exception.ConnessioneFallitaException;
-import ids.unicam.models.DTO.ComuneDTO;
 import ids.unicam.models.DTO.ContributorDTO;
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.attori.*;
@@ -57,13 +56,13 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
                 throw new UnsupportedOperationException("Non puoi tornare un turista");
             }
             case CURATORE ->
-                    curatoreServiceImpl.save(new Curatore(new ContributorDTO(new ComuneDTO(contributor.getComune().getNome()), turistaAutenticatoDTO)));
+                    curatoreServiceImpl.save(new Curatore(new ContributorDTO(contributor.getComune(), turistaAutenticatoDTO)));
             case ANIMATORE ->
-                    animatoreServiceImpl.save(new Animatore(new ContributorDTO(new ComuneDTO(contributor.getComune().getNome()), turistaAutenticatoDTO)));
+                    animatoreServiceImpl.save(new Animatore(new ContributorDTO(contributor.getComune(), turistaAutenticatoDTO)));
             case CONTRIBUTOR_AUTORIZZATO ->
-                    contributorAutorizzatoServiceImpl.save(new ContributorAutorizzato(new ContributorDTO(new ComuneDTO(contributor.getComune().getNome()), turistaAutenticatoDTO)));
+                    contributorAutorizzatoServiceImpl.save(new ContributorAutorizzato(new ContributorDTO(contributor.getComune(), turistaAutenticatoDTO)));
             case CONTRIBUTOR ->
-                    contributorServiceImpl.save(new Contributor(new ContributorDTO(new ComuneDTO(contributor.getComune().getNome()), turistaAutenticatoDTO)));
+                    contributorServiceImpl.save(new Contributor(new ContributorDTO(contributor.getComune(), turistaAutenticatoDTO)));
         };
 
         poiServiceImpl.findAll().stream()

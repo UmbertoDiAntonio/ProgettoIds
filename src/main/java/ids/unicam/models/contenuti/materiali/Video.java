@@ -1,6 +1,6 @@
 package ids.unicam.models.contenuti.materiali;
 
-import ids.unicam.models.DTO.MaterialeDTO;
+import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.NoArgsConstructor;
@@ -14,8 +14,8 @@ import java.util.Base64;
 @Entity
 @DiscriminatorValue("Video")
 public class Video extends MaterialeGenerico {
-    public Video(MaterialeDTO materialeDTO) {
-        super(materialeDTO);
+    public Video(String filePath, TuristaAutenticatoDTO turistaAutenticatoDTO) {
+        super(filePath,turistaAutenticatoDTO);
     }
 
     @Override

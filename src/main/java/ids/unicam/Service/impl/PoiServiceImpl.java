@@ -4,7 +4,6 @@ import ids.unicam.DataBase.Repository.PoiRepository;
 import ids.unicam.Service.*;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Comune;
-import ids.unicam.models.DTO.PuntoInteresseDTO;
 import ids.unicam.models.Punto;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.TuristaAutenticato;
@@ -99,8 +98,7 @@ public class PoiServiceImpl implements PoiService {
         Optional<Contributor> oContributor = contributorService.getByUsername(usernameCreatore);
         if (oContributor.isPresent()) {
             Contributor contributor = oContributor.get();
-            PuntoInteresseDTO puntoInteresseDTO = new PuntoInteresseDTO(nomePOI, punto, new Orario(), tipologiaPuntoInteresse, contributor);
-            PuntoInteresse puntoInteresse = new PuntoInteresse(puntoInteresseDTO);
+            PuntoInteresse puntoInteresse = new PuntoInteresse(nomePOI, punto, new Orario(), tipologiaPuntoInteresse, contributor);
             tagServiceImpl.aggiungiTag(puntoInteresse, tag);
             if (!puntoInteresse.getCreatore().getComune().verificaCoordinateComune(puntoInteresse.getPt())) {
                 throw new FuoriComuneException("Posizione Punto di Interesse Fuori dall'area del comune");

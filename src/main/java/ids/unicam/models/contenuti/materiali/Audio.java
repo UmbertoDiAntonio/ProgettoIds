@@ -1,6 +1,6 @@
 package ids.unicam.models.contenuti.materiali;
 
-import ids.unicam.models.DTO.MaterialeDTO;
+import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.NoArgsConstructor;
@@ -17,8 +17,8 @@ import java.util.Base64;
 @Entity
 @DiscriminatorValue("Audio")
 public class Audio extends MaterialeGenerico {
-    public Audio(MaterialeDTO materialeDTO) {
-        super(materialeDTO);
+    public Audio(String filePath, TuristaAutenticatoDTO turistaAutenticatoDTO) {
+        super(filePath,turistaAutenticatoDTO);
     }
 
     public static byte[] audioToByteArray(AudioInputStream audioInputStream) throws IOException {

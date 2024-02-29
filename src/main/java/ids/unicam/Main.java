@@ -13,7 +13,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.Timer;
 
 
 @RestController

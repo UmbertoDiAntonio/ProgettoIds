@@ -1,6 +1,6 @@
 package ids.unicam.models.contenuti.materiali;
 
-import ids.unicam.models.DTO.MaterialeDTO;
+import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.NoArgsConstructor;
@@ -16,8 +16,8 @@ import java.util.Base64;
 @Entity
 @DiscriminatorValue("Foto")
 public class Foto extends MaterialeGenerico {
-    public Foto(MaterialeDTO materialeDTO) {
-        super(materialeDTO);
+    public Foto(String filePath, TuristaAutenticatoDTO turistaAutenticatoDTO) {
+        super(filePath,turistaAutenticatoDTO);
     }
 
     public static String imageToBase64String(BufferedImage image) throws IOException {

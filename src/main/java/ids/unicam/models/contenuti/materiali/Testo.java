@@ -1,6 +1,6 @@
 package ids.unicam.models.contenuti.materiali;
 
-import ids.unicam.models.DTO.MaterialeDTO;
+import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.NoArgsConstructor;
@@ -13,8 +13,8 @@ import java.io.IOException;
 @Entity
 @DiscriminatorValue("Testo")
 public class Testo extends MaterialeGenerico {
-    public Testo(MaterialeDTO materialeDTO) {
-        super(materialeDTO);
+    public Testo(String filePath, TuristaAutenticatoDTO turistaAutenticatoDTO) {
+        super(filePath,turistaAutenticatoDTO);
     }
 
     public static String readFileToString(String filePath) throws IOException {

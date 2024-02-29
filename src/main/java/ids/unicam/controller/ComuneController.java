@@ -4,7 +4,6 @@ import ids.unicam.Service.ComuneService;
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.models.Comune;
-import ids.unicam.models.DTO.ComuneDTO;
 import ids.unicam.models.attori.Ruolo;
 import ids.unicam.models.attori.TuristaAutenticato;
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,7 +53,7 @@ public class ComuneController {
     public ResponseEntity<?> create(
             @Parameter(description = "nome del comune") @RequestParam String nomeComune) {
         try {
-            return ResponseEntity.ok(comuneService.creaComune(new Comune(new ComuneDTO(nomeComune))));
+            return ResponseEntity.ok(comuneService.creaComune(new Comune(nomeComune)));
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }

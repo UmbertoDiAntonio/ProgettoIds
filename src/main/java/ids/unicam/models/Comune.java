@@ -2,7 +2,6 @@ package ids.unicam.models;
 
 import ids.unicam.OSM.RichiestaOSM;
 import ids.unicam.exception.ConnessioneFallitaException;
-import ids.unicam.models.DTO.ComuneDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,12 +24,12 @@ public class Comune {
     private Punto posizione;
 
     /**
-     * @param comuneDTO Nome del Comune
+     * @param nomeComune Nome del Comune
      * @throws IllegalArgumentException se il nome del comune non corrisponde a nessun comune
      * @throws RuntimeException         se non è possibile raggiungere il sistema OSM
      */
-    public Comune(ComuneDTO comuneDTO) throws ConnessioneFallitaException {
-        this.posizione = RichiestaOSM.getCoordinateDaComune(comuneDTO.getNome());
+    public Comune(String nomeComune) throws ConnessioneFallitaException {
+        this.posizione = RichiestaOSM.getCoordinateDaComune(nomeComune);
         if (posizione == null) {
             logger.error("Coordinate comune nulle");
         }
@@ -39,7 +38,7 @@ public class Comune {
         if (this.nome == null)
             throw new RuntimeException("Impossibile stabilire la connessione con il sistema OSM");
 
-        if (!this.nome.equalsIgnoreCase(comuneDTO.getNome()))
+        if (!this.nome.equalsIgnoreCase(nomeComune))
             throw new IllegalArgumentException("Il nome del comune ricercato non corrisponde con nessun comune reale");
     }
 

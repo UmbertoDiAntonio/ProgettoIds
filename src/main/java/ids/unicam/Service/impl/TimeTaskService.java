@@ -3,13 +3,8 @@ package ids.unicam.Service.impl;
 import ids.unicam.Service.ComuneService;
 import ids.unicam.Service.ContestService;
 import ids.unicam.Service.PoiService;
-import ids.unicam.Service.impl.AnimatoreServiceImpl;
-import ids.unicam.Service.impl.ComuneServiceImpl;
-import ids.unicam.Service.impl.ContestServiceImpl;
-import ids.unicam.Service.impl.PoiServiceImpl;
 import ids.unicam.models.Comune;
 import ids.unicam.models.contenuti.Contest;
-
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
