@@ -4,7 +4,6 @@ package ids.unicam.controller;
 import ids.unicam.Service.AnimatoreService;
 import ids.unicam.Service.ContestService;
 import ids.unicam.exception.ContestException;
-import ids.unicam.models.DTO.RichiestaCreazioneContestDTO;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.contenuti.Contest;
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,8 +53,7 @@ public class ContestController {
         if(oAnimatore.isEmpty())
             return new ResponseEntity<>("username creatore non valido", HttpStatus.BAD_REQUEST);
         Animatore creatore = oAnimatore.get();
-        RichiestaCreazioneContestDTO contestDTO = new RichiestaCreazioneContestDTO(nomeContest, obiettivo, creatore, open);
-        return ResponseEntity.ok(contestService.creaContest(new Contest(contestDTO)));
+        return ResponseEntity.ok(contestService.creaContest(new Contest(nomeContest, obiettivo, creatore, open)));
     }
 
 
@@ -111,5 +109,21 @@ public class ContestController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PutMapping("/annullaInvito/{idInvito}")
+    @Operation(summary = "Annulla un invito",
+            description = "Annulla la validità di un invito.")
+    public ResponseEntity<?> annullaInvito(
+            @Parameter(description = "username dell'animatore")@RequestBody String usernameAnimatore,
+            @Parameter(description = "id del materiale da approvare")@PathVariable Integer idInvito ){
+        try {
+            animatoreService.annullaInvito(usernameAnimatore,  idInvito);
+            return ResponseEntity.ok("Invito "+idInvito+" annullato");
+        } catch (ContestException | IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
 
 }

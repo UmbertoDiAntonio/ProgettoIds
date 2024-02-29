@@ -1,7 +1,5 @@
 package ids.unicam.Service;
 
-import ids.unicam.models.DTO.InvitoDTO;
-import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.notifiche.Notifica;
@@ -13,7 +11,7 @@ import java.util.Optional;
 
 public interface TuristaAutenticatoService {
 
-    void accettaInvitoContest(TuristaAutenticatoDTO turistaDTO, InvitoDTO invitoDTO);
+    void accettaInvitoContest(TuristaAutenticato turistaAutenticato, Invito invito);
 
     void rimuoviPreferito(String usernameTurista, int id) throws IllegalArgumentException;
 

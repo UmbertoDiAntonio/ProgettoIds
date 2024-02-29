@@ -16,14 +16,4 @@ public class TuristaAutenticatoDTO {
     private LocalDate dataNascita;
     private String password;
     private String username;
-    //PREFERITI?
-
-    public TuristaAutenticatoDTO(TuristaAutenticato turistaAutenticato){
-        this.nome=turistaAutenticato.getNome();
-        this.cognome=turistaAutenticato.getCognome();
-        this.dataNascita=turistaAutenticato.getDataNascita();
-        this.password=turistaAutenticato.getPassword();
-        this.username=turistaAutenticato.getUsername();
-
-    }
 }

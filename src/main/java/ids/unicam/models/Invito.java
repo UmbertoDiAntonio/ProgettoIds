@@ -1,6 +1,5 @@
 package ids.unicam.models;
 
-import ids.unicam.models.DTO.InvitoDTO;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
 import jakarta.persistence.*;
@@ -26,15 +25,18 @@ public class Invito {
     @Getter
     @OneToOne
     private TuristaAutenticato invitato=null;
+    @Getter
+    @Setter
+    private boolean valido=true;
 
     public @NotNull Contest getContest() {
         return contest;
     }
 
 
-    public Invito(InvitoDTO invitoDTO) {
-        this.contest = invitoDTO.getContest();
-        this.invitato = invitoDTO.getInvitato();
+    public Invito(Contest contest, TuristaAutenticato invitato) {
+        this.contest = contest;
+        this.invitato = invitato;
     }
 }
 

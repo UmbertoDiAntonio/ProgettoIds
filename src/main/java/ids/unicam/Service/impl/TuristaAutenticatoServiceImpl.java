@@ -2,8 +2,6 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.TuristaAutenticatoRepository;
 import ids.unicam.Service.TuristaAutenticatoService;
-import ids.unicam.models.DTO.InvitoDTO;
-import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.Invito;
 import ids.unicam.models.Observer;
 import ids.unicam.models.attori.TuristaAutenticato;
@@ -51,8 +49,8 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
 
     @Transactional
     @Override
-    public void accettaInvitoContest(TuristaAutenticatoDTO turistaDTO, InvitoDTO invitoDTO) throws IllegalArgumentException {
-        invitoServiceImpl.accettaInvito(turistaDTO, invitoDTO);
+    public void accettaInvitoContest(TuristaAutenticato turistaAutenticato, Invito invito) throws IllegalArgumentException {
+        invitoServiceImpl.accettaInvito(turistaAutenticato, invito);
         //repository.save(new TuristaAutenticato(turistaDTO));
     }
 

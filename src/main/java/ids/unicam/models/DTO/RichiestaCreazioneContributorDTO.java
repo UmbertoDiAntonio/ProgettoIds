@@ -10,5 +10,4 @@ import lombok.NoArgsConstructor;
 public class RichiestaCreazioneContributorDTO {
     private ComuneDTO comune;
     private TuristaAutenticatoDTO turistaDTO;
-    //private Ruolo ruolo;
 }

@@ -1,7 +1,6 @@
 package ids.unicam.models.contenuti;
 
 import ids.unicam.models.Comune;
-import ids.unicam.models.DTO.RichiestaCreazioneItinerarioDTO;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -28,9 +27,9 @@ public class Itinerario {
     @JoinColumn(name = "nome_comune")
     private Comune comune;
 
-    public Itinerario(RichiestaCreazioneItinerarioDTO itinerarioDTO) {
-        this.nome = itinerarioDTO.getNome();
-        this.comune = itinerarioDTO.getComune();
+    public Itinerario(String nome,Comune comune) {
+        this.nome = nome;
+        this.comune = comune;
     }
 }
 

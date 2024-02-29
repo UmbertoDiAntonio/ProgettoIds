@@ -4,7 +4,6 @@ import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.Service.InvitoService;
 import ids.unicam.Service.TuristaAutenticatoService;
 import ids.unicam.Service.impl.PoiServiceImpl;
-import ids.unicam.models.DTO.InvitoDTO;
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.TuristaAutenticato;
@@ -93,7 +92,7 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
         }
         Invito invito = oInvito.get();
         try {
-            turistaAutenticatoService.accettaInvitoContest(new TuristaAutenticatoDTO(turista), new InvitoDTO(invito.getContest(), invito.getInvitato()));
+            turistaAutenticatoService.accettaInvitoContest(turista, invito);
             return ResponseEntity.ok("Il turista con id '" + usernameTurista + "' ha accettato l'invito con id '" + idInvito + "' .");
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

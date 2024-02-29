@@ -24,4 +24,5 @@ public interface AnimatoreService {
 
     void terminaContest(String idAnimatore, Integer idContest, Integer idMateriale) throws ContestException,UnsupportedOperationException,IllegalArgumentException;
 
+    void annullaInvito(String usernameAnimatore, int idInvito) throws ContestException,IllegalArgumentException;
 }

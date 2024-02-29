@@ -5,7 +5,6 @@ import ids.unicam.Service.AnimatoreService;
 import ids.unicam.Service.MaterialeService;
 import ids.unicam.Service.TuristaAutenticatoService;
 import ids.unicam.exception.ContestException;
-import ids.unicam.models.DTO.InvitoDTO;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
@@ -49,15 +48,15 @@ public class AnimatoreServiceImpl implements AnimatoreService {
     }
 
     @Override
-    public void terminaContest(String idAnimatore, Integer idContest, Integer idMateriale) throws ContestException,UnsupportedOperationException,IllegalArgumentException {
+    public void terminaContest(String idAnimatore, Integer idContest, Integer idMateriale) throws ContestException, UnsupportedOperationException, IllegalArgumentException {
         Optional<Animatore> oAnimatore = getById(idAnimatore);
         if (oAnimatore.isPresent()) {
             Animatore animatore = oAnimatore.get();
             Optional<Contest> oContest = contestService.findById(idContest);
             if (oContest.isPresent()) {
                 Contest contest = oContest.get();
-                if(animatore.equals(contest.getCreatore()))
-                    contestService.terminaContest(contest,idMateriale);
+                if (animatore.equals(contest.getCreatore()))
+                    contestService.terminaContest(contest, idMateriale);
                 else {
                     logger.error("L'animatore deve essere il creatore del contest");
                     throw new UnsupportedOperationException("L'animatore deve essere il creatore del contest");
@@ -66,13 +65,34 @@ public class AnimatoreServiceImpl implements AnimatoreService {
                 logger.error("id Contest non valido");
                 throw new IllegalArgumentException("id Contest non valido");
             }
-
         } else {
             logger.error("Username Animatore non valido");
             throw new IllegalArgumentException("Username Animatore non valido");
-
         }
 
+    }
+
+    @Override
+    public void annullaInvito(String usernameAnimatore, int idInvito) throws IllegalArgumentException, ContestException {
+        Optional<Animatore> oAnimatore = getById(usernameAnimatore);
+        if (oAnimatore.isPresent()) {
+            Animatore animatore = oAnimatore.get();
+            Optional<Invito> oInvito = invitoServiceImpl.findById(idInvito);
+            if (oInvito.isPresent()) {
+                Invito invito = oInvito.get();
+                if(invito.getContest().getCreatore().equals(animatore)){
+                    invito.setValido(false);
+                }else {
+                    throw new ContestException("Devi essere il creatore del contest");
+                }
+            } else {
+                logger.error("id Invito non valido");
+                throw new IllegalArgumentException("id Invito non valido");
+            }
+        } else {
+            logger.error("Username Animatore non valido");
+            throw new IllegalArgumentException("Username Animatore non valido");
+        }
     }
 
     @Override
@@ -114,7 +134,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
                         logger.error("Il turista autenticato fa gia' parte del contest");
                         throw new ContestException("Il turista autenticato fa gia' parte del contest");
                     } else
-                        return invitoServiceImpl.save(new Invito(new InvitoDTO(contest, turistaAutenticato)));
+                        return invitoServiceImpl.save(new Invito(contest, turistaAutenticato));
                 } else {
                     logger.error("username del turista invitato non valido");
                     throw new IllegalArgumentException("username del turista invitato non valido");

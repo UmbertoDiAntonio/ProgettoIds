@@ -112,6 +112,7 @@ public class CreazioneTabelleDatabase {
                         "id INT PRIMARY KEY AUTO_INCREMENT," +
                         "contest_id INT," +
                         "invitato_username VARCHAR(50)," +
+                        "valido BOOLEAN NOT NULL," +
                         "FOREIGN KEY (contest_id) REFERENCES CONTEST(id))";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();

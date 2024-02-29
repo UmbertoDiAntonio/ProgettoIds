@@ -298,7 +298,7 @@ public class JUnitContenutiTests {
          */
         {
 
-            Contest contest = contestService.creaContest(new Contest(new RichiestaCreazioneContestDTO("Monumento", "Foto più bella", animatore, true)));
+            Contest contest = contestService.creaContest(new Contest("Monumento", "Foto più bella", animatore, true));
 
             assertEquals(numeroContestCreatiDaAnimatore + 1, contestService.getContestByCreatore(animatore).size());
 
@@ -324,7 +324,7 @@ public class JUnitContenutiTests {
          * Accettazione invito da parte del turista
          */
         {
-            Contest contest = contestService.creaContest(new Contest(new RichiestaCreazioneContestDTO("Monumento", "Foto più bella", animatore, false)));
+            Contest contest = contestService.creaContest(new Contest("Monumento", "Foto più bella", animatore, false));
             assertEquals(numeroContestCreatiDaAnimatore + 2, contestService.getContestByCreatore(animatore).size());
 
             TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO("andrea", "neri", LocalDate.of(2000, Calendar.NOVEMBER, 5), "8Unica@", "user8"));
@@ -335,14 +335,9 @@ public class JUnitContenutiTests {
                 throw new RuntimeException(e);
             }
 
-            assertTrue(invitoService.isValid(new InvitoDTO(invito.getContest(), invito.getInvitato())));
+            assertTrue(invitoService.isValid(invito));
 
-            turistaAutenticatoService.accettaInvitoContest(new TuristaAutenticatoDTO(
-                    turistaAutenticato.getNome(),
-                    turistaAutenticato.getCognome(),
-                    turistaAutenticato.getDataNascita(),
-                    turistaAutenticato.getPassword(),
-                    turistaAutenticato.getUsername()), new InvitoDTO(invito.getContest(), invito.getInvitato()));
+            turistaAutenticatoService.accettaInvitoContest(turistaAutenticato, invito);
 
             assertEquals(1, contestService.getPartecipanti(contest).size());
             // assertEquals(contestService.getContestByCreatore(animatore).getLast(),
@@ -373,7 +368,7 @@ public class JUnitContenutiTests {
             throw new IllegalArgumentException("errore");
 
 
-        Contest contest = contestService.creaContest(new Contest(new RichiestaCreazioneContestDTO("Monumento", "Foto più bella", animatore, true)));
+        Contest contest = contestService.creaContest(new Contest("Monumento", "Foto più bella", animatore, true));
 
         MaterialeGenerico descrizione = materialeService.crea("./testFoto", TipologiaMateriale.FOTO, turistaAutenticato);
         try {
@@ -459,7 +454,7 @@ public class JUnitContenutiTests {
 
 
         int numeroContest = contestService.getContestByCreatore(animatore).size();
-        Contest contest = contestService.creaContest(new Contest(new RichiestaCreazioneContestDTO("contest", "spiaggia", animatore, true)));
+        Contest contest = contestService.creaContest(new Contest("contest", "spiaggia", animatore, true));
         assertEquals(numeroContest + 1, contestService.getContestByCreatore(animatore).size());
         curatoreServiceImpl.eliminaContest(curatore.getUsername(), contest.getId());
         assertEquals(numeroContest, contestService.getContestByCreatore(animatore).size());

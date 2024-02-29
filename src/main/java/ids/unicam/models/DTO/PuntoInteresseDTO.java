@@ -19,12 +19,4 @@ public class PuntoInteresseDTO {
     private Orario orario;
     private TipologiaPuntoInteresse tipologiaPuntoInteresse;
     private Contributor creatore;
-
-    public PuntoInteresseDTO(PuntoInteresse puntoInteresse) {
-        this.nome = puntoInteresse.getNome();
-        this.coordinate = puntoInteresse.getPt();
-        this.orario = puntoInteresse.getOrario();
-        this.tipologiaPuntoInteresse = puntoInteresse.getTipo();
-        this.creatore = puntoInteresse.getCreatore();
-    }
 }

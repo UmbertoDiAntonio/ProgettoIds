@@ -2,8 +2,6 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.InvitoRepository;
 import ids.unicam.Service.InvitoService;
-import ids.unicam.models.DTO.InvitoDTO;
-import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.TuristaAutenticato;
 import jakarta.transaction.Transactional;
@@ -53,10 +51,10 @@ public class InvitoServiceImpl implements InvitoService {
 
     @Transactional
     @Override
-    public void accettaInvito(TuristaAutenticatoDTO turistaDTO, InvitoDTO invitoDTO) throws IllegalArgumentException{
-        if (isValid(invitoDTO)) {
-            if (invitoDTO.getInvitato().getUsername().equals(turistaDTO.getUsername())) {
-                contestServiceImpl.aggiungiPartecipante(invitoDTO.getContest(), new TuristaAutenticato(turistaDTO));
+    public void accettaInvito(TuristaAutenticato turistaAutenticato, Invito invito) throws IllegalArgumentException{
+        if (isValid(invito)) {
+            if (invito.getInvitato().getUsername().equals(turistaAutenticato.getUsername())) {
+                contestServiceImpl.aggiungiPartecipante(invito.getContest(), turistaAutenticato);
             } else {
                 logger.error("Non sei Invitato");
                 throw new IllegalArgumentException("Non sei Invitato");
@@ -73,8 +71,10 @@ public class InvitoServiceImpl implements InvitoService {
     }
 
     @Override
-    public boolean isValid(InvitoDTO invitoDTO) {
-        return !invitoDTO.getContest().isOpen() || !contestServiceImpl.getPartecipanti(invitoDTO.getContest()).contains(invitoDTO.getInvitato());
+    public boolean isValid(Invito invito) {
+        return !invito.getContest().isOpen()
+                && !contestServiceImpl.getPartecipanti(invito.getContest()).contains(invito.getInvitato())
+                && invito.isValido();
     }
 
     @Override

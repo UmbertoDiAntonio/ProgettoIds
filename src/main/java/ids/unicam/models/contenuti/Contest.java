@@ -1,7 +1,6 @@
 package ids.unicam.models.contenuti;
 
 import ids.unicam.models.Comune;
-import ids.unicam.models.DTO.RichiestaCreazioneContestDTO;
 import ids.unicam.models.Expirable;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
@@ -59,12 +58,12 @@ public class Contest implements Contenitore, Taggable, Expirable {
     @Setter
     private MaterialeGenerico materialeVincitore = null;
 
-    public Contest(RichiestaCreazioneContestDTO contestDTO) {
-        this.open = contestDTO.isOpen();
-        this.obiettivo = contestDTO.getObiettivo();
-        this.comune = contestDTO.getCreatore().getComune();
-        this.creatore = contestDTO.getCreatore();
-        this.nomeContest = contestDTO.getNomeContest();
+    public Contest(String nomeContest,String obiettivo,Animatore creatore, boolean open) {
+        this.open = open;
+        this.obiettivo = obiettivo;
+        this.comune = creatore.getComune();
+        this.creatore = creatore;
+        this.nomeContest = nomeContest;
     }
 
     @Override

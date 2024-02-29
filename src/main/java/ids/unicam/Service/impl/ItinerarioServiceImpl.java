@@ -4,7 +4,6 @@ import ids.unicam.DataBase.Repository.ItinerarioRepository;
 import ids.unicam.Service.ItinerarioService;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Comune;
-import ids.unicam.models.DTO.RichiestaCreazioneItinerarioDTO;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
@@ -161,7 +160,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
                 }
             }
 
-            return save(new Itinerario(new RichiestaCreazioneItinerarioDTO(comune, nomeItinerario)));
+            return save(new Itinerario(nomeItinerario,comune));
         } else {
             logger.error("Il contributor non e' valido");
             throw new IllegalArgumentException("Il contributor non e' valido");
