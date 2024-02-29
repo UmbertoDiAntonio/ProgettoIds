@@ -115,7 +115,8 @@ public class CuratoreServiceImpl implements CuratoreService {
             Optional<MaterialeGenerico> oMateriale = materialeServiceImpl.getById(idMaterialeGenerico);
             if (oMateriale.isPresent()) {
                 MaterialeGenerico materialeGenerico = oMateriale.get();
-                if (false)//TODO
+                System.out.println(poiServiceImpl.getPoiContainingMaterial(materialeGenerico)+" è il POI con quel materiale");
+                if (!poiServiceImpl.getPoiContainingMaterial(materialeGenerico).getComune().equals(curatore.getComune()))
                     throw new FuoriComuneException("curatore non puo' operare fuori dal suo comune");
                 if (materialeGenerico.getStato() != Stato.IN_ATTESA)
                     throw new UnsupportedOperationException("materiale già settato");
@@ -235,26 +236,6 @@ public class CuratoreServiceImpl implements CuratoreService {
         }
     }
 
-    @Override
-    public void condividi(String usernameCuratore, Integer idPunto) throws IllegalArgumentException, UnsupportedOperationException {
-        Optional<Curatore> oCuratore = getById(usernameCuratore);
-        if (oCuratore.isPresent()) {
-            Curatore curatore = oCuratore.get();
-            Optional<PuntoInteresse> oPoi = poiServiceImpl.findById(idPunto);
-            if (oPoi.isPresent()) {
-                PuntoInteresse puntoInteresse = oPoi.get();
-                throw new UnsupportedOperationException(puntoInteresse.getId() + " non può ancora essere condiviso da " + curatore.getUsername());
-                //TODO
-            } else {
-                logger.error("id del punto di interesse non valido");
-                throw new IllegalArgumentException("id del punto di interesse non valido");
-            }
-        } else {
-            logger.error("username non valido");
-            throw new IllegalArgumentException("username non valido");
-        }
-
-    }
 
 
     @Override

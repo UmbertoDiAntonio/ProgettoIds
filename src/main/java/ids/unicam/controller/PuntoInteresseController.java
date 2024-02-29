@@ -132,19 +132,6 @@ public class PuntoInteresseController {
 
     }
 
-    @PutMapping("/condividi/{idPunto}")
-    @Operation(summary = "Condividi punto di interesse",
-            description = "Condivisione del punto di interesse da parte di un utente.")
-    public ResponseEntity<?> condividi(
-            @Parameter(description = "inserire username dell'utente") @RequestParam String usernameCuratore,
-            @Parameter(description = "inserire l'id del punto di interesse da condividere") @PathVariable Integer idPunto) {
-        try {
-            curatoreService.condividi(usernameCuratore, idPunto);
-            return ResponseEntity.ok("L'utente con id '" + usernameCuratore + "' ha condiviso il punto di interesse con id '" + usernameCuratore + "' .");
-        } catch (IllegalArgumentException | UnsupportedOperationException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
 
     @GetMapping("/materiali/{idPunto}")
     @Operation(summary = "Elenco dei materiali di un punto di interesse",

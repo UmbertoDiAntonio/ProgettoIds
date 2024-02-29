@@ -22,9 +22,6 @@ public interface CuratoreService {
     void eliminaContest(String usernameCuratore,Integer idContest) throws IllegalArgumentException, FuoriComuneException;
     void eliminaMateriale(String usernameCuratore, int idMateriale) throws IllegalArgumentException, FuoriComuneException;
 
-    void condividi(String usernameCuratore, Integer idPunto)throws IllegalArgumentException;
-
-
 
 
     List<Curatore> getAll();

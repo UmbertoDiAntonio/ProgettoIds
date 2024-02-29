@@ -134,23 +134,6 @@ public class JUnitUtentiTest {
         assertEquals(1, turistaAutenticatoService.findPreferiti(turistaAutenticato.getUsername()).size());
     }
 
-    @Test
-    public void condividiContenuto() throws ConnessioneFallitaException, FuoriComuneException {
-
-        Comune comune ;
-        try {
-            comune = comuneService.creaComune(new Comune(new ComuneDTO("Milano")));
-        } catch (ConnessioneFallitaException e) {
-            throw new RuntimeException(e);
-        }
-        TuristaAutenticato turista = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(new ComuneDTO(comune.getNome()),new TuristaAutenticatoDTO( "mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 17), "6Unico@", "user6")),Ruolo.CURATORE);
-        if (!(turista instanceof Curatore curatore))
-            throw new IllegalArgumentException("errore");
-        PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse(new PuntoInteresseDTO("Teatro", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.INTRATTENIMENTO, curatore)));
-
-        assertThrows(UnsupportedOperationException.class, () -> curatoreServiceImpl.condividi(curatore.getUsername(), puntoInteresse.getId()));
-        //TODO test condivisione contenuto
-    }
 
     @Test
     public void metodoCercaTurista() throws ConnessioneFallitaException, FuoriComuneException {

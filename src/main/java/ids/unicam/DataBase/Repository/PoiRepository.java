@@ -35,4 +35,7 @@ public interface PoiRepository extends JpaRepository<PuntoInteresse,Integer> {
 
     @Query("select p.stato from PuntoInteresse p where p.id=:idPunto")
     Optional<Stato> getStatoById(int idPunto);
+
+
+    PuntoInteresse findPuntoInteresseByMaterialiContaining(MaterialeGenerico materialeGenerico);
 }
