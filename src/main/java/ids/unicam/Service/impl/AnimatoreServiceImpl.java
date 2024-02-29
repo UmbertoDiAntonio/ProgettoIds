@@ -29,7 +29,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
 
 
     @Autowired
-    public AnimatoreServiceImpl(AnimatoreRepository repository, ContestServiceImpl contestService, InvitoServiceImpl invitoServiceImpl, MaterialeServiceImpl materialeServiceImpl, TuristaAutenticatoService turistaAutenticatoService, MaterialeService materialeService) {
+    public AnimatoreServiceImpl(AnimatoreRepository repository, ContestServiceImpl contestService, InvitoServiceImpl invitoServiceImpl, TuristaAutenticatoService turistaAutenticatoService, MaterialeService materialeService) {
         this.repository = repository;
         this.contestService = contestService;
         this.invitoServiceImpl = invitoServiceImpl;

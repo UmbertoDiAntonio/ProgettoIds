@@ -260,13 +260,11 @@ public class JUnitContenutiTests {
 
 
             assertTrue(itinerarioService.aggiungiTappa(contributorAutorizzato.getUsername(), itinerario1.getId(), nuovoPunto1.getId()));
-            //itinerarioService.aggiungiTappa(itinerario1, nuovoPunto);
 
             assertEquals(numeroItinerariIniziale + 1, itinerarioService.findAllByComune(comune).size());
             assertEquals(1, itinerarioService.getNumeroTappe(itinerario1));
 
             itinerarioService.aggiungiTappa(contributorAutorizzato.getUsername(), itinerario1.getId(), nuovoPunto2.getId(), nuovoPunto3.getId());
-            //itinerarioService.aggiungiTappa(itinerario1, nuovoPunto1, nuovoPunto2, nuovoPunto3);
             assertEquals(numeroItinerariIniziale + 1, itinerarioService.findAllByComune(comune).size());
 
             assertEquals(3, itinerarioService.getNumeroTappe(itinerario1));
@@ -340,8 +338,6 @@ public class JUnitContenutiTests {
             turistaAutenticatoService.accettaInvitoContest(turistaAutenticato, invito);
 
             assertEquals(1, contestService.getPartecipanti(contest).size());
-            // assertEquals(contestService.getContestByCreatore(animatore).getLast(),
-            // contestService.getContestByPartecipante(turistaAutenticato).getLast());
         }
     }
 
