@@ -88,10 +88,6 @@ public class ComuneServiceImpl implements ComuneService {
         return curatoreServiceImpl.findByNomeComune(nome_comune);
     }
 
-    @Override
-    public void rimuoviContributor(String id) {
-        contributorServiceImpl.deleteById(id);
-    }
 
     @Override
     public Optional<Comune> getComuneByNome(String nomeComune) throws IllegalArgumentException {

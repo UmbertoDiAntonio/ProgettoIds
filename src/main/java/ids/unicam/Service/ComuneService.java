@@ -21,8 +21,6 @@ public interface ComuneService {
 
     List<Curatore> getCuratoriDelComune(String nome_comune);
 
-    void rimuoviContributor(String id);
-
     Optional<Comune> getComuneByNome(String nomeComune) throws IllegalArgumentException;
 
     List<PuntoInteresse> getPuntiInteresseNelComune(String nomeComune) throws IllegalArgumentException;
