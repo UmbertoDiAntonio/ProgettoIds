@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MaterialeService {
+    MaterialeGenerico save(MaterialeGenerico materialeGenerico);
+
     void approvaMateriale(MaterialeGenerico materialeGenerico, Stato stato);
 
     List<MaterialeGenerico> getAll();

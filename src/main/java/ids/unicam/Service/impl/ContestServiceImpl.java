@@ -2,6 +2,7 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.ContestRepository;
 import ids.unicam.Service.ContestService;
+import ids.unicam.Service.MaterialeService;
 import ids.unicam.exception.ContestException;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Comune;
@@ -20,21 +21,23 @@ import java.util.Optional;
 @Service
 public class ContestServiceImpl implements ContestService {
     private final ContestRepository repository;
-    private final MaterialeServiceImpl materialeService;
-    private final NotificaServiceImpl notificaService;
+    private final MaterialeService materialeService;
+    private final NotificaService notificaService;
 
     @Autowired
-    public ContestServiceImpl(ContestRepository repository, MaterialeServiceImpl materialeService, NotificaServiceImpl notificaService) {
+    public ContestServiceImpl(ContestRepository repository, MaterialeService materialeService, NotificaService notificaService) {
         this.repository = repository;
         this.materialeService = materialeService;
         this.notificaService = notificaService;
     }
 
+
     public void deleteById(int id) {
         repository.deleteById(id);
     }
 
-    Contest save(Contest contest) {
+    @Override
+    public Contest save(Contest contest) {
         return repository.save(contest);
     }
 
@@ -100,6 +103,7 @@ public class ContestServiceImpl implements ContestService {
         save(contest);
     }
 
+    @Override
     @Transactional
     public void rimuoviPartecipante(Contest contest, TuristaAutenticato turistaAutenticato) throws IllegalArgumentException {
         contest.getPartecipanti().remove(turistaAutenticato);
@@ -129,7 +133,8 @@ public class ContestServiceImpl implements ContestService {
         save(contest);
     }
 
-    public void setFineContest(Contest contest,LocalDate dataFine){
+    @Override
+    public void setFineContest(Contest contest, LocalDate dataFine){
         contest.setExpireDate(dataFine);
         save(contest);
     }
@@ -138,7 +143,6 @@ public class ContestServiceImpl implements ContestService {
     /**
      * Termina un Contest, successivamente l'animatore dovrà decretare il vincitore
      * @param contest il contest da terminare
-     * @throws ContestException
      */
     @Transactional
     @Override
@@ -157,17 +161,19 @@ public class ContestServiceImpl implements ContestService {
 
     }
 
+    @Override
     public Optional<Contest> getContestContainingMaterial(MaterialeGenerico materialeGenerico) {
         return repository.findContestByMaterialiContaining(materialeGenerico);
     }
 
+    @Override
     @Transactional
     public void checkIfIsExpired(Contest contest) {
         if(contest.isExpired()){
             terminaContest(contest);
         }
     }
-
+    @Override
     public List<Contest> getContestByComune(Comune comune) {
         return repository.findContestByComune(comune);
     }

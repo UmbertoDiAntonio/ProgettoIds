@@ -28,17 +28,17 @@ public class ContributorAutorizzatoServiceImpl implements ContributorAutorizzato
         return repository.findById(username);
     }
 
-    ContributorAutorizzato save(ContributorAutorizzato contributorAutorizzato) {
-        return  repository.save(contributorAutorizzato);
+    @Override
+    public ContributorAutorizzato save(ContributorAutorizzato contributorAutorizzato) {
+        return repository.save(contributorAutorizzato);
     }
-
-
 
     @Override
     public List<ContributorAutorizzato> getAll() {
         return repository.findAll();
     }
 
+    @Override
     public List<ContributorAutorizzato> findByNomeComune(String nomeComune) {
         return repository.findByComuneNome(nomeComune);
     }

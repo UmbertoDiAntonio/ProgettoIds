@@ -1,6 +1,8 @@
 package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.TuristaAutenticatoRepository;
+import ids.unicam.Service.ContestService;
+import ids.unicam.Service.InvitoService;
 import ids.unicam.Service.TuristaAutenticatoService;
 import ids.unicam.exception.ContestException;
 import ids.unicam.models.Invito;
@@ -21,18 +23,18 @@ import static ids.unicam.Main.logger;
 @Service
 public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService, Observer {
     private final TuristaAutenticatoRepository repository;
-    private final ContestServiceImpl contestServiceImpl;
-    private final InvitoServiceImpl invitoServiceImpl;
-    private final NotificaServiceImpl notificaService;
-
+    private final ContestService contestServiceImpl;
+    private final InvitoService invitoServiceImpl;
+    private final NotificaService notificaService;
 
     @Autowired
-    public TuristaAutenticatoServiceImpl(TuristaAutenticatoRepository repository, ContestServiceImpl contestServiceImpl, InvitoServiceImpl invitoServiceImpl, NotificaServiceImpl notificaService) {
+    public TuristaAutenticatoServiceImpl(TuristaAutenticatoRepository repository, ContestService contestServiceImpl, InvitoService invitoServiceImpl, NotificaService notificaService) {
         this.repository = repository;
         this.contestServiceImpl = contestServiceImpl;
         this.invitoServiceImpl = invitoServiceImpl;
         this.notificaService = notificaService;
     }
+
 
     @Override
     public void deleteByUsername(String id) {
@@ -40,8 +42,8 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
     }
 
 
-
-    TuristaAutenticato save(TuristaAutenticato turistaAutenticato) {
+    @Override
+    public TuristaAutenticato save(TuristaAutenticato turistaAutenticato) {
         turistaAutenticato = repository.save(turistaAutenticato);
         return turistaAutenticato;
     }

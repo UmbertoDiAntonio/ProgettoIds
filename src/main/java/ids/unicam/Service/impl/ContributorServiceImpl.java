@@ -19,6 +19,7 @@ public class ContributorServiceImpl implements ContributorService {
         this.repository = repository;
     }
 
+    @Override
     public List<Contributor> findByNomeComune(String nomeComune) {
         return repository.findByComuneNome(nomeComune);
     }
@@ -33,12 +34,10 @@ public class ContributorServiceImpl implements ContributorService {
         return repository.findById(username);
     }
 
-    Contributor save(Contributor contributor) {
+    @Override
+    public Contributor save(Contributor contributor) {
         return repository.save(contributor);
     }
-
-
-
 
     @Override
     public List<Contributor> getAll() {

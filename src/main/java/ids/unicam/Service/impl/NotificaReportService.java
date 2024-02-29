@@ -9,12 +9,12 @@ import java.util.Optional;
 import static ids.unicam.Main.logger;
 
 @Service
-public class NotificaReportServiceImpl {
+public class NotificaReportService {
     private final CuratoreServiceImpl curatoreService;
-    private final NotificaServiceImpl notificaService;
+    private final NotificaService notificaService;
     private final PoiServiceImpl poiService;
 
-    public NotificaReportServiceImpl(CuratoreServiceImpl curatoreService, NotificaServiceImpl notificaService, PoiServiceImpl poiService) {
+    public NotificaReportService(CuratoreServiceImpl curatoreService, NotificaService notificaService, PoiServiceImpl poiService) {
         this.curatoreService = curatoreService;
         this.notificaService = notificaService;
         this.poiService = poiService;

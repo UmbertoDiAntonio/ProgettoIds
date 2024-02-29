@@ -1,6 +1,6 @@
 package ids.unicam.Service.impl;
 
-import ids.unicam.Service.GestorePiattaformaService;
+import ids.unicam.Service.*;
 import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.models.DTO.ComuneDTO;
 import ids.unicam.models.DTO.ContributorDTO;
@@ -17,20 +17,19 @@ import static ids.unicam.Main.logger;
 
 @Service
 public class GestorePiattaformaServiceImpl implements GestorePiattaformaService {
-    private final ContributorServiceImpl contributorServiceImpl;
-    private final TuristaAutenticatoServiceImpl turistaAutenticatoServiceImpl;
-    private final CuratoreServiceImpl curatoreServiceImpl;
-    private final AnimatoreServiceImpl animatoreServiceImpl;
-    private final ContributorAutorizzatoServiceImpl contributorAutorizzatoServiceImpl;
-    private final PoiServiceImpl poiServiceImpl;
+    private final ContributorService contributorServiceImpl;
+    private final TuristaAutenticatoService turistaAutenticatoServiceImpl;
+    private final CuratoreService curatoreServiceImpl;
+    private final AnimatoreService animatoreServiceImpl;
+    private final ContributorAutorizzatoService contributorAutorizzatoServiceImpl;
+    private final PoiService poiServiceImpl;
 
     @Autowired
-    public GestorePiattaformaServiceImpl(ContributorServiceImpl contributorServiceImpl, TuristaAutenticatoServiceImpl turistaAutenticatoServiceImpl,
-                                         CuratoreServiceImpl curatoreServiceImpl, AnimatoreServiceImpl animatoreServiceImpl, ContributorAutorizzatoServiceImpl contributorAutorizzatoServiceImpl, PoiServiceImpl poiServiceImpl) {
+    public GestorePiattaformaServiceImpl(ContributorService contributorServiceImpl, TuristaAutenticatoService turistaAutenticatoServiceImpl, CuratoreService curatoreServiceImpl, AnimatoreService animatoreServiceImpl, ContributorAutorizzatoService contributorAutorizzatoServiceImpl, PoiService poiServiceImpl) {
         this.contributorServiceImpl = contributorServiceImpl;
         this.turistaAutenticatoServiceImpl = turistaAutenticatoServiceImpl;
-        this.animatoreServiceImpl = animatoreServiceImpl;
         this.curatoreServiceImpl = curatoreServiceImpl;
+        this.animatoreServiceImpl = animatoreServiceImpl;
         this.contributorAutorizzatoServiceImpl = contributorAutorizzatoServiceImpl;
         this.poiServiceImpl = poiServiceImpl;
     }

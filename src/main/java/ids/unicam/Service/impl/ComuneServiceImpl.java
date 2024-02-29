@@ -1,7 +1,7 @@
 package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.ComuneRepository;
-import ids.unicam.Service.ComuneService;
+import ids.unicam.Service.*;
 import ids.unicam.models.Comune;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.Contributor;
@@ -19,17 +19,14 @@ import java.util.Optional;
 @Service
 public class ComuneServiceImpl implements ComuneService {
     private final ComuneRepository repository;
-    private final AnimatoreServiceImpl animatoreService;
-    private final ContributorServiceImpl contributorService;
-    private final ContributorAutorizzatoServiceImpl contributorAutorizzatoService;
-    private final CuratoreServiceImpl curatoreService;
+    private final AnimatoreService animatoreService;
+    private final ContributorService contributorService;
+    private final ContributorAutorizzatoService contributorAutorizzatoService;
+    private final CuratoreService curatoreService;
     private final PoiServiceImpl poiService;
 
     @Autowired
-    public ComuneServiceImpl(ComuneRepository repository, AnimatoreServiceImpl animatoreService,
-                             ContributorServiceImpl contributorService,
-                             ContributorAutorizzatoServiceImpl contributorAutorizzatoService,
-                             CuratoreServiceImpl curatoreService, PoiServiceImpl poiService) {
+    public ComuneServiceImpl(ComuneRepository repository, AnimatoreService animatoreService, ContributorService contributorService, ContributorAutorizzatoService contributorAutorizzatoService, CuratoreService curatoreService, PoiServiceImpl poiService) {
         this.repository = repository;
         this.animatoreService = animatoreService;
         this.contributorService = contributorService;

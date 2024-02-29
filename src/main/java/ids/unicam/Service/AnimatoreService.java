@@ -9,6 +9,10 @@ import java.util.Optional;
 
 public interface AnimatoreService {
 
+    Animatore save(Animatore animatore);
+
+    List<Animatore> findByNomeComune(String nomeComune);
+
     Invito invitaContest(String usernameAnimatore, int idContest, String usernameInvitato) throws ContestException, IllegalStateException, IllegalArgumentException;
 
     boolean approvaMateriale(String usernameAnimatore, int idContest, int idMaterialeGenerico, boolean stato) throws UnsupportedOperationException, IllegalArgumentException;

@@ -1,7 +1,9 @@
 package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.ItinerarioRepository;
+import ids.unicam.Service.ContributorService;
 import ids.unicam.Service.ItinerarioService;
+import ids.unicam.Service.PoiService;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Comune;
 import ids.unicam.models.attori.Contributor;
@@ -20,16 +22,14 @@ import static ids.unicam.Main.logger;
 @Transactional
 public class ItinerarioServiceImpl implements ItinerarioService {
     private final ItinerarioRepository repository;
-    private final PoiServiceImpl poiServiceImpl;
-    private final ContributorServiceImpl contributorService;
-
+    private final PoiService poiServiceImpl;
+    private final ContributorService contributorService;
 
     @Autowired
-    public ItinerarioServiceImpl(ItinerarioRepository repository, PoiServiceImpl poiServiceImpl, ContributorServiceImpl contributorService) {
+    public ItinerarioServiceImpl(ItinerarioRepository repository, PoiService poiServiceImpl, ContributorService contributorService) {
         this.repository = repository;
         this.poiServiceImpl = poiServiceImpl;
         this.contributorService = contributorService;
-
     }
 
 

@@ -2,11 +2,14 @@ package ids.unicam.Service;
 
 import ids.unicam.exception.ContestException;
 import ids.unicam.exception.FuoriComuneException;
+import ids.unicam.models.Comune;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
+import jakarta.transaction.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,12 +30,22 @@ public interface ContestService {
 
     void setVincitoreContest(Contest contest, MaterialeGenerico materialeGenerico) throws ContestException;
 
+    void setFineContest(Contest contest, LocalDate dataFine);
+
     void terminaContest(Contest contest) throws ContestException;
 
     List<Contest> findAll();
+
+    Contest save(Contest contest);
 
     Optional<Contest> findById(int id);
 
     void deleteById(int id);
 
+    Optional<Contest> getContestContainingMaterial(MaterialeGenerico materialeGenerico);
+
+    @Transactional
+    void checkIfIsExpired(Contest contest);
+
+    List<Contest> getContestByComune(Comune comune);
 }

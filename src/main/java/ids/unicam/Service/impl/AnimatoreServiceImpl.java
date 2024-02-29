@@ -24,11 +24,11 @@ public class AnimatoreServiceImpl implements AnimatoreService {
     private final InvitoService invitoService;
     private final TuristaAutenticatoService turistaAutenticatoService;
     private final MaterialeService materialeService;
-    private final NotificaServiceImpl notificaService;
+    private final NotificaService notificaService;
 
 
     @Autowired
-    public AnimatoreServiceImpl(AnimatoreRepository repository, ContestService contestService, InvitoService invitoService, TuristaAutenticatoService turistaAutenticatoService, MaterialeService materialeService, NotificaServiceImpl notificaService) {
+    public AnimatoreServiceImpl(AnimatoreRepository repository, ContestService contestService, InvitoService invitoService, TuristaAutenticatoService turistaAutenticatoService, MaterialeService materialeService, NotificaService notificaService) {
         this.repository = repository;
         this.contestService = contestService;
         this.invitoService = invitoService;
@@ -130,14 +130,13 @@ public class AnimatoreServiceImpl implements AnimatoreService {
         return repository.findAll();
     }
 
-    Animatore save(Animatore animatore) {
+    @Override
+    public Animatore save(Animatore animatore) {
         animatore = repository.save(animatore);
         return animatore;
     }
 
-
-
-
+    @Override
     public List<Animatore> findByNomeComune(String nomeComune) {
         return repository.findByComuneNome(nomeComune);
     }

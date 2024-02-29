@@ -23,6 +23,10 @@ public interface CuratoreService {
 
     void eliminaMateriale(String usernameCuratore, int idMateriale) throws IllegalArgumentException, FuoriComuneException;
 
+    Curatore save(Curatore curatore);
+
+    List<Curatore> findByNomeComune(String nomeComune);
+
     List<Curatore> getAll();
 
     void deleteByUsername(String username);

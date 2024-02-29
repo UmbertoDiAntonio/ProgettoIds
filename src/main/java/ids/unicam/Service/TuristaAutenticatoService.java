@@ -12,6 +12,8 @@ import java.util.Optional;
 
 public interface TuristaAutenticatoService {
 
+    TuristaAutenticato save(TuristaAutenticato turistaAutenticato);
+
     void accettaInvitoContest(TuristaAutenticato turistaAutenticato, Invito invito) throws ContestException;
 
     void rimuoviPreferito(String usernameTurista, int id) throws IllegalArgumentException;

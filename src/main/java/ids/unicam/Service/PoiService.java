@@ -1,6 +1,7 @@
 package ids.unicam.Service;
 
 import ids.unicam.exception.FuoriComuneException;
+import ids.unicam.models.Comune;
 import ids.unicam.models.Punto;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.Taggable;
@@ -19,7 +20,14 @@ public interface PoiService {
 
     void eliminaPuntoInteresse(int idPuntoInteresse) ;
 
+    LocalDate getScadenza(int idPunto) throws IllegalArgumentException;
+
     void aggiungiMateriale(String usernameTurista, int idPuntoInteresse, MaterialeGenerico materialeGenerico) throws FuoriComuneException;
+
+    @Transactional
+    PuntoInteresse save(PuntoInteresse puntoInteresse);
+
+    Optional<PuntoInteresse> findById(int id);
 
     List<PuntoInteresse> findActive() ;
 
@@ -44,8 +52,15 @@ public interface PoiService {
     @Transactional
     List<String> getAsListDetailed();
 
+    List<PuntoInteresse> findAll();
+
     void setOrario(int idPunto, Orario.OrarioApertura orario, DayOfWeek day);
 
     List<String> getAsList(List<PuntoInteresse> preferiti);
 
+    Optional<PuntoInteresse> getPoiContainingMaterial(MaterialeGenerico materialeGenerico);
+
+    List<PuntoInteresse> getPoiByComune(Comune comune);
+
+    void checkIfIsExpired(PuntoInteresse puntoInteresse);
 }

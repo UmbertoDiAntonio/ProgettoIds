@@ -17,12 +17,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class NotificaServiceImpl {
+public class NotificaService {
 
     private final NotificaRepository repository;
 
-
-    public NotificaServiceImpl(NotificaRepository repository) {
+    public NotificaService(NotificaRepository repository) {
         this.repository = repository;
     }
 
@@ -75,6 +74,7 @@ public class NotificaServiceImpl {
                         .withDescrizione(turista.getUsername()+" si è unito al Contest: "+contest.getNomeContest())
                         .withDestinatario(contest.getCreatore()).build());
     }
+
 
     public List<Notifica> getNotifiche(TuristaAutenticato turistaAutenticato) {
         return repository.findByUsernameDestinatario(turistaAutenticato.getUsername());

@@ -1,7 +1,7 @@
 package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.CuratoreRepository;
-import ids.unicam.Service.CuratoreService;
+import ids.unicam.Service.*;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Comune;
 import ids.unicam.models.attori.Curatore;
@@ -25,22 +25,20 @@ import static ids.unicam.Main.logger;
 @Service
 public class CuratoreServiceImpl implements CuratoreService {
     private final CuratoreRepository repository;
-    private final PoiServiceImpl poiServiceImpl;
-    private final ItinerarioServiceImpl itinerarioServiceImpl;
-    private final MaterialeServiceImpl materialeServiceImpl;
-    private final ContestServiceImpl contestServiceImpl;
-    private final NotificaServiceImpl notificaServiceImpl;
+    private final PoiService poiServiceImpl;
+    private final ItinerarioService itinerarioServiceImpl;
+    private final MaterialeService materialeServiceImpl;
+    private final ContestService contestServiceImpl;
+    private final NotificaService notificaService;
 
     @Autowired
-    public CuratoreServiceImpl(CuratoreRepository repository, PoiServiceImpl service, ItinerarioServiceImpl itinerarioServiceImpl,
-                               MaterialeServiceImpl materialeServiceImpl, ContestServiceImpl contestServiceImpl,
-                               NotificaServiceImpl notificaServiceImpl) {
+    public CuratoreServiceImpl(CuratoreRepository repository, PoiService poiServiceImpl, ItinerarioService itinerarioServiceImpl, MaterialeService materialeServiceImpl, ContestService contestServiceImpl, NotificaService notificaService) {
         this.repository = repository;
-        this.poiServiceImpl = service;
+        this.poiServiceImpl = poiServiceImpl;
         this.itinerarioServiceImpl = itinerarioServiceImpl;
         this.materialeServiceImpl = materialeServiceImpl;
         this.contestServiceImpl = contestServiceImpl;
-        this.notificaServiceImpl = notificaServiceImpl;
+        this.notificaService = notificaService;
     }
 
 
@@ -54,12 +52,13 @@ public class CuratoreServiceImpl implements CuratoreService {
         return repository.findById(username);
     }
 
-    Curatore save(Curatore curatore) {
+    @Override
+    public Curatore save(Curatore curatore) {
         return repository.save(curatore);
     }
 
 
-
+@Override
     public List<Curatore> findByNomeComune(String nomeComune) {
         return repository.findCuratoreByComuneNome(nomeComune);
     }
@@ -92,7 +91,7 @@ public class CuratoreServiceImpl implements CuratoreService {
                 if (stato == Stato.IN_ATTESA)
                     throw new UnsupportedOperationException("non puoi impostare stato in attesa");
                 puntoInteresse.setStato(stato);
-                Notifica notifica = notificaServiceImpl.creaNotificaApprovazione(curatore, puntoInteresse, stato);
+                Notifica notifica = notificaService.creaNotificaApprovazione(curatore, puntoInteresse, stato);
                 return poiServiceImpl.save(puntoInteresse);
             } else {
                 logger.error("Id del punto di interesse non valido");
@@ -133,7 +132,7 @@ public class CuratoreServiceImpl implements CuratoreService {
                 if (stato == Stato.IN_ATTESA)
                     throw new UnsupportedOperationException("non puoi impostare stato in attesa");
                 materialeGenerico.setStato(stato);
-                Notifica notifica = notificaServiceImpl.creaNotificaApprovazione(curatore, materialeGenerico, stato);
+                Notifica notifica = notificaService.creaNotificaApprovazione(curatore, materialeGenerico, stato);
                 return materialeServiceImpl.save(materialeGenerico);
 
             } else {
@@ -264,7 +263,7 @@ public class CuratoreServiceImpl implements CuratoreService {
         Optional<Curatore> oCuratore = getByUsername(usernameCurature);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
-            return notificaServiceImpl.getNotifiche(curatore);
+            return notificaService.getNotifiche(curatore);
         } else {
             logger.error("username del curatore non valido");
             throw new IllegalArgumentException("username del curatore non valido");

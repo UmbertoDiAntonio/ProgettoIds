@@ -26,7 +26,6 @@ public class InvitoServiceImpl implements InvitoService {
         this.contestService = contestService;
     }
 
-
     public void deleteById(int id) {
         repository.deleteById(id);
     }

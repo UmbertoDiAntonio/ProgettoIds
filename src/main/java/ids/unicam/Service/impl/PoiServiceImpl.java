@@ -1,7 +1,7 @@
 package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.PoiRepository;
-import ids.unicam.Service.PoiService;
+import ids.unicam.Service.*;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Comune;
 import ids.unicam.models.DTO.PuntoInteresseDTO;
@@ -29,13 +29,13 @@ import static ids.unicam.Main.logger;
 @Service
 public class PoiServiceImpl implements PoiService {
     private final PoiRepository repository;
-    private final TagServiceImpl tagServiceImpl;
-    private final ContributorServiceImpl contributorService;
-    private final TuristaAutenticatoServiceImpl turistaAutenticatoService;
-    private final MaterialeServiceImpl materialeService;
+    private final TagService tagServiceImpl;
+    private final ContributorService contributorService;
+    private final TuristaAutenticatoService turistaAutenticatoService;
+    private final MaterialeService materialeService;
 
     @Autowired
-    public PoiServiceImpl(PoiRepository repository, TagServiceImpl tagServiceImpl, ContributorServiceImpl contributorService, TuristaAutenticatoServiceImpl turistaAutenticatoService, MaterialeServiceImpl materialeService) {
+    public PoiServiceImpl(PoiRepository repository, TagService tagServiceImpl, ContributorService contributorService, TuristaAutenticatoService turistaAutenticatoService, MaterialeService materialeService) {
         this.repository = repository;
         this.tagServiceImpl = tagServiceImpl;
         this.contributorService = contributorService;
@@ -44,6 +44,7 @@ public class PoiServiceImpl implements PoiService {
     }
 
 
+    @Override
     public void deleteById(int id) {
         repository.deleteById(id);
     }
@@ -117,6 +118,7 @@ public class PoiServiceImpl implements PoiService {
         repository.deleteById(idPuntoInteresse);
     }
 
+    @Override
     public LocalDate getScadenza(int idPunto) throws IllegalArgumentException {
         Optional<LocalDate> oScadenza = repository.getExpireDateById(idPunto);
         if (oScadenza.isEmpty())
@@ -149,17 +151,18 @@ public class PoiServiceImpl implements PoiService {
             logger.error("il contributor cerca di caricare il materiale su un punto di interesse non approvato");
             throw new IllegalStateException("il contributor cerca di caricare il materiale su un punto di interesse non approvato");
         }
-        materialeService.aggiungiMateriale(puntoInteresse,materialeGenerico);
+        materialeService.aggiungiMateriale(puntoInteresse, materialeGenerico);
         save(puntoInteresse);
     }
 
 
+    @Override
     @Transactional
-    PuntoInteresse save(PuntoInteresse puntoInteresse) {
+    public PuntoInteresse save(PuntoInteresse puntoInteresse) {
         return repository.save(puntoInteresse);
     }
 
-
+    @Override
     public Optional<PuntoInteresse> findById(int id) {
         return repository.findById(id);
     }
@@ -172,9 +175,6 @@ public class PoiServiceImpl implements PoiService {
                 .filter(puntoInteresse -> !puntoInteresse.isExpired() || Boolean.TRUE.equals(puntoInteresse.getStato().asBoolean()))
                 .collect(Collectors.toList());
     }
-
-
-
 
 
     @Transactional
@@ -212,12 +212,13 @@ public class PoiServiceImpl implements PoiService {
         return repository.findById(id);
     }
 
-    public Set<MaterialeGenerico> getMaterialiPoi(int idPunto) throws IllegalArgumentException{
+    @Override
+    public Set<MaterialeGenerico> getMaterialiPoi(int idPunto) throws IllegalArgumentException {
         Optional<PuntoInteresse> oPuntoInteresse = getById(idPunto);
         if (oPuntoInteresse.isPresent()) {
             PuntoInteresse puntoInteresse = oPuntoInteresse.get();
             return puntoInteresse.getMateriali();
-        }else {
+        } else {
             logger.error("L'id del punto di interesse non e' valido");
             throw new IllegalArgumentException("L'id del punto di interesse non e' valido");
         }
@@ -259,6 +260,7 @@ public class PoiServiceImpl implements PoiService {
         return result;
     }
 
+    @Override
     public List<PuntoInteresse> findAll() {
         return repository.findAll();
     }
@@ -278,16 +280,19 @@ public class PoiServiceImpl implements PoiService {
     }
 
 
+    @Override
     public Optional<PuntoInteresse> getPoiContainingMaterial(MaterialeGenerico materialeGenerico) {
         return repository.findPuntoInteresseByMaterialiContaining(materialeGenerico);
     }
 
+    @Override
     public List<PuntoInteresse> getPoiByComune(Comune comune) {
         return repository.findPoiByComune(comune);
     }
 
+    @Override
     public void checkIfIsExpired(PuntoInteresse puntoInteresse) {
-        if(puntoInteresse.isExpired()){
+        if (puntoInteresse.isExpired()) {
             puntoInteresse.getMateriali().clear();
             deleteById(puntoInteresse.getId());
         }

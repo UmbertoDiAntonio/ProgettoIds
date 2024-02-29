@@ -1,6 +1,8 @@
 package ids.unicam.Service.impl;
 
 import ids.unicam.Service.ComuneService;
+import ids.unicam.Service.ContestService;
+import ids.unicam.Service.PoiService;
 import ids.unicam.Service.impl.AnimatoreServiceImpl;
 import ids.unicam.Service.impl.ComuneServiceImpl;
 import ids.unicam.Service.impl.ContestServiceImpl;
@@ -17,12 +19,12 @@ import java.util.TimerTask;
 
 @Service
 public class TimeTaskService extends TimerTask {
-    private final ContestServiceImpl contestService;
-    private final ComuneServiceImpl comuneService;
-    private final PoiServiceImpl poiService;
+    private final ContestService contestService;
+    private final ComuneService comuneService;
+    private final PoiService poiService;
     private int ultimoGiorno = -1;
 
-    public TimeTaskService(ContestServiceImpl contestService, ComuneServiceImpl comuneService, PoiServiceImpl poiService) {
+    public TimeTaskService(ContestService contestService, ComuneService comuneService, PoiService poiService) {
         this.contestService = contestService;
         this.comuneService = comuneService;
         this.poiService = poiService;

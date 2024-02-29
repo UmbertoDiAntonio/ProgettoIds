@@ -26,7 +26,6 @@ public class MaterialeServiceImpl implements MaterialeService {
 
     private final MaterialeRepository repository;
 
-
     @Autowired
     public MaterialeServiceImpl(MaterialeRepository repository) {
         this.repository = repository;
@@ -89,7 +88,8 @@ public class MaterialeServiceImpl implements MaterialeService {
     }
 
 
-    MaterialeGenerico save(MaterialeGenerico materialeGenerico) {
+    @Override
+    public MaterialeGenerico save(MaterialeGenerico materialeGenerico) {
         return repository.save(materialeGenerico);
     }
 
