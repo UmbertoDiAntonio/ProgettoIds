@@ -14,7 +14,7 @@ CONTEST CONTROLLER
 - GET                   --> FUNZIONA
 - DELETE                --> FUNZIONA
 - GETALL                --> FUNZIONA
-- ANNULLA INVITO        --> DA TESTARE
+- ANNULLA INVITO        --> FUNZIONA
 - Termina               --> FUNZIONA
 
 COMUNE CONTROLLER
