@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @Service
 public class ComuneServiceImpl implements ComuneService {
-    private final ComuneRepository comuneRepository;
+    private final ComuneRepository repository;
     private final AnimatoreServiceImpl animatoreServiceImpl;
     private final ContributorServiceImpl contributorServiceImpl;
     private final ContributorAutorizzatoServiceImpl contributorAutorizzatoServiceImpl;
@@ -26,11 +26,11 @@ public class ComuneServiceImpl implements ComuneService {
     private final PoiServiceImpl poiServiceImpl;
 
     @Autowired
-    public ComuneServiceImpl(ComuneRepository comuneRepository, AnimatoreServiceImpl animatoreServiceImpl,
+    public ComuneServiceImpl(ComuneRepository repository, AnimatoreServiceImpl animatoreServiceImpl,
                              ContributorServiceImpl contributorServiceImpl,
                              ContributorAutorizzatoServiceImpl contributorAutorizzatoServiceImpl,
                              CuratoreServiceImpl curatoreServiceImpl, PoiServiceImpl poiServiceImpl) {
-        this.comuneRepository = comuneRepository;
+        this.repository = repository;
         this.animatoreServiceImpl = animatoreServiceImpl;
         this.contributorServiceImpl = contributorServiceImpl;
         this.contributorAutorizzatoServiceImpl = contributorAutorizzatoServiceImpl;
@@ -41,12 +41,12 @@ public class ComuneServiceImpl implements ComuneService {
 
     @Override
     public void deleteById(String nomeComune) {
-        comuneRepository.deleteById(nomeComune);
+        repository.deleteById(nomeComune);
     }
 
 
     public Comune save(Comune comune) {
-        return comuneRepository.save(comune);
+        return repository.save(comune);
     }
 
 
@@ -56,16 +56,16 @@ public class ComuneServiceImpl implements ComuneService {
 
     @Override
     public Optional<Comune> findById(String nomeComune) {
-        return comuneRepository.findById(nomeComune);
+        return repository.findById(nomeComune);
     }
 
     @Override
     public List<Comune> findAll() {
-        return comuneRepository.findAll();
+        return repository.findAll();
     }
 
     public void deleteAll() {
-        comuneRepository.deleteAll();
+        repository.deleteAll();
     }
 
     @Override
@@ -91,7 +91,7 @@ public class ComuneServiceImpl implements ComuneService {
 
     @Override
     public Optional<Comune> getComuneByNome(String nomeComune) throws IllegalArgumentException {
-        return comuneRepository.findComuneByNomeIgnoreCase(nomeComune);
+        return repository.findComuneByNomeIgnoreCase(nomeComune);
     }
 
     @Override

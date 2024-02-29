@@ -23,17 +23,17 @@ import static ids.unicam.Main.logger;
 public class AnimatoreServiceImpl implements AnimatoreService {
     private final AnimatoreRepository repository;
     private final ContestServiceImpl contestService;
-    private final InvitoServiceImpl invitoServiceImpl;
+    private final InvitoServiceImpl invitoService;
     private final TuristaAutenticatoService turistaAutenticatoService;
     private final MaterialeService materialeService;
     private final NotificaServiceImpl notificaService;
 
 
     @Autowired
-    public AnimatoreServiceImpl(AnimatoreRepository repository, ContestServiceImpl contestService, InvitoServiceImpl invitoServiceImpl, TuristaAutenticatoService turistaAutenticatoService, MaterialeService materialeService, NotificaServiceImpl notificaService) {
+    public AnimatoreServiceImpl(AnimatoreRepository repository, ContestServiceImpl contestService, InvitoServiceImpl invitoService, TuristaAutenticatoService turistaAutenticatoService, MaterialeService materialeService, NotificaServiceImpl notificaService) {
         this.repository = repository;
         this.contestService = contestService;
-        this.invitoServiceImpl = invitoServiceImpl;
+        this.invitoService = invitoService;
         this.turistaAutenticatoService = turistaAutenticatoService;
         this.materialeService = materialeService;
         this.notificaService = notificaService;
@@ -79,7 +79,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
         Optional<Animatore> oAnimatore = getById(usernameAnimatore);
         if (oAnimatore.isPresent()) {
             Animatore animatore = oAnimatore.get();
-            Optional<Invito> oInvito = invitoServiceImpl.findById(idInvito);
+            Optional<Invito> oInvito = invitoService.findById(idInvito);
             if (oInvito.isPresent()) {
                 Invito invito = oInvito.get();
                 if (invito.getContest().getCreatore().equals(animatore)) {
@@ -137,7 +137,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
                         throw new ContestException("Il turista autenticato fa gia' parte del contest");
                     } else {
                         notificaService.creaNotifica(animatore,contest,turistaAutenticato);
-                        return invitoServiceImpl.save(new Invito(contest, turistaAutenticato));
+                        return invitoService.save(new Invito(contest, turistaAutenticato));
                     }
                 } else {
                     logger.error("username del turista invitato non valido");

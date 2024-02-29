@@ -87,13 +87,8 @@ public class MaterialeServiceImpl implements MaterialeService {
         return repository.findAllByFileIn(file);
     }
 
-
     public MaterialeGenerico save(MaterialeGenerico materialeGenerico) {
         return repository.save(materialeGenerico);
-    }
-
-    public void deleteAll() {
-        repository.deleteAll();
     }
 
     @Override
