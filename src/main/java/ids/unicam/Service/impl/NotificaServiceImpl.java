@@ -50,11 +50,18 @@ public class NotificaServiceImpl {
                         .withDestinatario(vincitore.getCreatore()).build());
     }
 
-    public Notifica creaNotifica(Animatore animatore, Contest contest, TuristaAutenticato destinatario) {
+    public Notifica creaNotifica(Contest contest, TuristaAutenticato destinatario) {
         return notificaRepository.save(
                 new NotificaBuilder()
                         .withTitolo("Info Contest: " + contest.getNomeContest())
-                        .withDescrizione("il contest " + contest.getNomeContest() + " creato da " + animatore.getUsername() + (contest.getMaterialeVincitore() != null ? " è terminato " : (" terminerà il " + contest.getExpireDate())))
+                        .withDescrizione("il contest " + contest.getNomeContest() + " creato da " + contest.getCreatore().getUsername() + (contest.getMaterialeVincitore() != null ? " è terminato " : (" terminerà il " + contest.getExpireDate())))
+                        .withDestinatario(destinatario).build());
+    }
+    public Notifica creaNotifica(Animatore animatore,Contest contest, TuristaAutenticato destinatario) {
+        return notificaRepository.save(
+                new NotificaBuilder()
+                        .withTitolo("Info Contest: " + contest.getNomeContest())
+                        .withDescrizione("Sei stato invitato a unirti al contest "+contest+" da parte dell'animatore "+animatore.getUsername())
                         .withDestinatario(destinatario).build());
     }
 

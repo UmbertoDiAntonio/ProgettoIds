@@ -5,6 +5,7 @@ import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.attori.Ruolo;
+import ids.unicam.models.contenuti.Stato;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.http.HttpStatus;
@@ -61,4 +62,6 @@ public class AnimatoreController implements ControllerBase<RichiestaCreazioneCon
         animatoreService.deleteById(username);
         return ResponseEntity.ok("Utente: '" + username + "' eliminato");
     }
+
+
 }

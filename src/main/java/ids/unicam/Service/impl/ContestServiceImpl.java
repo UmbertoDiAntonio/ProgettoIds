@@ -131,7 +131,7 @@ public class ContestServiceImpl implements ContestService {
             throw new ContestException("Vincitore non valido, non puoi terminare il contest senza avere un vincitore valido");
         }
         for (TuristaAutenticato turistaAutenticato : contest.getPartecipanti())
-            notificaService.creaNotifica(contest.getCreatore(), contest, turistaAutenticato);
+            notificaService.creaNotifica(contest, turistaAutenticato);
 
 
         contest.getPartecipanti().clear();

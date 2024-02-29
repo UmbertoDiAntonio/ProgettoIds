@@ -3,6 +3,7 @@ package ids.unicam.Service;
 import ids.unicam.exception.ContestException;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.Animatore;
+import ids.unicam.models.contenuti.Stato;
 
 import java.util.List;
 import java.util.Optional;

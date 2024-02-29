@@ -26,15 +26,17 @@ public class AnimatoreServiceImpl implements AnimatoreService {
     private final InvitoServiceImpl invitoServiceImpl;
     private final TuristaAutenticatoService turistaAutenticatoService;
     private final MaterialeService materialeService;
+    private final NotificaServiceImpl notificaService;
 
 
     @Autowired
-    public AnimatoreServiceImpl(AnimatoreRepository repository, ContestServiceImpl contestService, InvitoServiceImpl invitoServiceImpl, TuristaAutenticatoService turistaAutenticatoService, MaterialeService materialeService) {
+    public AnimatoreServiceImpl(AnimatoreRepository repository, ContestServiceImpl contestService, InvitoServiceImpl invitoServiceImpl, TuristaAutenticatoService turistaAutenticatoService, MaterialeService materialeService, NotificaServiceImpl notificaService) {
         this.repository = repository;
         this.contestService = contestService;
         this.invitoServiceImpl = invitoServiceImpl;
         this.turistaAutenticatoService = turistaAutenticatoService;
         this.materialeService = materialeService;
+        this.notificaService = notificaService;
     }
 
     @Override
@@ -133,8 +135,10 @@ public class AnimatoreServiceImpl implements AnimatoreService {
                     if (contestService.getPartecipanti(contest).contains(turistaAutenticato)) {
                         logger.error("Il turista autenticato fa gia' parte del contest");
                         throw new ContestException("Il turista autenticato fa gia' parte del contest");
-                    } else
+                    } else {
+                        notificaService.creaNotifica(animatore,contest,turistaAutenticato);
                         return invitoServiceImpl.save(new Invito(contest, turistaAutenticato));
+                    }
                 } else {
                     logger.error("username del turista invitato non valido");
                     throw new IllegalArgumentException("username del turista invitato non valido");
