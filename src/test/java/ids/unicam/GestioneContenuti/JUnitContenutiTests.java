@@ -187,12 +187,6 @@ public class JUnitContenutiTests {
             assertNull(poiService.getStato(puntoInteresse.getId()).asBoolean());
             TuristaAutenticato turistaTemp2 = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(new ComuneDTO(comune.getNome()), new TuristaAutenticatoDTO("Peppe", "Paol", LocalDate.of(2000, Calendar.MARCH, 11), "4Unica@", "user44")), Ruolo.CONTRIBUTOR);
 
-            if (!(turistaTemp2 instanceof Contributor contributor1))
-                throw new IllegalArgumentException("errore");
-            TuristaAutenticato turistaTemp3 = gestorePiattaformaService.registraContributor(new RichiestaCreazioneContributorDTO(new ComuneDTO(comune.getNome()), new TuristaAutenticatoDTO("Pietro", "Pier", LocalDate.of(2000, Calendar.MARCH, 11), "4Unica@", "user45")), Ruolo.CONTRIBUTOR);
-            if (!(turistaTemp3 instanceof Contributor contributor2))
-                throw new IllegalArgumentException("errore");
-            
             try {
                 curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse.getId(), true);
             } catch (FuoriComuneException e) {
@@ -202,11 +196,11 @@ public class JUnitContenutiTests {
 
 
             assertEquals(Boolean.TRUE, poiService.getStato(puntoInteresse.getId()).asBoolean());
-            MaterialeGenerico materialeGenerico1 = materialeService.save(new Foto(new MaterialeDTO("/testFoto", contributor)));
+            MaterialeGenerico materialeGenerico1 = materialeService.crea("/testFoto", TipologiaMateriale.FOTO,contributor);
             assertNull(materialeGenerico1.getStato().asBoolean());
-            curatoreServiceImpl.valutaMateriale(curatore.getUsername(), materialeGenerico1.getId(), Stato.APPROVATO.asBoolean());
             poiService.aggiungiMateriale(turistaAutenticato.getUsername(), puntoInteresse.getId(), materialeGenerico1);
- 
+            curatoreServiceImpl.valutaMateriale(curatore.getUsername(), materialeGenerico1.getId(), Stato.APPROVATO.asBoolean());
+
         }
     }
 
