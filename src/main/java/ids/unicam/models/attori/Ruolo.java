@@ -1,4 +1,3 @@
-
 package ids.unicam.models.attori;
 
 /**

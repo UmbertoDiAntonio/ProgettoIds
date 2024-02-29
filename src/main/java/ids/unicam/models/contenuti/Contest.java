@@ -21,44 +21,34 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 public class Contest implements Contenitore, Taggable, Expirable {
+    @OneToMany(fetch = FetchType.EAGER)
+    private final List<TuristaAutenticato> partecipanti = new ArrayList<>();
+    @OneToMany(fetch = FetchType.EAGER)
+    private final Set<Tag> tags = new HashSet<>();
+    @OneToMany(fetch = FetchType.EAGER)
+    private final Set<MaterialeGenerico> materiali = new HashSet<>();
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenza_contenuti")
     @SequenceGenerator(name = "sequenza_contenuti", sequenceName = "PUNTI_DI_INTERESSE_SEQ", allocationSize = 1)
     private int id = 0;
-
     @Setter
     @Column(name = "Aperto")
     private boolean open;
-
-    private String obiettivo="";
-
+    private String obiettivo = "";
     @OneToOne
     @JoinColumn(name = "nome_comune")
     private Comune comune;
-
     @OneToOne
-    private Animatore creatore =null;
-
-    @OneToMany(fetch = FetchType.EAGER)
-    private final List<TuristaAutenticato> partecipanti = new ArrayList<>();
-
+    private Animatore creatore = null;
     @Setter
-    private LocalDate expireDate =null;
-
-    @OneToMany (fetch = FetchType.EAGER)
-    private final Set<Tag> tags = new HashSet<>();
-
+    private LocalDate expireDate = null;
     @Column(name = "nome")
-    private String nomeContest =null;
-
-    @OneToMany(fetch = FetchType.EAGER)
-    private final Set<MaterialeGenerico> materiali = new HashSet<>();
-
+    private String nomeContest = null;
     @OneToOne
     @Setter
     private MaterialeGenerico materialeVincitore = null;
 
-    public Contest(String nomeContest,String obiettivo,Animatore creatore, boolean open) {
+    public Contest(String nomeContest, String obiettivo, Animatore creatore, boolean open) {
         this.open = open;
         this.obiettivo = obiettivo;
         this.comune = creatore.getComune();
@@ -68,7 +58,7 @@ public class Contest implements Contenitore, Taggable, Expirable {
 
     @Override
     public boolean isExpired() {
-        if(expireDate==null)
+        if (expireDate == null)
             return false;
         return LocalDate.now().isAfter(expireDate);
     }
@@ -90,7 +80,7 @@ public class Contest implements Contenitore, Taggable, Expirable {
 
     @Override
     public void addMateriale(MaterialeGenerico materialeGenerico) {
-        if(materialeGenerico != null){
+        if (materialeGenerico != null) {
             materiali.add(materialeGenerico);
         }
     }

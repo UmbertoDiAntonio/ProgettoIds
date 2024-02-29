@@ -27,13 +27,14 @@ public class NotificaBuilder {
 
     /**
      * Valida i dati inseriti e restituisce un istanza della classe generata
+     *
      * @return la notifica generata
      */
     public Notifica build() {
         if (titolo == null || titolo.isBlank() || descrizione == null || descrizione.isBlank()) {
             throw new IllegalArgumentException("Titolo o descrizione sono vuoti");
         }
-        if(usernameDestinatario == null || usernameDestinatario.isBlank()){
+        if (usernameDestinatario == null || usernameDestinatario.isBlank()) {
             throw new IllegalArgumentException("E' necessario impostare un destinatario valido");
         }
         return new Notifica(titolo, descrizione, usernameDestinatario);

@@ -12,16 +12,16 @@ import lombok.Setter;
 @Entity
 @Table(name = "Materiali")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="tipo")
+@DiscriminatorColumn(name = "tipo")
 public abstract class MaterialeGenerico {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "sequenza_materiali")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenza_materiali")
     @SequenceGenerator(name = "sequenza_materiali", sequenceName = "MATERIALE_SEQ", allocationSize = 1)
-    private int id= 0;
+    private int id = 0;
 
     @OneToOne
-    private TuristaAutenticato creatore =null;
+    private TuristaAutenticato creatore = null;
 
     @Setter
     private Stato stato = Stato.IN_ATTESA;
@@ -31,15 +31,15 @@ public abstract class MaterialeGenerico {
     public MaterialeGenerico() {
     }
 
-    /**
-     *@return  le informazioni sul materiale
-     */
-    public abstract String getBase64();
-
     public MaterialeGenerico(MaterialeDTO materialeDTO) {
-        this.file ="./src/main/resources/materials/"+materialeDTO.getPathFile();
+        this.file = "./src/main/resources/materials/" + materialeDTO.getPathFile();
         this.creatore = materialeDTO.getCreatore();
     }
+
+    /**
+     * @return le informazioni sul materiale
+     */
+    public abstract String getBase64();
 
     @Override
     public String toString() {

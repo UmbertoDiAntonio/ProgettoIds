@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface PoiRepository extends JpaRepository<PuntoInteresse,Integer> {
+public interface PoiRepository extends JpaRepository<PuntoInteresse, Integer> {
 
     List<Taggable> findByTagsValoreContaining(String tag);
 

@@ -9,13 +9,11 @@ import java.util.Set;
  */
 public interface Taggable {
     /**
-     *
      * @return tutti i tag dell'oggetto
      */
     Set<Tag> getTags();
 
     /**
-     *
      * @param tag Tag da aggiungere all'oggetto
      */
     void addTag(Tag tag);

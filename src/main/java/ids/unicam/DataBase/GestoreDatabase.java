@@ -12,15 +12,16 @@ import static ids.unicam.Main.logger;
 public class GestoreDatabase {
     private final ConnessioneDatabase connessioneDatabase;
     private final CreazioneTabelleDatabase creazioneTabelleDatabase;
+
     @Autowired
     public GestoreDatabase(ConnessioneDatabase connessioneDatabase, CreazioneTabelleDatabase creazioneTabelleDatabase) {
         this.connessioneDatabase = connessioneDatabase;
         this.creazioneTabelleDatabase = creazioneTabelleDatabase;
     }
 
-    public void eliminaTabelleDB(){
+    public void eliminaTabelleDB() {
         try (Connection connection = getConnessioneDatabase().connessioneAlDatabase()) {
-            if(connection==null){
+            if (connection == null) {
                 logger.error("Impossibile connettersi al Database");
                 return;
             }
@@ -31,9 +32,9 @@ public class GestoreDatabase {
     }
 
 
-    public void inizializzaDatabase(){
+    public void inizializzaDatabase() {
         try (Connection connection = getConnessioneDatabase().connessioneAlDatabase()) {
-            if(connection==null){
+            if (connection == null) {
                 logger.error("Impossibile connettersi al Database");
                 return;
             }

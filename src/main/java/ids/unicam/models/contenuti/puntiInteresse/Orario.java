@@ -27,6 +27,7 @@ public class Orario {
     public void setOrarioApertura(DayOfWeek day, OrarioApertura orario) {
         hoursMap.put(day, orario);
     }
+
     public void setOrarioApertura(DayOfWeek day, LocalTime openingTime, LocalTime closingTime) {
         OrarioApertura hours = new OrarioApertura(openingTime, closingTime);
         hoursMap.put(day, hours);
@@ -39,15 +40,15 @@ public class Orario {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        boolean haveCloseDay=false;
+        boolean haveCloseDay = false;
         for (int i = 1; i < 7; i++) {
             DayOfWeek current = DayOfWeek.asDayOfWeek(i);
-            if(hoursMap.get(current) != null )
+            if (hoursMap.get(current) != null)
                 builder.append(current.name()).append(" ").append(hoursMap.get(current)).append(" ");
             else
-                haveCloseDay=true;
+                haveCloseDay = true;
         }
-        if(haveCloseDay) {
+        if (haveCloseDay) {
             for (int i = 1; i < 7; i++) {
                 DayOfWeek current = DayOfWeek.asDayOfWeek(i);
                 if (hoursMap.get(current) == null)
@@ -67,8 +68,8 @@ public class Orario {
         private LocalTime closingTime = null;
 
         public OrarioApertura(LocalTime openingTime, LocalTime closingTime) {
-            this.openingTime = LocalTime.of(openingTime.getHour(),openingTime.getMinute());
-            this.closingTime = LocalTime.of(closingTime.getHour(),closingTime.getMinute());
+            this.openingTime = LocalTime.of(openingTime.getHour(), openingTime.getMinute());
+            this.closingTime = LocalTime.of(closingTime.getHour(), closingTime.getMinute());
         }
 
 
@@ -83,7 +84,7 @@ public class Orario {
 
         @Override
         public String toString() {
-            return "{Apertura: " + openingTime + "," + "Chiusura: " + closingTime+"}";
+            return "{Apertura: " + openingTime + "," + "Chiusura: " + closingTime + "}";
         }
     }
 }

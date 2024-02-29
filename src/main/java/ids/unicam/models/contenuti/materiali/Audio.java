@@ -21,16 +21,6 @@ public class Audio extends MaterialeGenerico {
         super(materialeDTO);
     }
 
-    @Override
-    public String getBase64() {
-        try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(super.getFile()));
-            byte[] audioBytes = audioToByteArray(audioInputStream);
-            return byteArrayToBase64String(audioBytes);
-        } catch (UnsupportedAudioFileException | IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
     public static byte[] audioToByteArray(AudioInputStream audioInputStream) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte[] buffer = new byte[4096];
@@ -44,6 +34,18 @@ public class Audio extends MaterialeGenerico {
     public static String byteArrayToBase64String(byte[] bytes) {
         return Base64.getEncoder().encodeToString(bytes);
     }
+
+    @Override
+    public String getBase64() {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(super.getFile()));
+            byte[] audioBytes = audioToByteArray(audioInputStream);
+            return byteArrayToBase64String(audioBytes);
+        } catch (UnsupportedAudioFileException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public String toString() {
         return super.toString();

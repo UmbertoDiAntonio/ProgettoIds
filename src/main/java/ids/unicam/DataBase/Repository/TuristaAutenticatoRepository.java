@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface TuristaAutenticatoRepository extends JpaRepository<TuristaAutenticato,String> {
+public interface TuristaAutenticatoRepository extends JpaRepository<TuristaAutenticato, String> {
     @Query("SELECT DISTINCT t FROM TuristaAutenticato t JOIN FETCH t.preferiti")
     List<TuristaAutenticato> findTuristiConPreferiti();
 

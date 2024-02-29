@@ -31,26 +31,51 @@ import static ids.unicam.Main.logger;
 @Table(name = "Punti_di_Interesse")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class PuntoInteresse implements Contenitore, Taggable, Expirable {
+    @OneToMany(fetch = FetchType.EAGER)
+    private final Set<Tag> tags = new HashSet<>();
+    @OneToMany(fetch = FetchType.EAGER)
+    private final Set<MaterialeGenerico> materiali = new HashSet<>();
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenza_contenuti")
     @SequenceGenerator(name = "sequenza_contenuti", sequenceName = "PUNTI_DI_INTERESSE_SEQ", allocationSize = 1)
     private int id = 0;
-
     @OneToOne
     @JoinColumn(name = "nome_comune")
     private Comune comune;
-
     @Setter
     private Stato stato = Stato.IN_ATTESA;
-
-    @OneToMany(fetch = FetchType.EAGER)
-    private final Set<Tag> tags = new HashSet<>();
-
     @Setter
     private @Nullable LocalDate expireDate = null;
+    @Embedded
+    @Getter
+    private Orario orario;
+    @Getter
+    private String nome = "";
+    @Embedded
+    private Punto pt = null;
+    @Getter
+    @Setter
+    @OneToOne
+    private Contributor creatore = null;
+    @Enumerated(EnumType.STRING)
+    @Getter
+    private TipologiaPuntoInteresse tipo;
+
+    public PuntoInteresse(PuntoInteresseDTO poiDTO) {
+        this.comune = poiDTO.getCreatore().getComune();
+
+
+        this.setStato(poiDTO.getCreatore() instanceof ContributorAutorizzato ? Stato.APPROVATO : Stato.IN_ATTESA);
+        this.nome = poiDTO.getNome();
+        this.pt = poiDTO.getCoordinate();
+        this.orario = poiDTO.getOrario();
+        this.tipo = poiDTO.getTipologiaPuntoInteresse();
+        this.creatore = poiDTO.getCreatore();
+        logger.debug("Creato POI " + nome + " in " + pt);
+    }
 
     public boolean isExpired() {
-        if(expireDate==null)
+        if (expireDate == null)
             return false;
         return LocalDate.now().isAfter(expireDate);
     }
@@ -77,53 +102,17 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
                 '}';
     }
 
-    @Embedded
-    @Getter
-    private Orario orario;
-
-    @Getter
-    private String nome = "";
-
-    @Embedded
-    private Punto pt = null;
-
-    @Getter
-    @Setter
-    @OneToOne
-    private Contributor creatore = null;
-
     @Contract("-> new")
     public Punto getPt() {
         return pt.clone();
     }
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private final Set<MaterialeGenerico> materiali = new HashSet<>();
-
-    @Enumerated(EnumType.STRING)
-    @Getter
-    private TipologiaPuntoInteresse tipo;
-
-    public PuntoInteresse(PuntoInteresseDTO poiDTO) {
-        this.comune = poiDTO.getCreatore().getComune();
-
-
-        this.setStato(poiDTO.getCreatore() instanceof ContributorAutorizzato ? Stato.APPROVATO : Stato.IN_ATTESA);
-        this.nome = poiDTO.getNome();
-        this.pt = poiDTO.getCoordinate();
-        this.orario = poiDTO.getOrario();
-        this.tipo = poiDTO.getTipologiaPuntoInteresse();
-        this.creatore = poiDTO.getCreatore();
-        logger.debug("Creato POI " + nome + " in " + pt);
-    }
-
-
     public String mostraInformazioniDettagliate() {
-        return getNome() + " " + getPt()+" ("+comune.getNome()+") "+getTipo() +" ["+getStato()+"] "+getOrario()+" "+getCreatore().getUsername() ;
+        return getNome() + " " + getPt() + " (" + comune.getNome() + ") " + getTipo() + " [" + getStato() + "] " + getOrario() + " " + getCreatore().getUsername();
     }
 
     public String mostraInformazioniGeneriche() {
-        return getNome() + " ["+getStato()+"]";
+        return getNome() + " [" + getStato() + "]";
     }
 
     @Override

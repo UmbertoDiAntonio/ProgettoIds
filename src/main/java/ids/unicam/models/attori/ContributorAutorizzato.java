@@ -9,9 +9,9 @@ import jakarta.persistence.Table;
 
 
 @Entity
-@Table(name="CONTRIBUTOR_AUTORIZZATI")
+@Table(name = "CONTRIBUTOR_AUTORIZZATI")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class ContributorAutorizzato extends Contributor{
+public class ContributorAutorizzato extends Contributor {
     public ContributorAutorizzato(RichiestaCreazioneContributorDTO contributorDTO) throws ConnessioneFallitaException, RuntimeException {
         super(contributorDTO);
     }
@@ -22,7 +22,7 @@ public class ContributorAutorizzato extends Contributor{
 
     @Override
     public String toString() {
-        return "ContributorAutorizzato "+super.toString();
+        return "ContributorAutorizzato " + super.toString();
     }
 
     @Override

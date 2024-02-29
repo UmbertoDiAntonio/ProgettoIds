@@ -20,9 +20,10 @@ public class Curatore extends ContributorAutorizzato {
     public Curatore(RichiestaCreazioneContributorDTO contributorDTO) throws ConnessioneFallitaException, RuntimeException {
         super(contributorDTO);
     }
+
     @Override
     public String toString() {
-        return "Curatore "+super.toString();
+        return "Curatore " + super.toString();
     }
 
     @Override

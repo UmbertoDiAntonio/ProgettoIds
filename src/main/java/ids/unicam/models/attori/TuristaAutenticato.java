@@ -15,17 +15,25 @@ import java.util.Objects;
 @DiscriminatorColumn(name = "TIPO")
 @DiscriminatorValue("TuristaAutenticato")
 public class TuristaAutenticato extends Turista {
-    private String nome ="";
-    @Id
-    private String username="";
-    private String cognome ="";
-    private LocalDate dataNascita;
-    private String password="";
     @OneToMany(fetch = FetchType.EAGER)
     private final List<PuntoInteresse> preferiti = new ArrayList<>();
+    private String nome = "";
+    @Id
+    private String username = "";
+    private String cognome = "";
+    private LocalDate dataNascita;
+    private String password = "";
 
     public TuristaAutenticato() {
 
+    }
+
+    public TuristaAutenticato(TuristaAutenticatoDTO turistaDTO) {
+        this.nome = turistaDTO.getNome();
+        this.cognome = turistaDTO.getCognome();
+        this.dataNascita = turistaDTO.getDataNascita();
+        this.password = turistaDTO.getPassword();
+        this.username = turistaDTO.getUsername();
     }
 
     public String getNome() {
@@ -52,17 +60,6 @@ public class TuristaAutenticato extends Turista {
         return preferiti;
     }
 
-    public TuristaAutenticato(TuristaAutenticatoDTO turistaDTO) {
-        this.nome = turistaDTO.getNome();
-        this.cognome = turistaDTO.getCognome();
-        this.dataNascita = turistaDTO.getDataNascita();
-        this.password = turistaDTO.getPassword();
-        this.username = turistaDTO.getUsername();
-    }
-
-
-
-
     @Override
     public String toString() {
         return "TuristaAutenticato{" +
@@ -74,7 +71,6 @@ public class TuristaAutenticato extends Turista {
                 ", preferiti=" + preferiti +
                 '}';
     }
-
 
 
     @Override

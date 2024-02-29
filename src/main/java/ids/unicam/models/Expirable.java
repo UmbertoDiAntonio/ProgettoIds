@@ -6,6 +6,7 @@ package ids.unicam.models;
 public interface Expirable {
     /**
      * Metodo per sapere se la validità è terminata
+     *
      * @return true se la validità è terminata
      */
     boolean isExpired();

@@ -20,6 +20,12 @@ public class Foto extends MaterialeGenerico {
         super(materialeDTO);
     }
 
+    public static String imageToBase64String(BufferedImage image) throws IOException {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        ImageIO.write(image, "jpg", os);
+        return Base64.getEncoder().encodeToString(os.toByteArray());
+    }
+
     @Override
     public String getBase64() {
         try {
@@ -29,12 +35,6 @@ public class Foto extends MaterialeGenerico {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static String imageToBase64String(BufferedImage image) throws IOException {
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        ImageIO.write(image, "jpg", os);
-        return Base64.getEncoder().encodeToString(os.toByteArray());
     }
 
     @Override

@@ -36,7 +36,7 @@ public class AnimatoreController implements ControllerBase<RichiestaCreazioneCon
     @Operation(summary = "Animatore dall'identificatore univoco 'id'",
             description = "Animatore dall'identificatore univoco 'id' salvato nel database.")
     public ResponseEntity<?> getById(
-            @Parameter(description = "Username dell'animatore")@PathVariable String username) {
+            @Parameter(description = "Username dell'animatore") @PathVariable String username) {
         return ResponseEntity.ok(animatoreService.getById(username));
     }
 
@@ -46,8 +46,8 @@ public class AnimatoreController implements ControllerBase<RichiestaCreazioneCon
             description = "Crea un nuovo utente con ruolo di animatore.")
     public ResponseEntity<?> create(@RequestBody RichiestaCreazioneContributorDTO contributorDTO) {
         try {
-            return new ResponseEntity<>(gestorePiattaformaService.registraContributor(contributorDTO, Ruolo.ANIMATORE),HttpStatus.OK);
-        } catch (ConnessioneFallitaException  | IllegalArgumentException e) {
+            return new ResponseEntity<>(gestorePiattaformaService.registraContributor(contributorDTO, Ruolo.ANIMATORE), HttpStatus.OK);
+        } catch (ConnessioneFallitaException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -59,6 +59,6 @@ public class AnimatoreController implements ControllerBase<RichiestaCreazioneCon
     public ResponseEntity<?> delete(
             @Parameter(description = "username dell'Animatore") @PathVariable String username) {
         animatoreService.deleteById(username);
-        return ResponseEntity.ok("Utente: '"+username+ "' eliminato");
+        return ResponseEntity.ok("Utente: '" + username + "' eliminato");
     }
 }

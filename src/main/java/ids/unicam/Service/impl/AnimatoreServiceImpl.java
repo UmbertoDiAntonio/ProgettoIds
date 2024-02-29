@@ -80,9 +80,9 @@ public class AnimatoreServiceImpl implements AnimatoreService {
             Optional<Invito> oInvito = invitoServiceImpl.findById(idInvito);
             if (oInvito.isPresent()) {
                 Invito invito = oInvito.get();
-                if(invito.getContest().getCreatore().equals(animatore)){
+                if (invito.getContest().getCreatore().equals(animatore)) {
                     invito.setValido(false);
-                }else {
+                } else {
                     throw new ContestException("Devi essere il creatore del contest");
                 }
             } else {

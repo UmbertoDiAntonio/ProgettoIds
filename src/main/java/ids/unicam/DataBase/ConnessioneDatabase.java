@@ -28,7 +28,7 @@ public class ConnessioneDatabase {
                     env.getProperty("spring.datasource.username"),
                     env.getProperty("spring.datasource.password"));
         } catch (SQLException e) {
-            throw new RuntimeException("Impossibile Stabilire una connessione al Database",e);
+            throw new RuntimeException("Impossibile Stabilire una connessione al Database", e);
         }
         return connection;
 

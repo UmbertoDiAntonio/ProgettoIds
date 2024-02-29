@@ -103,7 +103,7 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
     @Operation(summary = "Aggiungi Preferito",
             description = "Aggiungi un Punto di Interesse alla tua lista dei preferiti, se esiste.")
     public ResponseEntity<?> aggiungiPreferito(
-            @Parameter(description = "username del turista")  @RequestParam String usernameTurista,
+            @Parameter(description = "username del turista") @RequestParam String usernameTurista,
             @Parameter(description = "id del Punto di Interesse") @RequestParam Integer idPunto) {
         try {
             Optional<PuntoInteresse> oPunto = poiService.getById(idPunto);

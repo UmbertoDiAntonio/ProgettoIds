@@ -15,19 +15,19 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "Itinerari")
 public class Itinerario {
+    @ManyToMany(fetch = FetchType.EAGER)
+    private final List<PuntoInteresse> percorso = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "itinerari_gen")
     @SequenceGenerator(name = "itinerari_gen", sequenceName = "ITINERARI_SEQ", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private int id;
     private String nome = "";
-    @ManyToMany(fetch = FetchType.EAGER)
-    private final List<PuntoInteresse> percorso = new ArrayList<>();
     @OneToOne
     @JoinColumn(name = "nome_comune")
     private Comune comune;
 
-    public Itinerario(String nome,Comune comune) {
+    public Itinerario(String nome, Comune comune) {
         this.nome = nome;
         this.comune = comune;
     }

@@ -8,7 +8,7 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="ANIMATORI")
+@Table(name = "ANIMATORI")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Animatore extends Contributor {
     public Animatore(RichiestaCreazioneContributorDTO contributorDTO) throws ConnessioneFallitaException, RuntimeException {
@@ -22,6 +22,6 @@ public class Animatore extends Contributor {
 
     @Override
     public String toString() {
-        return "Animatore "+super.toString();
+        return "Animatore " + super.toString();
     }
 }

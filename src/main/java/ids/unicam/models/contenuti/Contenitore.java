@@ -6,6 +6,8 @@ import java.util.Set;
 
 public interface Contenitore {
     Set<MaterialeGenerico> getMateriali();
+
     void addMateriale(MaterialeGenerico materialeGenerico);
+
     void rimuoviMateriale(MaterialeGenerico materialeGenerico);
 }

@@ -35,7 +35,6 @@ public class ComuneController {
     }
 
 
-
     @GetMapping("/{nomeComune}")
     @Operation(summary = "Comune dall'identificatore univoco 'id'",
             description = "Comune dall'identificatore univoco 'id' salvato nel database.")
@@ -53,7 +52,7 @@ public class ComuneController {
     @Operation(summary = "Creazione di un nuovo comune",
             description = "Crea un nuovo comune.")
     public ResponseEntity<?> create(
-            @Parameter(description = "nome del comune")@RequestParam String nomeComune) {
+            @Parameter(description = "nome del comune") @RequestParam String nomeComune) {
         try {
             return ResponseEntity.ok(comuneService.creaComune(new Comune(new ComuneDTO(nomeComune))));
         } catch (ConnessioneFallitaException e) {

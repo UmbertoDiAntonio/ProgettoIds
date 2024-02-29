@@ -108,11 +108,11 @@ public class CuratoreController implements ControllerBase<RichiestaCreazioneCont
     @Operation(summary = "Elimina un Materiale",
             description = "Eliminazione di un Materiale dall'ID.")
     public ResponseEntity<?> eliminaMateriale(
-            @Parameter(description = "Username del curatore")@RequestParam String usernameCuratore,
-            @Parameter(description = "id del materiale da eliminare")@RequestParam Integer idMateriale) {
+            @Parameter(description = "Username del curatore") @RequestParam String usernameCuratore,
+            @Parameter(description = "id del materiale da eliminare") @RequestParam Integer idMateriale) {
         try {
             curatoreService.eliminaMateriale(usernameCuratore, idMateriale);
-            return ResponseEntity.ok("Il materiale con id '"+idMateriale+"' e' stato eliminato da utente con username '"+usernameCuratore+"' .");
+            return ResponseEntity.ok("Il materiale con id '" + idMateriale + "' e' stato eliminato da utente con username '" + usernameCuratore + "' .");
         } catch (FuoriComuneException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

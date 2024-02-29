@@ -15,28 +15,27 @@ public class Invito {
     @Setter
     @Getter
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "sequenza_inviti")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenza_inviti")
     @SequenceGenerator(name = "sequenza_inviti", sequenceName = "INVITI_SEQ", allocationSize = 1)
     private int id;
 
     @OneToOne
-    private Contest contest=null;
+    private Contest contest = null;
 
     @Getter
     @OneToOne
-    private TuristaAutenticato invitato=null;
+    private TuristaAutenticato invitato = null;
     @Getter
     @Setter
-    private boolean valido=true;
-
-    public @NotNull Contest getContest() {
-        return contest;
-    }
-
+    private boolean valido = true;
 
     public Invito(Contest contest, TuristaAutenticato invitato) {
         this.contest = contest;
         this.invitato = invitato;
+    }
+
+    public @NotNull Contest getContest() {
+        return contest;
     }
 }
 

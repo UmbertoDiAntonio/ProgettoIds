@@ -24,38 +24,36 @@ public class Comune {
     @Embedded
     private Punto posizione;
 
-    @Contract("-> new")
-    public Punto getPosizione() {
-        return posizione.clone();
-    }
-
-
     /**
      * @param comuneDTO Nome del Comune
      * @throws IllegalArgumentException se il nome del comune non corrisponde a nessun comune
      * @throws RuntimeException         se non è possibile raggiungere il sistema OSM
      */
     public Comune(ComuneDTO comuneDTO) throws ConnessioneFallitaException {
-            this.posizione = RichiestaOSM.getCoordinateDaComune(comuneDTO.getNome());
-            if (posizione == null) {
-                logger.error("Coordinate comune nulle");
-            }
-            this.nome = RichiestaOSM.getComuneDaCoordinate(posizione);
+        this.posizione = RichiestaOSM.getCoordinateDaComune(comuneDTO.getNome());
+        if (posizione == null) {
+            logger.error("Coordinate comune nulle");
+        }
+        this.nome = RichiestaOSM.getComuneDaCoordinate(posizione);
 
-            if (this.nome == null)
-                throw new RuntimeException("Impossibile stabilire la connessione con il sistema OSM");
+        if (this.nome == null)
+            throw new RuntimeException("Impossibile stabilire la connessione con il sistema OSM");
 
-            if (!this.nome.equalsIgnoreCase(comuneDTO.getNome()))
-                throw new IllegalArgumentException("Il nome del comune ricercato non corrisponde con nessun comune reale");
+        if (!this.nome.equalsIgnoreCase(comuneDTO.getNome()))
+            throw new IllegalArgumentException("Il nome del comune ricercato non corrisponde con nessun comune reale");
     }
 
+    @Contract("-> new")
+    public Punto getPosizione() {
+        return posizione.clone();
+    }
 
     /**
      * @param punto il punto geografico di cui vogliamo verificare la posizione
      * @return true se il punto è all'interno del territorio del comune
      */
     public final boolean verificaCoordinateComune(Punto punto) {
-        if(punto ==  null)
+        if (punto == null)
             throw new IllegalArgumentException("il punto non puo' essere nullo");
         String nomeComune = RichiestaOSM.getComuneDaCoordinate(punto);
         if (nomeComune != null) {
@@ -84,6 +82,6 @@ public class Comune {
 
     @Override
     public String toString() {
-        return nome +posizione;
+        return nome + posizione;
     }
 }

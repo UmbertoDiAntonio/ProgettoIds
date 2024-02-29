@@ -17,15 +17,6 @@ public class Testo extends MaterialeGenerico {
         super(materialeDTO);
     }
 
-    @Override
-    public String getBase64() {
-        try {
-            return readFileToString(super.getFile());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public static String readFileToString(String filePath) throws IOException {
         StringBuilder contentBuilder = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -37,6 +28,14 @@ public class Testo extends MaterialeGenerico {
         return contentBuilder.toString();
     }
 
+    @Override
+    public String getBase64() {
+        try {
+            return readFileToString(super.getFile());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public String toString() {

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface ComuneRepository extends JpaRepository<Comune,String> {
+public interface ComuneRepository extends JpaRepository<Comune, String> {
     Optional<Comune> findComuneByNomeIgnoreCase(String nomeComune);
 
 }
