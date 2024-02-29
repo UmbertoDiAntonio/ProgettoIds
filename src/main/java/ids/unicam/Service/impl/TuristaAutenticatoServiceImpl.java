@@ -186,6 +186,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
     }
 
     @Override
+    @Transactional
     public void deleteNotificheById(String usernameTurista) {
         notificaService.rimuoviNotificheById(usernameTurista);
     }
