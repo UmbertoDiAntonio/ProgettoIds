@@ -112,7 +112,7 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
 
             PuntoInteresse puntoInteresse = oPunto.get();
             turistaAutenticatoService.aggiungiPreferito(usernameTurista, puntoInteresse);
-            return ResponseEntity.ok("L'utente con id '" + usernameTurista + "' ha aggiunto ai suoi preferiti il punto di interesse con id '" + puntoInteresse.getId() + "' .");
+            return ResponseEntity.ok("L'utente con username '" + usernameTurista + "' ha aggiunto ai suoi preferiti il punto di interesse con id '" + puntoInteresse.getId() + "' .");
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         }
@@ -138,7 +138,7 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
             @Parameter(description = "id del Punto di Interesse") @RequestParam Integer idPunto) {
         try {
             turistaAutenticatoService.rimuoviPreferito(usernameTurista, idPunto);
-            return ResponseEntity.ok("L'utente con id '" + usernameTurista + "' ha eliminato dai suoi preferiti il punto di interesse con id '" + idPunto + "' .");
+            return ResponseEntity.ok("L'utente con username '" + usernameTurista + "' ha eliminato dai suoi preferiti il punto di interesse con id '" + idPunto + "' .");
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         }
@@ -152,7 +152,7 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
             @Parameter(description = "Username del Turista") @RequestParam String usernameTurista) {
         try {
             turistaAutenticatoService.partecipaAlContest(idContest, usernameTurista);
-            return ResponseEntity.ok("L'utente con id '" + usernameTurista + "' ha iniziato a partecipare al contest con id '" + idContest + "' .");
+            return ResponseEntity.ok("L'utente con username '" + usernameTurista + "' ha iniziato a partecipare al contest con id '" + idContest + "' .");
         } catch (IllegalArgumentException | UnsupportedOperationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         }
@@ -166,7 +166,7 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
             @Parameter(description = "Username del Turista") @RequestParam String usernameTurista) {
         try {
             turistaAutenticatoService.cancellaPartecipazioneContest(idContest, usernameTurista);
-            return ResponseEntity.ok("L'utente con id '" + usernameTurista + "' ha smesso di partecipare al contest con id '" + idContest + "' .");
+            return ResponseEntity.ok("L'utente con username '" + usernameTurista + "' ha smesso di partecipare al contest con id '" + idContest + "' .");
         } catch (IllegalArgumentException | UnsupportedOperationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         }
