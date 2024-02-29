@@ -10,6 +10,7 @@ import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.notifiche.Notifica;
 import ids.unicam.models.contenuti.notifiche.NotificaBuilder;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
+import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
@@ -57,11 +58,12 @@ public class NotificaServiceImpl {
                         .withDescrizione("il contest " + contest.getNomeContest() + " creato da " + contest.getCreatore().getUsername() + (contest.getMaterialeVincitore() != null ? " è terminato " : (" terminerà il " + contest.getExpireDate())))
                         .withDestinatario(destinatario).build());
     }
-    public Notifica creaNotifica(Animatore animatore,Contest contest, TuristaAutenticato destinatario) {
+
+    public Notifica creaNotifica(Animatore animatore, Contest contest, TuristaAutenticato destinatario) {
         return notificaRepository.save(
                 new NotificaBuilder()
                         .withTitolo("Info Contest: " + contest.getNomeContest())
-                        .withDescrizione("Sei stato invitato a unirti al contest "+contest+" da parte dell'animatore "+animatore.getUsername())
+                        .withDescrizione("Sei stato invitato a unirti al contest " + contest + " da parte dell'animatore " + animatore.getUsername())
                         .withDestinatario(destinatario).build());
     }
 
@@ -75,6 +77,7 @@ public class NotificaServiceImpl {
         return notificaRepository.save(build);
     }
 
+    @Transactional
     public void rimuoviNotificheById(String usernameTurista) {
         notificaRepository.deleteByUsernameDestinatario(usernameTurista);
     }
