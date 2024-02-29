@@ -101,7 +101,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
 
 
     @Override
-    public Itinerario rimuoviTappa(String usernameContributor, Integer idItinerario, Integer idPuntoInteresse) throws
+    public void rimuoviTappa(String usernameContributor, Integer idItinerario, Integer idPuntoInteresse) throws
             IllegalArgumentException {
         Optional<Contributor> oContributor = contributorService.getById(usernameContributor);
         if (oContributor.isPresent()) {
@@ -114,7 +114,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
                     if (oPoi.isPresent()) {
                         PuntoInteresse puntoInteresse = oPoi.get();
                         itinerario.getPercorso().remove(puntoInteresse);
-                        return save(itinerario);
+                        save(itinerario);
                     } else {
                         logger.error("id Punto Interesse non valido");
                         throw new IllegalArgumentException("id Punto Interesse non valido");
@@ -160,7 +160,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
                 }
             }
 
-            return save(new Itinerario(nomeItinerario,comune));
+            return save(new Itinerario(nomeItinerario, comune));
         } else {
             logger.error("Il contributor non e' valido");
             throw new IllegalArgumentException("Il contributor non e' valido");

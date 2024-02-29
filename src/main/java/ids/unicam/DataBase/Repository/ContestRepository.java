@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ContestRepository extends JpaRepository<Contest, Integer> {
@@ -22,4 +23,7 @@ public interface ContestRepository extends JpaRepository<Contest, Integer> {
 
     @Query("select p.materiali from Contest p where p.id=:idContest")
     List<MaterialeGenerico> getMateriali(int idContest);
+
+    Optional<Contest> findContestByMaterialiContaining(MaterialeGenerico materialeGenerico);
+
 }

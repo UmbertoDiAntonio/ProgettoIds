@@ -55,11 +55,6 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public List<Contest> getContestByPartecipante(TuristaAutenticato turistaAutenticato) {
-        return repository.findContestByPartecipantiContains(turistaAutenticato);
-    }
-
-    @Override
     public List<Contest> getContestByCreatore(Animatore animatore) {
         return repository.findContestByCreatore(animatore);
     }
@@ -104,17 +99,17 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Transactional
-    public void rimuoviPartecipante(Contest contest, TuristaAutenticato turistaAutenticato) throws IllegalArgumentException{
-       contest.getPartecipanti().remove(turistaAutenticato);
-       save(contest);
+    public void rimuoviPartecipante(Contest contest, TuristaAutenticato turistaAutenticato) throws IllegalArgumentException {
+        contest.getPartecipanti().remove(turistaAutenticato);
+        save(contest);
     }
 
     @Transactional
     @Override
     public void setVincitoreContest(Contest contest, MaterialeGenerico materialeGenerico) {
         contest.setMaterialeVincitore(materialeGenerico);
-        if(contest.getPartecipanti().contains(materialeGenerico.getCreatore()))
-            notificaService.creaNotifica(contest.getCreatore(),contest,contest.getMaterialeVincitore());
+        if (contest.getPartecipanti().contains(materialeGenerico.getCreatore()))
+            notificaService.creaNotifica(contest.getCreatore(), contest, contest.getMaterialeVincitore());
         save(contest);
     }
 
@@ -130,13 +125,13 @@ public class ContestServiceImpl implements ContestService {
         if (!contest.getMateriali().contains(materiale)) {
             throw new ContestException("il materiale non risulta tra i materiali del contest");
         }
-        if(contest.getPartecipanti().contains(materiale.getCreatore()))
+        if (contest.getPartecipanti().contains(materiale.getCreatore()))
             setVincitoreContest(contest, materiale);
         else {
             throw new ContestException("Vincitore non valido, non puoi terminare il contest senza avere un vincitore valido");
         }
-        for(TuristaAutenticato turistaAutenticato:contest.getPartecipanti())
-            notificaService.creaNotifica(contest.getCreatore(),contest,turistaAutenticato);
+        for (TuristaAutenticato turistaAutenticato : contest.getPartecipanti())
+            notificaService.creaNotifica(contest.getCreatore(), contest, turistaAutenticato);
 
 
         contest.getPartecipanti().clear();
@@ -147,6 +142,10 @@ public class ContestServiceImpl implements ContestService {
     public List<MaterialeGenerico> getMaterialiContest(Contest contenutoGenerico) {
         return repository.getMateriali(contenutoGenerico.getId());
 
+    }
+
+    public Optional<Contest> getContestContainingMaterial(MaterialeGenerico materialeGenerico) {
+        return repository.findContestByMaterialiContaining(materialeGenerico);
     }
 }
 

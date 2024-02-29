@@ -54,7 +54,7 @@ public class NotificaServiceImpl {
         return notificaRepository.save(
                 new NotificaBuilder()
                         .withTitolo("Info Contest: " + contest.getNomeContest())
-                        .withDescrizione("il contest " + contest.getNomeContest() + (contest.getMaterialeVincitore() != null ? " è terminato " : (" terminerà il " + contest.getExpireDate())))
+                        .withDescrizione("il contest " + contest.getNomeContest() + " creato da " + animatore.getUsername() + (contest.getMaterialeVincitore() != null ? " è terminato " : (" terminerà il " + contest.getExpireDate())))
                         .withDestinatario(destinatario).build());
     }
 

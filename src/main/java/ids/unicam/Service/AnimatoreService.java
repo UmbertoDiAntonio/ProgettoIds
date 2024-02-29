@@ -9,11 +9,9 @@ import java.util.Optional;
 
 public interface AnimatoreService {
 
+    Invito invitaContest(String idAnimatore, Integer idContest, String usernameInvitato) throws ContestException, IllegalStateException, IllegalArgumentException;
 
-    Invito invitaContest(String idAnimatore, Integer idContest, String usernameInvitato) throws ContestException,IllegalStateException,IllegalArgumentException;
-
-    boolean approvaMateriale(String usernameAnimatore,Integer idContest, Integer idMaterialeGenerico, boolean stato) throws UnsupportedOperationException,IllegalArgumentException ;
-
+    boolean approvaMateriale(String usernameAnimatore, Integer idContest, Integer idMaterialeGenerico, boolean stato) throws UnsupportedOperationException, IllegalArgumentException;
 
     List<Animatore> getAll();
 
@@ -21,8 +19,7 @@ public interface AnimatoreService {
 
     Optional<Animatore> getById(String username);
 
+    void terminaContest(String idAnimatore, Integer idContest, Integer idMateriale) throws ContestException, UnsupportedOperationException, IllegalArgumentException;
 
-    void terminaContest(String idAnimatore, Integer idContest, Integer idMateriale) throws ContestException,UnsupportedOperationException,IllegalArgumentException;
-
-    void annullaInvito(String usernameAnimatore, int idInvito) throws ContestException,IllegalArgumentException;
+    void annullaInvito(String usernameAnimatore, int idInvito) throws ContestException, IllegalArgumentException;
 }

@@ -66,8 +66,8 @@ public class PuntoInteresseController {
 
 
     @GetMapping("/{id}")
-    @Operation(summary = "Punto di interesse dall'identificatore univoco 'id'",
-            description = "Punto di interesse dall'identificatore univoco 'id' salvato nel database.")
+    @Operation(summary = "Punto di interesse dall'identificatore univoco id",
+            description = "Punto di interesse dall'identificatore univoco id salvato nel database.")
     public ResponseEntity<?> getById(
             @Parameter(description = "Id del punto di interesse") @PathVariable Integer id) {
         return ResponseEntity.ok(poiService.getById(id));

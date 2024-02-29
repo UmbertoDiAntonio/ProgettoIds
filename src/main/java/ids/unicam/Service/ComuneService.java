@@ -12,6 +12,7 @@ import java.util.Optional;
 
 public interface ComuneService {
     Comune creaComune(Comune comune);
+
     List<Animatore> getAnimatoriDelComune(String nome_comune);
 
     List<Contributor> getContributorDelComune(String nome_comune);
@@ -24,7 +25,7 @@ public interface ComuneService {
 
     Optional<Comune> getComuneByNome(String nomeComune) throws IllegalArgumentException;
 
-    List<PuntoInteresse> getPuntiInteresseNelComune(String nomeComune)  throws IllegalArgumentException;
+    List<PuntoInteresse> getPuntiInteresseNelComune(String nomeComune) throws IllegalArgumentException;
 
     List<Comune> findAll();
 

@@ -17,21 +17,19 @@ public interface ContestService {
 
     Contest creaContest(Contest contest);
 
-    List<Contest> getContestByPartecipante(TuristaAutenticato turistaAutenticato);
-
     List<Contest> getContestByCreatore(Animatore animatore);
 
     List<MaterialeGenerico> getMaterialiContest(Contest contest);
 
+    void aggiungiPartecipante(Contest contest, TuristaAutenticato turistaAutenticato);
 
-    void aggiungiPartecipante(Contest contest, TuristaAutenticato turistaAutenticato) ;
     void rimuoviPartecipante(Contest contest, TuristaAutenticato turistaAutenticato);
 
-    void setVincitoreContest(Contest contest,  MaterialeGenerico materialeGenerico);
+    void setVincitoreContest(Contest contest, MaterialeGenerico materialeGenerico);
 
-    void terminaContest(Contest contest,Integer idMaterialeVincitore) throws ContestException;
+    void terminaContest(Contest contest, Integer idMaterialeVincitore) throws ContestException;
 
-    List<Contest>findAll();
+    List<Contest> findAll();
 
     Optional<Contest> findById(int id);
 

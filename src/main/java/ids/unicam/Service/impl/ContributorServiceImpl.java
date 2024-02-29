@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ContributorServiceImpl implements ContributorService{
+public class ContributorServiceImpl implements ContributorService {
     private final ContributorRepository repository;
 
 
@@ -41,12 +41,11 @@ public class ContributorServiceImpl implements ContributorService{
     public void deleteAll() {
         repository.deleteAll();
     }
+
     @Override
     public List<Contributor> getAll() {
         return repository.findAll();
     }
-
-
 
 
 }

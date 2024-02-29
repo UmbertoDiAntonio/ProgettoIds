@@ -6,7 +6,10 @@ import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.exception.ContestException;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Comune;
-import ids.unicam.models.DTO.*;
+import ids.unicam.models.DTO.ComuneDTO;
+import ids.unicam.models.DTO.PuntoInteresseDTO;
+import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
+import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.Invito;
 import ids.unicam.models.Punto;
 import ids.unicam.models.attori.*;
@@ -469,6 +472,7 @@ public class JUnitContenutiTests {
 
         curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse2.getId(), Stato.APPROVATO.asBoolean());
         MaterialeGenerico foto = materialeService.crea("./testFoto", TipologiaMateriale.FOTO, turista);
+        poiService.aggiungiMateriale(contributor.getUsername(),puntoInteresse2.getId(),foto);
         curatoreServiceImpl.valutaMateriale(curatore.getUsername(), foto.getId(), Stato.APPROVATO.asBoolean());
 
         poiService.aggiungiMateriale(turista.getUsername(), puntoInteresse2.getId(), foto);

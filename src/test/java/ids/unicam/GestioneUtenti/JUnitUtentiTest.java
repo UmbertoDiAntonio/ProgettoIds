@@ -5,8 +5,8 @@ import ids.unicam.Service.impl.*;
 import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Comune;
-import ids.unicam.models.DTO.PuntoInteresseDTO;
 import ids.unicam.models.DTO.ComuneDTO;
+import ids.unicam.models.DTO.PuntoInteresseDTO;
 import ids.unicam.models.DTO.RichiestaCreazioneContributorDTO;
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.Punto;
@@ -25,7 +25,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDate;
 import java.util.Calendar;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 public class JUnitUtentiTest {

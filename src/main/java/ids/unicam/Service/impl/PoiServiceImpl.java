@@ -270,7 +270,7 @@ public class PoiServiceImpl implements PoiService {
     }
 
 
-    public PuntoInteresse getPoiContainingMaterial(MaterialeGenerico materialeGenerico) {
+    public Optional<PuntoInteresse> getPoiContainingMaterial(MaterialeGenerico materialeGenerico) {
         return repository.findPuntoInteresseByMaterialiContaining(materialeGenerico);
     }
 }

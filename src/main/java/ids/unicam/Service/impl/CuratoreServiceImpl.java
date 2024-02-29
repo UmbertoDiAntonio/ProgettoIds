@@ -115,9 +115,20 @@ public class CuratoreServiceImpl implements CuratoreService {
             Optional<MaterialeGenerico> oMateriale = materialeServiceImpl.getById(idMaterialeGenerico);
             if (oMateriale.isPresent()) {
                 MaterialeGenerico materialeGenerico = oMateriale.get();
-                System.out.println(poiServiceImpl.getPoiContainingMaterial(materialeGenerico)+" è il POI con quel materiale");
-                if (!poiServiceImpl.getPoiContainingMaterial(materialeGenerico).getComune().equals(curatore.getComune()))
-                    throw new FuoriComuneException("curatore non puo' operare fuori dal suo comune");
+                Optional<PuntoInteresse> oPoi = poiServiceImpl.getPoiContainingMaterial(materialeGenerico);
+                if (oPoi.isEmpty()) {
+                    Optional<Contest> oContest = contestServiceImpl.getContestContainingMaterial(materialeGenerico);
+                    if (oContest.isPresent()) {
+                        if (!oContest.get().getComune().equals(curatore.getComune()))
+                            throw new FuoriComuneException("curatore non puo' operare fuori dal suo comune");
+                    } else {
+                        logger.error("il materiale non è caricato ne' su un contest ne' su un punto di interesse");
+                        throw new IllegalArgumentException("il materiale non è caricato ne' su un contest ne' su un punto di interesse");
+                    }
+                } else {
+                    if (!oPoi.get().getComune().equals(curatore.getComune()))
+                        throw new FuoriComuneException("curatore non puo' operare fuori dal suo comune");
+                }
                 if (materialeGenerico.getStato() != Stato.IN_ATTESA)
                     throw new UnsupportedOperationException("materiale già settato");
                 Stato stato = Stato.toStatus(bStato);
@@ -226,7 +237,7 @@ public class CuratoreServiceImpl implements CuratoreService {
                     poiServiceImpl.save(puntoInteresse);
                 }
                 materialeServiceImpl.deleteById(materialeGenerico.getId());
-            }else {
+            } else {
                 logger.error("Id del materiale non valido");
                 throw new IllegalArgumentException("Id del materiale non valido");
             }
@@ -235,7 +246,6 @@ public class CuratoreServiceImpl implements CuratoreService {
             throw new IllegalArgumentException("username curatore non valido");
         }
     }
-
 
 
     @Override

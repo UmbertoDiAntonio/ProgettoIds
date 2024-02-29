@@ -33,8 +33,8 @@ public class AnimatoreController implements ControllerBase<RichiestaCreazioneCon
 
     @Override
     @GetMapping("/{username}")
-    @Operation(summary = "Animatore dall'identificatore univoco 'id'",
-            description = "Animatore dall'identificatore univoco 'id' salvato nel database.")
+    @Operation(summary = "Animatore dall'identificatore univoco id",
+            description = "Animatore dall'identificatore univoco id salvato nel database.")
     public ResponseEntity<?> getById(
             @Parameter(description = "Username dell'animatore") @PathVariable String username) {
         return ResponseEntity.ok(animatoreService.getById(username));

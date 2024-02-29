@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 
 @Service
-public class ContenitoreServiceImpl implements ContenitoreService{
+public class ContenitoreServiceImpl implements ContenitoreService {
 
     @Override
     public void aggiungiMateriale(Contenitore contenitore, MaterialeGenerico materialeGenerico) {
@@ -21,7 +21,7 @@ public class ContenitoreServiceImpl implements ContenitoreService{
     }
 
     @Override
-    public  Set<MaterialeGenerico> getMateriali(Contenitore contenitore) {
+    public Set<MaterialeGenerico> getMateriali(Contenitore contenitore) {
         return contenitore.getMateriali();
     }
 }

@@ -34,8 +34,8 @@ public class ContestController {
     }
 
     @GetMapping("/{idContest}")
-    @Operation(summary = "Contest dall'identificatore univoco 'id'",
-            description = "Contest dall'identificatore univoco 'id' salvato nel database.")
+    @Operation(summary = "Contest dall'identificatore univoco id",
+            description = "Contest dall'identificatore univoco id salvato nel database.")
     public ResponseEntity<?> getById(
             @Parameter(description = "id del contest") @PathVariable Integer idContest) {
         return ResponseEntity.ok(contestService.findById(idContest));
@@ -117,8 +117,8 @@ public class ContestController {
             @Parameter(description = "username dell'animatore") @RequestParam String usernameAnimatore,
             @Parameter(description = "id del invito da annullare") @PathVariable Integer idInvito) {
         try {
-            animatoreService.annullaInvito(usernameAnimatore, idInvito);
-            return ResponseEntity.ok("Invito " + idInvito + " annullato");
+            animatoreService.annullaInvito(usernameAnimatore,  idInvito);
+            return ResponseEntity.ok("Invito con id: '"+idInvito+"' annullato dall'utente con username: '"+usernameAnimatore+"' .");
         } catch (ContestException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

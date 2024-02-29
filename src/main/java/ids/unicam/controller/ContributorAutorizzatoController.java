@@ -33,8 +33,8 @@ public class ContributorAutorizzatoController implements ControllerBase<Richiest
 
     @Override
     @GetMapping("/{username}")
-    @Operation(summary = "Contributor Autorizzato dall'identificatore univoco 'id'",
-            description = "Contributor Autorizzato dall'identificatore univoco 'id' salvato nel database.")
+    @Operation(summary = "Contributor Autorizzato dall'identificatore univoco id",
+            description = "Contributor Autorizzato dall'identificatore univoco id salvato nel database.")
     public ResponseEntity<?> getById(
             @Parameter(description = "username del contributor autorizzato") @PathVariable String username) {
         return ResponseEntity.ok(contributorAutorizzatoService.getById(username));
