@@ -70,7 +70,7 @@ public class ContestController {
     @Operation(summary = "Invita utente al contest",
             description = "Invita un utente al contest.")
     public ResponseEntity<?> invita(
-            @Parameter(description = "id dell'utente animatore") @RequestParam String idAnimatore,
+            @Parameter(description = "username dell'utente animatore") @RequestParam String idAnimatore,
             @Parameter(description = "id del contest") @PathVariable Integer idContest,
             @Parameter(description = "username dell'utente da invitare") @RequestParam String usernameInvitato) {
         try {

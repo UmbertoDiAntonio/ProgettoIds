@@ -61,7 +61,7 @@ public class NotificaServiceImpl {
         return notificaRepository.save(
                 new NotificaBuilder()
                         .withTitolo("Info Contest: " + contest.getNomeContest())
-                        .withDescrizione("Sei stato invitato a unirti al contest "+contest+" da parte dell'animatore "+animatore.getUsername())
+                        .withDescrizione("Sei stato invitato a unirti al contest "+contest.getNomeContest()+" da parte dell'animatore "+animatore.getUsername())
                         .withDestinatario(destinatario).build());
     }
 
