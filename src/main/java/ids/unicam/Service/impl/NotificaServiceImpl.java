@@ -74,4 +74,8 @@ public class NotificaServiceImpl {
     public Notifica save(Notifica build) {
         return notificaRepository.save(build);
     }
+
+    public void rimuoviNotificheById(String usernameTurista) {
+        notificaRepository.deleteByUsernameDestinatario(usernameTurista);
+    }
 }

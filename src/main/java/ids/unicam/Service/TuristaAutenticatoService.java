@@ -39,4 +39,6 @@ public interface TuristaAutenticatoService {
     List<Notifica> visualizzaNotifiche(String usernameTurista) throws IllegalArgumentException;
 
     List<Invito> getInviti(String usernameTurista);
+
+    void deleteNotificheById(String usernameTurista);
 }

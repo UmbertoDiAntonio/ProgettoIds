@@ -185,5 +185,10 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
         return invitoServiceImpl.getInvitiRicevuti(usernameTurista);
     }
 
+    @Override
+    public void deleteNotificheById(String usernameTurista) {
+        notificaService.rimuoviNotificheById(usernameTurista);
+    }
+
 
 }

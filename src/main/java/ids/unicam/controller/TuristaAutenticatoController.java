@@ -144,6 +144,19 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
         }
     }
 
+    @DeleteMapping("/eliminaNotifiche")
+    @Operation(summary = "Elimina Notifiche",
+            description = "Elimina tutte le notifiche ricevute, se presenti.")
+    public ResponseEntity<?> eliminaNotifiche(
+            @Parameter(description = "username del turista") @RequestParam String usernameTurista) {
+        try {
+            turistaAutenticatoService.deleteNotificheById(usernameTurista);
+            return ResponseEntity.ok("Notifiche rimosse dall'utente con username '" + usernameTurista + "' .");
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+        }
+    }
+
     @PutMapping("/partecipaContest")
     @Operation(summary = "Partecipa a un Contest",
             description = "Partecipa a un Contest se Aperto.")
@@ -161,7 +174,7 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
     @PutMapping("/cancellaIscrizioneContest")
     @Operation(summary = "Annulla iscrizione a un Contest",
             description = "Annulla iscrizione a un Contest.")
-    public ResponseEntity<?> cencellaIscrizioneContest(
+    public ResponseEntity<?> cancellaIscrizioneContest(
             @Parameter(description = "id del Contest") @RequestParam Integer idContest,
             @Parameter(description = "Username del Turista") @RequestParam String usernameTurista) {
         try {
