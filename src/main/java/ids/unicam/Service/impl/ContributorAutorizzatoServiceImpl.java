@@ -33,10 +33,10 @@ public class ContributorAutorizzatoServiceImpl implements ContributorAutorizzato
         return contributorAutorizzato;
     }
 
-
     public void deleteAll() {
         repository.deleteAll();
     }
+
     @Override
     public List<ContributorAutorizzato> getAll() {
         return repository.findAll();

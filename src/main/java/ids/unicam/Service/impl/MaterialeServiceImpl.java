@@ -26,7 +26,6 @@ public class MaterialeServiceImpl implements MaterialeService {
     private final MaterialeRepository repository;
 
 
-
     @Autowired
     public MaterialeServiceImpl(MaterialeRepository repository) {
         this.repository = repository;
@@ -43,7 +42,7 @@ public class MaterialeServiceImpl implements MaterialeService {
     }
 
     @Override
-    public MaterialeGenerico crea(String fileMateriale, TipologiaMateriale tipologiaMateriale, TuristaAutenticato creatore)throws IllegalArgumentException {
+    public MaterialeGenerico crea(String fileMateriale, TipologiaMateriale tipologiaMateriale, TuristaAutenticato creatore) throws IllegalArgumentException {
 
         MaterialeGenerico materialeGenerico = switch (tipologiaMateriale) {
             case FOTO -> new Foto(new MaterialeDTO(fileMateriale, creatore));
@@ -60,7 +59,7 @@ public class MaterialeServiceImpl implements MaterialeService {
     @Override
     public String getBase64ById(Integer id) {
         Optional<MaterialeGenerico> oMateriale = getById(id);
-        if(oMateriale.isEmpty()){
+        if (oMateriale.isEmpty()) {
             logger.error("L'id del materiale non e' valido");
             throw new IllegalArgumentException("L'id del materiale non e' valido");
         }
@@ -82,8 +81,8 @@ public class MaterialeServiceImpl implements MaterialeService {
     public List<MaterialeGenerico> getAll() {
         List<String> file = new ArrayList<>();
         File folder = new File("src/main/resources/materials");
-        for(File fileMateriale : Objects.requireNonNull(folder.listFiles())) {
-            file.add("./"+fileMateriale.getPath().replace("\\","/"));
+        for (File fileMateriale : Objects.requireNonNull(folder.listFiles())) {
+            file.add("./" + fileMateriale.getPath().replace("\\", "/"));
         }
         return repository.findAllByFileIn(file);
     }

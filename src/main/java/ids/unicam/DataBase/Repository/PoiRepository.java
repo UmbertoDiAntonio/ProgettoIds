@@ -37,5 +37,5 @@ public interface PoiRepository extends JpaRepository<PuntoInteresse, Integer> {
     Optional<Stato> getStatoById(int idPunto);
 
 
-    PuntoInteresse findPuntoInteresseByMaterialiContaining(MaterialeGenerico materialeGenerico);
+    Optional<PuntoInteresse> findPuntoInteresseByMaterialiContaining(MaterialeGenerico materialeGenerico);
 }

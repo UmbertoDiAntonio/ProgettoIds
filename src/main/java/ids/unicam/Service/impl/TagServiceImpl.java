@@ -29,7 +29,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public boolean haveTag(Taggable taggableObject,Tag tag) {
+    public boolean haveTag(Taggable taggableObject, Tag tag) {
         return taggableObject.getTags().contains(tag);
     }
 }

@@ -20,15 +20,15 @@ public class NotificaReportServiceImpl {
         this.poiService = poiService;
     }
 
-    public void creaNotificaReport(int idPuntoInteresse, String messaggio)  throws IllegalArgumentException{
+    public void creaNotificaReport(int idPuntoInteresse, String messaggio) throws IllegalArgumentException {
         Optional<PuntoInteresse> oPuntoInteresse = poiService.getById(idPuntoInteresse);
-        if(oPuntoInteresse.isPresent()){
+        if (oPuntoInteresse.isPresent()) {
             PuntoInteresse puntoInteresse = oPuntoInteresse.get();
             curatoreService.findByNomeComune(puntoInteresse.getCreatore().getComune().getNome()).forEach(curatore ->
                     notificaService.save(new NotificaBuilder().withTitolo("Segnalazione: " + puntoInteresse.getNome())
                             .withDescrizione(messaggio)
                             .withDestinatario(curatore).build()));
-        }else {
+        } else {
             logger.error("L'ID punto di interesse non e' valido");
             throw new IllegalArgumentException("L'ID punto di interesse non e' valido");
         }

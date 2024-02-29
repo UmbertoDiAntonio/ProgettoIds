@@ -54,13 +54,10 @@ public class ComuneServiceImpl implements ComuneService {
         return save(comune);
     }
 
-
-
     @Override
     public Optional<Comune> findById(String nomeComune) {
         return comuneRepository.findById(nomeComune);
     }
-
 
     @Override
     public List<Comune> findAll() {
@@ -118,5 +115,4 @@ public class ComuneServiceImpl implements ComuneService {
             return Collections.emptyList();
         }
     }
-
 }

@@ -15,14 +15,13 @@ public interface CuratoreService {
 
     MaterialeGenerico valutaMateriale(String usernameCuratore, Integer idMaterialeGenerico, Boolean stato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException;
 
-    void eliminaPuntoInteresse(String usernameCuratore,Integer idPuntoInteresse) throws IllegalArgumentException, FuoriComuneException;
+    void eliminaPuntoInteresse(String usernameCuratore, Integer idPuntoInteresse) throws IllegalArgumentException, FuoriComuneException;
 
-    void eliminaItinerario(String usernameCuratore,Integer idItinerario) throws IllegalArgumentException, FuoriComuneException;
+    void eliminaItinerario(String usernameCuratore, Integer idItinerario) throws IllegalArgumentException, FuoriComuneException;
 
-    void eliminaContest(String usernameCuratore,Integer idContest) throws IllegalArgumentException, FuoriComuneException;
+    void eliminaContest(String usernameCuratore, Integer idContest) throws IllegalArgumentException, FuoriComuneException;
+
     void eliminaMateriale(String usernameCuratore, int idMateriale) throws IllegalArgumentException, FuoriComuneException;
-
-
 
     List<Curatore> getAll();
 

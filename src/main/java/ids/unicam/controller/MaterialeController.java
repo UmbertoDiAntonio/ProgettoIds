@@ -45,8 +45,8 @@ public class MaterialeController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Materiale dall'identificatore univoco 'id'",
-            description = "Materiale dall'identificatore univoco 'id' salvato nel database.")
+    @Operation(summary = "Materiale dall'identificatore univoco id",
+            description = "Materiale dall'identificatore univoco id salvato nel database.")
     public ResponseEntity<?> getById(
             @Parameter(description = "id del materiale") @PathVariable Integer id) {
         return ResponseEntity.ok(materialeService.getById(id));

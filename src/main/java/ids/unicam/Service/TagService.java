@@ -7,7 +7,6 @@ public interface TagService {
 
     Tag save(Tag tag);
 
-
     void aggiungiTag(Taggable taggableObject, Tag tag);
 
     boolean haveTag(Taggable taggableObject, Tag tag);

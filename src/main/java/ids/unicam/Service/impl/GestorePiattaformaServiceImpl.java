@@ -38,30 +38,33 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
 
     @Transactional
     @Override
-    public TuristaAutenticato cambiaRuolo(String usernameContributor, @NotNull Ruolo ruolo) throws IllegalArgumentException, ConnessioneFallitaException,UnsupportedOperationException {
+    public TuristaAutenticato cambiaRuolo(String usernameContributor, @NotNull Ruolo ruolo) throws IllegalArgumentException, ConnessioneFallitaException, UnsupportedOperationException {
         Optional<TuristaAutenticato> oTurista = turistaAutenticatoServiceImpl.getById(usernameContributor);
-        if(oTurista.isEmpty()){
+        if (oTurista.isEmpty()) {
             logger.error("username non valido");
             throw new IllegalArgumentException("username non valido");
         }
         TuristaAutenticato turistaAutenticato = oTurista.get();
 
-        if(!( turistaAutenticato instanceof Contributor contributor)){
+        if (!(turistaAutenticato instanceof Contributor contributor)) {
             logger.error("il turista non puo' cambiare ruolo");
             throw new UnsupportedOperationException("il turista non puo' cambiare ruolo");
         }
         rimuoviVecchioRuolo(contributor);
-        TuristaAutenticatoDTO turistaAutenticatoDTO=new TuristaAutenticatoDTO(contributor.getNome(),contributor.getCognome(),contributor.getDataNascita(),contributor.getPassword(),contributor.getUsername());
+        TuristaAutenticatoDTO turistaAutenticatoDTO = new TuristaAutenticatoDTO(contributor.getNome(), contributor.getCognome(), contributor.getDataNascita(), contributor.getPassword(), contributor.getUsername());
         Contributor modificato = switch (ruolo) {
             case TURISTA -> {
                 logger.error("Non puoi tornare un turista");
                 throw new UnsupportedOperationException("Non puoi tornare un turista");
             }
-            case CURATORE -> curatoreServiceImpl.save(new Curatore(new RichiestaCreazioneContributorDTO(new ComuneDTO(contributor.getComune().getNome()),turistaAutenticatoDTO)));
-            case ANIMATORE -> animatoreServiceImpl.save(new Animatore(new RichiestaCreazioneContributorDTO(new ComuneDTO(contributor.getComune().getNome()),turistaAutenticatoDTO)));
+            case CURATORE ->
+                    curatoreServiceImpl.save(new Curatore(new RichiestaCreazioneContributorDTO(new ComuneDTO(contributor.getComune().getNome()), turistaAutenticatoDTO)));
+            case ANIMATORE ->
+                    animatoreServiceImpl.save(new Animatore(new RichiestaCreazioneContributorDTO(new ComuneDTO(contributor.getComune().getNome()), turistaAutenticatoDTO)));
             case CONTRIBUTOR_AUTORIZZATO ->
-                    contributorAutorizzatoServiceImpl.save(new ContributorAutorizzato(new RichiestaCreazioneContributorDTO(new ComuneDTO(contributor.getComune().getNome()),turistaAutenticatoDTO)));
-            case CONTRIBUTOR -> contributorServiceImpl.save(new Contributor(new RichiestaCreazioneContributorDTO(new ComuneDTO(contributor.getComune().getNome()),turistaAutenticatoDTO)));
+                    contributorAutorizzatoServiceImpl.save(new ContributorAutorizzato(new RichiestaCreazioneContributorDTO(new ComuneDTO(contributor.getComune().getNome()), turistaAutenticatoDTO)));
+            case CONTRIBUTOR ->
+                    contributorServiceImpl.save(new Contributor(new RichiestaCreazioneContributorDTO(new ComuneDTO(contributor.getComune().getNome()), turistaAutenticatoDTO)));
         };
 
         poiServiceImpl.findAll().stream()
@@ -77,25 +80,18 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
 
     private void rimuoviVecchioRuolo(@NotNull Contributor contributor) {
         switch (contributor) {
-            case Curatore curatore-> {
-                curatoreServiceImpl.deleteById(curatore.getUsername());
-            }
-            case ContributorAutorizzato contributorAutorizzato -> {
-                contributorAutorizzatoServiceImpl.deleteById(contributorAutorizzato.getUsername());
-            }
-            case Animatore animatore-> {
-                animatoreServiceImpl.deleteById(animatore.getUsername());
-            }
-            case Contributor contributor1 -> {
-                contributorServiceImpl.deleteById(contributor1.getUsername());
-            }
+            case Curatore curatore -> curatoreServiceImpl.deleteById(curatore.getUsername());
+            case ContributorAutorizzato contributorAutorizzato ->
+                    contributorAutorizzatoServiceImpl.deleteById(contributorAutorizzato.getUsername());
+            case Animatore animatore -> animatoreServiceImpl.deleteById(animatore.getUsername());
+            case Contributor contributor1 -> contributorServiceImpl.deleteById(contributor1.getUsername());
         }
     }
 
-    private boolean validaCredenziali(TuristaAutenticatoDTO turistaDTO) throws IllegalArgumentException{
+    private boolean validaCredenziali(TuristaAutenticatoDTO turistaDTO) throws IllegalArgumentException {
         if (!turistaDTO.getPassword().matches("^(?=.*[A-Z])(?=.*[@#$%^&+=])(?=.*[0-9])(?=.*[a-zA-Z]).{6,}$")) {
-            logger.error("Password non valida, deve essere lunga almeno 6 catteri, di cui almeno 1 numero, 1 maiuscola e un carattere speciale");
-            throw new IllegalArgumentException("Password non valida, deve essere lunga almeno 6 catteri, di cui almeno 1 numero, 1 maiuscola e un carattere speciale");
+            logger.error("Password non valida, deve essere lunga almeno 6 caratteri, di cui almeno 1 numero, 1 maiuscola e un carattere speciale");
+            throw new IllegalArgumentException("Password non valida, deve essere lunga almeno 6 caratteri, di cui almeno 1 numero, 1 maiuscola e un carattere speciale");
         }
         if (!turistaDTO.getUsername().matches("^.{5,}$")) {
             logger.error("Username non valido, deve essere lungo almeno 5 caratteri");
@@ -108,7 +104,7 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
         return true;
     }
 
-    public TuristaAutenticato registraTurista(TuristaAutenticatoDTO turistaDTO) throws IllegalArgumentException{
+    public TuristaAutenticato registraTurista(TuristaAutenticatoDTO turistaDTO) throws IllegalArgumentException {
         if (!validaCredenziali(turistaDTO)) {
             return null;
         }
@@ -117,7 +113,7 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
     }
 
     @Transactional
-    public TuristaAutenticato registraContributor(RichiestaCreazioneContributorDTO contributorDTO,Ruolo ruolo) throws ConnessioneFallitaException,RuntimeException {
+    public TuristaAutenticato registraContributor(RichiestaCreazioneContributorDTO contributorDTO, Ruolo ruolo) throws ConnessioneFallitaException, RuntimeException {
         if (ruolo != Ruolo.TURISTA && contributorDTO.getComune() == null) {
             logger.error("Il comune non puo' essere nullo, registrazione >= Contributor");
             throw new IllegalArgumentException("Il comune non puo' essere nullo, registrazione >= Contributor");
@@ -131,7 +127,7 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
                 Contributor contributor = new Contributor(contributorDTO);
                 yield contributorServiceImpl.save(contributor);
             }
-            case CURATORE-> {
+            case CURATORE -> {
                 Curatore curatore = new Curatore(contributorDTO);
                 curatoreServiceImpl.save(curatore);
                 yield cambiaRuolo(contributorDTO.getTuristaDTO().getUsername(), Ruolo.CURATORE);
@@ -144,7 +140,7 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
             case CONTRIBUTOR_AUTORIZZATO -> {
                 ContributorAutorizzato contributor = new ContributorAutorizzato(contributorDTO);
                 contributorAutorizzatoServiceImpl.save(contributor);
-                yield cambiaRuolo(contributorDTO.getTuristaDTO().getUsername(),Ruolo.CONTRIBUTOR_AUTORIZZATO);
+                yield cambiaRuolo(contributorDTO.getTuristaDTO().getUsername(), Ruolo.CONTRIBUTOR_AUTORIZZATO);
             }
         };
     }

@@ -10,9 +10,9 @@ public interface InvitoService {
 
     void accettaInvito(TuristaAutenticato turistaAutenticato, Invito invito);
 
-    boolean isValid(Invito invito) ;
+    boolean isValid(Invito invito);
 
-    List<Invito> getInvitiRicevuti(String usernameTurista) ;
+    List<Invito> getInvitiRicevuti(String usernameTurista);
 
     Optional<Invito> findById(int id);
 }

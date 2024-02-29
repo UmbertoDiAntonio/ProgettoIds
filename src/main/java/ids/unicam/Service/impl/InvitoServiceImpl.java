@@ -51,7 +51,7 @@ public class InvitoServiceImpl implements InvitoService {
 
     @Transactional
     @Override
-    public void accettaInvito(TuristaAutenticato turistaAutenticato, Invito invito) throws IllegalArgumentException{
+    public void accettaInvito(TuristaAutenticato turistaAutenticato, Invito invito) throws IllegalArgumentException {
         if (isValid(invito)) {
             if (invito.getInvitato().getUsername().equals(turistaAutenticato.getUsername())) {
                 contestServiceImpl.aggiungiPartecipante(invito.getContest(), turistaAutenticato);
@@ -63,11 +63,6 @@ public class InvitoServiceImpl implements InvitoService {
             logger.warn("Invito non valido");
             throw new IllegalArgumentException("Invito non valido");
         }
-    }
-
-
-    public List<Invito> findByInvitato(TuristaAutenticato invitato) {
-        return repository.findByInvitato(invitato);
     }
 
     @Override

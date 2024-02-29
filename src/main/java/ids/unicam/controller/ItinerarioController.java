@@ -27,8 +27,8 @@ public class ItinerarioController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Itinerario dall'identificatore univoco 'id'",
-            description = "Itinerario dall'identificatore univoco 'id' salvato nel database.")
+    @Operation(summary = "Itinerario dall'identificatore univoco id",
+            description = "Itinerario dall'identificatore univoco id salvato nel database.")
     public ResponseEntity<?> getById(
             @Parameter(description = "id dell'itinerario") @PathVariable Integer id) {
         return ResponseEntity.ok(itinerarioService.getById(id));

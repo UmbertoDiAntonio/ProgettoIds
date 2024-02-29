@@ -87,9 +87,6 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
         }
 
     }
-    public List<TuristaAutenticato> findTuristiConPreferiti() {
-        return repository.findTuristiConPreferiti();
-    }
 
     @Override
     public List<PuntoInteresse> findPreferiti(String usernameTurista) throws IllegalArgumentException {
@@ -154,12 +151,6 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
     @Override
     public Optional<TuristaAutenticato> findTuristaByUsername(String username) {
         return repository.findByUsername(username);
-    }
-
-    @Override
-    public boolean verificaPassword(String password, String username) {
-        Optional<TuristaAutenticato> turista = findTuristaByUsername(username);
-        return turista.map(turistaAutenticato -> turistaAutenticato.getPassword().equals(password)).orElse(true);
     }
 
     @Override

@@ -11,13 +11,14 @@ import java.util.Optional;
 
 public interface MaterialeService {
     void approvaMateriale(MaterialeGenerico materialeGenerico, Stato stato);
+
     List<MaterialeGenerico> getAll();
+
     Optional<MaterialeGenerico> getById(int id);
 
     void deleteById(int id);
 
     Stato getStato(MaterialeGenerico foto);
-
 
     MaterialeGenerico crea(String fileMateriale, TipologiaMateriale tipologiaMateriale, TuristaAutenticato creatore) throws IllegalArgumentException;
 

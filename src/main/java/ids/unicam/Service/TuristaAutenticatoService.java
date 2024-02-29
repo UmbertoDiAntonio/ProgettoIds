@@ -28,8 +28,6 @@ public interface TuristaAutenticatoService {
 
     Optional<TuristaAutenticato> findTuristaByUsername(String username);
 
-    boolean verificaPassword(String password, String username);
-
     boolean isUsernameUnique(String username);
 
     List<TuristaAutenticato> getAll();
@@ -38,7 +36,7 @@ public interface TuristaAutenticatoService {
 
     void deleteById(String username);
 
-    public List<Notifica> visualizzaNotifiche(String usernameTurista) throws IllegalArgumentException;
+    List<Notifica> visualizzaNotifiche(String usernameTurista) throws IllegalArgumentException;
 
     List<Invito> getInviti(String usernameTurista);
 }
