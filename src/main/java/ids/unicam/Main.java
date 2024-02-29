@@ -32,12 +32,11 @@ public class Main implements ApplicationRunner {
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
-        // URL da aprire
+
         String port = environment.getProperty("server.port");
         String urlToOpen = "http://localhost:"+port+"/swagger-ui/index.html#/";
         String urlToDB = "http://localhost:"+port+"/h2-console";
 
-        // Apri l'URL
         openUrl(urlToOpen);
         openUrl(urlToDB);
     }

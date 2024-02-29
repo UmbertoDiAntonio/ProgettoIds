@@ -110,7 +110,6 @@ public class PoiServiceImpl implements PoiService {
     @Transactional
     @Override
     public void eliminaPuntoInteresse(int idPuntoInteresse) {
-        // Elimina il PuntoInteresse dal database
         repository.deleteById(idPuntoInteresse);
 /*TODO
         // Rileva l'eliminazione e aggiorna le liste di preferiti dei turisti
@@ -119,7 +118,6 @@ public class PoiServiceImpl implements PoiService {
             turistaAutenticatoServiceImpl.rimuoviPreferito(turista.getUsername(), idPuntoInteresse);
 
         }
-
  */
     }
 
@@ -157,7 +155,6 @@ public class PoiServiceImpl implements PoiService {
         }
 
         puntoInteresse.addMateriale(materialeGenerico);
-        //materialeServiceImpl.save(materialeGenerico);
         save(puntoInteresse);
     }
 

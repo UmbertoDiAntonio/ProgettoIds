@@ -114,8 +114,8 @@ public class ContestController {
     @Operation(summary = "Annulla un invito",
             description = "Annulla la validità di un invito.")
     public ResponseEntity<?> annullaInvito(
-            @Parameter(description = "username dell'animatore")@RequestBody String usernameAnimatore,
-            @Parameter(description = "id del materiale da approvare")@PathVariable Integer idInvito ){
+            @Parameter(description = "username dell'animatore")@RequestParam String usernameAnimatore,
+            @Parameter(description = "id del invito da annullare")@PathVariable Integer idInvito ){
         try {
             animatoreService.annullaInvito(usernameAnimatore,  idInvito);
             return ResponseEntity.ok("Invito "+idInvito+" annullato");

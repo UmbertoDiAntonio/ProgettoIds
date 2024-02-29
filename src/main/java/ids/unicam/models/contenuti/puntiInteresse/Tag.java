@@ -16,8 +16,6 @@ public class Tag {
     private String valore;
 
 
-   // private PuntoInteresse punto;
-
     public Tag(String tag)  {
         this.valore = tag;
     }
