@@ -23,12 +23,12 @@ public class GestoreDatabase {
      * Elimina le tabella del Database se esistono
      */
     public void eliminaTabelleDB() {
-        try (Connection connection = getConnessioneDatabase().connessioneAlDatabase()) {
+        try (Connection connection = connessioneDatabase.connessioneAlDatabase()) {
             if (connection == null) {
                 logger.error("Impossibile connettersi al Database");
                 return;
             }
-            getCreazioneTabelleDatabase().eliminaTabelle(connection);
+            creazioneTabelleDatabase.eliminaTabelle(connection);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -39,23 +39,14 @@ public class GestoreDatabase {
      * Stabilisce una connessione con il Database e ne genera le tabelle se non esistono
      */
     public void inizializzaDatabase() {
-        try (Connection connection = getConnessioneDatabase().connessioneAlDatabase()) {
+        try (Connection connection = connessioneDatabase.connessioneAlDatabase()) {
             if (connection == null) {
                 logger.error("Impossibile connettersi al Database");
                 return;
             }
-            getCreazioneTabelleDatabase().inizializzaDatabase(connection);
+            creazioneTabelleDatabase.inizializzaDatabase(connection);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-
-    private ConnessioneDatabase getConnessioneDatabase() {
-        return connessioneDatabase;
-    }
-
-    private CreazioneTabelleDatabase getCreazioneTabelleDatabase() {
-        return creazioneTabelleDatabase;
-    }
-
 }

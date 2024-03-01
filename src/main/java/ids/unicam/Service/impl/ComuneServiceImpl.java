@@ -24,10 +24,10 @@ public class ComuneServiceImpl implements ComuneService {
     private final ContributorService contributorService;
     private final ContributorAutorizzatoService contributorAutorizzatoService;
     private final CuratoreService curatoreService;
-    private final PoiServiceImpl poiService;
+    private final PoiService poiService;
 
     @Autowired
-    public ComuneServiceImpl(ComuneRepository repository, AnimatoreService animatoreService, ContributorService contributorService, ContributorAutorizzatoService contributorAutorizzatoService, CuratoreService curatoreService, PoiServiceImpl poiService) {
+    public ComuneServiceImpl(ComuneRepository repository, AnimatoreService animatoreService, ContributorService contributorService, ContributorAutorizzatoService contributorAutorizzatoService, CuratoreService curatoreService, PoiService poiService) {
         this.repository = repository;
         this.animatoreService = animatoreService;
         this.contributorService = contributorService;

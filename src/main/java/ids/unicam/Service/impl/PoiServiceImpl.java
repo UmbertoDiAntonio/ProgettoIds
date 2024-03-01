@@ -113,16 +113,16 @@ public class PoiServiceImpl implements PoiService {
 
     @Transactional
     @Override
-    public void aggiungiMateriale(String usernameTurista, int idPuntoInteresse, MaterialeGenerico materialeGenerico) throws FuoriComuneException {
+    public void aggiungiMateriale(String usernameTurista, int idPuntoInteresse, MaterialeGenerico materialeGenerico) throws IllegalArgumentException,IllegalStateException {
         Optional<TuristaAutenticato> oTurista = turistaAutenticatoService.getByUsername(usernameTurista);
         if (oTurista.isEmpty()) {
-            throw new FuoriComuneException("username non valido");
+            throw new IllegalArgumentException("username non valido");
         }
         TuristaAutenticato turistaAutenticato = oTurista.get();
 
         Optional<PuntoInteresse> oPunto = getById(idPuntoInteresse);
         if (oPunto.isEmpty()) {
-            throw new FuoriComuneException("id punto interesse non valido");
+            throw new IllegalArgumentException("id punto interesse non valido");
         }
         PuntoInteresse puntoInteresse = oPunto.get();
 
@@ -164,13 +164,23 @@ public class PoiServiceImpl implements PoiService {
 
     @Transactional
     @Override
-    public void aggiungiTag(int idPuntoInteresse, Tag tag) {
+    public void aggiungiTag(int idPuntoInteresse, Tag tag,String usernameContributor) throws FuoriComuneException {
+        Optional<Contributor> oContributor = contributorService.getByUsername(usernameContributor);
+        if (oContributor.isEmpty()) {
+            throw new IllegalArgumentException("username non valido");
+        }
+        Contributor contributor = oContributor.get();
+        //TODO
+
         Optional<PuntoInteresse> oPuntoInteresse = getById(idPuntoInteresse);
         if (oPuntoInteresse.isPresent()) {
             PuntoInteresse puntoInteresse = oPuntoInteresse.get();
             if (tagService.haveTag(puntoInteresse, tag)) {
                 logger.warn("Tag già aggiunto");
                 return;
+            }
+            if(contributor.getComune()!=puntoInteresse.getComune()){
+                throw new FuoriComuneException(contributor.getUsername()+" non può operare fuori dal suo comune");
             }
             if (!puntoInteresse.isExpired())
                 tagService.aggiungiTag(puntoInteresse, tag);

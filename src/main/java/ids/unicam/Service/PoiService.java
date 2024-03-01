@@ -20,7 +20,7 @@ public interface PoiService {
 
     LocalDate getScadenza(int idPunto) throws IllegalArgumentException;
 
-    void aggiungiMateriale(String usernameTurista, int idPuntoInteresse, MaterialeGenerico materialeGenerico) throws FuoriComuneException;
+    void aggiungiMateriale(String usernameTurista, int idPuntoInteresse, MaterialeGenerico materialeGenerico) throws IllegalArgumentException,IllegalStateException;
 
     @Transactional
     PuntoInteresse save(PuntoInteresse puntoInteresse);
@@ -29,7 +29,7 @@ public interface PoiService {
 
     List<PuntoInteresse> findActive();
 
-    void aggiungiTag(int idPuntoInteresse, Tag tag);
+    void aggiungiTag(int idPuntoInteresse, Tag tag,String usernameContributor) throws FuoriComuneException;
 
     List<Taggable> findByTag(String tag);
 

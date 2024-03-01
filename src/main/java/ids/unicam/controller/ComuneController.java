@@ -36,7 +36,7 @@ public class ComuneController {
     @GetMapping("/{nomeComune}")
     @Operation(summary = "Comune dall'identificatore univoco id",
             description = "Comune dall'identificatore univoco id salvato nel database.")
-    public ResponseEntity<?> getById(
+    public ResponseEntity<?> getByNomeComune(
             @Parameter(description = "nome del comune") @PathVariable String nomeComune) {
         try {
             return ResponseEntity.ok(comuneService.getByNome(nomeComune));

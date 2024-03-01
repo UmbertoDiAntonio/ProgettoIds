@@ -59,8 +59,8 @@ public class PuntoInteresseController {
             @Parameter(description = "Minuti di apertura (0-60)") @RequestParam @Min(0) @Max(60) int minutiApertura,
             @Parameter(description = "Ora di chiusura (0-24) ") @RequestParam @Min(0) @Max(24) int oraChiusura,
             @Parameter(description = "Minuti di chiusura (0-60)") @RequestParam @Min(0) @Max(60) int minutiChiusura,
-            @Parameter(description = "Giorno della settimana") @RequestParam DayOfWeek day) {
-        poiService.setOrario(idPunto, new Orario.OrarioApertura(LocalTime.of(oraApertura, minutiApertura), LocalTime.of(oraChiusura, minutiChiusura)), day);
+            @Parameter(description = "Giorno della settimana") @RequestParam DayOfWeek giorno) {
+        poiService.setOrario(idPunto, new Orario.OrarioApertura(LocalTime.of(oraApertura, minutiApertura), LocalTime.of(oraChiusura, minutiChiusura)), giorno);
         return ResponseEntity.ok("");
     }
 
@@ -83,7 +83,7 @@ public class PuntoInteresseController {
             @Parameter(description = "Username del creatore del punto di interesse") @RequestParam String usernameCreatore,
             @Parameter(description = "Tipologia del punto di interesse", schema = @Schema(implementation = TipologiaPuntoInteresse.class)) @RequestParam TipologiaPuntoInteresse tipologiaPuntoInteresse) {
         try {
-            return ResponseEntity.ok(poiService.creaPuntoInteresse(nomePOI, new Punto(latitudine, longitudine),new Orario(),tipologiaPuntoInteresse, usernameCreatore));
+            return ResponseEntity.ok(poiService.creaPuntoInteresse(nomePOI, new Punto(latitudine, longitudine), new Orario(), tipologiaPuntoInteresse, usernameCreatore));
         } catch (FuoriComuneException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -94,14 +94,16 @@ public class PuntoInteresseController {
             description = "Aggiunge un nuovo tag a un punto di interesse.")
     public ResponseEntity<?> aggiungiTag(
             @Parameter(description = "Nome del tag") @RequestParam String nomeTag,
-            @Parameter(description = "ID del punto di interesse") @RequestParam Integer idPuntoInteresse) {
+            @Parameter(description = "ID del punto di interesse") @RequestParam Integer idPuntoInteresse,
+            @Parameter(description = "username del Contributor") @RequestParam String usernameContributor) {
         try {
-            poiService.aggiungiTag(idPuntoInteresse, new Tag(nomeTag));
+            poiService.aggiungiTag(idPuntoInteresse, new Tag(nomeTag), usernameContributor);
             return ResponseEntity.ok("Aggiunto tag '" + nomeTag + "' al punto di interesse: '" + idPuntoInteresse + "' .");
-        } catch (UnsupportedOperationException e) {
+        } catch (FuoriComuneException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Elimina punto di interesse",

@@ -157,13 +157,13 @@ public class JUnitUtentiTest {
         int numeroTagEdicolaIniziale = turistaService.findByTag("Edicola").size();
 
 
-        poiService.aggiungiTag(puntoInteresse.getId(), new Tag("Edicola"));
+        poiService.aggiungiTag(puntoInteresse.getId(), new Tag("Edicola"),contributor.getUsername());
         assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag("Edicola").size());
 
         curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse.getId(), Stato.APPROVATO.asBoolean());
 
 
-        poiService.aggiungiTag(puntoInteresse.getId(), new Tag("Tabaccheria"));
+        poiService.aggiungiTag(puntoInteresse.getId(), new Tag("Tabaccheria"),contributor.getUsername());
 
         assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag("Edicola").size());
 
@@ -171,7 +171,7 @@ public class JUnitUtentiTest {
         assertEquals("Tabaccheria", poiService.getTags(puntoInteresse).getLast().getValore());
 
 
-        poiService.aggiungiTag(puntoInteresse.getId(), new Tag("Bar"));
+        poiService.aggiungiTag(puntoInteresse.getId(), new Tag("Bar"),contributor.getUsername());
 
         assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag("Edicola").size());
 
