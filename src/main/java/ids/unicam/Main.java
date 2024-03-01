@@ -34,8 +34,8 @@ public class Main implements ApplicationRunner {
         SpringApplication.run(Main.class, args);
 
         String port = environment.getProperty("server.port");
-        String urlToOpen = "http://localhost:"+port+"/swagger-ui/index.html#/";
-        String urlToDB = "http://localhost:"+port+"/h2-console";
+        String urlToOpen = "http://localhost:" + port + "/swagger-ui/index.html#/";
+        String urlToDB = "http://localhost:" + port + "/h2-console";
 
         openUrl(urlToOpen);
         openUrl(urlToDB);
@@ -47,17 +47,17 @@ public class Main implements ApplicationRunner {
         String os = System.getProperty("os.name").toLowerCase();
         Runtime rt = Runtime.getRuntime();
 
-        String command ="";
+        String command = "";
         try {
             if (os.contains("win")) {
                 // Windows
-                command= "rundll32 url.dll,FileProtocolHandler " + url;
+                command = "rundll32 url.dll,FileProtocolHandler " + url;
             } else if (os.contains("mac")) {
                 // Mac
-                command="open " + url;
+                command = "open " + url;
             } else if (os.contains("nix") || os.contains("nux")) {
                 // Linux o Unix
-                command= "xdg-open " + url;
+                command = "xdg-open " + url;
             }
 
             rt.exec(command);

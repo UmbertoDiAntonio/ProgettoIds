@@ -51,7 +51,7 @@ public class ContestServiceImpl implements ContestService {
 
 
     @Override
-    public Contest creaContest(String nomeContest,String obiettivo,Animatore creatore, boolean open) {
+    public Contest creaContest(String nomeContest, String obiettivo, Animatore creatore, boolean open) {
         return save(new Contest(nomeContest, obiettivo, creatore, open));
     }
 
@@ -99,7 +99,7 @@ public class ContestServiceImpl implements ContestService {
             throw new ContestException("il Contest e' Terminato");
         }
         contest.getPartecipanti().add(turistaAutenticato);
-        notificaService.creaNotificaIngressoContest(contest,turistaAutenticato);
+        notificaService.creaNotificaIngressoContest(contest, turistaAutenticato);
         save(contest);
     }
 
@@ -124,8 +124,8 @@ public class ContestServiceImpl implements ContestService {
             throw new ContestException("Vincitore non valido, l'utente ha lasciato il Contest");
         }
 
-        if(!contest.isExpired()){
-            throw  new ContestException("Il Contest deve essere terminato per decretare un vincitore");
+        if (!contest.isExpired()) {
+            throw new ContestException("Il Contest deve essere terminato per decretare un vincitore");
         }
         contest.setMaterialeVincitore(materiale);
         if (contest.getPartecipanti().contains(materiale.getCreatore()))
@@ -134,7 +134,14 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public void setFineContest(Contest contest, LocalDate dataFine){
+    public void setFineContest(int idContest, LocalDate dataFine) throws FuoriComuneException {
+        Optional<Contest> oContest = findById(idContest);
+        if (oContest.isEmpty()) {
+            throw new FuoriComuneException("id contest non valido");
+        }
+
+        Contest contest = oContest.get();
+
         contest.setExpireDate(dataFine);
         save(contest);
     }
@@ -142,6 +149,7 @@ public class ContestServiceImpl implements ContestService {
 
     /**
      * Termina un Contest, successivamente l'animatore dovrà decretare il vincitore
+     *
      * @param contest il contest da terminare
      */
     @Transactional
@@ -169,10 +177,11 @@ public class ContestServiceImpl implements ContestService {
     @Override
     @Transactional
     public void checkIfIsExpired(Contest contest) {
-        if(contest.isExpired()){
+        if (contest.isExpired()) {
             terminaContest(contest);
         }
     }
+
     @Override
     public List<Contest> getContestByComune(Comune comune) {
         return repository.findContestByComune(comune);

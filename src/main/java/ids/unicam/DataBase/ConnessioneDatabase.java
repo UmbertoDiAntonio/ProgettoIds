@@ -22,6 +22,7 @@ public class ConnessioneDatabase {
 
     /**
      * Stabilisci una connessione con il Database
+     *
      * @return la Connessione
      */
     public @Nullable Connection connessioneAlDatabase() {

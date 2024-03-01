@@ -17,7 +17,7 @@ import java.util.Base64;
 @DiscriminatorValue("Foto")
 public class Foto extends MaterialeGenerico {
     public Foto(String filePath, TuristaAutenticatoDTO turistaAutenticatoDTO) {
-        super(filePath,turistaAutenticatoDTO);
+        super(filePath, turistaAutenticatoDTO);
     }
 
     public static String imageToBase64String(BufferedImage image) throws IOException {

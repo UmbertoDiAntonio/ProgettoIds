@@ -58,7 +58,7 @@ public class CuratoreServiceImpl implements CuratoreService {
     }
 
 
-@Override
+    @Override
     public List<Curatore> findByNomeComune(String nomeComune) {
         return repository.findCuratoreByComuneNome(nomeComune);
     }
@@ -76,7 +76,7 @@ public class CuratoreServiceImpl implements CuratoreService {
 
     @Override
     @Transactional
-    public PuntoInteresse valutaPuntoInteresse(String usernameCuratore, @NotNull int idPuntoInteresse, @Nullable Boolean bStato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException {
+    public PuntoInteresse valutaPuntoInteresse(String usernameCuratore,int idPuntoInteresse, @Nullable Boolean bStato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException {
         Optional<Curatore> oCuratore = getByUsername(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
@@ -91,7 +91,7 @@ public class CuratoreServiceImpl implements CuratoreService {
                 if (stato == Stato.IN_ATTESA)
                     throw new UnsupportedOperationException("non puoi impostare stato in attesa");
                 puntoInteresse.setStato(stato);
-                Notifica notifica = notificaService.creaNotificaApprovazione(curatore, puntoInteresse, stato);
+                notificaService.creaNotificaApprovazione(curatore, puntoInteresse, stato);
                 return poiServiceImpl.save(puntoInteresse);
             } else {
                 logger.error("Id del punto di interesse non valido");
@@ -132,7 +132,7 @@ public class CuratoreServiceImpl implements CuratoreService {
                 if (stato == Stato.IN_ATTESA)
                     throw new UnsupportedOperationException("non puoi impostare stato in attesa");
                 materialeGenerico.setStato(stato);
-                Notifica notifica = notificaService.creaNotificaApprovazione(curatore, materialeGenerico, stato);
+                notificaService.creaNotificaApprovazione(curatore, materialeGenerico, stato);
                 return materialeServiceImpl.save(materialeGenerico);
 
             } else {

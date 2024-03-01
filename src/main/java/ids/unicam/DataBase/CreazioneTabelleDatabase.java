@@ -14,6 +14,7 @@ public class CreazioneTabelleDatabase {
 
     /**
      * Genera le tabelle nel Database se non esistono
+     *
      * @param connection La connessione al Database
      */
     public void inizializzaDatabase(@NotNull Connection connection) {
@@ -44,6 +45,7 @@ public class CreazioneTabelleDatabase {
 
     /**
      * Fa il Drop di tutte le tabelle del Database se esistono
+     *
      * @param connection La Connessione al Database
      */
     public void eliminaTabelle(@NotNull Connection connection) {

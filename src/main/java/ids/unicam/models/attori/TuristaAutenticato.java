@@ -21,7 +21,7 @@ import java.util.Objects;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @DiscriminatorColumn(name = "TIPO")
 @DiscriminatorValue("TuristaAutenticato")
-public class TuristaAutenticato  {
+public class TuristaAutenticato {
     @OneToMany(fetch = FetchType.EAGER)
     private final List<PuntoInteresse> preferiti = new ArrayList<>();
     private String nome = "";

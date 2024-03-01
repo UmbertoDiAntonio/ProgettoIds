@@ -20,7 +20,7 @@ public interface TuristaAutenticatoService {
 
     void aggiungiPreferito(String usernameTurista, PuntoInteresse puntoInteresse) throws IllegalArgumentException;
 
-    List<PuntoInteresse> findPreferiti(String usernameTurista) throws  IllegalArgumentException;
+    List<PuntoInteresse> findPreferiti(String usernameTurista) throws IllegalArgumentException;
 
 
     void partecipaAlContest(int idContest, String usernameTurista) throws UnsupportedOperationException, IllegalArgumentException, ContestException;

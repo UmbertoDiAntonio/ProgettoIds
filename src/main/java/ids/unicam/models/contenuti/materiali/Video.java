@@ -15,7 +15,7 @@ import java.util.Base64;
 @DiscriminatorValue("Video")
 public class Video extends MaterialeGenerico {
     public Video(String filePath, TuristaAutenticatoDTO turistaAutenticatoDTO) {
-        super(filePath,turistaAutenticatoDTO);
+        super(filePath, turistaAutenticatoDTO);
     }
 
     @Override

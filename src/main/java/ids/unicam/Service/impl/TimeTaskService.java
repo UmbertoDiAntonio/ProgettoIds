@@ -32,10 +32,10 @@ public class TimeTaskService extends TimerTask {
         int giornoCorrente = cal.get(Calendar.DAY_OF_YEAR);
 
         if (giornoCorrente != ultimoGiorno) {
-            for(Comune comune:comuneService.findAll()) {
-                for (Contest contest:contestService.getContestByComune(comune))
+            for (Comune comune : comuneService.findAll()) {
+                for (Contest contest : contestService.getContestByComune(comune))
                     contestService.checkIfIsExpired(contest);
-                for(PuntoInteresse puntoInteresse:poiService.getPoiByComune(comune)){
+                for (PuntoInteresse puntoInteresse : poiService.getPoiByComune(comune)) {
                     poiService.checkIfIsExpired(puntoInteresse);
                 }
             }

@@ -134,7 +134,6 @@ public class ItinerarioServiceImpl implements ItinerarioService {
     }
 
 
-
     public List<Itinerario> findAllByComune(Comune comune) {
         return repository.findAllByComune(comune);
     }

@@ -60,7 +60,7 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
     @Getter
     private TipologiaPuntoInteresse tipo;
 
-    public PuntoInteresse(String nome,Punto posizione, Orario orario,TipologiaPuntoInteresse tipologiaPuntoInteresse,Contributor autore) {
+    public PuntoInteresse(String nome, Punto posizione, Orario orario, TipologiaPuntoInteresse tipologiaPuntoInteresse, Contributor autore) {
         this.comune = autore.getComune();
 
 

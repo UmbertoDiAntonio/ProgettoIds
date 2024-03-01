@@ -18,7 +18,7 @@ import java.util.Base64;
 @DiscriminatorValue("Audio")
 public class Audio extends MaterialeGenerico {
     public Audio(String filePath, TuristaAutenticatoDTO turistaAutenticatoDTO) {
-        super(filePath,turistaAutenticatoDTO);
+        super(filePath, turistaAutenticatoDTO);
     }
 
     public static byte[] audioToByteArray(AudioInputStream audioInputStream) throws IOException {

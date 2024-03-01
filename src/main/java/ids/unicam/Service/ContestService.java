@@ -18,7 +18,7 @@ public interface ContestService {
 
     List<TuristaAutenticato> getPartecipanti(Contest contest);
 
-    Contest creaContest(String nomeContest,String obiettivo,Animatore creatore, boolean open);
+    Contest creaContest(String nomeContest, String obiettivo, Animatore creatore, boolean open);
 
     List<Contest> getContestByCreatore(Animatore animatore);
 
@@ -30,7 +30,7 @@ public interface ContestService {
 
     void setVincitoreContest(Contest contest, MaterialeGenerico materialeGenerico) throws ContestException;
 
-    void setFineContest(Contest contest, LocalDate dataFine);
+    void setFineContest(int idContest, LocalDate dataFine) throws FuoriComuneException;
 
     void terminaContest(Contest contest) throws ContestException;
 

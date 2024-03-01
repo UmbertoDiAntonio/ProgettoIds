@@ -14,7 +14,7 @@ import java.io.IOException;
 @DiscriminatorValue("Testo")
 public class Testo extends MaterialeGenerico {
     public Testo(String filePath, TuristaAutenticatoDTO turistaAutenticatoDTO) {
-        super(filePath,turistaAutenticatoDTO);
+        super(filePath, turistaAutenticatoDTO);
     }
 
     public static String readFileToString(String filePath) throws IOException {

@@ -37,10 +37,9 @@ public class ComuneServiceImpl implements ComuneService {
 
 
     @Override
-    public void deleteByNome(String nomeComune){
-            repository.deleteById(nomeComune);
-        }
-
+    public void deleteByNome(String nomeComune) {
+        repository.deleteById(nomeComune);
+    }
 
 
     public Comune save(Comune comune) {

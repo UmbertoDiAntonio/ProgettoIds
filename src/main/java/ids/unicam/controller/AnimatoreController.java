@@ -76,4 +76,6 @@ public class AnimatoreController implements ControllerBase<ContributorDTO, Strin
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+
 }

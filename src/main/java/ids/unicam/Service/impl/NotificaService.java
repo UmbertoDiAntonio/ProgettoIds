@@ -26,16 +26,16 @@ public class NotificaService {
     }
 
 
-    public Notifica creaNotificaApprovazione(@NotNull Curatore curatore, PuntoInteresse puntoInteresse, @NotNull Stato stato) {
-        return repository.save(new NotificaBuilder().withTitolo("Valutazione: " + puntoInteresse.getNome())
+    public void creaNotificaApprovazione(@NotNull Curatore curatore, PuntoInteresse puntoInteresse, @NotNull Stato stato) {
+        repository.save(new NotificaBuilder().withTitolo("Valutazione: " + puntoInteresse.getNome())
                 .withDescrizione(curatore.getUsername() + " " + (Boolean.TRUE.equals(stato.asBoolean()) ? "ha approvato " : "non ha approvato ") +
                         "\"" + puntoInteresse.getNome() + "\"")
                 .withDestinatario(puntoInteresse.getCreatore()).build());
     }
 
 
-    public Notifica creaNotificaApprovazione(Curatore curatore, MaterialeGenerico materialeGenerico, Stato stato) {
-        return repository.save(
+    public void creaNotificaApprovazione(Curatore curatore, MaterialeGenerico materialeGenerico, Stato stato) {
+        repository.save(
                 new NotificaBuilder()
                         .withTitolo("Valutazione del materiale creato da: " + materialeGenerico.getCreatore().getUsername())
                         .withDescrizione(curatore.getUsername() + " " + (Boolean.TRUE.equals(stato.asBoolean()) ? "ha approvato " : "non ha approvato ") +
@@ -43,35 +43,35 @@ public class NotificaService {
                         .withDestinatario(materialeGenerico.getCreatore()).build());
     }
 
-    public Notifica creaNotificaVittoriaContest(Animatore animatore, Contest contest, MaterialeGenerico vincitore) {
-        return repository.save(
+    public void creaNotificaVittoriaContest(Animatore animatore, Contest contest, MaterialeGenerico vincitore) {
+        repository.save(
                 new NotificaBuilder()
                         .withTitolo("Vittoria Contest: " + vincitore.getCreatore().getUsername())
                         .withDescrizione("Hai vinto il contest " + contest.getNomeContest() + " creato da " + animatore.getUsername() + " con il materiale " + vincitore.getId())
                         .withDestinatario(vincitore.getCreatore()).build());
     }
 
-    public Notifica creaNotificaTermineContest(Contest contest, TuristaAutenticato destinatario) {
-        return repository.save(
+    public void creaNotificaTermineContest(Contest contest, TuristaAutenticato destinatario) {
+        repository.save(
                 new NotificaBuilder()
                         .withTitolo("Info Contest: " + contest.getNomeContest())
                         .withDescrizione("il contest " + contest.getNomeContest() + " creato da " + contest.getCreatore().getUsername() + (contest.getMaterialeVincitore() != null ? " è terminato " : (" terminerà il " + contest.getExpireDate())))
                         .withDestinatario(destinatario).build());
     }
 
-    public Notifica creaNotificaInvitoContest(Animatore animatore, Contest contest, TuristaAutenticato destinatario) {
-        return repository.save(
+    public void creaNotificaInvitoContest(Animatore animatore, Contest contest, TuristaAutenticato destinatario) {
+        repository.save(
                 new NotificaBuilder()
                         .withTitolo("Info Contest: " + contest.getNomeContest())
-                        .withDescrizione("Sei stato invitato a unirti al contest "+contest.getNomeContest()+" da parte dell'animatore "+animatore.getUsername())
+                        .withDescrizione("Sei stato invitato a unirti al contest " + contest.getNomeContest() + " da parte dell'animatore " + animatore.getUsername())
                         .withDestinatario(destinatario).build());
     }
 
-    public Notifica creaNotificaIngressoContest(Contest contest, TuristaAutenticato turista) {
-        return repository.save(
+    public void creaNotificaIngressoContest(Contest contest, TuristaAutenticato turista) {
+        repository.save(
                 new NotificaBuilder()
                         .withTitolo("Info Contest: " + contest.getNomeContest())
-                        .withDescrizione(turista.getUsername()+" si è unito al Contest: "+contest.getNomeContest())
+                        .withDescrizione(turista.getUsername() + " si è unito al Contest: " + contest.getNomeContest())
                         .withDestinatario(contest.getCreatore()).build());
     }
 

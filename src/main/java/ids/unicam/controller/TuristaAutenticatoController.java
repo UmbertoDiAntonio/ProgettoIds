@@ -95,7 +95,7 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
         try {
             turistaAutenticatoService.accettaInvitoContest(turista, invito);
             return ResponseEntity.ok("Il turista con id '" + usernameTurista + "' ha accettato l'invito con id '" + idInvito + "' .");
-        } catch (IllegalArgumentException |ContestException e) {
+        } catch (IllegalArgumentException | ContestException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -167,7 +167,7 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
         try {
             turistaAutenticatoService.partecipaAlContest(idContest, usernameTurista);
             return ResponseEntity.ok("L'utente con username '" + usernameTurista + "' ha iniziato a partecipare al contest con id '" + idContest + "' .");
-        } catch (IllegalArgumentException | UnsupportedOperationException |ContestException e) {
+        } catch (IllegalArgumentException | UnsupportedOperationException | ContestException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         }
     }

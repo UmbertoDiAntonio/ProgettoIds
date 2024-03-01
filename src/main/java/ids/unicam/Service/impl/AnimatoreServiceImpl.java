@@ -88,7 +88,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
                         logger.error("L'animatore deve essere il creatore del contest");
                         throw new UnsupportedOperationException("L'animatore deve essere il creatore del contest");
                     }
-                }else {
+                } else {
                     logger.error("id Materiale non valido");
                     throw new IllegalArgumentException("id Materiale non valido");
                 }
@@ -161,7 +161,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
                         logger.error("Il turista autenticato fa gia' parte del contest");
                         throw new ContestException("Il turista autenticato fa gia' parte del contest");
                     } else {
-                        notificaService.creaNotificaInvitoContest(animatore,contest,turistaAutenticato);
+                        notificaService.creaNotificaInvitoContest(animatore, contest, turistaAutenticato);
                         return invitoService.save(new Invito(contest, turistaAutenticato));
                     }
                 } else {
