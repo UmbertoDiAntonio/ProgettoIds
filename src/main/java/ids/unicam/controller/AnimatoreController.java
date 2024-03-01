@@ -3,17 +3,22 @@ package ids.unicam.controller;
 import ids.unicam.Service.AnimatoreService;
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.exception.ConnessioneFallitaException;
+import ids.unicam.exception.ContestException;
+import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.DTO.ContributorDTO;
 import ids.unicam.models.attori.Ruolo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping("/Animatore")
-public class AnimatoreController implements ControllerBase<ContributorDTO, String> {
+public class AnimatoreController {
 
     private final AnimatoreService animatoreService;
     private final GestorePiattaformaService gestorePiattaformaService;
@@ -23,7 +28,7 @@ public class AnimatoreController implements ControllerBase<ContributorDTO, Strin
         this.gestorePiattaformaService = gestorePiattaformaService;
     }
 
-    @Override
+
     @GetMapping("/getAll")
     @Operation(summary = "Elenco degli utenti animatore",
             description = "Un elenco degli utenti animatore che sono salvati nel database.")
@@ -31,16 +36,16 @@ public class AnimatoreController implements ControllerBase<ContributorDTO, Strin
         return ResponseEntity.ok(animatoreService.getAll());
     }
 
-    @Override
+
     @GetMapping("/{username}")
     @Operation(summary = "Animatore dall'identificatore univoco id",
             description = "Animatore dall'identificatore univoco id salvato nel database.")
-    public ResponseEntity<?> getById(
+    public ResponseEntity<?> getByUsername(
             @Parameter(description = "Username dell'animatore") @PathVariable String username) {
         return ResponseEntity.ok(animatoreService.getByUsername(username));
     }
 
-    @Override
+
     @PostMapping("/crea")
     @Operation(summary = "Creazione di un nuovo utente animatore",
             description = "Crea un nuovo utente con ruolo di animatore.")
@@ -51,13 +56,12 @@ public class AnimatoreController implements ControllerBase<ContributorDTO, Strin
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
-    @Override
+    
     @DeleteMapping("/{username}")
     @Operation(summary = "Elimina utente Animatore",
             description = "Elimina di un utente con ruolo di Animatore.")
     public ResponseEntity<?> delete(
-            @Parameter(description = "username dell'Animatore") @PathVariable String username) {
+            @Parameter(description = "username dell' Animatore") @PathVariable String username) {
         animatoreService.deleteByUsername(username);
         return ResponseEntity.ok("Utente: '" + username + "' eliminato");
     }
@@ -73,6 +77,75 @@ public class AnimatoreController implements ControllerBase<ContributorDTO, Strin
         try {
             return ResponseEntity.ok(animatoreService.approvaMateriale(usernameAnimatore, idContest, idMateriale, stato));
         } catch (UnsupportedOperationException | IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PutMapping("/setDataFine/{data}")
+    @Operation(summary = "Imposta la data di Fine Contest",
+            description = "Imposta la data di fine Contest.")
+    public ResponseEntity<?> setFineContest(
+            @Parameter(description = "id del contest") @RequestBody Integer idContest,
+            @Parameter(description = "Data di scadenza nel formato YYYY-MM-DD") @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data,
+            @Parameter(description = "username dell' animatore") @RequestBody String usernameAnimatore) {
+        try {
+            animatoreService.setFineContest(idContest, data,usernameAnimatore);
+            return ResponseEntity.ok("Data fine contest "+idContest+" impostata a "+data);
+        } catch (FuoriComuneException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PutMapping("/annullaInvito/{idInvito}")
+    @Operation(summary = "Annulla un invito",
+            description = "Annulla la validità di un invito.")
+    public ResponseEntity<?> annullaInvito(
+            @Parameter(description = "username dell'animatore") @RequestParam String usernameAnimatore,
+            @Parameter(description = "id del invito da annullare") @PathVariable Integer idInvito) {
+        try {
+            animatoreService.annullaInvito(usernameAnimatore, idInvito);
+            return ResponseEntity.ok("Invito con id: '" + idInvito + "' annullato dall'utente con username: '" + usernameAnimatore + "' .");
+        } catch (ContestException | IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PutMapping("/invita/{idContest}")
+    @Operation(summary = "Invita utente al contest",
+            description = "Invita un utente al contest.")
+    public ResponseEntity<?> invita(
+            @Parameter(description = "username dell'utente animatore") @RequestParam String usernameAnimatore,
+            @Parameter(description = "id del contest") @PathVariable Integer idContest,
+            @Parameter(description = "username dell'utente da invitare") @RequestParam String usernameInvitato) {
+        try {
+            return ResponseEntity.ok(animatoreService.invitaContest(usernameAnimatore, idContest, usernameInvitato));
+        } catch (ContestException | IllegalStateException | IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PutMapping("/contest/termina/{idContest}")
+    @Operation(summary = "Termina il Contest",
+            description = "Imposta il vincitore e termina il Contest.")
+    public ResponseEntity<?> termina(
+            @Parameter(description = "Username dell'animatore") @RequestParam String usernameAnimatore,
+            @Parameter(description = "id del Contest") @PathVariable Integer idContest,
+            @Parameter(description = "id del Materiale Vincitore") @RequestParam Integer idMateriale) {
+        try {
+            animatoreService.terminaContest(usernameAnimatore, idContest);
+            return ResponseEntity.ok("Contest Terminato con vincitore " + idMateriale);
+        } catch (UnsupportedOperationException | IllegalArgumentException | ContestException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/contest/setVincitore/{idMateriale}")
+    @Operation(summary = "Dichiara il Vincitore",
+            description = "Imposta il materiale vincitore del Contest.")
+    public ResponseEntity<?> setVincitore(
+            @Parameter(description = "Username dell'animatore") @RequestParam String usernameAnimatore,
+            @Parameter(description = "id del Contest") @RequestParam Integer idContest,
+            @Parameter(description = "id del Materiale Vincitore") @PathVariable Integer idMateriale) {
+        try {
+            animatoreService.setVincitoreContest(usernameAnimatore, idContest, idMateriale);
+            return ResponseEntity.ok("Contest Terminato con vincitore " + idMateriale);
+        } catch (UnsupportedOperationException | IllegalArgumentException | ContestException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }

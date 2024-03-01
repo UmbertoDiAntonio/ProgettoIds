@@ -38,10 +38,10 @@ public class ItinerarioController {
     @Operation(summary = "Creazione di un nuovo itinerario",
             description = "Crea un nuovo itinerario.")
     public ResponseEntity<?> create(
-            @Parameter(description = "username del creatore") @RequestParam String nomeCreatore,
+            @Parameter(description = "username del creatore") @RequestParam String usernameCreatore,
             @Parameter(description = "nome dell'itinerario") @RequestParam String nomeItinerario) {
         try {
-            return ResponseEntity.ok(itinerarioService.creaItinerario(nomeCreatore, nomeItinerario));
+            return ResponseEntity.ok(itinerarioService.creaItinerario(usernameCreatore, nomeItinerario));
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -49,7 +49,7 @@ public class ItinerarioController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Elimina itinerario",
-            description = "Eliminazone di un itinerario dall'identificatore univoco id.")
+            description = "Eliminazione di un itinerario dall'identificatore univoco id.")
     public ResponseEntity<?> delete(
             @Parameter(description = "id dell'itinerario") @PathVariable Integer id) {
         itinerarioService.deleteById(id);
@@ -62,7 +62,7 @@ public class ItinerarioController {
     public ResponseEntity<?> aggiungiTappaItinerario(
             @Parameter(description = "username dell'utente") @RequestParam String usernameContributor,
             @Parameter(description = "id dell'itinerario") @RequestParam Integer idItinerario,
-            @Parameter(description = "id della tappa da aggiungiere") @RequestParam Integer idTappa) {
+            @Parameter(description = "id della tappa da aggiungere") @RequestParam Integer idTappa) {
         try {
             if (itinerarioService.aggiungiTappa(usernameContributor, idItinerario, idTappa))
                 return ResponseEntity.ok("L'utente '" + usernameContributor + "' ha aggiunto il punto di interesse '" + idTappa + "' dall'itinerario '" + idItinerario + "'.");

@@ -81,10 +81,9 @@ public class PuntoInteresseController {
             @Parameter(description = "Latitudine del punto di interesse") @RequestParam double latitudine,
             @Parameter(description = "Longitudine del punto di interesse") @RequestParam double longitudine,
             @Parameter(description = "Username del creatore del punto di interesse") @RequestParam String usernameCreatore,
-            @Parameter(description = "Tag del punto di interesse", schema = @Schema(implementation = String.class)) @RequestParam(required = false) String tag,
             @Parameter(description = "Tipologia del punto di interesse", schema = @Schema(implementation = TipologiaPuntoInteresse.class)) @RequestParam TipologiaPuntoInteresse tipologiaPuntoInteresse) {
         try {
-            return ResponseEntity.ok(poiService.creaPuntoInteresse(nomePOI, new Punto(latitudine, longitudine), usernameCreatore, new Tag(tag), tipologiaPuntoInteresse));
+            return ResponseEntity.ok(poiService.creaPuntoInteresse(nomePOI, new Punto(latitudine, longitudine),new Orario(),tipologiaPuntoInteresse, usernameCreatore));
         } catch (FuoriComuneException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -122,7 +121,7 @@ public class PuntoInteresseController {
             @Parameter(description = "Data di scadenza nel formato YYYY-MM-DD") @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate scadenza) {
         try {
             poiService.modificaScadenza(usernameContributor, idPuntoInteresse, scadenza);
-            return ResponseEntity.ok("Il contributor con id '" + usernameContributor + "' ha aggionrato la scadenza a '" + scadenza + "' del punto di interesse con id '" + idPuntoInteresse + "' .");
+            return ResponseEntity.ok("Il contributor con id '" + usernameContributor + "' ha aggiornato la scadenza a '" + scadenza + "' del punto di interesse con id '" + idPuntoInteresse + "' .");
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

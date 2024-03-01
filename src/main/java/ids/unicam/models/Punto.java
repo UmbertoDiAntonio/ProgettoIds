@@ -25,7 +25,7 @@ public class Punto {
         return Math.pow(pt.getLatitudine() - latitudine, 2) + Math.pow(pt.getLongitudine() - longitudine, 2);
     }
 
-    public Punto clone() {
+    public Punto asClone() {
         return new Punto(latitudine, longitudine);
     }
 

@@ -35,10 +35,7 @@ public class MaterialeServiceImpl implements MaterialeService {
         repository.deleteById(id);
     }
 
-    @Override
-    public Stato getStato(MaterialeGenerico foto) {
-        return repository.getStatoById(foto.getId());
-    }
+
 
     @Override
     public MaterialeGenerico crea(String fileMateriale, TipologiaMateriale tipologiaMateriale, TuristaAutenticato creatore) throws IllegalArgumentException {
@@ -69,6 +66,11 @@ public class MaterialeServiceImpl implements MaterialeService {
     public void aggiungiMateriale(Contenitore contenitore, MaterialeGenerico materialeGenerico) {
         contenitore.addMateriale(materialeGenerico);
         save(materialeGenerico);
+    }
+
+    @Override
+    public Optional<Stato> getStato(MaterialeGenerico foto) {
+        return repository.getStatoById(foto.getId());
     }
 
     @Override

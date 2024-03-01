@@ -44,7 +44,7 @@ public class Orario {
         for (int i = 1; i < 7; i++) {
             DayOfWeek current = DayOfWeek.asDayOfWeek(i);
             if (hoursMap.get(current) != null)
-                builder.append(current.name()).append(" ").append(hoursMap.get(current)).append(" ");
+                builder.append(current.name()).append(" ").append(getOrarioApertura(current)).append(" ");
             else
                 haveCloseDay = true;
         }
@@ -84,7 +84,7 @@ public class Orario {
 
         @Override
         public String toString() {
-            return "{Apertura: " + openingTime + "," + "Chiusura: " + closingTime + "}";
+            return "{Apertura: " + getOrarioApertura() + "," + "Chiusura: " + getOrarioChiusura() + "}";
         }
     }
 }

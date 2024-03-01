@@ -2,6 +2,7 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.ComuneRepository;
 import ids.unicam.Service.*;
+import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.models.Comune;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.Contributor;
@@ -46,13 +47,13 @@ public class ComuneServiceImpl implements ComuneService {
         return repository.save(comune);
     }
 
-
-    public Comune creaComune(Comune comune) {
-        return save(comune);
+    @Override
+    public Comune creaComune(String nomeComune) throws ConnessioneFallitaException {
+        return save(new Comune(nomeComune));
     }
 
     @Override
-    public Optional<Comune> findById(String nomeComune) {
+    public Optional<Comune> getByNome(String nomeComune) {
         return repository.findById(nomeComune);
     }
 
@@ -83,13 +84,8 @@ public class ComuneServiceImpl implements ComuneService {
 
 
     @Override
-    public Optional<Comune> getComuneByNome(String nomeComune) throws IllegalArgumentException {
-        return repository.findComuneByNomeIgnoreCase(nomeComune);
-    }
-
-    @Override
     public List<PuntoInteresse> getPuntiInteresseNelComune(String nomeComune) throws IllegalArgumentException {
-        Optional<Comune> oComune = getComuneByNome(nomeComune);
+        Optional<Comune> oComune = getByNome(nomeComune);
         if (oComune.isPresent()) {
             Comune comune = oComune.get();
             List<PuntoInteresse> puntiInteresseNelComune = new ArrayList<>();
@@ -104,5 +100,4 @@ public class ComuneServiceImpl implements ComuneService {
             return Collections.emptyList();
         }
     }
-
 }

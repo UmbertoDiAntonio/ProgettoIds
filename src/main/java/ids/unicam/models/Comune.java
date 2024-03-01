@@ -44,7 +44,7 @@ public class Comune {
 
     @Contract("-> new")
     public Punto getPosizione() {
-        return posizione.clone();
+        return posizione.asClone();
     }
 
     /**

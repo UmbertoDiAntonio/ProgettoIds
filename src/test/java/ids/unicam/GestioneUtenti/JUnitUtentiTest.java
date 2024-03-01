@@ -28,7 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 public class JUnitUtentiTest {
-
     private final ComuneServiceImpl comuneService;
     private final CuratoreServiceImpl curatoreServiceImpl;
     private final PoiServiceImpl poiService;
@@ -56,7 +55,7 @@ public class JUnitUtentiTest {
 
         Comune comune ;
         try {
-            comune = comuneService.creaComune(new Comune("nome"));
+            comune = comuneService.creaComune("nome");
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
@@ -110,7 +109,7 @@ public class JUnitUtentiTest {
 
         Comune comune ;
         try {
-            comune = comuneService.creaComune(new Comune("Milano"));
+            comune = comuneService.creaComune("Milano");
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
@@ -126,7 +125,7 @@ public class JUnitUtentiTest {
             throw new RuntimeException(e);
         }
         ContributorAutorizzato contributorAutorizzato = comuneService.getContributorAutorizzatiDelComune(comune.getNome()).getFirst();
-        PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributorAutorizzato));
+        PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributorAutorizzato.getUsername());
         assertEquals(0, turistaAutenticato.getPreferiti().size());
 
         turistaAutenticatoService.aggiungiPreferito(turistaAutenticato.getUsername(), puntoInteresse);
@@ -139,7 +138,7 @@ public class JUnitUtentiTest {
 
         Comune comune ;
         try {
-            comune = comuneService.creaComune(new Comune("Milano"));
+            comune = comuneService.creaComune("Milano");
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
@@ -152,7 +151,7 @@ public class JUnitUtentiTest {
         if (!(turista2 instanceof Curatore curatore))
             throw new IllegalArgumentException("errore");
 
-        PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributor));
+        PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributor.getUsername());
 
 
         int numeroTagEdicolaIniziale = turistaService.findByTag("Edicola").size();
@@ -186,7 +185,7 @@ public class JUnitUtentiTest {
     public void aggiungiFoto() throws ConnessioneFallitaException, FuoriComuneException {
         Comune comune ;
         try {
-            comune = comuneService.creaComune(new Comune("Milano"));
+            comune = comuneService.creaComune("Milano");
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
@@ -195,7 +194,7 @@ public class JUnitUtentiTest {
         if (!(turista instanceof Contributor contributor))
             throw new IllegalArgumentException("errore");
 
-        PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse("parco centrale", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.PARCO, contributor));
+        PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse("parco centrale", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.PARCO, contributor.getUsername());
 
         TuristaAutenticato turista2 = gestorePiattaformaService.registraContributor(new ContributorDTO(comune,new TuristaAutenticatoDTO( "mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 17), "9Unico@", "user99")),Ruolo.CURATORE);
         if (!(turista2 instanceof Curatore curatore1))
@@ -211,16 +210,16 @@ public class JUnitUtentiTest {
         foto.getBase64();
         poiService.aggiungiMateriale(turistaAutenticato.getUsername(), puntoInteresse.getId(), foto);
         assertEquals(1, poiService.getMaterialiPoi(puntoInteresse.getId()).size());
-        assertNull(materialeService.getStato(foto).asBoolean());
+        assertNull(materialeService.getStato(foto).get().asBoolean());
         curatoreServiceImpl.valutaMateriale(curatore1.getUsername(), foto.getId(), Stato.APPROVATO.asBoolean());
-        assertEquals(Boolean.TRUE, materialeService.getStato(foto).asBoolean());
+        assertEquals(Boolean.TRUE, materialeService.getStato(foto).get().asBoolean());
     }
 
     @Test
     public void segnalaContenuto() throws ConnessioneFallitaException, FuoriComuneException {
         Comune comune ;
         try {
-            comune = comuneService.creaComune(new Comune("Milano"));
+            comune = comuneService.creaComune("Milano");
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
@@ -229,7 +228,7 @@ public class JUnitUtentiTest {
         if (!(turista instanceof Contributor contributor))
             throw new IllegalArgumentException("errore");
 
-        PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse(new PuntoInteresse("n0me b4rutt0 ", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.PARCO, contributor));
+        PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse("n0me b4rutt0 ", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.PARCO, contributor.getUsername());
 
 
         TuristaAutenticato turista2 = gestorePiattaformaService.registraContributor(new ContributorDTO(comune,new TuristaAutenticatoDTO( "mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 17), "9Unico@", "user92")),Ruolo.CURATORE);

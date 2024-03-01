@@ -1,7 +1,7 @@
 package ids.unicam.models.attori;
 
 /**
- * Gradi di un Utente  all'interno della Piattaforma
+ * Gradi di un Utente all'interno della Piattaforma
  */
 public enum Ruolo {
     CONTRIBUTOR,

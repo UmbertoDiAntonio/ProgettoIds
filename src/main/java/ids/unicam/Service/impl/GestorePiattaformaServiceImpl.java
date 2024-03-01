@@ -16,28 +16,28 @@ import static ids.unicam.Main.logger;
 
 @Service
 public class GestorePiattaformaServiceImpl implements GestorePiattaformaService {
-    private final ContributorService contributorServiceImpl;
-    private final TuristaAutenticatoService turistaAutenticatoServiceImpl;
-    private final CuratoreService curatoreServiceImpl;
-    private final AnimatoreService animatoreServiceImpl;
-    private final ContributorAutorizzatoService contributorAutorizzatoServiceImpl;
-    private final PoiService poiServiceImpl;
+    private final ContributorService contributorService;
+    private final TuristaAutenticatoService turistaAutenticatoService;
+    private final CuratoreService curatoreService;
+    private final AnimatoreService animatoreServiceI;
+    private final ContributorAutorizzatoService contributorAutorizzatoService;
+    private final PoiService poiService;
 
     @Autowired
-    public GestorePiattaformaServiceImpl(ContributorService contributorServiceImpl, TuristaAutenticatoService turistaAutenticatoServiceImpl, CuratoreService curatoreServiceImpl, AnimatoreService animatoreServiceImpl, ContributorAutorizzatoService contributorAutorizzatoServiceImpl, PoiService poiServiceImpl) {
-        this.contributorServiceImpl = contributorServiceImpl;
-        this.turistaAutenticatoServiceImpl = turistaAutenticatoServiceImpl;
-        this.curatoreServiceImpl = curatoreServiceImpl;
-        this.animatoreServiceImpl = animatoreServiceImpl;
-        this.contributorAutorizzatoServiceImpl = contributorAutorizzatoServiceImpl;
-        this.poiServiceImpl = poiServiceImpl;
+    public GestorePiattaformaServiceImpl(ContributorService contributorService, TuristaAutenticatoService turistaAutenticatoService, CuratoreService curatoreService, AnimatoreService animatoreServiceI, ContributorAutorizzatoService contributorAutorizzatoService, PoiService poiService) {
+        this.contributorService = contributorService;
+        this.turistaAutenticatoService = turistaAutenticatoService;
+        this.curatoreService = curatoreService;
+        this.animatoreServiceI = animatoreServiceI;
+        this.contributorAutorizzatoService = contributorAutorizzatoService;
+        this.poiService = poiService;
     }
 
 
     @Transactional
     @Override
     public TuristaAutenticato cambiaRuolo(String usernameContributor, @NotNull Ruolo ruolo) throws IllegalArgumentException, ConnessioneFallitaException, UnsupportedOperationException {
-        Optional<TuristaAutenticato> oTurista = turistaAutenticatoServiceImpl.getByUsername(usernameContributor);
+        Optional<TuristaAutenticato> oTurista = turistaAutenticatoService.getByUsername(usernameContributor);
         if (oTurista.isEmpty()) {
             logger.error("username non valido");
             throw new IllegalArgumentException("username non valido");
@@ -56,20 +56,20 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
                 throw new UnsupportedOperationException("Non puoi tornare un turista");
             }
             case CURATORE ->
-                    curatoreServiceImpl.save(new Curatore(new ContributorDTO(contributor.getComune(), turistaAutenticatoDTO)));
+                    curatoreService.save(new Curatore(new ContributorDTO(contributor.getComune(), turistaAutenticatoDTO)));
             case ANIMATORE ->
-                    animatoreServiceImpl.save(new Animatore(new ContributorDTO(contributor.getComune(), turistaAutenticatoDTO)));
+                    animatoreServiceI.save(new Animatore(new ContributorDTO(contributor.getComune(), turistaAutenticatoDTO)));
             case CONTRIBUTOR_AUTORIZZATO ->
-                    contributorAutorizzatoServiceImpl.save(new ContributorAutorizzato(new ContributorDTO(contributor.getComune(), turistaAutenticatoDTO)));
+                    contributorAutorizzatoService.save(new ContributorAutorizzato(new ContributorDTO(contributor.getComune(), turistaAutenticatoDTO)));
             case CONTRIBUTOR ->
-                    contributorServiceImpl.save(new Contributor(new ContributorDTO(contributor.getComune(), turistaAutenticatoDTO)));
+                    contributorService.save(new Contributor(new ContributorDTO(contributor.getComune(), turistaAutenticatoDTO)));
         };
 
-        poiServiceImpl.findAll().stream()
+        poiService.findAll().stream()
                 .filter(puntoInteresse -> puntoInteresse.getCreatore() != null && puntoInteresse.getCreatore().getUsername().equals(contributor.getUsername()))
                 .forEach(puntoInteresse -> {
                     puntoInteresse.setCreatore(modificato);
-                    poiServiceImpl.save(puntoInteresse);
+                    poiService.save(puntoInteresse);
                 });
 
         return modificato;
@@ -78,15 +78,15 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
 
     private void rimuoviVecchioRuolo(@NotNull Contributor contributor) {
         switch (contributor) {
-            case Curatore curatore -> curatoreServiceImpl.deleteByUsername(curatore.getUsername());
+            case Curatore curatore -> curatoreService.deleteByUsername(curatore.getUsername());
             case ContributorAutorizzato contributorAutorizzato ->
-                    contributorAutorizzatoServiceImpl.deleteByUsername(contributorAutorizzato.getUsername());
-            case Animatore animatore -> animatoreServiceImpl.deleteByUsername(animatore.getUsername());
-            case Contributor contributor1 -> contributorServiceImpl.deleteByUsername(contributor1.getUsername());
+                    contributorAutorizzatoService.deleteByUsername(contributorAutorizzato.getUsername());
+            case Animatore animatore -> animatoreServiceI.deleteByUsername(animatore.getUsername());
+            case Contributor contributor1 -> contributorService.deleteByUsername(contributor1.getUsername());
         }
     }
 
-    private boolean validaCredenziali(TuristaAutenticatoDTO turistaDTO) throws IllegalArgumentException {
+    private void validaCredenziali(TuristaAutenticatoDTO turistaDTO) throws IllegalArgumentException {
         if (!turistaDTO.getPassword().matches("^(?=.*[A-Z])(?=.*[@#$%^&+=])(?=.*[0-9])(?=.*[a-zA-Z]).{6,}$")) {
             logger.error("Password non valida, deve essere lunga almeno 6 caratteri, di cui almeno 1 numero, 1 maiuscola e un carattere speciale");
             throw new IllegalArgumentException("Password non valida, deve essere lunga almeno 6 caratteri, di cui almeno 1 numero, 1 maiuscola e un carattere speciale");
@@ -95,19 +95,16 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
             logger.error("Username non valido, deve essere lungo almeno 5 caratteri");
             throw new IllegalArgumentException("Username non valido, deve essere lungo almeno 5 caratteri");
         }
-        if (!turistaAutenticatoServiceImpl.isUsernameUnique(turistaDTO.getUsername())) {
+        if (!turistaAutenticatoService.isUsernameUnique(turistaDTO.getUsername())) {
             logger.error("Username già esistente");
             throw new IllegalArgumentException("Username già esistente");
         }
-        return true;
     }
 
     public TuristaAutenticato registraTurista(TuristaAutenticatoDTO turistaDTO) throws IllegalArgumentException {
-        if (!validaCredenziali(turistaDTO)) {
-            return null;
-        }
+        validaCredenziali(turistaDTO);
         TuristaAutenticato nuovoTurista = new TuristaAutenticato(turistaDTO);
-        return turistaAutenticatoServiceImpl.save(nuovoTurista);
+        return turistaAutenticatoService.save(nuovoTurista);
     }
 
     @Transactional
@@ -116,28 +113,27 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
             logger.error("Il comune non puo' essere nullo, registrazione >= Contributor");
             throw new IllegalArgumentException("Il comune non puo' essere nullo, registrazione >= Contributor");
         }
-        if (!validaCredenziali(contributorDTO.getTuristaDTO())) {
-            return null;
-        }
+        validaCredenziali(contributorDTO.getTuristaDTO());
+
         return switch (ruolo) {
             case TURISTA -> registraTurista(contributorDTO.getTuristaDTO());
             case CONTRIBUTOR -> {
                 Contributor contributor = new Contributor(contributorDTO);
-                yield contributorServiceImpl.save(contributor);
+                yield contributorService.save(contributor);
             }
             case CURATORE -> {
                 Curatore curatore = new Curatore(contributorDTO);
-                curatoreServiceImpl.save(curatore);
+                curatoreService.save(curatore);
                 yield cambiaRuolo(contributorDTO.getTuristaDTO().getUsername(), Ruolo.CURATORE);
             }
             case ANIMATORE -> {
                 Animatore animatore = new Animatore(contributorDTO);
-                animatoreServiceImpl.save(animatore);
+                animatoreServiceI.save(animatore);
                 yield cambiaRuolo(contributorDTO.getTuristaDTO().getUsername(), Ruolo.ANIMATORE);
             }
             case CONTRIBUTOR_AUTORIZZATO -> {
                 ContributorAutorizzato contributor = new ContributorAutorizzato(contributorDTO);
-                contributorAutorizzatoServiceImpl.save(contributor);
+                contributorAutorizzatoService.save(contributor);
                 yield cambiaRuolo(contributorDTO.getTuristaDTO().getUsername(), Ruolo.CONTRIBUTOR_AUTORIZZATO);
             }
         };

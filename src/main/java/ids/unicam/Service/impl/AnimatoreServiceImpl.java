@@ -3,6 +3,7 @@ package ids.unicam.Service.impl;
 import ids.unicam.DataBase.Repository.AnimatoreRepository;
 import ids.unicam.Service.*;
 import ids.unicam.exception.ContestException;
+import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
@@ -12,6 +13,7 @@ import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -211,5 +213,23 @@ public class AnimatoreServiceImpl implements AnimatoreService {
             logger.error("username Animatore non valido");
             throw new IllegalArgumentException("username Animatore non valido");
         }
+    }
+
+    @Override
+    public void setFineContest(int idContest, LocalDate dataFine, String usernameAnimatore) throws FuoriComuneException {
+        Optional<Animatore> oAnimatore =getByUsername(usernameAnimatore);
+        if (oAnimatore.isEmpty()) {
+            throw new FuoriComuneException("username animatore non valido");
+        }
+
+        Optional<Contest> oContest = contestService.findById(idContest);
+        if (oContest.isEmpty()) {
+            throw new FuoriComuneException("id contest non valido");
+        }
+
+        Contest contest = oContest.get();
+
+        contest.setExpireDate(dataFine);
+        contestService.save(contest);
     }
 }

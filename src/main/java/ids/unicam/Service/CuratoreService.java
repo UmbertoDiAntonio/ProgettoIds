@@ -5,13 +5,12 @@ import ids.unicam.models.attori.Curatore;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.notifiche.Notifica;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface CuratoreService {
-    PuntoInteresse valutaPuntoInteresse(String usernameCuratore, @NotNull int idPuntoInteresse, Boolean stato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException;
+    PuntoInteresse valutaPuntoInteresse(String usernameCuratore, int idPuntoInteresse, Boolean stato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException;
 
     MaterialeGenerico valutaMateriale(String usernameCuratore, int idMaterialeGenerico, Boolean stato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException;
 

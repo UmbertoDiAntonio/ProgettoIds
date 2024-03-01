@@ -1,5 +1,7 @@
 package ids.unicam.Service.impl;
 
+import ids.unicam.Service.CuratoreService;
+import ids.unicam.Service.PoiService;
 import ids.unicam.models.contenuti.notifiche.NotificaBuilder;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import org.springframework.stereotype.Service;
@@ -10,11 +12,11 @@ import static ids.unicam.Main.logger;
 
 @Service
 public class NotificaReportService {
-    private final CuratoreServiceImpl curatoreService;
+    private final CuratoreService curatoreService;
     private final NotificaService notificaService;
-    private final PoiServiceImpl poiService;
+    private final PoiService poiService;
 
-    public NotificaReportService(CuratoreServiceImpl curatoreService, NotificaService notificaService, PoiServiceImpl poiService) {
+    public NotificaReportService(CuratoreService curatoreService, NotificaService notificaService, PoiService poiService) {
         this.curatoreService = curatoreService;
         this.notificaService = notificaService;
         this.poiService = poiService;

@@ -23,15 +23,15 @@ import static ids.unicam.Main.logger;
 @Service
 public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService, Observer {
     private final TuristaAutenticatoRepository repository;
-    private final ContestService contestServiceImpl;
-    private final InvitoService invitoServiceImpl;
+    private final ContestService contestService;
+    private final InvitoService invitoService;
     private final NotificaService notificaService;
 
     @Autowired
-    public TuristaAutenticatoServiceImpl(TuristaAutenticatoRepository repository, ContestService contestServiceImpl, InvitoService invitoServiceImpl, NotificaService notificaService) {
+    public TuristaAutenticatoServiceImpl(TuristaAutenticatoRepository repository, ContestService contestService, InvitoService invitoService, NotificaService notificaService) {
         this.repository = repository;
-        this.contestServiceImpl = contestServiceImpl;
-        this.invitoServiceImpl = invitoServiceImpl;
+        this.contestService = contestService;
+        this.invitoService = invitoService;
         this.notificaService = notificaService;
     }
 
@@ -50,14 +50,26 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
 
     @Transactional
     @Override
-    public void accettaInvitoContest(TuristaAutenticato turistaAutenticato, Invito invito) throws IllegalArgumentException, ContestException {
-        invitoServiceImpl.accettaInvito(turistaAutenticato, invito);
+    public void accettaInvitoContest(String usernameUtente, int idInvito) throws IllegalArgumentException, ContestException {
+        Optional<TuristaAutenticato> oTurista = getByUsername(usernameUtente);
+        if (oTurista.isEmpty()) {
+            logger.error("username Utente non valido");
+            throw  new IllegalArgumentException("username Utente non valido");
+        }
+        TuristaAutenticato turistaAutenticato = oTurista.get();
+        Optional<Invito> oInvito = invitoService.findById(idInvito);
+        if (oInvito.isEmpty()) {
+            logger.error("id Invito non valido");
+            throw  new IllegalArgumentException("id Invito non valido");
+        }
+        Invito invito = oInvito.get();
+        invitoService.accettaInvito(turistaAutenticato, invito);
     }
 
     @Transactional
     @Override
     public void rimuoviPreferito(String usernameTurista, int id) throws IllegalArgumentException {
-        Optional<TuristaAutenticato> oTurista = findTuristaByUsername(usernameTurista);
+        Optional<TuristaAutenticato> oTurista = getByUsername(usernameTurista);
         if (oTurista.isPresent()) {
             TuristaAutenticato turistaAutenticato = oTurista.get();
             turistaAutenticato.getPreferiti().removeIf(puntoInteresse -> puntoInteresse.getId() == id);
@@ -71,9 +83,8 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
     @Transactional
     @Override
     public void aggiungiPreferito(String usernameTurista, PuntoInteresse puntoInteresse) throws IllegalArgumentException {
-
         if (Boolean.TRUE.equals(puntoInteresse.getStato().asBoolean())) {
-            Optional<TuristaAutenticato> oTurista = findTuristaByUsername(usernameTurista);
+            Optional<TuristaAutenticato> oTurista = getByUsername(usernameTurista);
             if (oTurista.isPresent()) {
                 TuristaAutenticato turistaAutenticato = oTurista.get();
                 turistaAutenticato.getPreferiti().add(puntoInteresse);
@@ -91,7 +102,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
 
     @Override
     public List<PuntoInteresse> findPreferiti(String usernameTurista) throws IllegalArgumentException {
-        Optional<TuristaAutenticato> oTurista = findTuristaByUsername(usernameTurista);
+        Optional<TuristaAutenticato> oTurista = getByUsername(usernameTurista);
         if (oTurista.isPresent()) {
             TuristaAutenticato turistaAutenticato = oTurista.get();
             return repository.findPreferitiByTurista(turistaAutenticato.getUsername());
@@ -104,17 +115,17 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
     @Transactional
     @Override
     public void partecipaAlContest(int idContest, String usernameTurista) throws UnsupportedOperationException, IllegalArgumentException, ContestException {
-        Optional<Contest> oContest = contestServiceImpl.findById(idContest);
+        Optional<Contest> oContest = contestService.findById(idContest);
         if (oContest.isPresent()) {
             Contest contest = oContest.get();
-            Optional<TuristaAutenticato> oTurista = findTuristaByUsername(usernameTurista);
+            Optional<TuristaAutenticato> oTurista = getByUsername(usernameTurista);
             if (oTurista.isPresent()) {
                 TuristaAutenticato turistaAutenticato = oTurista.get();
                 if (!contest.isOpen()) {
                     logger.error("Il contest non è aperto");
                     throw new UnsupportedOperationException("Il contest non è aperto");
                 }
-                contestServiceImpl.aggiungiPartecipante(contest, turistaAutenticato);
+                contestService.aggiungiPartecipante(contest, turistaAutenticato);
             } else {
                 logger.error("username del turista non valido");
                 throw new IllegalArgumentException("username del turista non valido");
@@ -128,16 +139,16 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
     @Transactional
     @Override
     public void cancellaPartecipazioneContest(int idContest, String usernameTurista) throws IllegalArgumentException {
-        Optional<Contest> oContest = contestServiceImpl.findById(idContest);
+        Optional<Contest> oContest = contestService.findById(idContest);
         if (oContest.isPresent()) {
             Contest contest = oContest.get();
-            Optional<TuristaAutenticato> oTurista = findTuristaByUsername(usernameTurista);
+            Optional<TuristaAutenticato> oTurista = getByUsername(usernameTurista);
             if (oTurista.isPresent()) {
                 TuristaAutenticato turistaAutenticato = oTurista.get();
                 if (!contest.getPartecipanti().contains(turistaAutenticato)) {
                     logger.warn("Non sei un membro del contest");
                 } else {
-                    contestServiceImpl.rimuoviPartecipante(contest, turistaAutenticato);
+                    contestService.rimuoviPartecipante(contest, turistaAutenticato);
                 }
             } else {
                 logger.error("username del turista non valido");
@@ -147,11 +158,6 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
             logger.error("id del contest non valido");
             throw new IllegalArgumentException("id del contest non valido");
         }
-    }
-
-    @Override
-    public Optional<TuristaAutenticato> findTuristaByUsername(String username) {
-        return repository.findByUsername(username);
     }
 
     @Override
@@ -172,7 +178,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
 
     @Override
     public List<Notifica> visualizzaNotifiche(String usernameTurista) throws IllegalArgumentException {
-        Optional<TuristaAutenticato> oTurista = findTuristaByUsername(usernameTurista);
+        Optional<TuristaAutenticato> oTurista = getByUsername(usernameTurista);
         if (oTurista.isPresent()) {
             TuristaAutenticato turistaAutenticato = oTurista.get();
             return notificaService.getNotifiche(turistaAutenticato);
@@ -183,12 +189,12 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
 
     @Override
     public List<Invito> getInviti(String usernameTurista) {
-        return invitoServiceImpl.getInvitiRicevuti(usernameTurista);
+        return invitoService.getInvitiRicevuti(usernameTurista);
     }
 
     @Override
     @Transactional
-    public void deleteNotificheById(String usernameTurista) {
+    public void deleteNotificheByUsername(String usernameTurista) {
         notificaService.rimuoviNotificheByUsername(usernameTurista);
     }
 

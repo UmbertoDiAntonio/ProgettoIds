@@ -1,5 +1,6 @@
 package ids.unicam.Service.impl;
 
+import ids.unicam.Service.PoiService;
 import ids.unicam.Service.TuristaService;
 import ids.unicam.models.contenuti.Taggable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,18 +11,18 @@ import java.util.List;
 @Service
 public class TuristaServiceImpl implements TuristaService {
 
-    private final PoiServiceImpl poiServiceImpl;
+    private final PoiService poiService;
     private final NotificaReportService notificaReportService;
 
     @Autowired
-    public TuristaServiceImpl(PoiServiceImpl poiServiceImpl, NotificaReportService notificaReportService) {
-        this.poiServiceImpl = poiServiceImpl;
+    public TuristaServiceImpl(PoiService poiService, NotificaReportService notificaReportService) {
+        this.poiService = poiService;
         this.notificaReportService = notificaReportService;
     }
 
     @Override
     public List<Taggable> findByTag(String tag) {
-        return poiServiceImpl.findByTag(tag);
+        return poiService.findByTag(tag);
     }
 
     @Override

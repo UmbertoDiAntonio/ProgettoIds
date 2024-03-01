@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/ContributorAutorizzato")
-public class ContributorAutorizzatoController implements ControllerBase<ContributorDTO, String> {
+public class ContributorAutorizzatoController  {
 
     private final ContributorAutorizzatoService contributorAutorizzatoService;
     private final GestorePiattaformaService gestorePiattaformaService;
@@ -23,7 +23,7 @@ public class ContributorAutorizzatoController implements ControllerBase<Contribu
         this.gestorePiattaformaService = gestorePiattaformaService;
     }
 
-    @Override
+
     @GetMapping("/getAll")
     @Operation(summary = "Elenco degli utenti contributor autorizzati",
             description = "Un elenco degli utenti contributor autorizzati che sono salvati nel database.")
@@ -31,16 +31,16 @@ public class ContributorAutorizzatoController implements ControllerBase<Contribu
         return ResponseEntity.ok(contributorAutorizzatoService.getAll());
     }
 
-    @Override
+
     @GetMapping("/{username}")
     @Operation(summary = "Contributor Autorizzato dall'identificatore univoco id",
             description = "Contributor Autorizzato dall'identificatore univoco id salvato nel database.")
-    public ResponseEntity<?> getById(
+    public ResponseEntity<?> getByUsername(
             @Parameter(description = "username del contributor autorizzato") @PathVariable String username) {
         return ResponseEntity.ok(contributorAutorizzatoService.getByUsername(username));
     }
 
-    @Override
+
     @Operation(summary = "Creazione di un nuovo utente contributor autorizzato",
             description = "Crea un nuovo utente contributor autorizzato.")
     public ResponseEntity<?> create(@RequestBody ContributorDTO contributorDTO) {
@@ -51,7 +51,7 @@ public class ContributorAutorizzatoController implements ControllerBase<Contribu
         }
     }
 
-    @Override
+
     @DeleteMapping("/{username}")
     @Operation(summary = "Elimina utente contributor autorizzato",
             description = "Elimina di un utente contributor autorizzato dall'username.")

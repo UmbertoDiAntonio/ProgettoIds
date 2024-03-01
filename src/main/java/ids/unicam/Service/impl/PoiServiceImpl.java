@@ -6,13 +6,13 @@ import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Comune;
 import ids.unicam.models.Punto;
 import ids.unicam.models.attori.Contributor;
+import ids.unicam.models.attori.ContributorAutorizzato;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.Taggable;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.puntiInteresse.*;
 import jakarta.transaction.Transactional;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,15 +28,15 @@ import static ids.unicam.Main.logger;
 @Service
 public class PoiServiceImpl implements PoiService {
     private final PoiRepository repository;
-    private final TagService tagServiceImpl;
+    private final TagService tagService;
     private final ContributorService contributorService;
     private final TuristaAutenticatoService turistaAutenticatoService;
     private final MaterialeService materialeService;
 
     @Autowired
-    public PoiServiceImpl(PoiRepository repository, TagService tagServiceImpl, ContributorService contributorService, TuristaAutenticatoService turistaAutenticatoService, MaterialeService materialeService) {
+    public PoiServiceImpl(PoiRepository repository, TagService tagService, ContributorService contributorService, TuristaAutenticatoService turistaAutenticatoService, MaterialeService materialeService) {
         this.repository = repository;
-        this.tagServiceImpl = tagServiceImpl;
+        this.tagService = tagService;
         this.contributorService = contributorService;
         this.turistaAutenticatoService = turistaAutenticatoService;
         this.materialeService = materialeService;
@@ -85,21 +85,12 @@ public class PoiServiceImpl implements PoiService {
 
     @Transactional
     @Override
-    public PuntoInteresse creaPuntoInteresse(PuntoInteresse puntoInteresse) throws FuoriComuneException {
-        if (!puntoInteresse.getCreatore().getComune().verificaCoordinateComune(puntoInteresse.getPt())) {
-            throw new FuoriComuneException("Posizione Punto di Interesse Fuori dall'area del comune");
-        }
-        return save(puntoInteresse);
-    }
-
-    @Transactional
-    @Override
-    public PuntoInteresse creaPuntoInteresse(String nomePOI, Punto punto, String usernameCreatore, Tag tag, TipologiaPuntoInteresse tipologiaPuntoInteresse) throws FuoriComuneException {
+    public PuntoInteresse creaPuntoInteresse(String nomePOI, Punto punto,Orario orario,TipologiaPuntoInteresse tipologiaPuntoInteresse, String usernameCreatore ) throws FuoriComuneException {
         Optional<Contributor> oContributor = contributorService.getByUsername(usernameCreatore);
         if (oContributor.isPresent()) {
             Contributor contributor = oContributor.get();
-            PuntoInteresse puntoInteresse = new PuntoInteresse(nomePOI, punto, new Orario(), tipologiaPuntoInteresse, contributor);
-            tagServiceImpl.aggiungiTag(puntoInteresse, tag);
+            PuntoInteresse puntoInteresse = new PuntoInteresse(nomePOI, punto, orario, tipologiaPuntoInteresse, contributor);
+            puntoInteresse.setStato(contributor instanceof ContributorAutorizzato ? Stato.APPROVATO : Stato.IN_ATTESA);
             if (!puntoInteresse.getCreatore().getComune().verificaCoordinateComune(puntoInteresse.getPt())) {
                 throw new FuoriComuneException("Posizione Punto di Interesse Fuori dall'area del comune");
             }
@@ -110,11 +101,7 @@ public class PoiServiceImpl implements PoiService {
     }
 
 
-    @Transactional
-    @Override
-    public void eliminaPuntoInteresse(int idPuntoInteresse) {
-        repository.deleteById(idPuntoInteresse);
-    }
+
 
     @Override
     public LocalDate getScadenza(int idPunto) throws IllegalArgumentException {
@@ -181,12 +168,12 @@ public class PoiServiceImpl implements PoiService {
         Optional<PuntoInteresse> oPuntoInteresse = getById(idPuntoInteresse);
         if (oPuntoInteresse.isPresent()) {
             PuntoInteresse puntoInteresse = oPuntoInteresse.get();
-            if (tagServiceImpl.haveTag(puntoInteresse, tag)) {
+            if (tagService.haveTag(puntoInteresse, tag)) {
                 logger.warn("Tag già aggiunto");
                 return;
             }
             if (!puntoInteresse.isExpired())
-                tagServiceImpl.aggiungiTag(puntoInteresse, tag);
+                tagService.aggiungiTag(puntoInteresse, tag);
 
             save(puntoInteresse);
         } else {
@@ -226,16 +213,12 @@ public class PoiServiceImpl implements PoiService {
     @Override
     public List<String> getAsList() {
         List<PuntoInteresse> list = findActive();
-        return generateList(list);
+        return getAsList(list);
     }
+
 
     @Override
     public List<String> getAsList(List<PuntoInteresse> preferiti) {
-        return generateList(preferiti);
-    }
-
-    @NotNull
-    private List<String> generateList(List<PuntoInteresse> preferiti) {
         List<String> result = new ArrayList<>();
         int i = 0;
         for (PuntoInteresse el : preferiti) {
@@ -289,7 +272,7 @@ public class PoiServiceImpl implements PoiService {
     }
 
     @Override
-    public void checkIfIsExpired(PuntoInteresse puntoInteresse) {
+    public void deleteIfIsExpired(PuntoInteresse puntoInteresse) {
         if (puntoInteresse.isExpired()) {
             puntoInteresse.getMateriali().clear();
             deleteById(puntoInteresse.getId());

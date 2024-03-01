@@ -1,9 +1,11 @@
 package ids.unicam.Service;
 
 import ids.unicam.exception.ContestException;
+import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.Animatore;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,4 +30,6 @@ public interface AnimatoreService {
     void setVincitoreContest(String usernameAnimatore, int idContest, int idMateriale) throws ContestException;
 
     void annullaInvito(String usernameAnimatore, int idInvito) throws ContestException, IllegalArgumentException;
+
+    void setFineContest(int idContest, LocalDate dataFine, String usernameAnimatore) throws FuoriComuneException;
 }

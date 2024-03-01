@@ -1,13 +1,10 @@
 package ids.unicam.controller;
 
 import ids.unicam.Service.GestorePiattaformaService;
-import ids.unicam.Service.InvitoService;
+import ids.unicam.Service.PoiService;
 import ids.unicam.Service.TuristaAutenticatoService;
-import ids.unicam.Service.impl.PoiServiceImpl;
 import ids.unicam.exception.ContestException;
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
-import ids.unicam.models.Invito;
-import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -19,22 +16,20 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/TuristaAutenticato")
-public class TuristaAutenticatoController implements ControllerBase<TuristaAutenticatoDTO, String> {
+public class TuristaAutenticatoController  {
 
     private final TuristaAutenticatoService turistaAutenticatoService;
     private final GestorePiattaformaService gestorePiattaformaService;
-    private final InvitoService invitoService;
-    private final PoiServiceImpl poiService;
+    private final PoiService poiService;
 
-    public TuristaAutenticatoController(TuristaAutenticatoService turistaAutenticatoService, GestorePiattaformaService gestorePiattaformaService, InvitoService invitoService, PoiServiceImpl poiService) {
+    public TuristaAutenticatoController(TuristaAutenticatoService turistaAutenticatoService, GestorePiattaformaService gestorePiattaformaService, PoiService poiService) {
         this.turistaAutenticatoService = turistaAutenticatoService;
         this.gestorePiattaformaService = gestorePiattaformaService;
-        this.invitoService = invitoService;
         this.poiService = poiService;
     }
 
 
-    @Override
+
     @GetMapping("/getAll")
     @Operation(summary = "Ottieni tutti i Turisti",
             description = "Ottieni Tutti i turisti e superiori.")
@@ -43,16 +38,16 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
     }
 
 
-    @Override
+
     @GetMapping("/{username}")
     @Operation(summary = "Ottieni Turista",
             description = "Ottieni un Turista dal suo Username.")
-    public ResponseEntity<?> getById(
+    public ResponseEntity<?> getByUsername(
             @Parameter(description = "username del turista") @PathVariable String username) {
         return ResponseEntity.ok(turistaAutenticatoService.getByUsername(username));
     }
 
-    @Override
+
     @PostMapping("/crea")
     @Operation(summary = "Crea un utente Turista",
             description = "Crea un utente con il ruolo di turista.")
@@ -65,7 +60,7 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
         }
     }
 
-    @Override
+
     @DeleteMapping("/{username}")
     @Operation(summary = "Elimina un Turista",
             description = "Eliminazione di un Turista dall'username.")
@@ -82,18 +77,8 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
     public ResponseEntity<?> accettaInvito(
             @Parameter(description = "username del turista") @RequestParam String usernameTurista,
             @Parameter(description = "id dell'invito") @RequestParam Integer idInvito) {
-        Optional<TuristaAutenticato> oTurista = turistaAutenticatoService.getByUsername(usernameTurista);
-        if (oTurista.isEmpty()) {
-            return new ResponseEntity<>("username turista non valido", HttpStatus.BAD_REQUEST);
-        }
-        TuristaAutenticato turista = oTurista.get();
-        Optional<Invito> oInvito = invitoService.findById(idInvito);
-        if (oInvito.isEmpty()) {
-            return new ResponseEntity<>("id invito non valido", HttpStatus.BAD_REQUEST);
-        }
-        Invito invito = oInvito.get();
         try {
-            turistaAutenticatoService.accettaInvitoContest(turista, invito);
+            turistaAutenticatoService.accettaInvitoContest(usernameTurista, idInvito);
             return ResponseEntity.ok("Il turista con id '" + usernameTurista + "' ha accettato l'invito con id '" + idInvito + "' .");
         } catch (IllegalArgumentException | ContestException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -151,7 +136,7 @@ public class TuristaAutenticatoController implements ControllerBase<TuristaAuten
     public ResponseEntity<?> eliminaNotifiche(
             @Parameter(description = "username del turista") @RequestParam String usernameTurista) {
         try {
-            turistaAutenticatoService.deleteNotificheById(usernameTurista);
+            turistaAutenticatoService.deleteNotificheByUsername(usernameTurista);
             return ResponseEntity.ok("Notifiche rimosse dall'utente con username '" + usernameTurista + "' .");
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);

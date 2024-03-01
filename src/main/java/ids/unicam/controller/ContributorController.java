@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/Contributor")
-public class ContributorController implements ControllerBase<ContributorDTO, String> {
+public class ContributorController{
 
     private final ContributorService contributorService;
     private final GestorePiattaformaService gestorePiattaformaService;
@@ -26,7 +26,7 @@ public class ContributorController implements ControllerBase<ContributorDTO, Str
         this.turistaAutenticatoController = turistaAutenticatoController;
     }
 
-    @Override
+
     @GetMapping("/getAll")
     @Operation(summary = "Elenco degli utenti contributor",
             description = "Un elenco degli utenti contributor che sono salvati nel database.")
@@ -35,16 +35,16 @@ public class ContributorController implements ControllerBase<ContributorDTO, Str
     }
 
 
-    @Override
+
     @GetMapping("/{username}")
     @Operation(summary = "Contributor dall'identificatore univoco 'username'",
             description = "Contributor dall'identificatore univoco 'username' salvato nel database.")
-    public ResponseEntity<?> getById(
+    public ResponseEntity<?> getByUsername(
             @Parameter(description = "username del contributor") @PathVariable String username) {
         return ResponseEntity.ok(contributorService.getByUsername(username));
     }
 
-    @Override
+
     @PostMapping("/crea")
     @Operation(summary = "Creazione di un nuovo utente contributor",
             description = "Crea un nuovo utente con ruolo di contributor.")
@@ -57,7 +57,7 @@ public class ContributorController implements ControllerBase<ContributorDTO, Str
         }
     }
 
-    @Override
+
     @DeleteMapping("/{username}")
     @Operation(summary = "Elimina contributor",
             description = "Elimina di un utente contributor dall'username.")

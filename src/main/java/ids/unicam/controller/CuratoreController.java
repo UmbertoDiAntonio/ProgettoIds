@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/Curatore")
-public class CuratoreController implements ControllerBase<ContributorDTO, String> {
+public class CuratoreController{
 
     private final CuratoreService curatoreService;
     private final GestorePiattaformaService gestorePiattaformaService;
@@ -25,23 +25,23 @@ public class CuratoreController implements ControllerBase<ContributorDTO, String
         this.gestorePiattaformaService = gestorePiattaformaService;
     }
 
-    @Override
+
     @Operation(summary = "Elenco degli utenti curatore",
             description = "Un elenco degli utenti con ruolo di curatore.")
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(curatoreService.getAll());
     }
 
-    @Override
+
     @GetMapping("/{username}")
     @Operation(summary = "Curatore dall'username",
-            description = "Curatre dall'identificatore univoco username salvato nel database.")
-    public ResponseEntity<?> getById(
+            description = "Curatore dall'identificatore univoco username salvato nel database.")
+    public ResponseEntity<?> getByUsername(
             @Parameter(description = "username del curatore") @PathVariable String username) {
         return ResponseEntity.ok(curatoreService.getByUsername(username));
     }
 
-    @Override
+
     @Operation(summary = "Creazione di un nuovo utente curatore",
             description = "Crea un nuovo utente curatore.")
     public ResponseEntity<?> create(@RequestBody ContributorDTO contributorDTO) {
@@ -52,7 +52,7 @@ public class CuratoreController implements ControllerBase<ContributorDTO, String
         }
     }
 
-    @Override
+
     @DeleteMapping("/{username}")
     @Operation(summary = "Elimina utente curatore",
             description = "Eliminazione di un utente con ruolo di curatore dall'username univoco.")

@@ -22,13 +22,13 @@ import static ids.unicam.Main.logger;
 @Transactional
 public class ItinerarioServiceImpl implements ItinerarioService {
     private final ItinerarioRepository repository;
-    private final PoiService poiServiceImpl;
+    private final PoiService poiService;
     private final ContributorService contributorService;
 
     @Autowired
-    public ItinerarioServiceImpl(ItinerarioRepository repository, PoiService poiServiceImpl, ContributorService contributorService) {
+    public ItinerarioServiceImpl(ItinerarioRepository repository, PoiService poiService, ContributorService contributorService) {
         this.repository = repository;
-        this.poiServiceImpl = poiServiceImpl;
+        this.poiService = poiService;
         this.contributorService = contributorService;
     }
 
@@ -48,7 +48,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
         Optional<Contributor> oContributor = contributorService.getByUsername(usernameContributor);
         if (oContributor.isPresent()) {
             Contributor contributor = oContributor.get();
-            Optional<PuntoInteresse> oPoi = poiServiceImpl.findById(idPuntoInteresse);
+            Optional<PuntoInteresse> oPoi = poiService.findById(idPuntoInteresse);
             if (oPoi.isPresent()) {
                 PuntoInteresse puntoInteresse = oPoi.get();
                 Optional<Itinerario> oItinerario = getById(idItinerario);
@@ -58,7 +58,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
                         if (itinerario.getComune().equals(puntoInteresse.getComune())) {
                             if (!itinerario.getPercorso().contains(puntoInteresse)) {
 
-                                poiServiceImpl.save(puntoInteresse);
+                                poiService.save(puntoInteresse);
                                 itinerario.getPercorso().add(puntoInteresse);
                                 save(itinerario);
                                 return true;
@@ -110,7 +110,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
             if (oItinerario.isPresent()) {
                 Itinerario itinerario = oItinerario.get();
                 if (contributor.getComune().equals(itinerario.getComune())) {
-                    Optional<PuntoInteresse> oPoi = poiServiceImpl.getById(idPuntoInteresse);
+                    Optional<PuntoInteresse> oPoi = poiService.getById(idPuntoInteresse);
                     if (oPoi.isPresent()) {
                         PuntoInteresse puntoInteresse = oPoi.get();
                         itinerario.getPercorso().remove(puntoInteresse);

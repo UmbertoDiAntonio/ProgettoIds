@@ -12,7 +12,6 @@ import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.notifiche.Notifica;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.transaction.Transactional;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -155,7 +154,7 @@ public class CuratoreServiceImpl implements CuratoreService {
             if (oPoi.isPresent()) {
                 PuntoInteresse puntoInteresse = oPoi.get();
                 if (controllaSeInComune(curatore, puntoInteresse.getComune())) {
-                    poiServiceImpl.eliminaPuntoInteresse(idPuntoInteresse);
+                    poiServiceImpl.deleteById(idPuntoInteresse);
                 } else {
                     throw new FuoriComuneException("Il punto di interesse e' fuori dal comune del curatore");
                 }
@@ -259,8 +258,8 @@ public class CuratoreServiceImpl implements CuratoreService {
 
 
     @Override
-    public List<Notifica> getNotifiche(String usernameCurature) throws IllegalArgumentException {
-        Optional<Curatore> oCuratore = getByUsername(usernameCurature);
+    public List<Notifica> getNotifiche(String usernameCuratore) throws IllegalArgumentException {
+        Optional<Curatore> oCuratore = getByUsername(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
             return notificaService.getNotifiche(curatore);

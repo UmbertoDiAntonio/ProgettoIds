@@ -7,13 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MaterialeRepository extends JpaRepository<MaterialeGenerico, Integer> {
 
 
     @Query("select m.stato from MaterialeGenerico m where m.id=:id")
-    Stato getStatoById(int id);
+    Optional<Stato> getStatoById(int id);
 
     List<MaterialeGenerico> findAllByFileIn(List<String> file);
 

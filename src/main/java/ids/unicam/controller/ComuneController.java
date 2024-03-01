@@ -3,7 +3,6 @@ package ids.unicam.controller;
 import ids.unicam.Service.ComuneService;
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.exception.ConnessioneFallitaException;
-import ids.unicam.models.Comune;
 import ids.unicam.models.attori.Ruolo;
 import ids.unicam.models.attori.TuristaAutenticato;
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,7 +39,7 @@ public class ComuneController {
     public ResponseEntity<?> getById(
             @Parameter(description = "nome del comune") @PathVariable String nomeComune) {
         try {
-            return ResponseEntity.ok(comuneService.getComuneByNome(nomeComune));
+            return ResponseEntity.ok(comuneService.getByNome(nomeComune));
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -53,7 +52,7 @@ public class ComuneController {
     public ResponseEntity<?> create(
             @Parameter(description = "nome del comune") @RequestParam String nomeComune) {
         try {
-            return ResponseEntity.ok(comuneService.creaComune(new Comune(nomeComune)));
+            return ResponseEntity.ok(comuneService.creaComune(nomeComune));
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
@@ -82,4 +81,45 @@ public class ComuneController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/{nomeComune}/getContributor")
+    @Operation(summary = "Ottieni Contributor del Comune",
+            description = "Ottieni tutti i Contributor del Comune.")
+    public ResponseEntity<?> getContributor(
+            @Parameter(description = "nome del comune") @PathVariable String nomeComune) {
+        return ResponseEntity.ok(comuneService.getContributorDelComune(nomeComune));
+    }
+
+    @GetMapping("/{nomeComune}/getContributorAutorizzati")
+    @Operation(summary = "Ottieni Contributor Autorizzati del Comune",
+            description = "Ottieni tutti i Contributor Autorizzati del Comune.")
+    public ResponseEntity<?> getContributorAutorizzati(
+            @Parameter(description = "nome del comune") @PathVariable String nomeComune) {
+        return ResponseEntity.ok(comuneService.getContributorAutorizzatiDelComune(nomeComune));
+    }
+
+    @GetMapping("/{nomeComune}/getCuratori")
+    @Operation(summary = "Ottieni Curatori del Comune",
+            description = "Ottieni tutti i Curatori del Comune.")
+    public ResponseEntity<?> getCuratori(
+            @Parameter(description = "nome del comune") @PathVariable String nomeComune) {
+        return ResponseEntity.ok(comuneService.getCuratoriDelComune(nomeComune));
+    }
+
+    @GetMapping("/{nomeComune}/getAnimatori")
+    @Operation(summary = "Ottieni Animatori del Comune",
+            description = "Ottieni tutti gli Animatori del Comune.")
+    public ResponseEntity<?> getAnimatori(
+            @Parameter(description = "nome del comune") @PathVariable String nomeComune) {
+        return ResponseEntity.ok(comuneService.getAnimatoriDelComune(nomeComune));
+    }
+
+    @GetMapping("/{nomeComune}/getPuntiInteresse")
+    @Operation(summary = "Ottieni Punti Interesse del Comune",
+            description = "Ottieni tutti gli Punti di Interesse del Comune.")
+    public ResponseEntity<?> getPoi(
+            @Parameter(description = "nome del comune") @PathVariable String nomeComune) {
+        return ResponseEntity.ok(comuneService.getPuntiInteresseNelComune(nomeComune));
+    }
+
 }

@@ -14,7 +14,8 @@ public interface TuristaAutenticatoService {
 
     TuristaAutenticato save(TuristaAutenticato turistaAutenticato);
 
-    void accettaInvitoContest(TuristaAutenticato turistaAutenticato, Invito invito) throws ContestException;
+    @Transactional
+    void accettaInvitoContest(String usernamUtente, int idInvito) throws IllegalArgumentException, ContestException;
 
     void rimuoviPreferito(String usernameTurista, int id) throws IllegalArgumentException;
 
@@ -29,8 +30,6 @@ public interface TuristaAutenticatoService {
     @Transactional
     void cancellaPartecipazioneContest(int idContest, String usernameTurista) throws IllegalArgumentException;
 
-    Optional<TuristaAutenticato> findTuristaByUsername(String username);
-
     boolean isUsernameUnique(String username);
 
     List<TuristaAutenticato> getAll();
@@ -43,5 +42,5 @@ public interface TuristaAutenticatoService {
 
     List<Invito> getInviti(String usernameTurista);
 
-    void deleteNotificheById(String usernameTurista);
+    void deleteNotificheByUsername(String usernameTurista);
 }

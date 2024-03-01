@@ -95,7 +95,7 @@ public class MaterialeController {
     }
 
     @GetMapping("/getBase64/{id}")
-    @Operation(summary = "Ottieni codica del materiale in base64",
+    @Operation(summary = "Ottieni codifica del materiale in base64",
             description = "Ottenere la codifica del materiale caricato in base64.")
     public ResponseEntity<?> getBase64(
             @Parameter(description = "id del materiale") @PathVariable Integer id) {

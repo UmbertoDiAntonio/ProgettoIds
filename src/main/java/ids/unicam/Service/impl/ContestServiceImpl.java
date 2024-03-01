@@ -133,18 +133,7 @@ public class ContestServiceImpl implements ContestService {
         save(contest);
     }
 
-    @Override
-    public void setFineContest(int idContest, LocalDate dataFine) throws FuoriComuneException {
-        Optional<Contest> oContest = findById(idContest);
-        if (oContest.isEmpty()) {
-            throw new FuoriComuneException("id contest non valido");
-        }
 
-        Contest contest = oContest.get();
-
-        contest.setExpireDate(dataFine);
-        save(contest);
-    }
 
 
     /**

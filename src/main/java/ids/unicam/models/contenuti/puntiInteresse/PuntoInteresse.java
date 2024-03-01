@@ -4,7 +4,6 @@ import ids.unicam.models.Comune;
 import ids.unicam.models.Expirable;
 import ids.unicam.models.Punto;
 import ids.unicam.models.attori.Contributor;
-import ids.unicam.models.attori.ContributorAutorizzato;
 import ids.unicam.models.contenuti.Contenitore;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.Taggable;
@@ -62,9 +61,6 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
 
     public PuntoInteresse(String nome, Punto posizione, Orario orario, TipologiaPuntoInteresse tipologiaPuntoInteresse, Contributor autore) {
         this.comune = autore.getComune();
-
-
-        this.setStato(autore instanceof ContributorAutorizzato ? Stato.APPROVATO : Stato.IN_ATTESA);
         this.nome = nome;
         this.pt = posizione;
         this.orario = orario;
@@ -103,7 +99,7 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
 
     @Contract("-> new")
     public Punto getPt() {
-        return pt.clone();
+        return pt.asClone();
     }
 
     public String mostraInformazioniDettagliate() {

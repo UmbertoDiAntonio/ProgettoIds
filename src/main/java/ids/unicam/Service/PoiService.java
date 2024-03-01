@@ -15,11 +15,8 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface PoiService {
-    PuntoInteresse creaPuntoInteresse(PuntoInteresse puntoInteresse) throws FuoriComuneException;
 
-    PuntoInteresse creaPuntoInteresse(String nomePOI, Punto punto, String usernameCreatore, Tag tag, TipologiaPuntoInteresse tipologiaPuntoInteresse) throws FuoriComuneException;
-
-    void eliminaPuntoInteresse(int idPuntoInteresse);
+    PuntoInteresse creaPuntoInteresse(String nomePOI, Punto punto, Orario orario, TipologiaPuntoInteresse tipologiaPuntoInteresse, String usernameCreatore) throws FuoriComuneException;
 
     LocalDate getScadenza(int idPunto) throws IllegalArgumentException;
 
@@ -63,5 +60,5 @@ public interface PoiService {
 
     List<PuntoInteresse> getPoiByComune(Comune comune);
 
-    void checkIfIsExpired(PuntoInteresse puntoInteresse);
+    void deleteIfIsExpired(PuntoInteresse puntoInteresse);
 }

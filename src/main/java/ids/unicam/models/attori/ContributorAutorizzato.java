@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 
 
 /**
- * Classe ContributorAutorizzati, il Contributor  Autorizzato è una figura del comune che si occupa della creazione
+ * Classe ContributorAutorizzati, il Contributor Autorizzato è una figura del comune che si occupa della creazione
  * di punti di interesse e di itinerari, i punti di interesse creati dai contributor sono approvati di default.
  */
 @Entity

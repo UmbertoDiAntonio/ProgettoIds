@@ -9,7 +9,6 @@ import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import jakarta.transaction.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,8 +28,6 @@ public interface ContestService {
     void rimuoviPartecipante(Contest contest, TuristaAutenticato turistaAutenticato);
 
     void setVincitoreContest(Contest contest, MaterialeGenerico materialeGenerico) throws ContestException;
-
-    void setFineContest(int idContest, LocalDate dataFine) throws FuoriComuneException;
 
     void terminaContest(Contest contest) throws ContestException;
 

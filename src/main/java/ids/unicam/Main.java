@@ -4,18 +4,17 @@ package ids.unicam;
 import ids.unicam.DataBase.GestoreDatabase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
 
-@RestController
 @SpringBootApplication
 @ComponentScan(basePackages = {"ids.unicam.DataBase", "ids.unicam.models.attori", "ids.unicam.Service", "ids.unicam.DataBase.Repository", "ids.unicam.controller"})
 public class Main implements ApplicationRunner {
@@ -25,6 +24,7 @@ public class Main implements ApplicationRunner {
 
     private final GestoreDatabase gestoreDatabase;
 
+    @Autowired
     public Main(Environment environment, GestoreDatabase gestoreDatabase) {
         Main.environment = environment;
         this.gestoreDatabase = gestoreDatabase;
@@ -47,23 +47,23 @@ public class Main implements ApplicationRunner {
         String os = System.getProperty("os.name").toLowerCase();
         Runtime rt = Runtime.getRuntime();
 
-        String command = "";
+        String[] command=new String[1];
         try {
             if (os.contains("win")) {
                 // Windows
-                command = "rundll32 url.dll,FileProtocolHandler " + url;
+                command[0] = "rundll32 url.dll,FileProtocolHandler " + url;
             } else if (os.contains("mac")) {
                 // Mac
-                command = "open " + url;
+                command[0] =  "open " + url;
             } else if (os.contains("nix") || os.contains("nux")) {
                 // Linux o Unix
-                command = "xdg-open " + url;
+                command[0] =  "xdg-open " + url;
             }
 
             rt.exec(command);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Impossibile Eseguire il comando di apertura delle pagine web",e);
         }
     }
 
