@@ -59,7 +59,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
                             if (!itinerario.getPercorso().contains(puntoInteresse)) {
 
                                 poiService.save(puntoInteresse);
-                                itinerario.getPercorso().add(puntoInteresse);
+                                itinerario.aggiungiTappa(puntoInteresse);
                                 save(itinerario);
                                 return true;
                             } else {
@@ -113,7 +113,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
                     Optional<PuntoInteresse> oPoi = poiService.getById(idPuntoInteresse);
                     if (oPoi.isPresent()) {
                         PuntoInteresse puntoInteresse = oPoi.get();
-                        itinerario.getPercorso().remove(puntoInteresse);
+                        itinerario.rimuoviTappa(puntoInteresse);
                         save(itinerario);
                     } else {
                         logger.error("id Punto Interesse non valido");

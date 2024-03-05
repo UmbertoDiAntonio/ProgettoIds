@@ -4,6 +4,8 @@ import ids.unicam.exception.ContestException;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.Animatore;
+import ids.unicam.models.contenuti.puntiInteresse.Tag;
+import jakarta.transaction.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,4 +34,10 @@ public interface AnimatoreService {
     void annullaInvito(String usernameAnimatore, int idInvito) throws ContestException, IllegalArgumentException;
 
     void setFineContest(int idContest, LocalDate dataFine, String usernameAnimatore) throws FuoriComuneException;
+
+    @Transactional
+    void aggiungiTagContest(int idContest, Tag tag, String usernameAnimatore) throws ContestException;
+
+    @Transactional
+    void rimuoviTagContest(int idContest, Tag tag, String usernameAnimatore) throws ContestException;
 }

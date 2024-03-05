@@ -17,4 +17,6 @@ public interface Taggable {
      * @param tag Tag da aggiungere all'oggetto
      */
     void addTag(Tag tag);
+
+    void rimuoviTag(Tag tag);
 }

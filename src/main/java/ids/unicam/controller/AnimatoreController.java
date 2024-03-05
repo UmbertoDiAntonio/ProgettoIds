@@ -7,6 +7,7 @@ import ids.unicam.exception.ContestException;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.DTO.ContributorDTO;
 import ids.unicam.models.attori.Ruolo;
+import ids.unicam.models.contenuti.puntiInteresse.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -146,6 +147,36 @@ public class AnimatoreController {
             animatoreService.setVincitoreContest(usernameAnimatore, idContest, idMateriale);
             return ResponseEntity.ok("Contest Terminato con vincitore " + idMateriale);
         } catch (UnsupportedOperationException | IllegalArgumentException | ContestException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/addTag")
+    @Operation(summary = "Aggiunta di un tag",
+            description = "Aggiunge un nuovo tag a un Contest.")
+    public ResponseEntity<?> aggiungiTag(
+            @Parameter(description = "Nome del tag") @RequestParam String nomeTag,
+            @Parameter(description = "ID del contest") @RequestParam Integer idContest,
+            @Parameter(description = "username dell' Animatore") @RequestParam String usernameAnimatore) {
+        try {
+            animatoreService.aggiungiTagContest(idContest, new Tag(nomeTag), usernameAnimatore);
+            return ResponseEntity.ok("Aggiunto tag '" + nomeTag + "' al punto di interesse: '" + idContest + "' .");
+        } catch (ContestException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/removeTag")
+    @Operation(summary = "Rimozione di un tag",
+            description = "Rimuove un tag da un Contest.")
+    public ResponseEntity<?> rimuoviTag(
+            @Parameter(description = "Nome del tag") @RequestParam String nomeTag,
+            @Parameter(description = "ID del contest") @RequestParam Integer idContest,
+            @Parameter(description = "username dell' Animatore") @RequestParam String usernameAnimatore) {
+        try {
+            animatoreService.rimuoviTagContest(idContest, new Tag(nomeTag), usernameAnimatore);
+            return ResponseEntity.ok("Rimosso tag '" + nomeTag + "' dal punto di interesse: '" + idContest + "' .");
+        } catch (ContestException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }

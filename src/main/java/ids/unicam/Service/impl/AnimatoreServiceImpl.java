@@ -10,11 +10,14 @@ import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
+import ids.unicam.models.contenuti.puntiInteresse.Tag;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static ids.unicam.Main.logger;
@@ -27,16 +30,18 @@ public class AnimatoreServiceImpl implements AnimatoreService {
     private final TuristaAutenticatoService turistaAutenticatoService;
     private final MaterialeService materialeService;
     private final NotificaService notificaService;
+    private final TagService tagService;
 
 
     @Autowired
-    public AnimatoreServiceImpl(AnimatoreRepository repository, ContestService contestService, InvitoService invitoService, TuristaAutenticatoService turistaAutenticatoService, MaterialeService materialeService, NotificaService notificaService) {
+    public AnimatoreServiceImpl(AnimatoreRepository repository, ContestService contestService, InvitoService invitoService, TuristaAutenticatoService turistaAutenticatoService, MaterialeService materialeService, NotificaService notificaService, TagService tagService) {
         this.repository = repository;
         this.contestService = contestService;
         this.invitoService = invitoService;
         this.turistaAutenticatoService = turistaAutenticatoService;
         this.materialeService = materialeService;
         this.notificaService = notificaService;
+        this.tagService = tagService;
     }
 
     @Override
@@ -231,5 +236,62 @@ public class AnimatoreServiceImpl implements AnimatoreService {
 
         contest.setExpireDate(dataFine);
         contestService.save(contest);
+    }
+
+    @Transactional
+    @Override
+    public void aggiungiTagContest(int idContest, Tag tag, String usernameAnimatore) throws ContestException {
+        Optional<Animatore> oAnimatore = getByUsername(usernameAnimatore);
+        if (oAnimatore.isEmpty()) {
+            throw new IllegalArgumentException("username non valido");
+        }
+        Animatore animatore = oAnimatore.get();
+        //TODO
+
+        Optional<Contest> oContest = contestService.findById(idContest);
+        if (oContest.isPresent()) {
+            Contest contest = oContest.get();
+            if (tagService.haveTag(contest, tag)) {
+                logger.warn("Tag già aggiunto");
+                return;
+            }
+            if(!Objects.equals(animatore.getUsername(), contest.getCreatore().getUsername())){
+                throw new ContestException(animatore.getUsername()+" non può modificare contest non suoi");
+            }
+            if (!contest.isExpired())
+                tagService.aggiungiTag(contest, tag);
+            contestService.save(contest);
+        } else {
+            logger.error("L'id del contest non e' valido");
+            throw new IllegalArgumentException("L'id del contest non e' valido");
+        }
+    }
+
+    @Transactional
+    @Override
+    public void rimuoviTagContest(int idContest, Tag tag, String usernameAnimatore) throws ContestException {
+        Optional<Animatore> oAnimatore = getByUsername(usernameAnimatore);
+        if (oAnimatore.isEmpty()) {
+            throw new IllegalArgumentException("username non valido");
+        }
+        Animatore animatore = oAnimatore.get();
+        //TODO
+
+        Optional<Contest> oContest = contestService.findById(idContest);
+        if (oContest.isPresent()) {
+            Contest contest = oContest.get();
+            if (!tagService.haveTag(contest, tag)) {
+                return;
+            }
+            if(!Objects.equals(animatore.getUsername(), contest.getCreatore().getUsername())){
+                throw new ContestException(animatore.getUsername()+" non può modificare contest non suoi");
+            }
+            if (!contest.isExpired())
+                tagService.rimuoviTag(contest, tag);
+            contestService.save(contest);
+        } else {
+            logger.error("L'id del contest non e' valido");
+            throw new IllegalArgumentException("L'id del contest non e' valido");
+        }
     }
 }

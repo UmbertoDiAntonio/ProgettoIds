@@ -12,12 +12,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-@Getter
+
 @NoArgsConstructor
 @Entity
 public class Contest implements Contenitore, Taggable, Expirable {
@@ -30,23 +27,32 @@ public class Contest implements Contenitore, Taggable, Expirable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenza_contenuti")
     @SequenceGenerator(name = "sequenza_contenuti", sequenceName = "PUNTI_DI_INTERESSE_SEQ", allocationSize = 1)
+    @Getter
     private int id = 0;
     @Setter
     @Column(name = "Aperto")
+    @Getter
     private boolean open;
+    @Getter
     private String obiettivo = "";
     @OneToOne
     @JoinColumn(name = "nome_comune")
+    @Getter
     private Comune comune;
     @OneToOne
+    @Getter
     private Animatore creatore = null;
-    @Setter
-    private LocalDate expireDate = null;
+
     @Column(name = "nome")
+    @Getter
     private String nomeContest = null;
     @OneToOne
     @Setter
+    @Getter
     private MaterialeGenerico materialeVincitore = null;
+    @Setter
+    @Getter
+    private LocalDate expireDate = null;
 
     public Contest(String nomeContest, String obiettivo, Animatore creatore, boolean open) {
         this.open = open;
@@ -65,7 +71,7 @@ public class Contest implements Contenitore, Taggable, Expirable {
 
     @Override
     public Set<Tag> getTags() {
-        return tags;
+        return Collections.unmodifiableSet(tags);
     }
 
     @Override
@@ -74,12 +80,17 @@ public class Contest implements Contenitore, Taggable, Expirable {
     }
 
     @Override
-    public Set<MaterialeGenerico> getMateriali() {
-        return materiali;
+    public void rimuoviTag(Tag tag){
+        tags.remove(tag);
     }
 
     @Override
-    public void addMateriale(MaterialeGenerico materialeGenerico) {
+    public Set<MaterialeGenerico> getMateriali() {
+        return Collections.unmodifiableSet(materiali);
+    }
+
+    @Override
+    public void aggiungiMateriale(MaterialeGenerico materialeGenerico) {
         if (materialeGenerico != null) {
             materiali.add(materialeGenerico);
         }
@@ -88,5 +99,16 @@ public class Contest implements Contenitore, Taggable, Expirable {
     @Override
     public void rimuoviMateriale(MaterialeGenerico materialeGenerico) {
         materiali.remove(materialeGenerico);
+    }
+
+    public List<TuristaAutenticato> getPartecipanti() {
+        return Collections.unmodifiableList(partecipanti);
+    }
+
+    public void aggiungiPatecipante(TuristaAutenticato partecipante){
+        partecipanti.add(partecipante);
+    }
+    public void rimuoviPatecipante(TuristaAutenticato partecipante){
+        partecipanti.remove(partecipante);
     }
 }

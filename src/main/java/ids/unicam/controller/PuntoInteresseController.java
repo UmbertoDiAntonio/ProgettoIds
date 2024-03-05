@@ -104,6 +104,21 @@ public class PuntoInteresseController {
         }
     }
 
+    @PutMapping("/removeTag")
+    @Operation(summary = "Rimozione di un tag",
+            description = "Rimozione un tag da un punto di interesse.")
+    public ResponseEntity<?> rimuoviTag(
+            @Parameter(description = "Nome del tag") @RequestParam String nomeTag,
+            @Parameter(description = "ID del punto di interesse") @RequestParam Integer idPuntoInteresse,
+            @Parameter(description = "username del Contributor") @RequestParam String usernameContributor) {
+        try {
+            poiService.rimuoviTag(idPuntoInteresse, new Tag(nomeTag), usernameContributor);
+            return ResponseEntity.ok("Rimosso tag '" + nomeTag + "' dal punto di interesse: '" + idPuntoInteresse + "' .");
+        } catch (FuoriComuneException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Elimina punto di interesse",

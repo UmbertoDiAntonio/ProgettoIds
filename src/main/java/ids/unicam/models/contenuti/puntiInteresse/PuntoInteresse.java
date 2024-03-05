@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -69,6 +70,7 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
         logger.debug("Creato POI " + nome + " in " + pt);
     }
 
+    @Override
     public boolean isExpired() {
         if (expireDate == null)
             return false;
@@ -110,6 +112,35 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
         return getNome() + " [" + getStato() + "]";
     }
 
+
+
+    @Override
+    public void addTag(Tag tag) {
+        this.getTags().add(tag);
+    }
+
+    @Override
+    public void rimuoviTag(Tag tag) {
+        tags.remove(tag);
+    }
+
+    @Override
+    public Set<MaterialeGenerico> getMateriali() {
+        return Collections.unmodifiableSet(materiali);
+    }
+
+    @Override
+    public void aggiungiMateriale(MaterialeGenerico materialeGenerico) {
+        if (materialeGenerico != null)
+            materiali.add(materialeGenerico);
+    }
+
+    @Override
+    public void rimuoviMateriale(MaterialeGenerico materialeGenerico) {
+        materiali.remove(materialeGenerico);
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -142,26 +173,5 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
         result = 31 * result + materiali.hashCode();
         result = 31 * result + tipo.hashCode();
         return result;
-    }
-
-    @Override
-    public void addTag(Tag tag) {
-        this.getTags().add(tag);
-    }
-
-    @Override
-    public Set<MaterialeGenerico> getMateriali() {
-        return materiali;
-    }
-
-    @Override
-    public void addMateriale(MaterialeGenerico materialeGenerico) {
-        if (materialeGenerico != null)
-            materiali.add(materialeGenerico);
-    }
-
-    @Override
-    public void rimuoviMateriale(MaterialeGenerico materialeGenerico) {
-        materiali.remove(materialeGenerico);
     }
 }

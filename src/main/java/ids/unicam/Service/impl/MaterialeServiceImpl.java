@@ -64,7 +64,7 @@ public class MaterialeServiceImpl implements MaterialeService {
 
     @Override
     public void aggiungiMateriale(Contenitore contenitore, MaterialeGenerico materialeGenerico) {
-        contenitore.addMateriale(materialeGenerico);
+        contenitore.aggiungiMateriale(materialeGenerico);
         save(materialeGenerico);
     }
 

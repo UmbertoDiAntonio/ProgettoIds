@@ -7,9 +7,12 @@ import ids.unicam.exception.ContestException;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Comune;
 import ids.unicam.models.attori.Animatore;
+import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
+import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
+import ids.unicam.models.contenuti.puntiInteresse.Tag;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+
+import static ids.unicam.Main.logger;
 
 @Service
 public class ContestServiceImpl implements ContestService {
@@ -98,7 +103,7 @@ public class ContestServiceImpl implements ContestService {
         if (contest.isExpired()) {
             throw new ContestException("il Contest e' Terminato");
         }
-        contest.getPartecipanti().add(turistaAutenticato);
+        contest.aggiungiPatecipante(turistaAutenticato);
         notificaService.creaNotificaIngressoContest(contest, turistaAutenticato);
         save(contest);
     }
@@ -106,7 +111,7 @@ public class ContestServiceImpl implements ContestService {
     @Override
     @Transactional
     public void rimuoviPartecipante(Contest contest, TuristaAutenticato turistaAutenticato) throws IllegalArgumentException {
-        contest.getPartecipanti().remove(turistaAutenticato);
+        contest.rimuoviPatecipante(turistaAutenticato);
         save(contest);
     }
 
@@ -175,5 +180,8 @@ public class ContestServiceImpl implements ContestService {
     public List<Contest> getContestByComune(Comune comune) {
         return repository.findContestByComune(comune);
     }
+
+
+
 }
 

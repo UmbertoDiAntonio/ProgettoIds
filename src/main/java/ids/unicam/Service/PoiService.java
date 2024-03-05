@@ -31,6 +31,9 @@ public interface PoiService {
 
     void aggiungiTag(int idPuntoInteresse, Tag tag,String usernameContributor) throws FuoriComuneException;
 
+    @Transactional
+    void rimuoviTag(int idPuntoInteresse, Tag tag, String usernameContributor) throws FuoriComuneException;
+
     List<Taggable> findByTag(String tag);
 
     List<Tag> getTags(PuntoInteresse puntoInteresse);

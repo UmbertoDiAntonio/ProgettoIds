@@ -28,6 +28,13 @@ public class TagServiceImpl implements TagService {
         save(tag);
     }
 
+    @Transactional
+    @Override
+    public void rimuoviTag(Taggable taggableObject, Tag tag) {
+        taggableObject.rimuoviTag(tag);
+        save(tag);
+    }
+
     @Override
     public boolean haveTag(Taggable taggableObject, Tag tag) {
         return taggableObject.getTags().contains(tag);

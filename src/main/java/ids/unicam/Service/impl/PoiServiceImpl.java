@@ -192,6 +192,35 @@ public class PoiServiceImpl implements PoiService {
         }
     }
 
+    @Transactional
+    @Override
+    public void rimuoviTag(int idPuntoInteresse, Tag tag,String usernameContributor) throws FuoriComuneException {
+        Optional<Contributor> oContributor = contributorService.getByUsername(usernameContributor);
+        if (oContributor.isEmpty()) {
+            throw new IllegalArgumentException("username non valido");
+        }
+        Contributor contributor = oContributor.get();
+        //TODO
+
+        Optional<PuntoInteresse> oPuntoInteresse = getById(idPuntoInteresse);
+        if (oPuntoInteresse.isPresent()) {
+            PuntoInteresse puntoInteresse = oPuntoInteresse.get();
+            if (!tagService.haveTag(puntoInteresse, tag)) {
+                return;
+            }
+            if(contributor.getComune()!=puntoInteresse.getComune()){
+                throw new FuoriComuneException(contributor.getUsername()+" non può operare fuori dal suo comune");
+            }
+            if (!puntoInteresse.isExpired())
+                tagService.rimuoviTag(puntoInteresse, tag);
+
+            save(puntoInteresse);
+        } else {
+            logger.error("L'id del punto di interesse non e' valido");
+            throw new IllegalArgumentException("L'id del punto di interesse non e' valido");
+        }
+    }
+
     @Override
     public List<Taggable> findByTag(String tag) {
         return repository.findByTagsValoreContaining(tag);
