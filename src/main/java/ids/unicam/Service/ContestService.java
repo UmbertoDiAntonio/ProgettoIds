@@ -6,6 +6,7 @@ import ids.unicam.models.Comune;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
+import ids.unicam.models.contenuti.Taggable;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import jakarta.transaction.Transactional;
 
@@ -18,6 +19,8 @@ public interface ContestService {
     List<TuristaAutenticato> getPartecipanti(Contest contest);
 
     Contest creaContest(String nomeContest, String obiettivo, Animatore creatore, boolean open);
+
+    List<Taggable> findByTag(String tag);
 
     List<Contest> getContestByCreatore(Animatore animatore);
 
@@ -44,5 +47,5 @@ public interface ContestService {
     @Transactional
     void checkIfIsExpired(Contest contest);
 
-    List<Contest> getContestByComune(Comune comune);
+    List<Contest> getContestByComune(String nomeComune);
 }

@@ -11,13 +11,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/Itinerario")
 public class ItinerarioController {
-
     private final ItinerarioService itinerarioService;
-
     public ItinerarioController(ItinerarioService itinerarioService) {
         this.itinerarioService = itinerarioService;
     }
-
 
     @GetMapping("/getAll")
     @Operation(summary = "Elenco degli Itinerari",
@@ -84,7 +81,7 @@ public class ItinerarioController {
         try {
             itinerarioService.rimuoviTappa(usernameContributor, idItinerario, idPunto);
             return ResponseEntity.ok("L'utente '" + usernameContributor + "' ha eliminato il punto di interesse '" + idPunto + "' dall'itinerario '" + idItinerario + "'.");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | FuoriComuneException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }

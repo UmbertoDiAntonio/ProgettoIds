@@ -13,6 +13,7 @@ import ids.unicam.models.Punto;
 import ids.unicam.models.attori.*;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.Itinerario;
+import ids.unicam.models.contenuti.RuoloRegistrazione;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.materiali.TipologiaMateriale;
@@ -86,7 +87,7 @@ public class JUnitContenutiTests {
         }
         TuristaAutenticato turistaTemp;
         try {
-            turistaTemp = gestorePiattaformaService.registraContributor(new ContributorDTO(comune, new TuristaAutenticatoDTO("Mario", "Rossi", LocalDate.of(2000, 3, 17), "1Unica@", "user1")), Ruolo.CONTRIBUTOR);
+            turistaTemp = gestorePiattaformaService.registra(new ContributorDTO(comune, new TuristaAutenticatoDTO("Mario", "Rossi", LocalDate.of(2000, 3, 17), "1Unica@", "user1")), RuoloRegistrazione.CONTRIBUTOR);
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
@@ -110,7 +111,7 @@ public class JUnitContenutiTests {
          */
         {
             try {
-                gestorePiattaformaService.cambiaRuolo(contributor.getUsername(), Ruolo.CONTRIBUTOR_AUTORIZZATO);
+                gestorePiattaformaService.cambiaRuolo(contributor.getUsername(),Ruolo.CONTRIBUTOR_AUTORIZZATO);
             } catch (ConnessioneFallitaException e) {
                 throw new RuntimeException(e);
             }
@@ -137,7 +138,8 @@ public class JUnitContenutiTests {
             }
             TuristaAutenticato turistaTemp2;
             try {
-                turistaTemp2 = gestorePiattaformaService.registraContributor(new ContributorDTO(comune2, new TuristaAutenticatoDTO("Mario", "Rossi", LocalDate.of(2000, Calendar.MARCH, 17), "1Unica@", "user19")), Ruolo.CONTRIBUTOR_AUTORIZZATO);
+                turistaTemp2 = gestorePiattaformaService.registra(new ContributorDTO(comune2, new TuristaAutenticatoDTO("Mario", "Rossi", LocalDate.of(2000, Calendar.MARCH, 17), "1Unica@", "user19")),RuoloRegistrazione.CONTRIBUTOR);
+                turistaTemp2=gestorePiattaformaService.cambiaRuolo(turistaTemp2.getUsername(),Ruolo.CONTRIBUTOR_AUTORIZZATO);
             } catch (ConnessioneFallitaException e) {
                 throw new RuntimeException(e);
             }
@@ -157,7 +159,7 @@ public class JUnitContenutiTests {
             ContributorAutorizzato contributorAutorizzato = comuneService.getContributorAutorizzatiDelComune(comune.getNome()).getFirst();
             PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributorAutorizzato.getUsername());
 
-            TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO("andrea", "neri", LocalDate.of(2000, Calendar.FEBRUARY, 3), "2Unica@", "user2"));
+            TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registra(new ContributorDTO(null,new TuristaAutenticatoDTO("andrea", "neri", LocalDate.of(2000, Calendar.FEBRUARY, 3), "2Unica@", "user2")),RuoloRegistrazione.TURISTA);
 
             MaterialeGenerico materialeGenerico = materialeService.crea("/fotoTest", TipologiaMateriale.FOTO, turistaAutenticato);
             poiService.aggiungiMateriale(contributorAutorizzato.getUsername(), puntoInteresse.getId(), materialeGenerico);
@@ -173,12 +175,13 @@ public class JUnitContenutiTests {
          * verifica finale
          */
         {
-            TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO("andrea", "neri", LocalDate.of(2000, Calendar.FEBRUARY, 3), "3Unica@", "user3"));
-            TuristaAutenticato turistaTemp1 = gestorePiattaformaService.registraContributor(new ContributorDTO(comune, new TuristaAutenticatoDTO("Peppe", "Peppe", LocalDate.of(2000, Calendar.MARCH, 11), "4Unica@", "user4")), Ruolo.CURATORE);
+            TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registra(new ContributorDTO(null,new TuristaAutenticatoDTO("andrea", "neri", LocalDate.of(2000, Calendar.FEBRUARY, 3), "3Unica@", "user3")),RuoloRegistrazione.TURISTA);
+            TuristaAutenticato turistaTemp1 = gestorePiattaformaService.registra(new ContributorDTO(comune, new TuristaAutenticatoDTO("Peppe", "Peppe", LocalDate.of(2000, Calendar.MARCH, 11), "4Unica@", "user4")), RuoloRegistrazione.CONTRIBUTOR);
+            turistaTemp1= gestorePiattaformaService.cambiaRuolo(turistaTemp1.getUsername(),Ruolo.CURATORE);
             if (!(turistaTemp1 instanceof Curatore curatore))
                 throw new IllegalArgumentException("errore");
             try {
-                turistaTemp = gestorePiattaformaService.registraContributor(new ContributorDTO(comune, new TuristaAutenticatoDTO("Mario", "Rossi", LocalDate.of(2000, 3, 17), "1Unica@", "user100")), Ruolo.CONTRIBUTOR);
+                turistaTemp = gestorePiattaformaService.registra(new ContributorDTO(comune, new TuristaAutenticatoDTO("Mario", "Rossi", LocalDate.of(2000, 3, 17), "1Unica@", "user100")),RuoloRegistrazione.CONTRIBUTOR);
             } catch (ConnessioneFallitaException e) {
                 throw new RuntimeException(e);
             }
@@ -225,7 +228,8 @@ public class JUnitContenutiTests {
 
         {
             int numeroItinerariIniziale = itinerarioService.findAllByComune(comune).size();
-            TuristaAutenticato turistaTemp = gestorePiattaformaService.registraContributor(new ContributorDTO(comune, new TuristaAutenticatoDTO("Mario", "Rossi", LocalDate.of(2000, Calendar.MARCH, 11), "5Unica@", "user5")), Ruolo.CONTRIBUTOR_AUTORIZZATO);
+            TuristaAutenticato turistaTemp = gestorePiattaformaService.registra(new ContributorDTO(comune, new TuristaAutenticatoDTO("Mario", "Rossi", LocalDate.of(2000, Calendar.MARCH, 11), "5Unica@", "user5")),RuoloRegistrazione.CONTRIBUTOR);
+            turistaTemp= gestorePiattaformaService.cambiaRuolo(turistaTemp.getUsername(),Ruolo.CONTRIBUTOR_AUTORIZZATO);
             if (!(turistaTemp instanceof ContributorAutorizzato contributorAutorizzato))
                 throw new IllegalArgumentException("errore");
 
@@ -268,7 +272,8 @@ public class JUnitContenutiTests {
             throw new RuntimeException(e);
         }
 
-        TuristaAutenticato turistaTemp = gestorePiattaformaService.registraContributor(new ContributorDTO(comune, new TuristaAutenticatoDTO("mario", "rossi", LocalDate.of(2000, Calendar.APRIL, 7), "6Unica@", "user6")), Ruolo.ANIMATORE);
+        TuristaAutenticato turistaTemp = gestorePiattaformaService.registra(new ContributorDTO(comune, new TuristaAutenticatoDTO("mario", "rossi", LocalDate.of(2000, Calendar.APRIL, 7), "6Unica@", "user6")), RuoloRegistrazione.CONTRIBUTOR);
+        turistaTemp= gestorePiattaformaService.cambiaRuolo(turistaTemp.getUsername(),Ruolo.ANIMATORE);
         if (!(turistaTemp instanceof Animatore animatore))
             throw new IllegalArgumentException("errore");
         int numeroContestCreatiDaAnimatore = contestService.getContestByCreatore(animatore).size();
@@ -282,7 +287,7 @@ public class JUnitContenutiTests {
 
             assertEquals(numeroContestCreatiDaAnimatore + 1, contestService.getContestByCreatore(animatore).size());
 
-            TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO("andrea", "neri", LocalDate.of(2000, Calendar.MARCH, 11), "7Unica@", "user7"));
+            TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registra(new ContributorDTO(null,new TuristaAutenticatoDTO("andrea", "neri", LocalDate.of(2000, Calendar.MARCH, 11), "7Unica@", "user7")),RuoloRegistrazione.TURISTA);
 
             turistaAutenticatoService.partecipaAlContest(contest.getId(), turistaAutenticato.getUsername());
 
@@ -307,7 +312,7 @@ public class JUnitContenutiTests {
             Contest contest = contestService.creaContest("Monumento", "Foto più bella", animatore, false);
             assertEquals(numeroContestCreatiDaAnimatore + 2, contestService.getContestByCreatore(animatore).size());
 
-            TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO("andrea", "neri", LocalDate.of(2000, Calendar.NOVEMBER, 5), "8Unica@", "user8"));
+            TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registra(new ContributorDTO(null,new TuristaAutenticatoDTO("andrea", "neri", LocalDate.of(2000, Calendar.NOVEMBER, 5), "8Unica@", "user8")),RuoloRegistrazione.TURISTA);
             Invito invito;
             try {
                 invito = animatoreServiceImpl.invitaContest(animatore.getUsername(), contest.getId(), turistaAutenticato.getUsername());
@@ -338,9 +343,10 @@ public class JUnitContenutiTests {
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
-        TuristaAutenticato turistaTemp = gestorePiattaformaService.registraContributor(new ContributorDTO(comune, new TuristaAutenticatoDTO("mario", "rossi", LocalDate.of(2000, Calendar.OCTOBER, 1), "9Unica@", "user9")), Ruolo.ANIMATORE);
+        TuristaAutenticato turistaTemp = gestorePiattaformaService.registra(new ContributorDTO(comune, new TuristaAutenticatoDTO("mario", "rossi", LocalDate.of(2000, Calendar.OCTOBER, 1), "9Unica@", "user9")), RuoloRegistrazione.CONTRIBUTOR);
+        turistaTemp=gestorePiattaformaService.cambiaRuolo(turistaTemp.getUsername(),Ruolo.ANIMATORE);
 
-        TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO("andrea", "neri", LocalDate.of(2000, Calendar.DECEMBER, 3), "10Unica@", "user10"));
+        TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registra(new ContributorDTO(null,new TuristaAutenticatoDTO("andrea", "neri", LocalDate.of(2000, Calendar.DECEMBER, 3), "10Unica@", "user10")),RuoloRegistrazione.TURISTA);
 
         if (!(turistaTemp instanceof Animatore animatore))
             throw new IllegalArgumentException("errore");
@@ -386,19 +392,22 @@ public class JUnitContenutiTests {
             throw new RuntimeException(e);
         }
         int numeroPuntiInteresse = comuneService.getPuntiInteresseNelComune(comune.getNome()).size();
-        TuristaAutenticato turistaTemp = gestorePiattaformaService.registraContributor(new ContributorDTO(comune, new TuristaAutenticatoDTO("mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 5), "11Unica@", "user11")), Ruolo.ANIMATORE);
+        TuristaAutenticato turistaTemp = gestorePiattaformaService.registra(new ContributorDTO(comune, new TuristaAutenticatoDTO("mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 5), "11Unica@", "user11")), RuoloRegistrazione.CONTRIBUTOR);
+        gestorePiattaformaService.cambiaRuolo(turistaTemp.getUsername(),Ruolo.ANIMATORE);
         if (!(turistaTemp instanceof Contributor contributor))
             throw new IllegalArgumentException("errore");
 
-        TuristaAutenticato turistaTemp2 = gestorePiattaformaService.registraContributor(new ContributorDTO(comune, new TuristaAutenticatoDTO("Leonardo", "rosso", LocalDate.of(2000, Calendar.MARCH, 11), "12Unica@", "user12")), Ruolo.CURATORE);
+        TuristaAutenticato turistaTemp2 = gestorePiattaformaService.registra(new ContributorDTO(comune, new TuristaAutenticatoDTO("Leonardo", "rosso", LocalDate.of(2000, Calendar.MARCH, 11), "12Unica@", "user12")), RuoloRegistrazione.CONTRIBUTOR);
+        turistaTemp2= gestorePiattaformaService.cambiaRuolo(turistaTemp2.getUsername(),Ruolo.CURATORE);
         if (!(turistaTemp2 instanceof Curatore curatore))
             throw new IllegalArgumentException("errore");
 
-        TuristaAutenticato turistaTemp3 = gestorePiattaformaService.registraContributor(new ContributorDTO(comune, new TuristaAutenticatoDTO("Fede", "Verde", LocalDate.of(2000, Calendar.MARCH, 11), "13Unica@", "user13")), Ruolo.ANIMATORE);
+        TuristaAutenticato turistaTemp3 = gestorePiattaformaService.registra(new ContributorDTO(comune, new TuristaAutenticatoDTO("Fede", "Verde", LocalDate.of(2000, Calendar.MARCH, 11), "13Unica@", "user13")), RuoloRegistrazione.CONTRIBUTOR);
+        turistaTemp3= gestorePiattaformaService.cambiaRuolo(turistaTemp3.getUsername(),Ruolo.ANIMATORE);
         if (!(turistaTemp3 instanceof Animatore animatore))
             throw new IllegalArgumentException("errore");
 
-        TuristaAutenticato turista = gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO("aldo", "neri", LocalDate.of(2002, Calendar.NOVEMBER, 12), "14Unica@", "user14"));
+        TuristaAutenticato turista = gestorePiattaformaService.registra(new ContributorDTO(null,new TuristaAutenticatoDTO("aldo", "neri", LocalDate.of(2002, Calendar.NOVEMBER, 12), "14Unica@", "user14")),RuoloRegistrazione.TURISTA);
 
         PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse("parcheggio centrale", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), new Orario(), TipologiaPuntoInteresse.PARCHEGGIO, contributor.getUsername());
         PuntoInteresse puntoInt2 = poiService.creaPuntoInteresse("parcheggio centrale sotto", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), new Orario(), TipologiaPuntoInteresse.PARCHEGGIO, contributor.getUsername());
@@ -475,7 +484,7 @@ public class JUnitContenutiTests {
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
-        TuristaAutenticato turistaTemp = gestorePiattaformaService.registraContributor(new ContributorDTO(comune, new TuristaAutenticatoDTO("mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 11), "15Unica@", "user15")), Ruolo.CONTRIBUTOR);
+        TuristaAutenticato turistaTemp = gestorePiattaformaService.registra(new ContributorDTO(comune, new TuristaAutenticatoDTO("mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 11), "15Unica@", "user15")),RuoloRegistrazione.CONTRIBUTOR);
         if (!(turistaTemp instanceof Contributor contributor))
             throw new IllegalArgumentException("errore");
 

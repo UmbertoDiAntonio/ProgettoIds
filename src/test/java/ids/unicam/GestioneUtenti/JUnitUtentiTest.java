@@ -9,6 +9,7 @@ import ids.unicam.models.DTO.ContributorDTO;
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.Punto;
 import ids.unicam.models.attori.*;
+import ids.unicam.models.contenuti.RuoloRegistrazione;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.materiali.TipologiaMateriale;
@@ -64,9 +65,9 @@ public class JUnitUtentiTest {
         int numeroContributorAutorizzati = comuneService.getContributorAutorizzatiDelComune(comune.getNome()).size();
         int numeroCuratori = comuneService.getCuratoriDelComune(comune.getNome()).size();
 
-        gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO( "Mario", "Rossi", LocalDate.of(2000, Calendar.MARCH, 17), "1Unico@", "user1"));
-        gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO( "Paolo", "Giallo", LocalDate.of(2000, Calendar.MARCH, 17), "2Unico@", "user2"));
-        gestorePiattaformaService.registraContributor(new ContributorDTO(comune,new TuristaAutenticatoDTO("Giuseppe", "Oro", LocalDate.of(2000, Calendar.MARCH, 17), "3Unico@", "user3")),Ruolo.CONTRIBUTOR);
+        gestorePiattaformaService.registra(new ContributorDTO(null,new TuristaAutenticatoDTO( "Mario", "Rossi", LocalDate.of(2000, Calendar.MARCH, 17), "1Unico@", "user1")), RuoloRegistrazione.TURISTA);
+        gestorePiattaformaService.registra(new ContributorDTO(null,new TuristaAutenticatoDTO( "Paolo", "Giallo", LocalDate.of(2000, Calendar.MARCH, 17), "2Unico@", "user2")),RuoloRegistrazione.TURISTA);
+        gestorePiattaformaService.registra(new ContributorDTO(comune,new TuristaAutenticatoDTO("Giuseppe", "Oro", LocalDate.of(2000, Calendar.MARCH, 17), "3Unico@", "user3")),RuoloRegistrazione.CONTRIBUTOR);
 
         assertEquals(numeroContributor + 1, comuneService.getContributorDelComune(comune.getNome()).size());
 
@@ -83,7 +84,7 @@ public class JUnitUtentiTest {
         Curatore curatore = comuneService.getCuratoriDelComune(comune.getNome()).getLast();
 
         try {
-            gestorePiattaformaService.cambiaRuolo(curatore.getUsername(),Ruolo.CONTRIBUTOR);
+           gestorePiattaformaService.cambiaRuolo(curatore.getUsername(),Ruolo.CONTRIBUTOR);
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
@@ -94,7 +95,7 @@ public class JUnitUtentiTest {
         Contributor contributor1 = comuneService.getContributorDelComune(comune.getNome()).getLast();
 
         try {
-            gestorePiattaformaService.cambiaRuolo(contributor1.getUsername(), Ruolo.CONTRIBUTOR_AUTORIZZATO);
+            gestorePiattaformaService.cambiaRuolo(contributor1.getUsername(),Ruolo.CONTRIBUTOR_AUTORIZZATO);
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
@@ -114,13 +115,13 @@ public class JUnitUtentiTest {
             throw new RuntimeException(e);
         }
 
-        TuristaAutenticato turista = gestorePiattaformaService.registraContributor(new ContributorDTO(comune,new TuristaAutenticatoDTO( "mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 17), "4Unico@", "user4")),Ruolo.CONTRIBUTOR);
+        TuristaAutenticato turista = gestorePiattaformaService.registra(new ContributorDTO(comune,new TuristaAutenticatoDTO( "mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 17), "4Unico@", "user4")),RuoloRegistrazione.CONTRIBUTOR);
         if (!(turista instanceof Contributor contributor))
             throw new IllegalArgumentException("errore");
-        TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO( "andrea", "neri", LocalDate.of(2000, Calendar.MARCH, 17), "5Unico@", "user5"));
+        TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registra(new ContributorDTO(null,new TuristaAutenticatoDTO( "andrea", "neri", LocalDate.of(2000, Calendar.MARCH, 17), "5Unico@", "user5")),RuoloRegistrazione.TURISTA);
 
         try {
-            gestorePiattaformaService.cambiaRuolo(contributor.getUsername(), Ruolo.CONTRIBUTOR_AUTORIZZATO);
+            gestorePiattaformaService.cambiaRuolo(contributor.getUsername(),Ruolo.CONTRIBUTOR_AUTORIZZATO);
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
@@ -142,12 +143,13 @@ public class JUnitUtentiTest {
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
-        TuristaAutenticato turista1 = gestorePiattaformaService.registraContributor(new ContributorDTO(comune,new TuristaAutenticatoDTO( "mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 17), "7Unico@", "user7")),Ruolo.CONTRIBUTOR);
+        TuristaAutenticato turista1 = gestorePiattaformaService.registra(new ContributorDTO(comune,new TuristaAutenticatoDTO( "mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 17), "7Unico@", "user7")),RuoloRegistrazione.CONTRIBUTOR);
         if (!(turista1 instanceof Contributor contributor))
             throw new IllegalArgumentException("errore");
 
 
-        TuristaAutenticato turista2 = gestorePiattaformaService.registraContributor(new ContributorDTO(comune,new TuristaAutenticatoDTO( "mirco", "blu", LocalDate.of(2002, Calendar.MAY, 15), "8Unico@", "user8")),Ruolo.CURATORE);
+        TuristaAutenticato turista2 = gestorePiattaformaService.registra(new ContributorDTO(comune,new TuristaAutenticatoDTO( "mirco", "blu", LocalDate.of(2002, Calendar.MAY, 15), "8Unico@", "user8")),RuoloRegistrazione.CONTRIBUTOR);
+        turista2=gestorePiattaformaService.cambiaRuolo(turista2.getUsername(),Ruolo.CURATORE);
         if (!(turista2 instanceof Curatore curatore))
             throw new IllegalArgumentException("errore");
 
@@ -190,19 +192,20 @@ public class JUnitUtentiTest {
             throw new RuntimeException(e);
         }
 
-        TuristaAutenticato turista = gestorePiattaformaService.registraContributor(new ContributorDTO(comune,new TuristaAutenticatoDTO( "mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 17), "9Unico@", "user9")),Ruolo.CONTRIBUTOR);
+        TuristaAutenticato turista = gestorePiattaformaService.registra(new ContributorDTO(comune,new TuristaAutenticatoDTO( "mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 17), "9Unico@", "user9")),RuoloRegistrazione.CONTRIBUTOR);
         if (!(turista instanceof Contributor contributor))
             throw new IllegalArgumentException("errore");
 
         PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse("parco centrale", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.PARCO, contributor.getUsername());
 
-        TuristaAutenticato turista2 = gestorePiattaformaService.registraContributor(new ContributorDTO(comune,new TuristaAutenticatoDTO( "mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 17), "9Unico@", "user99")),Ruolo.CURATORE);
+        TuristaAutenticato turista2 = gestorePiattaformaService.registra(new ContributorDTO(comune,new TuristaAutenticatoDTO( "mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 17), "9Unico@", "user99")),RuoloRegistrazione.CONTRIBUTOR);
+        turista2=gestorePiattaformaService.cambiaRuolo(turista2.getUsername(),Ruolo.CURATORE);
         if (!(turista2 instanceof Curatore curatore1))
             throw new IllegalArgumentException("errore");
 
         curatoreServiceImpl.valutaPuntoInteresse(curatore1.getUsername(), puntoInteresse.getId(), Stato.APPROVATO.asBoolean());
         assertEquals(Boolean.TRUE, poiService.getStato(puntoInteresse.getId()).asBoolean());
-        TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registraTurista(new TuristaAutenticatoDTO( "andrea", "neri", LocalDate.of(2000, Calendar.MARCH, 17), "10Unico@", "user10"));
+        TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registra(new ContributorDTO(null,new TuristaAutenticatoDTO( "andrea", "neri", LocalDate.of(2000, Calendar.MARCH, 17), "10Unico@", "user10")),RuoloRegistrazione.TURISTA);
 
 
         assertEquals(0, poiService.getMaterialiPoi(puntoInteresse.getId()).size());
@@ -224,14 +227,15 @@ public class JUnitUtentiTest {
             throw new RuntimeException(e);
         }
 
-        TuristaAutenticato turista = gestorePiattaformaService.registraContributor(new ContributorDTO(comune,new TuristaAutenticatoDTO( "mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 17), "9Unico@", "user91")),Ruolo.CONTRIBUTOR);
+        TuristaAutenticato turista = gestorePiattaformaService.registra(new ContributorDTO(comune,new TuristaAutenticatoDTO( "mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 17), "9Unico@", "user91")),RuoloRegistrazione.CONTRIBUTOR);
         if (!(turista instanceof Contributor contributor))
             throw new IllegalArgumentException("errore");
 
         PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse("n0me b4rutt0 ", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.PARCO, contributor.getUsername());
 
 
-        TuristaAutenticato turista2 = gestorePiattaformaService.registraContributor(new ContributorDTO(comune,new TuristaAutenticatoDTO( "mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 17), "9Unico@", "user92")),Ruolo.CURATORE);
+        TuristaAutenticato turista2 = gestorePiattaformaService.registra(new ContributorDTO(comune,new TuristaAutenticatoDTO( "mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 17), "9Unico@", "user92")),RuoloRegistrazione.CONTRIBUTOR);
+       turista2= gestorePiattaformaService.cambiaRuolo(turista2.getUsername(),Ruolo.CURATORE);
         if (!(turista2 instanceof Curatore curatore))
             throw new ClassCastException("Non è possibile trasformare il turista " + turista2 + " in un Curatore");
         assertEquals(0, turistaAutenticatoService.visualizzaNotifiche(curatore.getUsername()).size());

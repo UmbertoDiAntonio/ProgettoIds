@@ -16,7 +16,7 @@ import java.util.Set;
 
 public interface PoiService {
 
-    PuntoInteresse creaPuntoInteresse(String nomePOI, Punto punto, Orario orario, TipologiaPuntoInteresse tipologiaPuntoInteresse, String usernameCreatore) throws FuoriComuneException;
+    PuntoInteresse creaPuntoInteresse(String nomePOI, Punto punto, Orario orario, TipologiaPuntoInteresse tipologiaPuntoInteresse, String usernameCreatore) throws FuoriComuneException, IllegalArgumentException;
 
     LocalDate getScadenza(int idPunto) throws IllegalArgumentException;
 
@@ -29,7 +29,7 @@ public interface PoiService {
 
     List<PuntoInteresse> findActive();
 
-    void aggiungiTag(int idPuntoInteresse, Tag tag,String usernameContributor) throws FuoriComuneException;
+    void aggiungiTag(int idPuntoInteresse, Tag tag,String usernameContributor) throws FuoriComuneException,IllegalArgumentException,IllegalStateException;
 
     @Transactional
     void rimuoviTag(int idPuntoInteresse, Tag tag, String usernameContributor) throws FuoriComuneException;

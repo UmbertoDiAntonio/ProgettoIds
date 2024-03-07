@@ -114,7 +114,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
 
     @Transactional
     @Override
-    public void partecipaAlContest(int idContest, String usernameTurista) throws UnsupportedOperationException, IllegalArgumentException, ContestException {
+    public void partecipaAlContest(int idContest, String usernameTurista) throws IllegalArgumentException, ContestException {
         Optional<Contest> oContest = contestService.findById(idContest);
         if (oContest.isPresent()) {
             Contest contest = oContest.get();
@@ -122,8 +122,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
             if (oTurista.isPresent()) {
                 TuristaAutenticato turistaAutenticato = oTurista.get();
                 if (!contest.isOpen()) {
-                    logger.error("Il contest non è aperto");
-                    throw new UnsupportedOperationException("Il contest non è aperto");
+                    throw new ContestException("Il contest non è aperto");
                 }
                 contestService.aggiungiPartecipante(contest, turistaAutenticato);
             } else {

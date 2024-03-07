@@ -6,6 +6,8 @@ import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.DTO.ContributorDTO;
 import ids.unicam.models.attori.Ruolo;
+import ids.unicam.models.attori.TuristaAutenticato;
+import ids.unicam.models.contenuti.RuoloRegistrazione;
 import ids.unicam.models.contenuti.Stato;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -46,7 +48,9 @@ public class CuratoreController{
             description = "Crea un nuovo utente curatore.")
     public ResponseEntity<?> create(@RequestBody ContributorDTO contributorDTO) {
         try {
-            return new ResponseEntity<>(gestorePiattaformaService.registraContributor(contributorDTO, Ruolo.CURATORE), HttpStatus.OK);
+            TuristaAutenticato curatore = gestorePiattaformaService.registra(contributorDTO, RuoloRegistrazione.CONTRIBUTOR);
+            gestorePiattaformaService.cambiaRuolo(curatore.getUsername(),Ruolo.CURATORE);
+            return new ResponseEntity<>(curatore, HttpStatus.OK);
         } catch (ConnessioneFallitaException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

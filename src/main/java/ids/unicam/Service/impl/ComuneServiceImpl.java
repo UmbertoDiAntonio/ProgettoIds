@@ -8,6 +8,8 @@ import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.ContributorAutorizzato;
 import ids.unicam.models.attori.Curatore;
+import ids.unicam.models.contenuti.Contest;
+import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,15 +27,19 @@ public class ComuneServiceImpl implements ComuneService {
     private final ContributorAutorizzatoService contributorAutorizzatoService;
     private final CuratoreService curatoreService;
     private final PoiService poiService;
+    private final ItinerarioService itinerarioService;
+    private final ContestService contestService;
 
     @Autowired
-    public ComuneServiceImpl(ComuneRepository repository, AnimatoreService animatoreService, ContributorService contributorService, ContributorAutorizzatoService contributorAutorizzatoService, CuratoreService curatoreService, PoiService poiService) {
+    public ComuneServiceImpl(ComuneRepository repository, AnimatoreService animatoreService, ContributorService contributorService, ContributorAutorizzatoService contributorAutorizzatoService, CuratoreService curatoreService, PoiService poiService, ItinerarioService itinerarioService, ContestService contestService) {
         this.repository = repository;
         this.animatoreService = animatoreService;
         this.contributorService = contributorService;
         this.contributorAutorizzatoService = contributorAutorizzatoService;
         this.curatoreService = curatoreService;
         this.poiService = poiService;
+        this.itinerarioService = itinerarioService;
+        this.contestService = contestService;
     }
 
 
@@ -76,7 +82,14 @@ public class ComuneServiceImpl implements ComuneService {
     public List<ContributorAutorizzato> getContributorAutorizzatiDelComune(String nome_comune) {
         return contributorAutorizzatoService.findByNomeComune(nome_comune);
     }
-
+    @Override
+    public List<Itinerario> getItinerariNelComune(String nomeComune) {
+        return itinerarioService.findByNomeComune(nomeComune);
+    }
+    @Override
+    public List<Contest> getContestsNelComune(String nomeComune) {
+        return contestService.getContestByComune(nomeComune);
+    }
     @Override
     public List<Curatore> getCuratoriDelComune(String nome_comune) {
         return curatoreService.findByNomeComune(nome_comune);

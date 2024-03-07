@@ -25,7 +25,7 @@ public class NotificaReportService {
     public void creaNotificaReport(int idPuntoInteresse, String messaggio) throws IllegalArgumentException {
         Optional<PuntoInteresse> oPuntoInteresse = poiService.getById(idPuntoInteresse);
         if (oPuntoInteresse.isPresent()) {
-            PuntoInteresse puntoInteresse = oPuntoInteresse.get();
+            PuntoInteresse puntoInteresse = oPuntoInteresse.get();//TODO qui forse comuneService.getCuratori
             curatoreService.findByNomeComune(puntoInteresse.getCreatore().getComune().getNome()).forEach(curatore ->
                     notificaService.save(new NotificaBuilder().withTitolo("Segnalazione: " + puntoInteresse.getNome())
                             .withDescrizione(messaggio)

@@ -58,9 +58,11 @@ public class PoiServiceImpl implements PoiService {
             if (oPoi.isPresent()) {
                 PuntoInteresse puntoInteresse = oPoi.get();
                 if (contributor.getComune().equals(puntoInteresse.getComune())) {
+                    if (!expireDate.isAfter(LocalDate.now())) {
+                        throw new IllegalArgumentException("La scadenza deve essere una data futura");
+                    }
                     puntoInteresse.setExpireDate(expireDate);
-                    if (expireDate.isAfter(LocalDate.now()))
-                        save(puntoInteresse);
+                    save(puntoInteresse);
                 } else {
                     logger.error("punto di interesse fuori dal comune di appartenenza del contributor");
                     throw new IllegalArgumentException("punto di interesse fuori dal comune di appartenenza del contributor");
@@ -85,18 +87,20 @@ public class PoiServiceImpl implements PoiService {
 
     @Transactional
     @Override
-    public PuntoInteresse creaPuntoInteresse(String nomePOI, Punto punto,Orario orario,TipologiaPuntoInteresse tipologiaPuntoInteresse, String usernameCreatore ) throws FuoriComuneException {
+    public PuntoInteresse creaPuntoInteresse(String nomePOI, Punto punto,Orario orario,TipologiaPuntoInteresse tipologiaPuntoInteresse, String usernameCreatore ) throws FuoriComuneException,IllegalArgumentException {
         Optional<Contributor> oContributor = contributorService.getByUsername(usernameCreatore);
         if (oContributor.isPresent()) {
             Contributor contributor = oContributor.get();
-            PuntoInteresse puntoInteresse = new PuntoInteresse(nomePOI, punto, orario, tipologiaPuntoInteresse, contributor);
-            puntoInteresse.setStato(contributor instanceof ContributorAutorizzato ? Stato.APPROVATO : Stato.IN_ATTESA);
-            if (!puntoInteresse.getCreatore().getComune().verificaCoordinateComune(puntoInteresse.getPt())) {
+            if (!contributor.getComune().verificaCoordinateComune(punto)) {
                 throw new FuoriComuneException("Posizione Punto di Interesse Fuori dall'area del comune");
             }
+            PuntoInteresse puntoInteresse = new PuntoInteresse(nomePOI, punto, orario, tipologiaPuntoInteresse, contributor);
+            puntoInteresse.setStato(contributor instanceof ContributorAutorizzato ? Stato.APPROVATO : Stato.IN_ATTESA);
+
             return save(puntoInteresse);
         } else {
-            throw new FuoriComuneException("l'username del creatore del punto di interesse non e' presente nel comune");
+            logger.error("username non valido");
+            throw new IllegalArgumentException("username non valido");
         }
     }
 
@@ -164,7 +168,7 @@ public class PoiServiceImpl implements PoiService {
 
     @Transactional
     @Override
-    public void aggiungiTag(int idPuntoInteresse, Tag tag,String usernameContributor) throws FuoriComuneException {
+    public void aggiungiTag(int idPuntoInteresse, Tag tag,String usernameContributor) throws FuoriComuneException,IllegalArgumentException,IllegalStateException {
         Optional<Contributor> oContributor = contributorService.getByUsername(usernameContributor);
         if (oContributor.isEmpty()) {
             throw new IllegalArgumentException("username non valido");
@@ -182,9 +186,10 @@ public class PoiServiceImpl implements PoiService {
             if(contributor.getComune()!=puntoInteresse.getComune()){
                 throw new FuoriComuneException(contributor.getUsername()+" non può operare fuori dal suo comune");
             }
-            if (!puntoInteresse.isExpired())
+            if (!puntoInteresse.isExpired()) {
                 tagService.aggiungiTag(puntoInteresse, tag);
-
+                throw new IllegalStateException("Il Punto di interesse è scaduto");
+            }
             save(puntoInteresse);
         } else {
             logger.error("L'id del punto di interesse non e' valido");

@@ -12,7 +12,7 @@ public interface ItinerarioService {
 
     void aggiungiTappa(String usernameContributor, int idItinerario, int... idPuntiInteresse) throws IllegalArgumentException, FuoriComuneException;
 
-    void rimuoviTappa(String usernameContributor, int idItinerario, int idPuntoInteresse) throws IllegalArgumentException;
+    void rimuoviTappa(String usernameContributor, int idItinerario, int idPuntoInteresse) throws IllegalArgumentException, FuoriComuneException;
 
     Itinerario creaItinerario(String nomeCreatore, String nomeItinerario) throws IllegalArgumentException;
 
@@ -22,4 +22,5 @@ public interface ItinerarioService {
 
     void deleteById(int id);
 
+    List<Itinerario> findByNomeComune(String nomeComune);
 }

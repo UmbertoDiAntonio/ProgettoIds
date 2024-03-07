@@ -6,6 +6,8 @@ import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.ContributorAutorizzato;
 import ids.unicam.models.attori.Curatore;
+import ids.unicam.models.contenuti.Contest;
+import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 
 import java.util.List;
@@ -19,6 +21,8 @@ public interface ComuneService {
 
     List<ContributorAutorizzato> getContributorAutorizzatiDelComune(String nome_comune);
 
+    List<Contest> getContestsNelComune(String nomeComune);
+
     List<Curatore> getCuratoriDelComune(String nome_comune);
 
     List<PuntoInteresse> getPuntiInteresseNelComune(String nomeComune) throws IllegalArgumentException;
@@ -31,4 +35,5 @@ public interface ComuneService {
 
     void deleteByNome(String nomeComune);
 
+    List<Itinerario> getItinerariNelComune(String nomeComune);
 }

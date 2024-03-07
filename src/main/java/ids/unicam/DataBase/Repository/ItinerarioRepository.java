@@ -19,4 +19,6 @@ public interface ItinerarioRepository extends JpaRepository<Itinerario, Integer>
 
     Optional<Itinerario> findByNome(String nome);
 
+    @Query("select i from Itinerario i where i.comune.nome =:nomeComune")
+    List<Itinerario> findByNomeComune(String nomeComune);
 }

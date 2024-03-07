@@ -121,5 +121,18 @@ public class ComuneController {
             @Parameter(description = "nome del comune") @PathVariable String nomeComune) {
         return ResponseEntity.ok(comuneService.getPuntiInteresseNelComune(nomeComune));
     }
-
+    @GetMapping("/{nomeComune}/getItinerari")
+    @Operation(summary = "Ottieni gli itinerari del Comune",
+            description = "Ottieni tutti gli itinerari del Comune.")
+    public ResponseEntity<?> getItinerari(
+            @Parameter(description = "nome del comune") @PathVariable String nomeComune) {
+        return ResponseEntity.ok(comuneService.getItinerariNelComune(nomeComune));
+    }
+    @GetMapping("/{nomeComune}/getContests")
+    @Operation(summary = "Ottieni i Contest del Comune",
+            description = "Ottieni tutti i Contest del Comune.")
+    public ResponseEntity<?> getContests(
+            @Parameter(description = "nome del comune") @PathVariable String nomeComune) {
+        return ResponseEntity.ok(comuneService.getContestsNelComune(nomeComune));
+    }
 }

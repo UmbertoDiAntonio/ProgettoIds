@@ -7,12 +7,10 @@ import ids.unicam.exception.ContestException;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Comune;
 import ids.unicam.models.attori.Animatore;
-import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
+import ids.unicam.models.contenuti.Taggable;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
-import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
-import ids.unicam.models.contenuti.puntiInteresse.Tag;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,8 +18,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-
-import static ids.unicam.Main.logger;
 
 @Service
 public class ContestServiceImpl implements ContestService {
@@ -61,11 +57,17 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
+    public List<Taggable> findByTag(String tag) {
+        return repository.findByTagsValoreContaining(tag);
+    }
+
+    @Override
     public List<Contest> getContestByCreatore(Animatore animatore) {
         return repository.findContestByCreatore(animatore);
     }
 
 
+    @Transactional
     @Override
     public void aggiungiMateriale(String usernameTurista, int idContest, MaterialeGenerico materialeGenerico) throws ContestException, FuoriComuneException {
         TuristaAutenticato turistaAutenticato = null;
@@ -78,10 +80,15 @@ public class ContestServiceImpl implements ContestService {
         if (contest.isExpired()) {
             throw new ContestException("il Contest e' Terminato");
         }
+
+        if (contest.isOpen()) {
+            aggiungiPartecipante(contest, materialeGenerico.getCreatore());
+        }
         if (!contest.isOpen())
             for (TuristaAutenticato turistaAutenticato1 : contest.getPartecipanti()) {
-                if (turistaAutenticato1.getUsername().equals(usernameTurista))
+                if (turistaAutenticato1.getUsername().equals(usernameTurista)) {
                     turistaAutenticato = turistaAutenticato1;
+                }
             }
         if (turistaAutenticato == null && !contest.isOpen()) {
             throw new ContestException("Devi essere iscritto al contest per caricare materiale su di esso");
@@ -139,8 +146,6 @@ public class ContestServiceImpl implements ContestService {
     }
 
 
-
-
     /**
      * Termina un Contest, successivamente l'animatore dovrà decretare il vincitore
      *
@@ -177,11 +182,8 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public List<Contest> getContestByComune(Comune comune) {
-        return repository.findContestByComune(comune);
+    public List<Contest> getContestByComune(String nomeComune) {
+        return repository.findContestByComune(nomeComune);
     }
-
-
-
 }
 

@@ -23,7 +23,7 @@ import java.util.Objects;
 @DiscriminatorValue("TuristaAutenticato")
 public class TuristaAutenticato {
     @OneToMany(fetch = FetchType.EAGER)
-    private final List<PuntoInteresse> preferiti = new ArrayList<>();
+    private final List<PuntoInteresse> preferiti = new ArrayList<>();//TODO unmodifiable List?
     private String nome = "";
     @Id
     private String username = "";

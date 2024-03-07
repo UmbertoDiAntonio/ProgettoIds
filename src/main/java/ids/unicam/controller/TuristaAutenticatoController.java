@@ -3,8 +3,11 @@ package ids.unicam.controller;
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.Service.PoiService;
 import ids.unicam.Service.TuristaAutenticatoService;
+import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.exception.ContestException;
+import ids.unicam.models.DTO.ContributorDTO;
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
+import ids.unicam.models.contenuti.RuoloRegistrazione;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -54,8 +57,8 @@ public class TuristaAutenticatoController  {
     public ResponseEntity<?> create(
             @RequestBody TuristaAutenticatoDTO turistaDTO) {
         try {
-            return ResponseEntity.ok(gestorePiattaformaService.registraTurista(turistaDTO));
-        } catch (IllegalArgumentException e) {
+            return ResponseEntity.ok(gestorePiattaformaService.registra(new ContributorDTO(null,turistaDTO), RuoloRegistrazione.TURISTA));
+        } catch (IllegalArgumentException | ConnessioneFallitaException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         }
     }
@@ -166,7 +169,7 @@ public class TuristaAutenticatoController  {
         try {
             turistaAutenticatoService.cancellaPartecipazioneContest(idContest, usernameTurista);
             return ResponseEntity.ok("L'utente con username '" + usernameTurista + "' ha smesso di partecipare al contest con id '" + idContest + "' .");
-        } catch (IllegalArgumentException | UnsupportedOperationException e) {
+        } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         }
     }

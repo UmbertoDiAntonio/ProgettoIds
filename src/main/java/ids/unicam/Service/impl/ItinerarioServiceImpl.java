@@ -38,6 +38,11 @@ public class ItinerarioServiceImpl implements ItinerarioService {
         repository.deleteById(id);
     }
 
+    @Override
+    public List<Itinerario> findByNomeComune(String nomeComune) {
+        return repository.findByNomeComune(nomeComune);
+    }
+
     Itinerario save(Itinerario itinerario) {
         return repository.save(itinerario);
     }
@@ -57,7 +62,6 @@ public class ItinerarioServiceImpl implements ItinerarioService {
                     if (contributor.getComune().getNome().equals(itinerario.getComune().getNome())) {
                         if (itinerario.getComune().equals(puntoInteresse.getComune())) {
                             if (!itinerario.getPercorso().contains(puntoInteresse)) {
-
                                 poiService.save(puntoInteresse);
                                 itinerario.aggiungiTappa(puntoInteresse);
                                 save(itinerario);
@@ -67,8 +71,8 @@ public class ItinerarioServiceImpl implements ItinerarioService {
                                 throw new IllegalArgumentException("il punto di interesse e' gia' una tappa dell'itinerario");
                             }
                         } else {
-                            logger.error("il punto di interesse e' fuori dal comune");
-                            throw new IllegalArgumentException("il punto di interesse e' fuori dal comune");
+                            logger.error("La tappa non fa parte del comune dell'itinerario");
+                            throw new IllegalArgumentException("La tappa non fa parte del comune dell'itinerario");
                         }
                     } else {
                         throw new FuoriComuneException("il contributor non fa parte del comune dell'itinerario");
@@ -102,7 +106,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
 
     @Override
     public void rimuoviTappa(String usernameContributor, int idItinerario, int idPuntoInteresse) throws
-            IllegalArgumentException {
+            IllegalArgumentException, FuoriComuneException {
         Optional<Contributor> oContributor = contributorService.getByUsername(usernameContributor);
         if (oContributor.isPresent()) {
             Contributor contributor = oContributor.get();
@@ -120,8 +124,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
                         throw new IllegalArgumentException("id Punto Interesse non valido");
                     }
                 } else {
-                    logger.warn(contributor + " non può rimuovere tappe da itinerari esterni al suo comune");
-                    throw new UnsupportedOperationException(contributor + " non può rimuovere tappe da itinerari esterni al suo comune");
+                    throw new FuoriComuneException(contributor + " non può rimuovere tappe da itinerari esterni al suo comune");
                 }
             } else {
                 logger.error("id Itinerario non valido");
@@ -143,8 +146,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
     }
 
     @Override
-    public Itinerario creaItinerario(String usernameCreatore, String nomeItinerario) throws
-            IllegalArgumentException {
+    public Itinerario creaItinerario(String usernameCreatore, String nomeItinerario) throws IllegalArgumentException {
         Optional<Itinerario> oItinerario = getByNome(nomeItinerario);
         Optional<Contributor> oContributor = contributorService.getByUsername(usernameCreatore);
         if (oContributor.isPresent()) {
@@ -152,11 +154,10 @@ public class ItinerarioServiceImpl implements ItinerarioService {
             if (oItinerario.isPresent()) {
                 Itinerario itinerario = oItinerario.get();
                 if (itinerario.getComune().getNome().equals(comune.getNome())) {
-                    logger.error("L'itinerario esiste gia' nel comune");
-                    throw new IllegalArgumentException("L'itinerario esiste gia' nel comune");
+                    logger.error("Esiste già un itinerario con questo nome nel comune");
+                    throw new IllegalArgumentException("Esiste già un itinerario con questo nome nel comune");
                 }
             }
-
             return save(new Itinerario(nomeItinerario, comune));
         } else {
             logger.error("Il contributor non e' valido");

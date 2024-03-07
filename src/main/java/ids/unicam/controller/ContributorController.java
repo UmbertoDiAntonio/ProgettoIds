@@ -6,6 +6,7 @@ import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.models.DTO.ContributorDTO;
 import ids.unicam.models.attori.Ruolo;
 import ids.unicam.models.attori.TuristaAutenticato;
+import ids.unicam.models.contenuti.RuoloRegistrazione;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.http.HttpStatus;
@@ -50,7 +51,7 @@ public class ContributorController{
             description = "Crea un nuovo utente con ruolo di contributor.")
     public ResponseEntity<?> create(@RequestBody ContributorDTO contributorDTO) {
         try {
-            TuristaAutenticato contributor = gestorePiattaformaService.registraContributor(contributorDTO, Ruolo.CONTRIBUTOR);
+            TuristaAutenticato contributor = gestorePiattaformaService.registra(contributorDTO, RuoloRegistrazione.CONTRIBUTOR);
             return new ResponseEntity<>(contributor, HttpStatus.OK);
         } catch (IllegalArgumentException | ConnessioneFallitaException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

@@ -4,6 +4,8 @@ import ids.unicam.models.Comune;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
+import ids.unicam.models.contenuti.Itinerario;
+import ids.unicam.models.contenuti.Taggable;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -25,5 +27,8 @@ public interface ContestRepository extends JpaRepository<Contest, Integer> {
 
     Optional<Contest> findContestByMaterialiContaining(MaterialeGenerico materialeGenerico);
 
-    List<Contest> findContestByComune(Comune comune);
+    @Query("select i from Contest i where i.comune.nome =:nomeComune")
+    List<Contest> findContestByComune(String nomeComune);
+
+    List<Taggable> findByTagsValoreContaining(String tag);
 }

@@ -5,6 +5,7 @@ import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.models.DTO.ContributorDTO;
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.attori.*;
+import ids.unicam.models.contenuti.RuoloRegistrazione;
 import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,17 +38,14 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
     @Transactional
     @Override
     public TuristaAutenticato cambiaRuolo(String usernameContributor, @NotNull Ruolo ruolo) throws IllegalArgumentException, ConnessioneFallitaException, UnsupportedOperationException {
-        Optional<TuristaAutenticato> oTurista = turistaAutenticatoService.getByUsername(usernameContributor);
-        if (oTurista.isEmpty()) {
+        Optional<Contributor> oContributor = contributorService.getByUsername(usernameContributor);
+        if (oContributor.isEmpty()) {
             logger.error("username non valido");
             throw new IllegalArgumentException("username non valido");
         }
-        TuristaAutenticato turistaAutenticato = oTurista.get();
+        Contributor contributor = oContributor.get();
 
-        if (!(turistaAutenticato instanceof Contributor contributor)) {
-            logger.error("il turista non puo' cambiare ruolo");
-            throw new UnsupportedOperationException("il turista non puo' cambiare ruolo");
-        }
+
         rimuoviVecchioRuolo(contributor);
         TuristaAutenticatoDTO turistaAutenticatoDTO = new TuristaAutenticatoDTO(contributor.getNome(), contributor.getCognome(), contributor.getDataNascita(), contributor.getPassword(), contributor.getUsername());
         Contributor modificato = switch (ruolo) {
@@ -101,40 +99,24 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
         }
     }
 
-    public TuristaAutenticato registraTurista(TuristaAutenticatoDTO turistaDTO) throws IllegalArgumentException {
-        validaCredenziali(turistaDTO);
-        TuristaAutenticato nuovoTurista = new TuristaAutenticato(turistaDTO);
-        return turistaAutenticatoService.save(nuovoTurista);
-    }
+
 
     @Transactional
-    public TuristaAutenticato registraContributor(ContributorDTO contributorDTO, Ruolo ruolo) throws ConnessioneFallitaException, RuntimeException {
-        if (ruolo != Ruolo.TURISTA && contributorDTO.getComune() == null) {
+    public TuristaAutenticato registra(ContributorDTO contributorDTO, RuoloRegistrazione ruolo) throws ConnessioneFallitaException, RuntimeException {
+        if (ruolo != RuoloRegistrazione.TURISTA && contributorDTO.getComune() == null) {
             logger.error("Il comune non puo' essere nullo, registrazione >= Contributor");
             throw new IllegalArgumentException("Il comune non puo' essere nullo, registrazione >= Contributor");
         }
         validaCredenziali(contributorDTO.getTuristaDTO());
 
         return switch (ruolo) {
-            case TURISTA -> registraTurista(contributorDTO.getTuristaDTO());
+            case TURISTA -> {
+                TuristaAutenticato nuovoTurista = new TuristaAutenticato(contributorDTO.getTuristaDTO());
+                yield turistaAutenticatoService.save(nuovoTurista);
+            }
             case CONTRIBUTOR -> {
                 Contributor contributor = new Contributor(contributorDTO);
                 yield contributorService.save(contributor);
-            }
-            case CURATORE -> {
-                Curatore curatore = new Curatore(contributorDTO);
-                curatoreService.save(curatore);
-                yield cambiaRuolo(contributorDTO.getTuristaDTO().getUsername(), Ruolo.CURATORE);
-            }
-            case ANIMATORE -> {
-                Animatore animatore = new Animatore(contributorDTO);
-                animatoreServiceI.save(animatore);
-                yield cambiaRuolo(contributorDTO.getTuristaDTO().getUsername(), Ruolo.ANIMATORE);
-            }
-            case CONTRIBUTOR_AUTORIZZATO -> {
-                ContributorAutorizzato contributor = new ContributorAutorizzato(contributorDTO);
-                contributorAutorizzatoService.save(contributor);
-                yield cambiaRuolo(contributorDTO.getTuristaDTO().getUsername(), Ruolo.CONTRIBUTOR_AUTORIZZATO);
             }
         };
     }
