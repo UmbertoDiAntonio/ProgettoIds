@@ -22,11 +22,11 @@ import java.util.Optional;
 @Service
 public class ContestServiceImpl implements ContestService {
     private final ContestRepository repository;
-    private final MaterialeService materialeService;
+    private final MaterialeServiceImpl materialeService;
     private final NotificaService notificaService;
 
     @Autowired
-    public ContestServiceImpl(ContestRepository repository, MaterialeService materialeService, NotificaService notificaService) {
+    public ContestServiceImpl(ContestRepository repository, MaterialeServiceImpl materialeService, NotificaService notificaService) {
         this.repository = repository;
         this.materialeService = materialeService;
         this.notificaService = notificaService;

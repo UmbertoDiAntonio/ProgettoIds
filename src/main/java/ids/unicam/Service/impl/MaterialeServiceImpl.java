@@ -62,8 +62,7 @@ public class MaterialeServiceImpl implements MaterialeService {
         return oMateriale.get().getBase64();
     }
 
-    @Override
-    public void aggiungiMateriale(Contenitore contenitore, MaterialeGenerico materialeGenerico) {
+    protected void aggiungiMateriale(Contenitore contenitore, MaterialeGenerico materialeGenerico) {
         contenitore.aggiungiMateriale(materialeGenerico);
         save(materialeGenerico);
     }

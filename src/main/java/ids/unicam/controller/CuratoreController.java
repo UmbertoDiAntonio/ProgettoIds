@@ -135,7 +135,7 @@ public class CuratoreController{
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
+//TODO getInAttesaDiValutazione
     @PutMapping("/valutaMateriale")
     @Operation(summary = "Valutazione di un Materiale",
             description = "Cambio dello stato di un materiale caricato dall'id univoco.")

@@ -96,7 +96,7 @@ public class AnimatoreController {
         try {
             animatoreService.setFineContest(idContest, data,usernameAnimatore);
             return ResponseEntity.ok("Data fine contest "+idContest+" impostata a "+data);
-        } catch (FuoriComuneException e) {
+        } catch (UnsupportedOperationException|IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }

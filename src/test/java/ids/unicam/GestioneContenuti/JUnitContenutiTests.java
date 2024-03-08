@@ -26,6 +26,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -383,7 +386,7 @@ public class JUnitContenutiTests {
      */
     @Test
     @Order(5)
-    public void eliminaContenuto() throws ConnessioneFallitaException, FuoriComuneException {
+    public void eliminaContenuto() throws ConnessioneFallitaException, FuoriComuneException, ContestException {
 
         Comune comune;
         try {
@@ -419,13 +422,22 @@ public class JUnitContenutiTests {
         turistaAutenticatoService.aggiungiPreferito(turista.getUsername(), puntoInteresse);
         turistaAutenticatoService.aggiungiPreferito(turista.getUsername(), puntoInt2);
 
-        assertEquals(2, turistaAutenticatoService.findPreferiti(turista.getUsername()).size());
+        poiService.aggiungiMateriale(turista.getUsername(),puntoInteresse.getId(),materialeService.crea("/testFoto", TipologiaMateriale.FOTO, turista));
 
+        assertEquals(2, turistaAutenticatoService.findPreferiti(turista.getUsername()).size());
+        Set<MaterialeGenerico> materiali = poiService.getMaterialiPoi(puntoInteresse.getId());
+        int idMateriale = materiali.stream().toList().getFirst().getId();
+        assertEquals(materiali.stream().toList().getFirst(),materialeService.getById(idMateriale).get());
         curatoreServiceImpl.eliminaPuntoInteresse(curatore.getUsername(), puntoInteresse.getId());
+
 
         assertEquals(numeroPuntiInteresse + 1, comuneService.getPuntiInteresseNelComune(comune.getNome()).size());
 
         assertEquals(1, turistaAutenticatoService.findPreferiti(turista.getUsername()).size());
+        assertEquals(Optional.empty(),materialeService.getById(idMateriale));
+
+        PuntoInteresse finalPuntoInteresse = puntoInteresse;
+        assertThrows(IllegalArgumentException.class, ()-> poiService.getMaterialiPoi(finalPuntoInteresse.getId()).size());
 
         PuntoInteresse puntoInteresse1 = poiService.creaPuntoInteresse("parco", new Punto(comune.getPosizione().getLatitudine(), comune.getPosizione().getLongitudine()), new Orario(), TipologiaPuntoInteresse.PARCO, contributor.getUsername());
 
@@ -444,7 +456,12 @@ public class JUnitContenutiTests {
         int numeroContest = contestService.getContestByCreatore(animatore).size();
         Contest contest = contestService.creaContest("contest", "spiaggia", animatore, true);
         assertEquals(numeroContest + 1, contestService.getContestByCreatore(animatore).size());
+        contestService.aggiungiMateriale(turista.getUsername(),contest.getId(),materialeService.crea("/testFoto", TipologiaMateriale.FOTO, turista));
+        assertEquals(1,contestService.getMaterialiContest(contest).size());
+
         curatoreServiceImpl.eliminaContest(curatore.getUsername(), contest.getId());
+
+        assertEquals(0, contestService.getMaterialiContest(contest).size());
         assertEquals(numeroContest, contestService.getContestByCreatore(animatore).size());
 
         Itinerario itinerario3 = itinerarioService.creaItinerario(curatore.getUsername(), "girodeibar2");

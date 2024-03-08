@@ -31,10 +31,10 @@ public class PoiServiceImpl implements PoiService {
     private final TagService tagService;
     private final ContributorService contributorService;
     private final TuristaAutenticatoService turistaAutenticatoService;
-    private final MaterialeService materialeService;
+    private final MaterialeServiceImpl materialeService;
 
     @Autowired
-    public PoiServiceImpl(PoiRepository repository, TagService tagService, ContributorService contributorService, TuristaAutenticatoService turistaAutenticatoService, MaterialeService materialeService) {
+    public PoiServiceImpl(PoiRepository repository, TagService tagService, ContributorService contributorService, TuristaAutenticatoService turistaAutenticatoService, MaterialeServiceImpl materialeService) {
         this.repository = repository;
         this.tagService = tagService;
         this.contributorService = contributorService;
@@ -59,6 +59,7 @@ public class PoiServiceImpl implements PoiService {
                 PuntoInteresse puntoInteresse = oPoi.get();
                 if (contributor.getComune().equals(puntoInteresse.getComune())) {
                     if (!expireDate.isAfter(LocalDate.now())) {
+                        logger.error("La scadenza deve essere una data futura");
                         throw new IllegalArgumentException("La scadenza deve essere una data futura");
                     }
                     puntoInteresse.setExpireDate(expireDate);

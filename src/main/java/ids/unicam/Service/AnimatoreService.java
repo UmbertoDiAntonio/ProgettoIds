@@ -33,7 +33,7 @@ public interface AnimatoreService {
 
     void annullaInvito(String usernameAnimatore, int idInvito) throws ContestException, IllegalArgumentException;
 
-    void setFineContest(int idContest, LocalDate dataFine, String usernameAnimatore) throws FuoriComuneException;
+    void setFineContest(int idContest, LocalDate dataFine, String usernameAnimatore) throws UnsupportedOperationException,IllegalArgumentException;
 
     @Transactional
     void aggiungiTagContest(int idContest, Tag tag, String usernameAnimatore) throws ContestException;

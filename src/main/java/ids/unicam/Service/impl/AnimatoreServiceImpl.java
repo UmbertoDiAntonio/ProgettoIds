@@ -221,21 +221,30 @@ public class AnimatoreServiceImpl implements AnimatoreService {
     }
 
     @Override
-    public void setFineContest(int idContest, LocalDate dataFine, String usernameAnimatore) throws FuoriComuneException {
+    public void setFineContest(int idContest, LocalDate dataFine, String usernameAnimatore) throws UnsupportedOperationException,IllegalArgumentException {
         Optional<Animatore> oAnimatore =getByUsername(usernameAnimatore);
         if (oAnimatore.isEmpty()) {
-            throw new FuoriComuneException("username animatore non valido");
+            throw new IllegalArgumentException("username animatore non valido");
         }
 
         Optional<Contest> oContest = contestService.findById(idContest);
         if (oContest.isEmpty()) {
-            throw new FuoriComuneException("id contest non valido");
+            throw new IllegalArgumentException("id contest non valido");
         }
 
         Contest contest = oContest.get();
-
-        contest.setExpireDate(dataFine);
-        contestService.save(contest);
+        if(contest.getCreatore().equals(oAnimatore.get())) {
+            if(dataFine.isAfter(LocalDate.now())) {
+                contest.setExpireDate(dataFine);
+                contestService.save(contest);
+            }
+            else {
+                logger.error("La scadenza deve essere una data futura");
+                throw new IllegalArgumentException("La scadenza deve essere una data futura");
+            }
+        }else {
+            throw new UnsupportedOperationException("l'animatore non può impostare la data di fine contest per contest di cui non è creato");
+        }
     }
 
     @Transactional

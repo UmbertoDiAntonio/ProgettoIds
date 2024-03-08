@@ -23,8 +23,7 @@ public interface MaterialeService {
     MaterialeGenerico crea(String fileMateriale, TipologiaMateriale tipologiaMateriale, TuristaAutenticato creatore) throws IllegalArgumentException;
 
     String getBase64ById(int id);
-
-    void aggiungiMateriale(Contenitore contenitore, MaterialeGenerico materialeGenerico);
+    
 
     Optional<Stato> getStato(MaterialeGenerico foto);
 }

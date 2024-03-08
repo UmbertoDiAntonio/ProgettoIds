@@ -75,7 +75,7 @@ public class CuratoreServiceImpl implements CuratoreService {
 
     @Override
     @Transactional
-    public PuntoInteresse valutaPuntoInteresse(String usernameCuratore,int idPuntoInteresse, @Nullable Boolean bStato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException {
+    public PuntoInteresse valutaPuntoInteresse(String usernameCuratore, int idPuntoInteresse, @Nullable Boolean bStato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException {
         Optional<Curatore> oCuratore = getByUsername(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
@@ -125,15 +125,18 @@ public class CuratoreServiceImpl implements CuratoreService {
                     if (!oPoi.get().getComune().equals(curatore.getComune()))
                         throw new FuoriComuneException("curatore non puo' operare fuori dal suo comune");
                 }
-                if (materialeGenerico.getStato() != Stato.IN_ATTESA)
-                    throw new UnsupportedOperationException("materiale già settato");
+                if (materialeGenerico.getStato() != Stato.IN_ATTESA) {
+                    logger.error("stato del materiale già settato");
+                    throw new UnsupportedOperationException("stato del materiale già settato");
+                }
                 Stato stato = Stato.toStatus(bStato);
-                if (stato == Stato.IN_ATTESA)
+                if (stato == Stato.IN_ATTESA) {
+                    logger.error("non puoi impostare stato in attesa");
                     throw new UnsupportedOperationException("non puoi impostare stato in attesa");
+                }
                 materialeGenerico.setStato(stato);
                 notificaService.creaNotificaApprovazione(curatore, materialeGenerico, stato);
                 return materialeServiceImpl.save(materialeGenerico);
-
             } else {
                 logger.error("Id del materiale non valido");
                 throw new IllegalArgumentException("Id del materiale non valido");
@@ -145,6 +148,7 @@ public class CuratoreServiceImpl implements CuratoreService {
     }
 
 
+    @Transactional
     @Override
     public void eliminaPuntoInteresse(String usernameCuratore, int idPuntoInteresse) throws IllegalArgumentException, FuoriComuneException {
         Optional<Curatore> oCuratore = getByUsername(usernameCuratore);
@@ -154,6 +158,9 @@ public class CuratoreServiceImpl implements CuratoreService {
             if (oPoi.isPresent()) {
                 PuntoInteresse puntoInteresse = oPoi.get();
                 if (controllaSeInComune(curatore, puntoInteresse.getComune())) {
+                    for (MaterialeGenerico materiale : poiServiceImpl.getMaterialiPoi(idPuntoInteresse)) {
+                        eliminaMateriale(usernameCuratore, materiale.getId());
+                    }
                     poiServiceImpl.deleteById(idPuntoInteresse);
                 } else {
                     throw new FuoriComuneException("Il punto di interesse e' fuori dal comune del curatore");
@@ -191,6 +198,7 @@ public class CuratoreServiceImpl implements CuratoreService {
         }
     }
 
+    @Transactional
     @Override
     public void eliminaContest(String usernameCuratore, int idContest) throws IllegalArgumentException, FuoriComuneException {
         Optional<Curatore> oCuratore = getByUsername(usernameCuratore);
@@ -200,6 +208,9 @@ public class CuratoreServiceImpl implements CuratoreService {
             if (oContest.isPresent()) {
                 Contest contest = oContest.get();
                 if (controllaSeInComune(curatore, contest.getComune())) {
+                    for (MaterialeGenerico materiale : contestServiceImpl.getMaterialiContest(contest)) {
+                        eliminaMateriale(usernameCuratore, materiale.getId());
+                    }
                     contestServiceImpl.deleteById(contest.getId());
                 } else {
                     throw new FuoriComuneException("Il contest e' fuori dal comune del curatore");
@@ -242,7 +253,7 @@ public class CuratoreServiceImpl implements CuratoreService {
                         contest.rimuoviMateriale(materialeGenerico);
                         contestServiceImpl.save(contest);
                     } else {
-                        logger.warn("Il Materiale non è associato a nessun Punto o Contest");
+                        logger.warn("Il Materiale non è associato a nessun Punto di Interesse o Contest");
                     }
                 }
                 materialeServiceImpl.deleteById(materialeGenerico.getId());
