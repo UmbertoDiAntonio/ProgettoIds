@@ -1,5 +1,6 @@
 package ids.unicam.Service.impl;
 
+import ids.unicam.DataBase.Repository.GestoreRepository;
 import ids.unicam.Service.*;
 import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.models.DTO.ContributorDTO;
@@ -23,21 +24,28 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
     private final AnimatoreService animatoreServiceI;
     private final ContributorAutorizzatoService contributorAutorizzatoService;
     private final PoiService poiService;
+    private final GestoreRepository repository;
 
     @Autowired
-    public GestorePiattaformaServiceImpl(ContributorService contributorService, TuristaAutenticatoService turistaAutenticatoService, CuratoreService curatoreService, AnimatoreService animatoreServiceI, ContributorAutorizzatoService contributorAutorizzatoService, PoiService poiService) {
+    public GestorePiattaformaServiceImpl(ContributorService contributorService, TuristaAutenticatoService turistaAutenticatoService, CuratoreService curatoreService, AnimatoreService animatoreServiceI, ContributorAutorizzatoService contributorAutorizzatoService, PoiService poiService, GestoreRepository repository) {
         this.contributorService = contributorService;
         this.turistaAutenticatoService = turistaAutenticatoService;
         this.curatoreService = curatoreService;
         this.animatoreServiceI = animatoreServiceI;
         this.contributorAutorizzatoService = contributorAutorizzatoService;
         this.poiService = poiService;
+        this.repository = repository;
     }
 
 
     @Transactional
     @Override
-    public TuristaAutenticato cambiaRuolo(String usernameContributor, @NotNull Ruolo ruolo) throws IllegalArgumentException, ConnessioneFallitaException, UnsupportedOperationException {
+    public TuristaAutenticato cambiaRuolo(String usernameGestore,String usernameContributor, @NotNull Ruolo ruolo) throws IllegalArgumentException, ConnessioneFallitaException, UnsupportedOperationException {
+        Optional<GestorePiattaforma> oGestore = findByUsername(usernameGestore);
+        if(oGestore.isEmpty()){
+            logger.error("Devi essere il gestore della Piattaforma per cambiare ruoli");
+            throw new IllegalArgumentException("Devi essere il gestore della Piattaforma per cambiare ruoli");
+        }
         Optional<Contributor> oContributor = contributorService.getByUsername(usernameContributor);
         if (oContributor.isEmpty()) {
             logger.error("username non valido");
@@ -119,5 +127,16 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
                 yield contributorService.save(contributor);
             }
         };
+    }
+
+    @Override
+    public void creaGestore(String username, String password){
+        GestorePiattaforma gestorePiattaforma=new GestorePiattaforma(username,password);
+        repository.save(gestorePiattaforma);
+    }
+
+    @Override
+    public Optional<GestorePiattaforma> findByUsername(String username) {
+        return repository.findById(username);
     }
 }

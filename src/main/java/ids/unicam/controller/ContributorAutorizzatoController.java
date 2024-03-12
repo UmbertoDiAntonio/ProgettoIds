@@ -18,11 +18,9 @@ import org.springframework.web.bind.annotation.*;
 public class ContributorAutorizzatoController  {
 
     private final ContributorAutorizzatoService contributorAutorizzatoService;
-    private final GestorePiattaformaService gestorePiattaformaService;
 
-    public ContributorAutorizzatoController(ContributorAutorizzatoService contributorAutorizzatoService, GestorePiattaformaService gestorePiattaformaService) {
+    public ContributorAutorizzatoController(ContributorAutorizzatoService contributorAutorizzatoService) {
         this.contributorAutorizzatoService = contributorAutorizzatoService;
-        this.gestorePiattaformaService = gestorePiattaformaService;
     }
 
 
@@ -40,28 +38,5 @@ public class ContributorAutorizzatoController  {
     public ResponseEntity<?> getByUsername(
             @Parameter(description = "username del contributor autorizzato") @PathVariable String username) {
         return ResponseEntity.ok(contributorAutorizzatoService.getByUsername(username));
-    }
-
-
-    @Operation(summary = "Creazione di un nuovo utente contributor autorizzato",
-            description = "Crea un nuovo utente contributor autorizzato.")
-    public ResponseEntity<?> create(@RequestBody ContributorDTO contributorDTO) {
-        try {
-            TuristaAutenticato contributor = gestorePiattaformaService.registra(contributorDTO, RuoloRegistrazione.CONTRIBUTOR);
-            gestorePiattaformaService.cambiaRuolo(contributor.getUsername(),Ruolo.CONTRIBUTOR_AUTORIZZATO);
-            return new ResponseEntity<>(contributor, HttpStatus.OK);
-        } catch (ConnessioneFallitaException | IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
-
-
-    @DeleteMapping("/{username}")
-    @Operation(summary = "Elimina utente contributor autorizzato",
-            description = "Elimina di un utente contributor autorizzato dall'username.")
-    public ResponseEntity<?> delete(
-            @Parameter(description = "username del contributor autorizzato") @PathVariable String username) {
-        contributorAutorizzatoService.deleteByUsername(username);
-        return ResponseEntity.ok("Utente: '" + username + "' eliminato");
     }
 }

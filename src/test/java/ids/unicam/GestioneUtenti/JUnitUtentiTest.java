@@ -56,52 +56,52 @@ public class JUnitUtentiTest {
 
         Comune comune ;
         try {
-            comune = comuneService.creaComune("nome");
+            comune = comuneService.creaComune("nome","admin");
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
 
-        int numeroContributor = comuneService.getContributorDelComune(comune.getNome()).size();
-        int numeroContributorAutorizzati = comuneService.getContributorAutorizzatiDelComune(comune.getNome()).size();
-        int numeroCuratori = comuneService.getCuratoriDelComune(comune.getNome()).size();
+        int numeroContributor = comuneService.getContributorDelComune(comune.getNome(),"admin").size();
+        int numeroContributorAutorizzati = comuneService.getContributorAutorizzatiDelComune(comune.getNome(),"admin").size();
+        int numeroCuratori = comuneService.getCuratoriDelComune(comune.getNome(),"admin").size();
 
         gestorePiattaformaService.registra(new ContributorDTO(null,new TuristaAutenticatoDTO( "Mario", "Rossi", LocalDate.of(2000, Calendar.MARCH, 17), "1Unico@", "user1")), RuoloRegistrazione.TURISTA);
         gestorePiattaformaService.registra(new ContributorDTO(null,new TuristaAutenticatoDTO( "Paolo", "Giallo", LocalDate.of(2000, Calendar.MARCH, 17), "2Unico@", "user2")),RuoloRegistrazione.TURISTA);
         gestorePiattaformaService.registra(new ContributorDTO(comune,new TuristaAutenticatoDTO("Giuseppe", "Oro", LocalDate.of(2000, Calendar.MARCH, 17), "3Unico@", "user3")),RuoloRegistrazione.CONTRIBUTOR);
 
-        assertEquals(numeroContributor + 1, comuneService.getContributorDelComune(comune.getNome()).size());
+        assertEquals(numeroContributor + 1, comuneService.getContributorDelComune(comune.getNome(),"admin").size());
 
-        Contributor contributor = comuneService.getContributorDelComune(comune.getNome()).getLast();
+        Contributor contributor = comuneService.getContributorDelComune(comune.getNome(),"admin").getLast();
 
         try {
-            gestorePiattaformaService.cambiaRuolo(contributor.getUsername(), Ruolo.CURATORE);
+            gestorePiattaformaService.cambiaRuolo("admin",contributor.getUsername(), Ruolo.CURATORE);
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
-        assertEquals(numeroContributor + 1, comuneService.getContributorDelComune(comune.getNome()).size());
-        assertEquals(numeroCuratori + 1, comuneService.getCuratoriDelComune(comune.getNome()).size());
+        assertEquals(numeroContributor + 1, comuneService.getContributorDelComune(comune.getNome(),"admin").size());
+        assertEquals(numeroCuratori + 1, comuneService.getCuratoriDelComune(comune.getNome(),"admin").size());
 
-        Curatore curatore = comuneService.getCuratoriDelComune(comune.getNome()).getLast();
-
-        try {
-           gestorePiattaformaService.cambiaRuolo(curatore.getUsername(),Ruolo.CONTRIBUTOR);
-        } catch (ConnessioneFallitaException e) {
-            throw new RuntimeException(e);
-        }
-
-        assertEquals(numeroContributor + 1, comuneService.getContributorDelComune(comune.getNome()).size());
-        assertEquals(numeroCuratori, comuneService.getCuratoriDelComune(comune.getNome()).size());
-
-        Contributor contributor1 = comuneService.getContributorDelComune(comune.getNome()).getLast();
+        Curatore curatore = comuneService.getCuratoriDelComune(comune.getNome(),"admin").getLast();
 
         try {
-            gestorePiattaformaService.cambiaRuolo(contributor1.getUsername(),Ruolo.CONTRIBUTOR_AUTORIZZATO);
+           gestorePiattaformaService.cambiaRuolo("admin",curatore.getUsername(),Ruolo.CONTRIBUTOR);
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
 
-        assertEquals(numeroContributorAutorizzati + 1, comuneService.getContributorAutorizzatiDelComune(comune.getNome()).size());
-        assertEquals(numeroCuratori, comuneService.getCuratoriDelComune(comune.getNome()).size());
+        assertEquals(numeroContributor + 1, comuneService.getContributorDelComune(comune.getNome(),"admin").size());
+        assertEquals(numeroCuratori, comuneService.getCuratoriDelComune(comune.getNome(),"admin").size());
+
+        Contributor contributor1 = comuneService.getContributorDelComune(comune.getNome(),"admin").getLast();
+
+        try {
+            gestorePiattaformaService.cambiaRuolo("admin",contributor1.getUsername(),Ruolo.CONTRIBUTOR_AUTORIZZATO);
+        } catch (ConnessioneFallitaException e) {
+            throw new RuntimeException(e);
+        }
+
+        assertEquals(numeroContributorAutorizzati + 1, comuneService.getContributorAutorizzatiDelComune(comune.getNome(),"admin").size());
+        assertEquals(numeroCuratori, comuneService.getCuratoriDelComune(comune.getNome(),"admin").size());
 
     }
 
@@ -110,7 +110,7 @@ public class JUnitUtentiTest {
 
         Comune comune ;
         try {
-            comune = comuneService.creaComune("Milano");
+            comune = comuneService.creaComune("Milano","admin");
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
@@ -121,11 +121,11 @@ public class JUnitUtentiTest {
         TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registra(new ContributorDTO(null,new TuristaAutenticatoDTO( "andrea", "neri", LocalDate.of(2000, Calendar.MARCH, 17), "5Unico@", "user5")),RuoloRegistrazione.TURISTA);
 
         try {
-            gestorePiattaformaService.cambiaRuolo(contributor.getUsername(),Ruolo.CONTRIBUTOR_AUTORIZZATO);
+            gestorePiattaformaService.cambiaRuolo("admin",contributor.getUsername(),Ruolo.CONTRIBUTOR_AUTORIZZATO);
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
-        ContributorAutorizzato contributorAutorizzato = comuneService.getContributorAutorizzatiDelComune(comune.getNome()).getFirst();
+        ContributorAutorizzato contributorAutorizzato = comuneService.getContributorAutorizzatiDelComune(comune.getNome(),"admin").getFirst();
         PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributorAutorizzato.getUsername());
         assertEquals(0, turistaAutenticato.getPreferiti().size());
 
@@ -139,7 +139,7 @@ public class JUnitUtentiTest {
 
         Comune comune ;
         try {
-            comune = comuneService.creaComune("Milano");
+            comune = comuneService.creaComune("Milano","admin");
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
@@ -149,7 +149,7 @@ public class JUnitUtentiTest {
 
 
         TuristaAutenticato turista2 = gestorePiattaformaService.registra(new ContributorDTO(comune,new TuristaAutenticatoDTO( "mirco", "blu", LocalDate.of(2002, Calendar.MAY, 15), "8Unico@", "user8")),RuoloRegistrazione.CONTRIBUTOR);
-        turista2=gestorePiattaformaService.cambiaRuolo(turista2.getUsername(),Ruolo.CURATORE);
+        turista2=gestorePiattaformaService.cambiaRuolo("admin",turista2.getUsername(),Ruolo.CURATORE);
         if (!(turista2 instanceof Curatore curatore))
             throw new IllegalArgumentException("errore");
 
@@ -187,7 +187,7 @@ public class JUnitUtentiTest {
     public void aggiungiFoto() throws ConnessioneFallitaException, FuoriComuneException {
         Comune comune ;
         try {
-            comune = comuneService.creaComune("Milano");
+            comune = comuneService.creaComune("Milano","admin");
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
@@ -199,7 +199,7 @@ public class JUnitUtentiTest {
         PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse("parco centrale", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.PARCO, contributor.getUsername());
 
         TuristaAutenticato turista2 = gestorePiattaformaService.registra(new ContributorDTO(comune,new TuristaAutenticatoDTO( "mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 17), "9Unico@", "user99")),RuoloRegistrazione.CONTRIBUTOR);
-        turista2=gestorePiattaformaService.cambiaRuolo(turista2.getUsername(),Ruolo.CURATORE);
+        turista2=gestorePiattaformaService.cambiaRuolo("admin",turista2.getUsername(),Ruolo.CURATORE);
         if (!(turista2 instanceof Curatore curatore1))
             throw new IllegalArgumentException("errore");
 
@@ -222,7 +222,7 @@ public class JUnitUtentiTest {
     public void segnalaContenuto() throws ConnessioneFallitaException, FuoriComuneException {
         Comune comune ;
         try {
-            comune = comuneService.creaComune("Milano");
+            comune = comuneService.creaComune("Milano","admin");
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
@@ -235,7 +235,7 @@ public class JUnitUtentiTest {
 
 
         TuristaAutenticato turista2 = gestorePiattaformaService.registra(new ContributorDTO(comune,new TuristaAutenticatoDTO( "mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 17), "9Unico@", "user92")),RuoloRegistrazione.CONTRIBUTOR);
-       turista2= gestorePiattaformaService.cambiaRuolo(turista2.getUsername(),Ruolo.CURATORE);
+       turista2= gestorePiattaformaService.cambiaRuolo("admin",turista2.getUsername(),Ruolo.CURATORE);
         if (!(turista2 instanceof Curatore curatore))
             throw new ClassCastException("Non è possibile trasformare il turista " + turista2 + " in un Curatore");
         assertEquals(0, turistaAutenticatoService.visualizzaNotifiche(curatore.getUsername()).size());

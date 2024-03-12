@@ -2,6 +2,7 @@ package ids.unicam;
 
 
 import ids.unicam.DataBase.GestoreDatabase;
+import ids.unicam.Service.GestorePiattaformaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,13 @@ public class Main implements ApplicationRunner {
     private static Environment environment;
 
     private final GestoreDatabase gestoreDatabase;
+    private final GestorePiattaformaService gestorePiattaformaService;
 
     @Autowired
-    public Main(Environment environment, GestoreDatabase gestoreDatabase) {
+    public Main(Environment environment, GestoreDatabase gestoreDatabase, GestorePiattaformaService gestorePiattaformaService) {
         Main.environment = environment;
         this.gestoreDatabase = gestoreDatabase;
+        this.gestorePiattaformaService = gestorePiattaformaService;
     }
 
     public static void main(String[] args) {
@@ -40,30 +43,29 @@ public class Main implements ApplicationRunner {
         openUrl(urlToOpen);
         openUrl(urlToDB);
 
-
     }
 
     private static void openUrl(String url) {
         String os = System.getProperty("os.name").toLowerCase();
         Runtime rt = Runtime.getRuntime();
 
-        String[] command=new String[1];
+        String[] command = new String[1];
         try {
             if (os.contains("win")) {
                 // Windows
                 command[0] = "rundll32 url.dll,FileProtocolHandler " + url;
             } else if (os.contains("mac")) {
                 // Mac
-                command[0] =  "open " + url;
+                command[0] = "open " + url;
             } else if (os.contains("nix") || os.contains("nux")) {
                 // Linux o Unix
-                command[0] =  "xdg-open " + url;
+                command[0] = "xdg-open " + url;
             }
 
             rt.exec(command);
 
         } catch (IOException e) {
-            logger.error("Impossibile Eseguire il comando di apertura delle pagine web",e);
+            logger.error("Impossibile Eseguire il comando di apertura delle pagine web", e);
         }
     }
 
@@ -71,6 +73,8 @@ public class Main implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         gestoreDatabase.inizializzaDatabase();
+
+        gestorePiattaformaService.creaGestore("admin", "admin");
     }
 
 

@@ -23,11 +23,9 @@ import java.time.LocalDate;
 public class AnimatoreController {
 
     private final AnimatoreService animatoreService;
-    private final GestorePiattaformaService gestorePiattaformaService;
 
-    public AnimatoreController(AnimatoreService animatoreService, GestorePiattaformaService gestorePiattaformaService) {
+    public AnimatoreController(AnimatoreService animatoreService) {
         this.animatoreService = animatoreService;
-        this.gestorePiattaformaService = gestorePiattaformaService;
     }
 
 
@@ -47,29 +45,6 @@ public class AnimatoreController {
         return ResponseEntity.ok(animatoreService.getByUsername(username));
     }
 
-
-    @PostMapping("/crea")
-    @Operation(summary = "Creazione di un nuovo utente animatore",
-            description = "Crea un nuovo utente con ruolo di animatore.")
-    public ResponseEntity<?> create(@RequestBody ContributorDTO contributorDTO) {
-        try {
-            TuristaAutenticato animatore = gestorePiattaformaService.registra(contributorDTO, RuoloRegistrazione.CONTRIBUTOR);
-            gestorePiattaformaService.cambiaRuolo(animatore.getUsername(), Ruolo.ANIMATORE);
-            return new ResponseEntity<>(animatore, HttpStatus.OK);
-
-        } catch (ConnessioneFallitaException | IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @DeleteMapping("/{username}")
-    @Operation(summary = "Elimina utente Animatore",
-            description = "Elimina di un utente con ruolo di Animatore.")
-    public ResponseEntity<?> delete(
-            @Parameter(description = "username dell' Animatore") @PathVariable String username) {
-        animatoreService.deleteByUsername(username);
-        return ResponseEntity.ok("Utente: '" + username + "' eliminato");
-    }
 
     @PutMapping("/approvaMateriale/{idMateriale}")
     @Operation(summary = "Approva un materiale",

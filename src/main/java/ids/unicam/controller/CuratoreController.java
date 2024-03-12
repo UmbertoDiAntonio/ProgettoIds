@@ -20,11 +20,9 @@ import org.springframework.web.bind.annotation.*;
 public class CuratoreController{
 
     private final CuratoreService curatoreService;
-    private final GestorePiattaformaService gestorePiattaformaService;
 
-    public CuratoreController(CuratoreService curatoreService, GestorePiattaformaService gestorePiattaformaService) {
+    public CuratoreController(CuratoreService curatoreService) {
         this.curatoreService = curatoreService;
-        this.gestorePiattaformaService = gestorePiattaformaService;
     }
 
 
@@ -44,27 +42,6 @@ public class CuratoreController{
     }
 
 
-    @Operation(summary = "Creazione di un nuovo utente curatore",
-            description = "Crea un nuovo utente curatore.")
-    public ResponseEntity<?> create(@RequestBody ContributorDTO contributorDTO) {
-        try {
-            TuristaAutenticato curatore = gestorePiattaformaService.registra(contributorDTO, RuoloRegistrazione.CONTRIBUTOR);
-            gestorePiattaformaService.cambiaRuolo(curatore.getUsername(),Ruolo.CURATORE);
-            return new ResponseEntity<>(curatore, HttpStatus.OK);
-        } catch (ConnessioneFallitaException | IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
-
-
-    @DeleteMapping("/{username}")
-    @Operation(summary = "Elimina utente curatore",
-            description = "Eliminazione di un utente con ruolo di curatore dall'username univoco.")
-    public ResponseEntity<?> delete(
-            @Parameter(description = "username del curatore") @PathVariable String username) {
-        curatoreService.deleteByUsername(username);
-        return ResponseEntity.ok("Utente: '" + username + "' eliminato");
-    }
 
     @DeleteMapping("/eliminaItinerario")
     @Operation(summary = "Elimina un itinerario",

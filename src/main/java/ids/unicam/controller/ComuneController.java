@@ -25,10 +25,10 @@ public class ComuneController {
     }
 
 
-    @GetMapping("/getAll")
+    @GetMapping("/getComuni")
     @Operation(summary = "Elenco dei comuni",
             description = "Un elenco dei comuni che sono salvati nel database.")
-    public ResponseEntity<?> getAll() {
+    public ResponseEntity<?> getComuni() {
         return ResponseEntity.ok(comuneService.findAll());
     }
 
@@ -50,9 +50,10 @@ public class ComuneController {
     @Operation(summary = "Creazione di un nuovo comune",
             description = "Crea un nuovo comune.")
     public ResponseEntity<?> create(
-            @Parameter(description = "nome del comune") @RequestParam String nomeComune) {
+            @Parameter(description = "nome del comune") @RequestParam String nomeComune,
+            @Parameter(description = "username del gestore") @RequestParam String usernameGestore) {
         try {
-            return ResponseEntity.ok(comuneService.creaComune(nomeComune));
+            return ResponseEntity.ok(comuneService.creaComune(nomeComune, usernameGestore));
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
@@ -72,10 +73,11 @@ public class ComuneController {
     @Operation(summary = "Cambia ruolo di un utente",
             description = "Richiesta di cambio ruolo di un utente.")
     public ResponseEntity<?> cambiaRuolo(
+            @Parameter(description = "username Gestore") @RequestParam String usernameGestore,
             @Parameter(description = "username dell'utente a cui si vuole cambiare ruolo") @PathVariable String username,
             @Parameter(description = "scelta del nuovo ruolo da assegnare") @PathVariable Ruolo ruolo) {
         try {
-            TuristaAutenticato nuovo = gestorePiattaformaService.cambiaRuolo(username, ruolo);
+            TuristaAutenticato nuovo = gestorePiattaformaService.cambiaRuolo(usernameGestore, username, ruolo);
             return new ResponseEntity<>(nuovo, HttpStatus.OK);
         } catch (ConnessioneFallitaException | IllegalArgumentException | UnsupportedOperationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -86,49 +88,49 @@ public class ComuneController {
     @Operation(summary = "Ottieni Contributor del Comune",
             description = "Ottieni tutti i Contributor del Comune.")
     public ResponseEntity<?> getContributor(
-            @Parameter(description = "nome del comune") @PathVariable String nomeComune) {
-        return ResponseEntity.ok(comuneService.getContributorDelComune(nomeComune));
+            @Parameter(description = "nome del comune") @PathVariable String nomeComune,
+            @Parameter(description = "username Gestore") @RequestParam String usernameGestore) {
+        return ResponseEntity.ok(comuneService.getContributorDelComune(nomeComune, usernameGestore));
     }
 
     @GetMapping("/{nomeComune}/getContributorAutorizzati")
     @Operation(summary = "Ottieni Contributor Autorizzati del Comune",
             description = "Ottieni tutti i Contributor Autorizzati del Comune.")
     public ResponseEntity<?> getContributorAutorizzati(
-            @Parameter(description = "nome del comune") @PathVariable String nomeComune) {
-        return ResponseEntity.ok(comuneService.getContributorAutorizzatiDelComune(nomeComune));
+            @Parameter(description = "nome del comune") @PathVariable String nomeComune,
+            @Parameter(description = "username Gestore") @RequestParam String usernameGestore) {
+        return ResponseEntity.ok(comuneService.getContributorAutorizzatiDelComune(nomeComune,usernameGestore));
     }
 
     @GetMapping("/{nomeComune}/getCuratori")
     @Operation(summary = "Ottieni Curatori del Comune",
             description = "Ottieni tutti i Curatori del Comune.")
     public ResponseEntity<?> getCuratori(
-            @Parameter(description = "nome del comune") @PathVariable String nomeComune) {
-        return ResponseEntity.ok(comuneService.getCuratoriDelComune(nomeComune));
+            @Parameter(description = "nome del comune") @PathVariable String nomeComune,
+            @Parameter(description = "username Gestore") @RequestParam String usernameGestore) {
+        return ResponseEntity.ok(comuneService.getCuratoriDelComune(nomeComune,usernameGestore));
     }
 
     @GetMapping("/{nomeComune}/getAnimatori")
     @Operation(summary = "Ottieni Animatori del Comune",
             description = "Ottieni tutti gli Animatori del Comune.")
     public ResponseEntity<?> getAnimatori(
-            @Parameter(description = "nome del comune") @PathVariable String nomeComune) {
-        return ResponseEntity.ok(comuneService.getAnimatoriDelComune(nomeComune));
+            @Parameter(description = "nome del comune") @PathVariable String nomeComune,
+            @Parameter(description = "username Gestore") @RequestParam String usernameGestore) {
+        return ResponseEntity.ok(comuneService.getAnimatoriDelComune(nomeComune, usernameGestore));
     }
 
-    @GetMapping("/{nomeComune}/getPuntiInteresse")
+    @GetMapping("/{nomeComune}/getPuntiInteresse")//TODO sposta, aggiungi controllo se sono validi
     @Operation(summary = "Ottieni Punti Interesse del Comune",
             description = "Ottieni tutti gli Punti di Interesse del Comune.")
     public ResponseEntity<?> getPoi(
             @Parameter(description = "nome del comune") @PathVariable String nomeComune) {
         return ResponseEntity.ok(comuneService.getPuntiInteresseNelComune(nomeComune));
     }
-    @GetMapping("/{nomeComune}/getItinerari")
-    @Operation(summary = "Ottieni gli itinerari del Comune",
-            description = "Ottieni tutti gli itinerari del Comune.")
-    public ResponseEntity<?> getItinerari(
-            @Parameter(description = "nome del comune") @PathVariable String nomeComune) {
-        return ResponseEntity.ok(comuneService.getItinerariNelComune(nomeComune));
-    }
-    @GetMapping("/{nomeComune}/getContests")
+
+  
+
+    @GetMapping("/{nomeComune}/getContests")//TODO sposta
     @Operation(summary = "Ottieni i Contest del Comune",
             description = "Ottieni tutti i Contest del Comune.")
     public ResponseEntity<?> getContests(

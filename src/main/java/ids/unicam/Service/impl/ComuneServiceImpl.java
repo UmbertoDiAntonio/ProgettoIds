@@ -4,10 +4,7 @@ import ids.unicam.DataBase.Repository.ComuneRepository;
 import ids.unicam.Service.*;
 import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.models.Comune;
-import ids.unicam.models.attori.Animatore;
-import ids.unicam.models.attori.Contributor;
-import ids.unicam.models.attori.ContributorAutorizzato;
-import ids.unicam.models.attori.Curatore;
+import ids.unicam.models.attori.*;
 import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
@@ -18,7 +15,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
+
+import static ids.unicam.Main.logger;
 
 @Service
 public class ComuneServiceImpl implements ComuneService {
@@ -31,8 +29,10 @@ public class ComuneServiceImpl implements ComuneService {
     private final ItinerarioService itinerarioService;
     private final ContestService contestService;
 
+    private final GestorePiattaformaService gestorePiattaformaService;
+
     @Autowired
-    public ComuneServiceImpl(ComuneRepository repository, AnimatoreService animatoreService, ContributorService contributorService, ContributorAutorizzatoService contributorAutorizzatoService, CuratoreService curatoreService, PoiService poiService, ItinerarioService itinerarioService, ContestService contestService) {
+    public ComuneServiceImpl(ComuneRepository repository, AnimatoreService animatoreService, ContributorService contributorService, ContributorAutorizzatoService contributorAutorizzatoService, CuratoreService curatoreService, PoiService poiService, ItinerarioService itinerarioService, ContestService contestService, GestorePiattaformaService gestorePiattaformaService) {
         this.repository = repository;
         this.animatoreService = animatoreService;
         this.contributorService = contributorService;
@@ -41,6 +41,7 @@ public class ComuneServiceImpl implements ComuneService {
         this.poiService = poiService;
         this.itinerarioService = itinerarioService;
         this.contestService = contestService;
+        this.gestorePiattaformaService = gestorePiattaformaService;
     }
 
 
@@ -55,8 +56,15 @@ public class ComuneServiceImpl implements ComuneService {
     }
 
     @Override
-    public Comune creaComune(String nomeComune) throws ConnessioneFallitaException {
-        return save(new Comune(nomeComune));
+    public Comune creaComune(String nomeComune, String usernameCreatore) throws ConnessioneFallitaException {
+        Optional<GestorePiattaforma> oGestore = gestorePiattaformaService.findByUsername(usernameCreatore);
+        if(oGestore.isPresent()){
+            GestorePiattaforma gestorePiattaforma=oGestore.get();
+            return save(new Comune(nomeComune));
+        }else {
+            logger.error("Devi essere il gestore della Piattaforma per creare Comuni");
+            throw new IllegalArgumentException("Devi essere il gestore della Piattaforma per creare Comuni");
+        }
     }
 
     @Override
@@ -70,18 +78,33 @@ public class ComuneServiceImpl implements ComuneService {
     }
 
     @Override
-    public List<Animatore> getAnimatoriDelComune(String nome_comune) {
-        return animatoreService.findByNomeComune(nome_comune);
+    public List<Animatore> getAnimatoriDelComune(String nomeComune,String usernameGestore) {
+        Optional<GestorePiattaforma> oGestore = gestorePiattaformaService.findByUsername(usernameGestore);
+        if(oGestore.isEmpty()) {
+            logger.error("Devi essere il gestore della Piattaforma per creare Comuni");
+            throw new IllegalArgumentException("Devi essere il gestore della Piattaforma per creare Comuni");
+        }
+        return animatoreService.findByNomeComune(nomeComune);
     }
 
     @Override
-    public List<Contributor> getContributorDelComune(String nome_comune) {
-        return contributorService.findByNomeComune(nome_comune);
+    public List<Contributor> getContributorDelComune(String nomeComune, String usernameGestore) {
+        Optional<GestorePiattaforma> oGestore = gestorePiattaformaService.findByUsername(usernameGestore);
+        if(oGestore.isEmpty()) {
+            logger.error("Devi essere il gestore della Piattaforma per creare Comuni");
+            throw new IllegalArgumentException("Devi essere il gestore della Piattaforma per creare Comuni");
+        }
+        return contributorService.findByNomeComune(nomeComune);
     }
 
     @Override
-    public List<ContributorAutorizzato> getContributorAutorizzatiDelComune(String nome_comune) {
-        return contributorAutorizzatoService.findByNomeComune(nome_comune);
+    public List<ContributorAutorizzato> getContributorAutorizzatiDelComune(String nomeComune, String usernameGestore) {
+        Optional<GestorePiattaforma> oGestore = gestorePiattaformaService.findByUsername(usernameGestore);
+        if(oGestore.isEmpty()) {
+            logger.error("Devi essere il gestore della Piattaforma per creare Comuni");
+            throw new IllegalArgumentException("Devi essere il gestore della Piattaforma per creare Comuni");
+        }
+        return contributorAutorizzatoService.findByNomeComune(nomeComune);
     }
     @Override
     public List<Itinerario> getItinerariNelComune(String nomeComune) {
@@ -92,8 +115,13 @@ public class ComuneServiceImpl implements ComuneService {
         return contestService.getContestByComune(nomeComune);
     }
     @Override
-    public List<Curatore> getCuratoriDelComune(String nome_comune) {
-        return curatoreService.findByNomeComune(nome_comune);
+    public List<Curatore> getCuratoriDelComune(String nomeComune, String usernameGestore) {
+        Optional<GestorePiattaforma> oGestore = gestorePiattaformaService.findByUsername(usernameGestore);
+        if(oGestore.isEmpty()) {
+            logger.error("Devi essere il gestore della Piattaforma per creare Comuni");
+            throw new IllegalArgumentException("Devi essere il gestore della Piattaforma per creare Comuni");
+        }
+        return curatoreService.findByNomeComune(nomeComune);
     }
 
 

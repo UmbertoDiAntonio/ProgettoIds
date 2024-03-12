@@ -1,5 +1,6 @@
 package ids.unicam.controller;
 
+import ids.unicam.Service.ComuneService;
 import ids.unicam.Service.ItinerarioService;
 import ids.unicam.exception.FuoriComuneException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,8 +13,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/Itinerario")
 public class ItinerarioController {
     private final ItinerarioService itinerarioService;
-    public ItinerarioController(ItinerarioService itinerarioService) {
+    private final ComuneService comuneService;
+    public ItinerarioController(ItinerarioService itinerarioService, ComuneService comuneService) {
         this.itinerarioService = itinerarioService;
+        this.comuneService = comuneService;
     }
 
     @GetMapping("/getAll")
@@ -29,6 +32,13 @@ public class ItinerarioController {
     public ResponseEntity<?> getById(
             @Parameter(description = "id dell'itinerario") @PathVariable Integer id) {
         return ResponseEntity.ok(itinerarioService.getById(id));
+    }
+    @GetMapping("/{nomeComune}/getItinerari")
+    @Operation(summary = "Ottieni gli itinerari del Comune",
+            description = "Ottieni tutti gli itinerari del Comune.")
+    public ResponseEntity<?> getByComune(
+            @Parameter(description = "nome del comune") @PathVariable String nomeComune) {
+        return ResponseEntity.ok(comuneService.getItinerariNelComune(nomeComune));
     }
 
     @PostMapping("/crea")
@@ -71,7 +81,7 @@ public class ItinerarioController {
         }
     }
 
-    @PutMapping("/rimuoviTappa")
+    @PutMapping("/rimuoviTappa")//TODo spostato
     @Operation(summary = "Rimuovi tappa ad un itinerario",
             description = "Rimossa di una tappa ad un itinerario esistente.")
     public ResponseEntity<?> rimuoviTappaItinerario(

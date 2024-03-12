@@ -84,7 +84,7 @@ public class JUnitContenutiTests {
     public void testPoi() throws ConnessioneFallitaException, FuoriComuneException {
         Comune comune;
         try {
-            comune = comuneService.creaComune("Milano");
+            comune = comuneService.creaComune("Milano","admin");
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
@@ -114,7 +114,7 @@ public class JUnitContenutiTests {
          */
         {
             try {
-                gestorePiattaformaService.cambiaRuolo(contributor.getUsername(),Ruolo.CONTRIBUTOR_AUTORIZZATO);
+                gestorePiattaformaService.cambiaRuolo("admin",contributor.getUsername(),Ruolo.CONTRIBUTOR_AUTORIZZATO);
             } catch (ConnessioneFallitaException e) {
                 throw new RuntimeException(e);
             }
@@ -135,14 +135,14 @@ public class JUnitContenutiTests {
             int puntiInteresseComuneIniziali = comuneService.getPuntiInteresseNelComune(comune.getNome()).size();
             Comune comune2;
             try {
-                comune2 = comuneService.creaComune("Roma");
+                comune2 = comuneService.creaComune("Roma","admin");
             } catch (ConnessioneFallitaException e) {
                 throw new RuntimeException(e);
             }
             TuristaAutenticato turistaTemp2;
             try {
                 turistaTemp2 = gestorePiattaformaService.registra(new ContributorDTO(comune2, new TuristaAutenticatoDTO("Mario", "Rossi", LocalDate.of(2000, Calendar.MARCH, 17), "1Unica@", "user19")),RuoloRegistrazione.CONTRIBUTOR);
-                turistaTemp2=gestorePiattaformaService.cambiaRuolo(turistaTemp2.getUsername(),Ruolo.CONTRIBUTOR_AUTORIZZATO);
+                turistaTemp2=gestorePiattaformaService.cambiaRuolo("admin",turistaTemp2.getUsername(),Ruolo.CONTRIBUTOR_AUTORIZZATO);
             } catch (ConnessioneFallitaException e) {
                 throw new RuntimeException(e);
             }
@@ -180,7 +180,7 @@ public class JUnitContenutiTests {
         {
             TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registra(new ContributorDTO(null,new TuristaAutenticatoDTO("andrea", "neri", LocalDate.of(2000, Calendar.FEBRUARY, 3), "3Unica@", "user3")),RuoloRegistrazione.TURISTA);
             TuristaAutenticato turistaTemp1 = gestorePiattaformaService.registra(new ContributorDTO(comune, new TuristaAutenticatoDTO("Peppe", "Peppe", LocalDate.of(2000, Calendar.MARCH, 11), "4Unica@", "user4")), RuoloRegistrazione.CONTRIBUTOR);
-            turistaTemp1= gestorePiattaformaService.cambiaRuolo(turistaTemp1.getUsername(),Ruolo.CURATORE);
+            turistaTemp1= gestorePiattaformaService.cambiaRuolo("admin",turistaTemp1.getUsername(),Ruolo.CURATORE);
             if (!(turistaTemp1 instanceof Curatore curatore))
                 throw new IllegalArgumentException("errore");
             try {
@@ -219,7 +219,7 @@ public class JUnitContenutiTests {
     public void testItinerario() throws ConnessioneFallitaException, FuoriComuneException {
         Comune comune;
         try {
-            comune = comuneService.creaComune("Milano");
+            comune = comuneService.creaComune("Milano","admin");
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
@@ -232,7 +232,7 @@ public class JUnitContenutiTests {
         {
             int numeroItinerariIniziale = itinerarioService.findAllByComune(comune).size();
             TuristaAutenticato turistaTemp = gestorePiattaformaService.registra(new ContributorDTO(comune, new TuristaAutenticatoDTO("Mario", "Rossi", LocalDate.of(2000, Calendar.MARCH, 11), "5Unica@", "user5")),RuoloRegistrazione.CONTRIBUTOR);
-            turistaTemp= gestorePiattaformaService.cambiaRuolo(turistaTemp.getUsername(),Ruolo.CONTRIBUTOR_AUTORIZZATO);
+            turistaTemp= gestorePiattaformaService.cambiaRuolo("admin",turistaTemp.getUsername(),Ruolo.CONTRIBUTOR_AUTORIZZATO);
             if (!(turistaTemp instanceof ContributorAutorizzato contributorAutorizzato))
                 throw new IllegalArgumentException("errore");
 
@@ -270,13 +270,13 @@ public class JUnitContenutiTests {
     public void testContest() throws ConnessioneFallitaException, ContestException {
         Comune comune;
         try {
-            comune = comuneService.creaComune("Milano");
+            comune = comuneService.creaComune("Milano","admin");
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
 
         TuristaAutenticato turistaTemp = gestorePiattaformaService.registra(new ContributorDTO(comune, new TuristaAutenticatoDTO("mario", "rossi", LocalDate.of(2000, Calendar.APRIL, 7), "6Unica@", "user6")), RuoloRegistrazione.CONTRIBUTOR);
-        turistaTemp= gestorePiattaformaService.cambiaRuolo(turistaTemp.getUsername(),Ruolo.ANIMATORE);
+        turistaTemp= gestorePiattaformaService.cambiaRuolo("admin",turistaTemp.getUsername(),Ruolo.ANIMATORE);
         if (!(turistaTemp instanceof Animatore animatore))
             throw new IllegalArgumentException("errore");
         int numeroContestCreatiDaAnimatore = contestService.getContestByCreatore(animatore).size();
@@ -342,12 +342,12 @@ public class JUnitContenutiTests {
     public void approvaMaterialeByAnimatore() throws ConnessioneFallitaException, ContestException {
         Comune comune;
         try {
-            comune = comuneService.creaComune("Milano");
+            comune = comuneService.creaComune("Milano","admin");
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
         TuristaAutenticato turistaTemp = gestorePiattaformaService.registra(new ContributorDTO(comune, new TuristaAutenticatoDTO("mario", "rossi", LocalDate.of(2000, Calendar.OCTOBER, 1), "9Unica@", "user9")), RuoloRegistrazione.CONTRIBUTOR);
-        turistaTemp=gestorePiattaformaService.cambiaRuolo(turistaTemp.getUsername(),Ruolo.ANIMATORE);
+        turistaTemp=gestorePiattaformaService.cambiaRuolo("admin",turistaTemp.getUsername(),Ruolo.ANIMATORE);
 
         TuristaAutenticato turistaAutenticato = gestorePiattaformaService.registra(new ContributorDTO(null,new TuristaAutenticatoDTO("andrea", "neri", LocalDate.of(2000, Calendar.DECEMBER, 3), "10Unica@", "user10")),RuoloRegistrazione.TURISTA);
 
@@ -390,23 +390,23 @@ public class JUnitContenutiTests {
 
         Comune comune;
         try {
-            comune = comuneService.creaComune("Milano");
+            comune = comuneService.creaComune("Milano","admin");
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }
         int numeroPuntiInteresse = comuneService.getPuntiInteresseNelComune(comune.getNome()).size();
         TuristaAutenticato turistaTemp = gestorePiattaformaService.registra(new ContributorDTO(comune, new TuristaAutenticatoDTO("mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 5), "11Unica@", "user11")), RuoloRegistrazione.CONTRIBUTOR);
-        gestorePiattaformaService.cambiaRuolo(turistaTemp.getUsername(),Ruolo.ANIMATORE);
+        gestorePiattaformaService.cambiaRuolo("admin",turistaTemp.getUsername(),Ruolo.ANIMATORE);
         if (!(turistaTemp instanceof Contributor contributor))
             throw new IllegalArgumentException("errore");
 
         TuristaAutenticato turistaTemp2 = gestorePiattaformaService.registra(new ContributorDTO(comune, new TuristaAutenticatoDTO("Leonardo", "rosso", LocalDate.of(2000, Calendar.MARCH, 11), "12Unica@", "user12")), RuoloRegistrazione.CONTRIBUTOR);
-        turistaTemp2= gestorePiattaformaService.cambiaRuolo(turistaTemp2.getUsername(),Ruolo.CURATORE);
+        turistaTemp2= gestorePiattaformaService.cambiaRuolo("admin",turistaTemp2.getUsername(),Ruolo.CURATORE);
         if (!(turistaTemp2 instanceof Curatore curatore))
             throw new IllegalArgumentException("errore");
 
         TuristaAutenticato turistaTemp3 = gestorePiattaformaService.registra(new ContributorDTO(comune, new TuristaAutenticatoDTO("Fede", "Verde", LocalDate.of(2000, Calendar.MARCH, 11), "13Unica@", "user13")), RuoloRegistrazione.CONTRIBUTOR);
-        turistaTemp3= gestorePiattaformaService.cambiaRuolo(turistaTemp3.getUsername(),Ruolo.ANIMATORE);
+        turistaTemp3= gestorePiattaformaService.cambiaRuolo("admin",turistaTemp3.getUsername(),Ruolo.ANIMATORE);
         if (!(turistaTemp3 instanceof Animatore animatore))
             throw new IllegalArgumentException("errore");
 
@@ -497,7 +497,7 @@ public class JUnitContenutiTests {
     public void modificaScadenzaContenuto() throws ConnessioneFallitaException, FuoriComuneException {
         Comune comune;
         try {
-            comune = comuneService.creaComune("Milano");
+            comune = comuneService.creaComune("Milano","admin");
         } catch (ConnessioneFallitaException e) {
             throw new RuntimeException(e);
         }

@@ -14,26 +14,28 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ComuneService {
+    
 
-    List<Animatore> getAnimatoriDelComune(String nome_comune);
+    List<Animatore> getAnimatoriDelComune(String nomeComune, String usernameGestore);
 
-    List<Contributor> getContributorDelComune(String nome_comune);
-
-    List<ContributorAutorizzato> getContributorAutorizzatiDelComune(String nome_comune);
+    List<Contributor> getContributorDelComune(String nomeComune, String usernameGestore);
 
     List<Contest> getContestsNelComune(String nomeComune);
 
-    List<Curatore> getCuratoriDelComune(String nome_comune);
+
+    List<Curatore> getCuratoriDelComune(String nomeComune, String usernameGestore);
 
     List<PuntoInteresse> getPuntiInteresseNelComune(String nomeComune) throws IllegalArgumentException;
 
     List<Comune> findAll();
 
-    Comune creaComune(String nomeComune) throws ConnessioneFallitaException;
+    Comune creaComune(String nomeComune, String usernameGestore) throws ConnessioneFallitaException,IllegalArgumentException;
 
     Optional<Comune> getByNome(String id);
 
     void deleteByNome(String nomeComune);
+
+    List<ContributorAutorizzato> getContributorAutorizzatiDelComune(String nomeComune, String usernameGestore);
 
     List<Itinerario> getItinerariNelComune(String nomeComune);
 }

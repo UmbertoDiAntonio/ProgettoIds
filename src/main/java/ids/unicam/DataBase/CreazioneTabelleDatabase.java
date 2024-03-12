@@ -19,6 +19,7 @@ public class CreazioneTabelleDatabase {
      */
     public void inizializzaDatabase(@NotNull Connection connection) {
         creaTabellaTuristi(connection);
+        creaTabellaGestore(connection);
         creaTabellaContributor(connection);
         creaTabellaContributorAutorizzati(connection);
         creaTabellaAnimatori(connection);
@@ -425,6 +426,22 @@ public class CreazioneTabelleDatabase {
             statement.executeUpdate();
         } catch (SQLException e) {
             logger.error("Impossibile eseguire la QuerySQL creazione tabella Comuni", e);
+        }
+    }
+
+    private void creaTabellaGestore(@NotNull Connection connection) {
+        String createTableSQL =
+                "CREATE TABLE IF NOT EXISTS GESTORE_PIATTAFORMA (" +
+                        "id INT PRIMARY KEY AUTO_INCREMENT," +
+                        "username VARCHAR(50) NOT NULL," +
+                        "cognome VARCHAR(50) NOT NULL," +
+                        "data_nascita DATE," +
+                        "nome VARCHAR(50) NOT NULL," +
+                        "password VARCHAR(100) NOT NULL)";
+        try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("Impossibile eseguire la QuerySQL creazione tabella Gestore", e);
         }
     }
 }
