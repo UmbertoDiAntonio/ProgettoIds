@@ -4,7 +4,6 @@ import ids.unicam.Service.ContestService;
 import ids.unicam.Service.PoiService;
 import ids.unicam.Service.TuristaService;
 import ids.unicam.models.contenuti.Taggable;
-import ids.unicam.models.contenuti.puntiInteresse.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

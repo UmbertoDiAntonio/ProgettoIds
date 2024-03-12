@@ -105,10 +105,10 @@ public class Contest implements Contenitore, Taggable, Expirable {
         return Collections.unmodifiableList(partecipanti);
     }
 
-    public void aggiungiPatecipante(TuristaAutenticato partecipante){
+    public void aggiungiPartecipante(TuristaAutenticato partecipante){
         partecipanti.add(partecipante);
     }
-    public void rimuoviPatecipante(TuristaAutenticato partecipante){
+    public void rimuoviPartecipante(TuristaAutenticato partecipante){
         partecipanti.remove(partecipante);
     }
 }

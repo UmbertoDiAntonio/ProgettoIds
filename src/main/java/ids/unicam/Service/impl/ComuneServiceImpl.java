@@ -28,7 +28,6 @@ public class ComuneServiceImpl implements ComuneService {
     private final PoiService poiService;
     private final ItinerarioService itinerarioService;
     private final ContestService contestService;
-
     private final GestorePiattaformaService gestorePiattaformaService;
 
     @Autowired
@@ -59,7 +58,6 @@ public class ComuneServiceImpl implements ComuneService {
     public Comune creaComune(String nomeComune, String usernameCreatore) throws ConnessioneFallitaException {
         Optional<GestorePiattaforma> oGestore = gestorePiattaformaService.findByUsername(usernameCreatore);
         if(oGestore.isPresent()){
-            GestorePiattaforma gestorePiattaforma=oGestore.get();
             return save(new Comune(nomeComune));
         }else {
             logger.error("Devi essere il gestore della Piattaforma per creare Comuni");

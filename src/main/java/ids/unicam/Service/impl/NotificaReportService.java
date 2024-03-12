@@ -1,7 +1,6 @@
 package ids.unicam.Service.impl;
 
 import ids.unicam.Service.ComuneService;
-import ids.unicam.Service.CuratoreService;
 import ids.unicam.Service.PoiService;
 import ids.unicam.models.contenuti.notifiche.NotificaBuilder;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
@@ -27,7 +26,8 @@ public class NotificaReportService {
         Optional<PuntoInteresse> oPuntoInteresse = poiService.getById(idPuntoInteresse);
         if (oPuntoInteresse.isPresent()) {
             PuntoInteresse puntoInteresse = oPuntoInteresse.get();
-            comuneService.getCuratoriDelComune(puntoInteresse.getComune().getNome()).forEach(curatore ->
+            //TODO
+            comuneService.getCuratoriDelComune(puntoInteresse.getComune().getNome(),"admin").forEach(curatore ->
                     notificaService.save(new NotificaBuilder().withTitolo("Segnalazione: " + puntoInteresse.getNome())
                             .withDescrizione(messaggio)
                             .withDestinatario(curatore).build()));

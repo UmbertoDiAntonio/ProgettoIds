@@ -22,13 +22,6 @@ public interface PoiRepository extends JpaRepository<PuntoInteresse, Integer> {
     @Query("select p.tags from PuntoInteresse p where p.id=:idPunto")
     List<Tag> getTags(int idPunto);
 
-    /*
-    @Modifying
-    @Query("DELETE FROM PuntoInteresse p WHERE p.id = :id")
-    void deleteById(int id);
-
-
-     */
     @Query("SELECT p.expireDate FROM PuntoInteresse p WHERE p.id = :id")
     Optional<LocalDate> getExpireDateById(int id);
 

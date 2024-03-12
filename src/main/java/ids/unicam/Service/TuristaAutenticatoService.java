@@ -15,7 +15,7 @@ public interface TuristaAutenticatoService {
     TuristaAutenticato save(TuristaAutenticato turistaAutenticato);
 
     @Transactional
-    void accettaInvitoContest(String usernamUtente, int idInvito) throws IllegalArgumentException, ContestException;
+    void accettaInvitoContest(String usernameUtente, int idInvito) throws IllegalArgumentException, ContestException;
 
     void rimuoviPreferito(String usernameTurista, int id) throws IllegalArgumentException;
 

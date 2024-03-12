@@ -1,10 +1,8 @@
 package ids.unicam.DataBase.Repository;
 
-import ids.unicam.models.Comune;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
-import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.Taggable;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import org.springframework.data.jpa.repository.JpaRepository;

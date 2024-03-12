@@ -1,7 +1,5 @@
 package ids.unicam.models.attori;
 
-import ids.unicam.exception.ConnessioneFallitaException;
-import ids.unicam.models.DTO.ContributorDTO;
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
@@ -16,9 +14,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "GESTORE_PIATTAFORMA")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class GestorePiattaforma extends TuristaAutenticato {
-    public GestorePiattaforma(TuristaAutenticatoDTO turistaAutenticatoDTO) {
-        super(turistaAutenticatoDTO);
-    }
+
 
     public GestorePiattaforma(String username, String password) {
         super(new TuristaAutenticatoDTO("GESTORE","GESTORE",null,password,username));

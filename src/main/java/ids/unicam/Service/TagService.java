@@ -2,7 +2,6 @@ package ids.unicam.Service;
 
 import ids.unicam.models.contenuti.Taggable;
 import ids.unicam.models.contenuti.puntiInteresse.Tag;
-import jakarta.transaction.Transactional;
 
 public interface TagService {
 

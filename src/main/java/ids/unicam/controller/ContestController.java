@@ -3,9 +3,7 @@ package ids.unicam.controller;
 
 import ids.unicam.Service.AnimatoreService;
 import ids.unicam.Service.ContestService;
-import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.attori.Animatore;
-import ids.unicam.models.contenuti.puntiInteresse.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.http.HttpStatus;

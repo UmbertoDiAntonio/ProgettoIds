@@ -1,13 +1,7 @@
 package ids.unicam.controller;
 
 import ids.unicam.Service.AnimatoreService;
-import ids.unicam.Service.GestorePiattaformaService;
-import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.exception.ContestException;
-import ids.unicam.models.DTO.ContributorDTO;
-import ids.unicam.models.attori.Ruolo;
-import ids.unicam.models.attori.TuristaAutenticato;
-import ids.unicam.models.contenuti.RuoloRegistrazione;
 import ids.unicam.models.contenuti.puntiInteresse.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

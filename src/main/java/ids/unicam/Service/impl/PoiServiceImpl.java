@@ -1,13 +1,15 @@
 package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.PoiRepository;
-import ids.unicam.Service.*;
+import ids.unicam.Service.ContributorService;
+import ids.unicam.Service.PoiService;
+import ids.unicam.Service.TagService;
+import ids.unicam.Service.TuristaAutenticatoService;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Comune;
 import ids.unicam.models.Punto;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.ContributorAutorizzato;
-import ids.unicam.models.attori.Curatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.Taggable;
@@ -33,16 +35,15 @@ public class PoiServiceImpl implements PoiService {
     private final ContributorService contributorService;
     private final TuristaAutenticatoService turistaAutenticatoService;
     private final MaterialeServiceImpl materialeService;
-    private final NotificaService notificaService;
 
     @Autowired
-    public PoiServiceImpl(PoiRepository repository, TagService tagService, ContributorService contributorService, TuristaAutenticatoService turistaAutenticatoService, MaterialeServiceImpl materialeService, NotificaService notificaService) {
+    public PoiServiceImpl(PoiRepository repository, TagService tagService, ContributorService contributorService, TuristaAutenticatoService turistaAutenticatoService, MaterialeServiceImpl materialeService) {
         this.repository = repository;
         this.tagService = tagService;
         this.contributorService = contributorService;
         this.turistaAutenticatoService = turistaAutenticatoService;
         this.materialeService = materialeService;
-        this.notificaService = notificaService;
+
     }
 
 
