@@ -72,7 +72,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
         Optional<TuristaAutenticato> oTurista = getByUsername(usernameTurista);
         if (oTurista.isPresent()) {
             TuristaAutenticato turistaAutenticato = oTurista.get();
-            turistaAutenticato.getPreferiti().removeIf(puntoInteresse -> puntoInteresse.getId() == id);
+            turistaAutenticato.removeIfPreferito(puntoInteresse -> puntoInteresse.getId() == id);
             save(turistaAutenticato);
         } else {
             logger.error("username del turista non valido");
@@ -87,7 +87,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
             Optional<TuristaAutenticato> oTurista = getByUsername(usernameTurista);
             if (oTurista.isPresent()) {
                 TuristaAutenticato turistaAutenticato = oTurista.get();
-                turistaAutenticato.getPreferiti().add(puntoInteresse);
+                turistaAutenticato.addPreferito(puntoInteresse);
                 save(turistaAutenticato);
             } else {
                 logger.error("username del turista non valido");
@@ -196,6 +196,4 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
     public void deleteNotificheByUsername(String usernameTurista) {
         notificaService.rimuoviNotificheByUsername(usernameTurista);
     }
-
-
 }

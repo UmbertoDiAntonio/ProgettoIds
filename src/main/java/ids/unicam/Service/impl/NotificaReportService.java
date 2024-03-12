@@ -1,5 +1,6 @@
 package ids.unicam.Service.impl;
 
+import ids.unicam.Service.ComuneService;
 import ids.unicam.Service.CuratoreService;
 import ids.unicam.Service.PoiService;
 import ids.unicam.models.contenuti.notifiche.NotificaBuilder;
@@ -12,12 +13,12 @@ import static ids.unicam.Main.logger;
 
 @Service
 public class NotificaReportService {
-    private final CuratoreService curatoreService;
+    private final ComuneService comuneService;
     private final NotificaService notificaService;
     private final PoiService poiService;
 
-    public NotificaReportService(CuratoreService curatoreService, NotificaService notificaService, PoiService poiService) {
-        this.curatoreService = curatoreService;
+    public NotificaReportService(ComuneService comuneService, NotificaService notificaService, PoiService poiService) {
+        this.comuneService = comuneService;
         this.notificaService = notificaService;
         this.poiService = poiService;
     }
@@ -25,8 +26,8 @@ public class NotificaReportService {
     public void creaNotificaReport(int idPuntoInteresse, String messaggio) throws IllegalArgumentException {
         Optional<PuntoInteresse> oPuntoInteresse = poiService.getById(idPuntoInteresse);
         if (oPuntoInteresse.isPresent()) {
-            PuntoInteresse puntoInteresse = oPuntoInteresse.get();//TODO qui forse comuneService.getCuratori
-            curatoreService.findByNomeComune(puntoInteresse.getCreatore().getComune().getNome()).forEach(curatore ->
+            PuntoInteresse puntoInteresse = oPuntoInteresse.get();
+            comuneService.getCuratoriDelComune(puntoInteresse.getComune().getNome()).forEach(curatore ->
                     notificaService.save(new NotificaBuilder().withTitolo("Segnalazione: " + puntoInteresse.getNome())
                             .withDescrizione(messaggio)
                             .withDestinatario(curatore).build()));

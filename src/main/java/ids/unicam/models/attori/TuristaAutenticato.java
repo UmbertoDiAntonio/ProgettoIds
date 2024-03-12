@@ -7,8 +7,10 @@ import lombok.Getter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 /**
  * Classe Turista Autenticato, il Turista Autenticato è un utente che non contribuisce in nessun comune,
@@ -23,7 +25,7 @@ import java.util.Objects;
 @DiscriminatorValue("TuristaAutenticato")
 public class TuristaAutenticato {
     @OneToMany(fetch = FetchType.EAGER)
-    private final List<PuntoInteresse> preferiti = new ArrayList<>();//TODO unmodifiable List?
+    private final List<PuntoInteresse> preferiti = new ArrayList<>();
     private String nome = "";
     @Id
     private String username = "";
@@ -32,9 +34,22 @@ public class TuristaAutenticato {
     private String password = "";
 
     public TuristaAutenticato() {
-
     }
-
+    public List<PuntoInteresse> getPreferiti() {
+        return Collections.unmodifiableList(preferiti);
+    }
+    public boolean addPreferito(PuntoInteresse preferito){
+        return preferiti.add(preferito);
+    }
+    public void removePreferito(PuntoInteresse preferito){
+        preferiti.remove(preferito);
+    }
+    public void removeIfPreferito(Predicate<PuntoInteresse> predicate){
+        for(PuntoInteresse preferito:preferiti) {
+            if (predicate.test(preferito))
+                preferiti.remove(preferito);
+        }
+    }
     public TuristaAutenticato(TuristaAutenticatoDTO turistaDTO) {
         this.nome = turistaDTO.getNome();
         this.cognome = turistaDTO.getCognome();

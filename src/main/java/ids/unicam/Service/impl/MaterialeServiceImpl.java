@@ -36,7 +36,6 @@ public class MaterialeServiceImpl implements MaterialeService {
     }
 
 
-
     @Override
     public MaterialeGenerico crea(String fileMateriale, TipologiaMateriale tipologiaMateriale, TuristaAutenticato creatore) throws IllegalArgumentException {
         TuristaAutenticatoDTO creatoreDTO = new TuristaAutenticatoDTO(creatore.getNome(), creatore.getCognome(), creatore.getDataNascita(), creatore.getPassword(), creatore.getUsername());

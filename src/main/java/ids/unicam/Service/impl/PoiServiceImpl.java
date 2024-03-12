@@ -7,6 +7,7 @@ import ids.unicam.models.Comune;
 import ids.unicam.models.Punto;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.ContributorAutorizzato;
+import ids.unicam.models.attori.Curatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.Taggable;
@@ -32,14 +33,16 @@ public class PoiServiceImpl implements PoiService {
     private final ContributorService contributorService;
     private final TuristaAutenticatoService turistaAutenticatoService;
     private final MaterialeServiceImpl materialeService;
+    private final NotificaService notificaService;
 
     @Autowired
-    public PoiServiceImpl(PoiRepository repository, TagService tagService, ContributorService contributorService, TuristaAutenticatoService turistaAutenticatoService, MaterialeServiceImpl materialeService) {
+    public PoiServiceImpl(PoiRepository repository, TagService tagService, ContributorService contributorService, TuristaAutenticatoService turistaAutenticatoService, MaterialeServiceImpl materialeService, NotificaService notificaService) {
         this.repository = repository;
         this.tagService = tagService;
         this.contributorService = contributorService;
         this.turistaAutenticatoService = turistaAutenticatoService;
         this.materialeService = materialeService;
+        this.notificaService = notificaService;
     }
 
 
@@ -98,6 +101,12 @@ public class PoiServiceImpl implements PoiService {
             PuntoInteresse puntoInteresse = new PuntoInteresse(nomePOI, punto, orario, tipologiaPuntoInteresse, contributor);
             puntoInteresse.setStato(contributor instanceof ContributorAutorizzato ? Stato.APPROVATO : Stato.IN_ATTESA);
 
+         /*
+         for(Curatore curatore:comuneService.getCuratoriDelComune(puntoInteresse.getComune().getNome()))//TODO Diagramma
+                notificaService.creaNotificaCreazionePoi(puntoInteresse,curatore);
+
+
+          */
             return save(puntoInteresse);
         } else {
             logger.error("username non valido");
@@ -175,7 +184,6 @@ public class PoiServiceImpl implements PoiService {
             throw new IllegalArgumentException("username non valido");
         }
         Contributor contributor = oContributor.get();
-        //TODO
 
         Optional<PuntoInteresse> oPuntoInteresse = getById(idPuntoInteresse);
         if (oPuntoInteresse.isPresent()) {
@@ -189,6 +197,9 @@ public class PoiServiceImpl implements PoiService {
             }
             if (!puntoInteresse.isExpired()) {
                 tagService.aggiungiTag(puntoInteresse, tag);
+            }
+            else {
+                logger.error("Il Punto di interesse è scaduto");
                 throw new IllegalStateException("Il Punto di interesse è scaduto");
             }
             save(puntoInteresse);
@@ -206,7 +217,6 @@ public class PoiServiceImpl implements PoiService {
             throw new IllegalArgumentException("username non valido");
         }
         Contributor contributor = oContributor.get();
-        //TODO
 
         Optional<PuntoInteresse> oPuntoInteresse = getById(idPuntoInteresse);
         if (oPuntoInteresse.isPresent()) {

@@ -4,7 +4,6 @@ import ids.unicam.Service.AnimatoreService;
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.exception.ContestException;
-import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.DTO.ContributorDTO;
 import ids.unicam.models.attori.Ruolo;
 import ids.unicam.models.attori.TuristaAutenticato;
@@ -55,14 +54,14 @@ public class AnimatoreController {
     public ResponseEntity<?> create(@RequestBody ContributorDTO contributorDTO) {
         try {
             TuristaAutenticato animatore = gestorePiattaformaService.registra(contributorDTO, RuoloRegistrazione.CONTRIBUTOR);
-            gestorePiattaformaService.cambiaRuolo(animatore.getUsername(),Ruolo.ANIMATORE);
+            gestorePiattaformaService.cambiaRuolo(animatore.getUsername(), Ruolo.ANIMATORE);
             return new ResponseEntity<>(animatore, HttpStatus.OK);
 
         } catch (ConnessioneFallitaException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-    
+
     @DeleteMapping("/{username}")
     @Operation(summary = "Elimina utente Animatore",
             description = "Elimina di un utente con ruolo di Animatore.")
@@ -86,6 +85,7 @@ public class AnimatoreController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
     @PutMapping("/setDataFine/{data}")
     @Operation(summary = "Imposta la data di Fine Contest",
             description = "Imposta la data di fine Contest.")
@@ -94,12 +94,13 @@ public class AnimatoreController {
             @Parameter(description = "Data di scadenza nel formato YYYY-MM-DD") @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data,
             @Parameter(description = "username dell' animatore") @RequestBody String usernameAnimatore) {
         try {
-            animatoreService.setFineContest(idContest, data,usernameAnimatore);
-            return ResponseEntity.ok("Data fine contest "+idContest+" impostata a "+data);
-        } catch (UnsupportedOperationException|IllegalArgumentException e) {
+            animatoreService.setFineContest(idContest, data, usernameAnimatore);
+            return ResponseEntity.ok("Data fine contest " + idContest + " impostata a " + data);
+        } catch (UnsupportedOperationException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
     @PutMapping("/annullaInvito/{idInvito}")
     @Operation(summary = "Annulla un invito",
             description = "Annulla la validità di un invito.")
@@ -113,6 +114,7 @@ public class AnimatoreController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
     @PutMapping("/invita/{idContest}")
     @Operation(summary = "Invita utente al contest",
             description = "Invita un utente al contest.")
@@ -126,16 +128,16 @@ public class AnimatoreController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
     @PutMapping("/contest/termina/{idContest}")
     @Operation(summary = "Termina il Contest",
             description = "Imposta il vincitore e termina il Contest.")
     public ResponseEntity<?> termina(
             @Parameter(description = "Username dell'animatore") @RequestParam String usernameAnimatore,
-            @Parameter(description = "id del Contest") @PathVariable Integer idContest,
-            @Parameter(description = "id del Materiale Vincitore") @RequestParam Integer idMateriale) {
+            @Parameter(description = "id del Contest") @PathVariable Integer idContest) {
         try {
             animatoreService.terminaContest(usernameAnimatore, idContest);
-            return ResponseEntity.ok("Contest Terminato con vincitore " + idMateriale);
+            return ResponseEntity.ok("Contest Terminato ");
         } catch (UnsupportedOperationException | IllegalArgumentException | ContestException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -166,7 +168,7 @@ public class AnimatoreController {
         try {
             animatoreService.aggiungiTagContest(idContest, new Tag(nomeTag), usernameAnimatore);
             return ResponseEntity.ok("Aggiunto tag '" + nomeTag + "' al punto di interesse: '" + idContest + "' .");
-        } catch (ContestException e) {
+        } catch (ContestException | IllegalArgumentException | IllegalStateException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -181,10 +183,8 @@ public class AnimatoreController {
         try {
             animatoreService.rimuoviTagContest(idContest, new Tag(nomeTag), usernameAnimatore);
             return ResponseEntity.ok("Rimosso tag '" + nomeTag + "' dal punto di interesse: '" + idContest + "' .");
-        } catch (ContestException e) {
+        } catch (ContestException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
-
 }

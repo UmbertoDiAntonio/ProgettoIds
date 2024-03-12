@@ -29,15 +29,15 @@ public interface AnimatoreService {
 
     void terminaContest(String usernameAnimatore, int idContest) throws UnsupportedOperationException, IllegalArgumentException, ContestException;
 
-    void setVincitoreContest(String usernameAnimatore, int idContest, int idMateriale) throws ContestException;
+    void setVincitoreContest(String usernameAnimatore, int idContest, int idMateriale) throws ContestException,IllegalArgumentException,UnsupportedOperationException;
 
     void annullaInvito(String usernameAnimatore, int idInvito) throws ContestException, IllegalArgumentException;
 
     void setFineContest(int idContest, LocalDate dataFine, String usernameAnimatore) throws UnsupportedOperationException,IllegalArgumentException;
 
     @Transactional
-    void aggiungiTagContest(int idContest, Tag tag, String usernameAnimatore) throws ContestException;
+    void aggiungiTagContest(int idContest, Tag tag, String usernameAnimatore) throws ContestException, IllegalArgumentException, IllegalStateException;
 
     @Transactional
-    void rimuoviTagContest(int idContest, Tag tag, String usernameAnimatore) throws ContestException;
+    void rimuoviTagContest(int idContest, Tag tag, String usernameAnimatore) throws ContestException, IllegalArgumentException;
 }

@@ -367,12 +367,12 @@ public class JUnitContenutiTests {
         turistaAutenticatoService.partecipaAlContest(contest.getId(), turistaAutenticato.getUsername());
         MaterialeGenerico materialeGenerico = materialeService.crea("/testFoto", TipologiaMateriale.FOTO, turistaAutenticato);
         try {
-            contestService.aggiungiMateriale(turistaAutenticato.getUsername(), contest.getId(), descrizione);
+            contestService.aggiungiMateriale(turistaAutenticato.getUsername(), contest.getId(), materialeGenerico);
         } catch (ContestException | FuoriComuneException e) {
             throw new RuntimeException(e);
         }
         assertNull(materialeGenerico.getStato().asBoolean());
-        assertEquals(1, contestService.getMaterialiContest(contest).size());
+        assertEquals(2, contestService.getMaterialiContest(contest).size());
 
         assertTrue(animatoreServiceImpl.approvaMateriale(animatore.getUsername(), contest.getId(), materialeGenerico.getId(), true));
 
@@ -511,8 +511,8 @@ public class JUnitContenutiTests {
         assertNull(puntoInteresse.getExpireDate());
 
 
-        poiService.modificaScadenza(contributor.getUsername(), puntoInteresse.getId(), LocalDate.of(2024, 2, 1));
-        assertEquals(LocalDate.of(2024, 2, 1), poiService.getScadenza(puntoInteresse.getId()));
-        assertEquals(numPoi, poiService.findActive().size());
+        poiService.modificaScadenza(contributor.getUsername(), puntoInteresse.getId(), LocalDate.of(2025, 2, 1));
+        assertEquals(LocalDate.of(2025, 2, 1), poiService.getScadenza(puntoInteresse.getId()));
+        assertEquals(numPoi +1, poiService.findActive().size());
     }
 }

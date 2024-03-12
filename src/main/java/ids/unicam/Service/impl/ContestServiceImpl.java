@@ -2,10 +2,8 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.ContestRepository;
 import ids.unicam.Service.ContestService;
-import ids.unicam.Service.MaterialeService;
 import ids.unicam.exception.ContestException;
 import ids.unicam.exception.FuoriComuneException;
-import ids.unicam.models.Comune;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
@@ -128,21 +126,16 @@ public class ContestServiceImpl implements ContestService {
         if (!contest.getMateriali().contains(materiale)) {
             throw new ContestException("il materiale non risulta tra i materiali del contest");
         }
-
-
-        if (contest.getPartecipanti().contains(materiale.getCreatore()))
-            setVincitoreContest(contest, materiale);
-        else {
-            throw new ContestException("Vincitore non valido, l'utente ha lasciato il Contest");
-        }
-
         if (!contest.isExpired()) {
             throw new ContestException("Il Contest deve essere terminato per decretare un vincitore");
         }
-        contest.setMaterialeVincitore(materiale);
-        if (contest.getPartecipanti().contains(materiale.getCreatore()))
+        if (!contest.getPartecipanti().contains(materiale.getCreatore())) {
+            throw new ContestException("Vincitore non valido, l'utente ha lasciato il Contest");
+        } else {
+            contest.setMaterialeVincitore(materiale);
             notificaService.creaNotificaVittoriaContest(contest.getCreatore(), contest, contest.getMaterialeVincitore());
-        save(contest);
+            save(contest);
+        }
     }
 
 
