@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public interface AnimatoreService {
 
@@ -69,12 +70,12 @@ public interface AnimatoreService {
     List<Animatore> getAll();
 
     /**
-     * Ottieni tutti gli animatori presenti nel comune selezionato
+     * Trova tutti gli Animatori che rispettano la condizione
      *
-     * @param nomeComune nome del comune da cercare
-     * @return la lista degli animatori associati al comune selezionato
+     * @param predicate la condizione da rispettare
+     * @return gli Animatori trovati
      */
-    List<Animatore> findByNomeComune(String nomeComune);
+    List<Animatore> find(Predicate<Animatore> predicate);
 
     /**
      * Crea un invito a partecipare a un tuo contest per un utente

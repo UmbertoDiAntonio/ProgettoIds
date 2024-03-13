@@ -1,8 +1,6 @@
 package ids.unicam.controller;
 
-import ids.unicam.Service.ContestService;
 import ids.unicam.Service.MaterialeService;
-import ids.unicam.Service.PoiService;
 import ids.unicam.Service.TuristaAutenticatoService;
 import ids.unicam.exception.ContestException;
 import ids.unicam.exception.FuoriComuneException;
@@ -26,14 +24,10 @@ import java.util.Optional;
 @RequestMapping("/materiali")
 public class MaterialeController {
     private final MaterialeService materialeService;
-    private final PoiService poiService;
-    private final ContestService contestService;
     private final TuristaAutenticatoService turistaAutenticatoService;
 
-    public MaterialeController(MaterialeService materialeService, PoiService poiService, ContestService contestService, TuristaAutenticatoService turistaAutenticatoService) {
+    public MaterialeController(MaterialeService materialeService, TuristaAutenticatoService turistaAutenticatoService) {
         this.materialeService = materialeService;
-        this.poiService = poiService;
-        this.contestService = contestService;
         this.turistaAutenticatoService = turistaAutenticatoService;
     }
 

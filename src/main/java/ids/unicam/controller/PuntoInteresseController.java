@@ -24,11 +24,9 @@ import java.time.LocalTime;
 @RequestMapping("/PuntoInteresse")
 public class PuntoInteresseController {
     private final PoiService poiService;
-    private final ComuneService comuneService;
 
-    public PuntoInteresseController(PoiService poiService, ComuneService comuneService) {
+    public PuntoInteresseController(PoiService poiService) {
         this.poiService = poiService;
-        this.comuneService = comuneService;
     }
 
     @GetMapping("/getAll")

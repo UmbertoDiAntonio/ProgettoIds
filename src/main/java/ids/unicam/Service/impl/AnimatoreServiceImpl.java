@@ -14,9 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Predicate;
 
 import static ids.unicam.Main.logger;
 
@@ -161,8 +160,12 @@ public class AnimatoreServiceImpl implements AnimatoreService {
     }
 
     @Override
-    public List<Animatore> findByNomeComune(String nomeComune) {
-        return repository.findByComuneNome(nomeComune);
+    public List<Animatore> find(Predicate<Animatore> predicate) {
+        List<Animatore> list=new ArrayList<>();
+        for(Animatore animatore:getAll())
+            if(predicate.test(animatore))
+                list.add(animatore);
+        return Collections.unmodifiableList(list);
     }
 
     @Override

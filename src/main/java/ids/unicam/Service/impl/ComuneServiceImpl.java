@@ -113,15 +113,14 @@ public class ComuneServiceImpl implements ComuneService {
      * @param nomeComune      il comune di cui si vogliono ottenere gli animatori
      * @param usernameGestore l'username di chi sta creando il comune (il gestore della piattaforma)
      * @return una lista contenente tutti gli animatori trovati
-     *///TODO Predicate su getAnimatori? in modo da prenderli tutti o solo nei comuni o altro a scelta
+     */
     @Override
     public List<Animatore> getAnimatoriDelComune(String nomeComune, String usernameGestore) throws IllegalArgumentException {
-        Optional<GestorePiattaforma> oGestore = gestorePiattaformaService.findByUsername(usernameGestore);
-        if (oGestore.isEmpty()) {
+        if (!controllaGestore(usernameGestore)) {
             logger.error("Devi essere il gestore della Piattaforma per creare Comuni");
             throw new IllegalArgumentException("Devi essere il gestore della Piattaforma per creare Comuni");
         }
-        return Collections.unmodifiableList(animatoreService.findByNomeComune(nomeComune));
+        return Collections.unmodifiableList(animatoreService.find(animatore -> animatore.getComune().getNome().equals(nomeComune)));
     }
 
 
@@ -131,15 +130,14 @@ public class ComuneServiceImpl implements ComuneService {
      * @param nomeComune      il comune di cui si vogliono ottenere i contributor
      * @param usernameGestore l'username di chi sta creando il comune (il gestore della piattaforma)
      * @return una lista contenente tutti i contributor trovati
-     *///TODO unmodifiabile e Predicate su getAnimatori? in modo da prenderli tutti o solo nei comuni o altro a scelta
+     */
     @Override
     public List<Contributor> getContributorDelComune(String nomeComune, String usernameGestore) {
-        Optional<GestorePiattaforma> oGestore = gestorePiattaformaService.findByUsername(usernameGestore);
-        if (oGestore.isEmpty()) {
-            logger.error("Devi essere il gestore della Piattaforma per creare Comuni");
-            throw new IllegalArgumentException("Devi essere il gestore della Piattaforma per creare Comuni");
+        if (controllaGestore(usernameGestore)) {
+            return Collections.unmodifiableList(contributorService.find(contributor -> contributor.getComune().getNome().equals(nomeComune)));
         }
-        return Collections.unmodifiableList(contributorService.find(contributor -> contributor.getComune().getNome().equals(nomeComune)));
+        logger.error("Devi essere il gestore della Piattaforma per creare Comuni");
+        throw new IllegalArgumentException("Devi essere il gestore della Piattaforma per creare Comuni");
     }
 
 
@@ -149,11 +147,10 @@ public class ComuneServiceImpl implements ComuneService {
      * @param nomeComune      il comune di cui si vogliono ottenere i contributor autorizzati
      * @param usernameGestore l'username di chi sta creando il comune (il gestore della piattaforma)
      * @return una lista contenente tutti i contributor autorizzati trovati
-     *///TODO Predicate su getAnimatori? in modo da prenderli tutti o solo nei comuni o altro a scelta
+     */
     @Override
     public List<ContributorAutorizzato> getContributorAutorizzatiDelComune(String nomeComune, String usernameGestore) {
-        Optional<GestorePiattaforma> oGestore = gestorePiattaformaService.findByUsername(usernameGestore);
-        if (oGestore.isEmpty()) {
+        if (!controllaGestore(usernameGestore)) {
             logger.error("Devi essere il gestore della Piattaforma per creare Comuni");
             throw new IllegalArgumentException("Devi essere il gestore della Piattaforma per creare Comuni");
         }
@@ -166,16 +163,19 @@ public class ComuneServiceImpl implements ComuneService {
      *
      * @param nomeComune il comune di cui si vogliono ottenere i Curatori
      * @return una lista contenente tutti i Curatori trovati
-     *///TODO Predicate su getItinerari? in modo da prenderli tutti o solo nei comuni o altro a scelta
+     */
     @Override
     public List<Curatore> getCuratoriDelComune(String nomeComune, String usernameGestore) {
-        Optional<GestorePiattaforma> oGestore = gestorePiattaformaService.findByUsername(usernameGestore);
-        if (oGestore.isEmpty()) {
+        if (!controllaGestore(usernameGestore)) {
             logger.error("Devi essere il gestore della Piattaforma per creare Comuni");
             throw new IllegalArgumentException("Devi essere il gestore della Piattaforma per creare Comuni");
         }
         return Collections.unmodifiableList(curatoreService.find(curatore -> curatore.getComune().getNome().equals(nomeComune)));
     }
 
+    private boolean controllaGestore(String usernameGestore) {
+        Optional<GestorePiattaforma> oGestore = gestorePiattaformaService.findByUsername(usernameGestore);
+        return oGestore.isPresent();
+    }
 
 }
