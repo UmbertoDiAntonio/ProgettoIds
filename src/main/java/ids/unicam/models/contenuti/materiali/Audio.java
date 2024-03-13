@@ -21,7 +21,7 @@ public class Audio extends MaterialeGenerico {
         super(filePath, turistaAutenticatoDTO);
     }
 
-    public static byte[] audioToByteArray(AudioInputStream audioInputStream) throws IOException {
+    private byte[] audioToByteArray(AudioInputStream audioInputStream) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte[] buffer = new byte[4096];
         int bytesRead;
@@ -31,7 +31,7 @@ public class Audio extends MaterialeGenerico {
         return baos.toByteArray();
     }
 
-    public static String byteArrayToBase64String(byte[] bytes) {
+    private String byteArrayToBase64String(byte[] bytes) {
         return Base64.getEncoder().encodeToString(bytes);
     }
 

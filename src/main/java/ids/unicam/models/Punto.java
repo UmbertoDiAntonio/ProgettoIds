@@ -2,6 +2,7 @@ package ids.unicam.models;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
@@ -17,14 +18,27 @@ public class Punto {
         this.longitudine = lon;
     }
 
+    /**
+     * Ottieni la distanza tra due punti
+     *
+     * @param pt il punto da cui calcolare la distanza
+     * @return la distanza tra i punti
+     */
     public double getDistanza(@NotNull Punto pt) {
         return Math.sqrt(getDistanzaAlQuadrato(pt));
     }
 
+    /**
+     * Ottieni la distanza tra due punti, al quadrato
+     *
+     * @param pt il punto da cui calcolare la distanza
+     * @return la distanza tra i punti
+     */
     public double getDistanzaAlQuadrato(@NotNull Punto pt) {
         return Math.pow(pt.getLatitudine() - latitudine, 2) + Math.pow(pt.getLongitudine() - longitudine, 2);
     }
 
+    @Contract("-> new")
     public Punto asClone() {
         return new Punto(latitudine, longitudine);
     }

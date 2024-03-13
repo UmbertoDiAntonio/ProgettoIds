@@ -17,7 +17,7 @@ public class Testo extends MaterialeGenerico {
         super(filePath, turistaAutenticatoDTO);
     }
 
-    public static String readFileToString(String filePath) throws IOException {
+    private String readFileToString(String filePath) throws IOException {
         StringBuilder contentBuilder = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;

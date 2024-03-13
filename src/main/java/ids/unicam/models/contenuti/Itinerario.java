@@ -35,14 +35,29 @@ public class Itinerario {
         this.comune = comune;
     }
 
+    /**
+     * Ottieni il percorso di un itinerario
+     *
+     * @return una lista di punti di interesse che rappresenta le sue tappe
+     */
     public List<PuntoInteresse> getPercorso() {
         return Collections.unmodifiableList(percorso);
     }
 
+    /**
+     * Aggiungi una tappa all'itinerario
+     *
+     * @param puntoInteresse la nuova tappa
+     */
     public void aggiungiTappa(PuntoInteresse puntoInteresse) {
         percorso.add(puntoInteresse);
     }
 
+    /**
+     * Rimuovi una tappa dall'itinerario
+     *
+     * @param puntoInteresse la tappa da rimuovere
+     */
     public void rimuoviTappa(PuntoInteresse puntoInteresse) {
         percorso.remove(puntoInteresse);
     }

@@ -101,10 +101,16 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
         return pt.asClone();
     }
 
+    /**
+     * @return il punto di interesse formattato come stringa dettagliata
+     */
     public String mostraInformazioniDettagliate() {
         return getNome() + " " + getPt() + " (" + comune.getNome() + ") " + getTipo() + " [" + getStato() + "] " + getOrario() + " " + getCreatore().getUsername();
     }
 
+    /**
+     * @return il punto di interesse formattato come stringa
+     */
     public String mostraInformazioniGeneriche() {
         return getNome() + " [" + getStato() + "]";
     }

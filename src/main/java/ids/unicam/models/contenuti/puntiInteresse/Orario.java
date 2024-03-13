@@ -24,15 +24,34 @@ public class Orario {
         }
     }
 
+    /**
+     * Imposta l'orario di apertura del giorno selezionato
+     *
+     * @param day    il giorno
+     * @param orario l'orario
+     */
     public void setOrarioApertura(DayOfWeek day, OrarioApertura orario) {
         hoursMap.put(day, orario);
     }
 
+    /**
+     * Imposta l'orario di apertura del giorno selezionato
+     *
+     * @param day         il giorno
+     * @param openingTime l'orario di apertura
+     * @param closingTime l'orario di chiusura
+     */
     public void setOrarioApertura(DayOfWeek day, LocalTime openingTime, LocalTime closingTime) {
         OrarioApertura hours = new OrarioApertura(openingTime, closingTime);
         hoursMap.put(day, hours);
     }
 
+    /**
+     * Ottieni l'orario di apertura del giorno indicato
+     *
+     * @param day il giorno
+     * @return l'orario
+     */
     public OrarioApertura getOrarioApertura(DayOfWeek day) {
         return hoursMap.get(day);
     }
@@ -72,12 +91,21 @@ public class Orario {
             this.closingTime = LocalTime.of(closingTime.getHour(), closingTime.getMinute());
         }
 
-
+        /**
+         * Ottieni l'orario di apertura
+         *
+         * @return l'orario di apertura
+         */
         public LocalTime getOrarioApertura() {
             return openingTime;
 
         }
 
+        /**
+         * Ottieni l'orario di chiusura
+         *
+         * @return l'orario di chiusura
+         */
         public LocalTime getOrarioChiusura() {
             return closingTime;
         }

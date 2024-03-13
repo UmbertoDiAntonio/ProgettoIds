@@ -36,7 +36,9 @@ public abstract class MaterialeGenerico {
     }
 
     /**
-     * @return le informazioni sul materiale
+     * Converte il file associato al Materiale in una stringa formattata in base64
+     *
+     * @return la stringa formattata
      */
     public abstract String getBase64();
 
