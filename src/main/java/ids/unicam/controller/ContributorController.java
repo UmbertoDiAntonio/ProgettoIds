@@ -4,7 +4,6 @@ import ids.unicam.Service.ContributorService;
 import ids.unicam.Service.GestorePiattaformaService;
 import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.models.DTO.ContributorDTO;
-import ids.unicam.models.attori.Ruolo;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.RuoloRegistrazione;
 import io.swagger.v3.oas.annotations.Operation;

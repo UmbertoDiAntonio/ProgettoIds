@@ -38,17 +38,17 @@ public class TuristaAutenticato {
     public List<PuntoInteresse> getPreferiti() {
         return Collections.unmodifiableList(preferiti);
     }
+
     public boolean addPreferito(PuntoInteresse preferito){
         return preferiti.add(preferito);
     }
+
     public void removePreferito(PuntoInteresse preferito){
         preferiti.remove(preferito);
     }
+
     public void removeIfPreferito(Predicate<PuntoInteresse> predicate){
-        for(PuntoInteresse preferito:preferiti) {
-            if (predicate.test(preferito))
-                preferiti.remove(preferito);
-        }
+        preferiti.removeIf(predicate);
     }
     public TuristaAutenticato(TuristaAutenticatoDTO turistaDTO) {
         this.nome = turistaDTO.getNome();

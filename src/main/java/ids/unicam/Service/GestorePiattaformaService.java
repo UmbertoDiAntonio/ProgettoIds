@@ -2,7 +2,6 @@ package ids.unicam.Service;
 
 import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.models.DTO.ContributorDTO;
-import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.attori.GestorePiattaforma;
 import ids.unicam.models.attori.Ruolo;
 import ids.unicam.models.attori.TuristaAutenticato;

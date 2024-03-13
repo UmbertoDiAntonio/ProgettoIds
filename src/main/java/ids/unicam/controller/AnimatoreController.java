@@ -2,6 +2,7 @@ package ids.unicam.controller;
 
 import ids.unicam.Service.AnimatoreService;
 import ids.unicam.exception.ContestException;
+import ids.unicam.models.contenuti.puntiInteresse.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.format.annotation.DateTimeFormat;

@@ -119,7 +119,7 @@ public class ContestServiceImpl implements ContestService {
         if (contest.isExpired()) {
             throw new ContestException("il Contest e' Terminato");
         }
-        contest.aggiungiPatecipante(turistaAutenticato);
+        contest.aggiungiPartecipante(turistaAutenticato);
         notificaService.creaNotificaIngressoContest(contest, turistaAutenticato);
         save(contest);
     }
@@ -127,7 +127,7 @@ public class ContestServiceImpl implements ContestService {
     @Override
     @Transactional
     public void rimuoviPartecipante(Contest contest, TuristaAutenticato turistaAutenticato) throws IllegalArgumentException {
-        contest.rimuoviPatecipante(turistaAutenticato);
+        contest.rimuoviPartecipante(turistaAutenticato);
         save(contest);
     }
 

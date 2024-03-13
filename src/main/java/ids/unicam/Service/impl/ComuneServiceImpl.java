@@ -29,7 +29,6 @@ public class ComuneServiceImpl implements ComuneService {
     private final PoiService poiService;
     private final ItinerarioService itinerarioService;
     private final ContestService contestService;
-
     private final GestorePiattaformaService gestorePiattaformaService;
 
     @Autowired
