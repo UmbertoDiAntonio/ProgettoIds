@@ -1,5 +1,7 @@
 package ids.unicam.models.contenuti.puntiInteresse;
 
+import org.jetbrains.annotations.Range;
+
 public enum DayOfWeek {
     MONDAY,
     TUESDAY,
@@ -9,8 +11,13 @@ public enum DayOfWeek {
     SATURDAY,
     SUNDAY;
 
-
-    public static DayOfWeek asDayOfWeek(int value) {
+    /**
+     * Effettua il casting a DayOfWeek di un intero
+     *
+     * @param value il valore (da 1 a 7) del giorno da convertire
+     * @return il giorno
+     */
+    public static DayOfWeek asDayOfWeek(@Range(from = 1, to = 7) int value) {
         return switch (value) {
             case 1 -> MONDAY;
             case 2 -> TUESDAY;

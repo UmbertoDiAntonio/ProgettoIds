@@ -161,9 +161,9 @@ public class AnimatoreServiceImpl implements AnimatoreService {
 
     @Override
     public List<Animatore> find(Predicate<Animatore> predicate) {
-        List<Animatore> list=new ArrayList<>();
-        for(Animatore animatore:getAll())
-            if(predicate.test(animatore))
+        List<Animatore> list = new ArrayList<>();
+        for (Animatore animatore : getAll())
+            if (predicate.test(animatore))
                 list.add(animatore);
         return Collections.unmodifiableList(list);
     }

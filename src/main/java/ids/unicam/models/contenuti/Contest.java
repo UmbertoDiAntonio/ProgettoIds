@@ -105,14 +105,29 @@ public class Contest implements Contenitore, Taggable, Expirable {
         materiali.remove(materialeGenerico);
     }
 
+    /**
+     * Ottieni la lista dei partecipanti del contest
+     *
+     * @return la lista dei partecipanti
+     */
     public List<TuristaAutenticato> getPartecipanti() {
         return Collections.unmodifiableList(partecipanti);
     }
 
+    /**
+     * Aggiungi un partecipante al contest
+     *
+     * @param partecipante il nuovo partecipante
+     */
     public void aggiungiPartecipante(TuristaAutenticato partecipante) {
         partecipanti.add(partecipante);
     }
 
+    /**
+     * Rimuovi un partecipante
+     *
+     * @param partecipante il partecipante da rimuovere
+     */
     public void rimuoviPartecipante(TuristaAutenticato partecipante) {
         partecipanti.remove(partecipante);
     }

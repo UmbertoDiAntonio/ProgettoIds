@@ -13,10 +13,10 @@
     </appender>
 
     <root level="INFO">
-        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="CONSOLE"/>
     </root>
 
     <logger name="ids.unicam" level="WARN">
-        <appender-ref ref="FILE" />
+        <appender-ref ref="FILE"/>
     </logger>
 </configuration>

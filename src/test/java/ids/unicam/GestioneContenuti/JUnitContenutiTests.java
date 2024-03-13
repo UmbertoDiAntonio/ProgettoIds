@@ -230,7 +230,7 @@ public class JUnitContenutiTests {
             PuntoInteresse nuovoPunto3 = poiService.creaPuntoInteresse("universita3'", new Punto(comune.getPosizione().getLatitudine() + 0.014, comune.getPosizione().getLongitudine() + 0.014), new Orario(), TipologiaPuntoInteresse.FORMAZIONE, contributorAutorizzato.getUsername());
 
 
-           itinerarioService.aggiungiTappa(contributorAutorizzato.getUsername(), itinerario1.getId(), nuovoPunto1.getId());
+            itinerarioService.aggiungiTappa(contributorAutorizzato.getUsername(), itinerario1.getId(), nuovoPunto1.getId());
 
             assertEquals(numeroItinerariIniziale + 1, itinerarioService.find(itinerario -> itinerario.getComune().equals(comune)).size());
             assertEquals(1, itinerarioService.getTappe(itinerario1.getId()).size());

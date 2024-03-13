@@ -20,7 +20,7 @@ public class Foto extends MaterialeGenerico {
         super(filePath, turistaAutenticatoDTO);
     }
 
-    public static String imageToBase64String(BufferedImage image) throws IOException {
+    private String imageToBase64String(BufferedImage image) throws IOException {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         ImageIO.write(image, "jpg", os);
         return Base64.getEncoder().encodeToString(os.toByteArray());
