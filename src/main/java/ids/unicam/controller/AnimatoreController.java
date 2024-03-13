@@ -49,7 +49,7 @@ public class AnimatoreController {
             @Parameter(description = "scelta di approvare o non il materiale") @RequestBody boolean stato) {
         try {
             animatoreService.approvaMateriale(usernameAnimatore, idContest, idMateriale, stato);
-            return ResponseEntity.ok("stato materiale "+idMateriale+" cambiato in "+stato);
+            return ResponseEntity.ok("stato materiale " + idMateriale + " cambiato in " + stato);
         } catch (UnsupportedOperationException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

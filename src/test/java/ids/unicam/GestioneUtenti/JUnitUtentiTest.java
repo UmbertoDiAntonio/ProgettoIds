@@ -3,6 +3,7 @@ package ids.unicam.GestioneUtenti;
 import ids.unicam.DataBase.GestoreDatabase;
 import ids.unicam.Service.impl.*;
 import ids.unicam.exception.ConnessioneFallitaException;
+import ids.unicam.exception.ContestException;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Comune;
 import ids.unicam.models.DTO.ContributorDTO;
@@ -113,7 +114,7 @@ public class JUnitUtentiTest {
         PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse("Edicola", new Punto(comune.getPosizione().getLatitudine() + 0.015, comune.getPosizione().getLongitudine() + 0.015), new Orario(), TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributorAutorizzato.getUsername());
         assertEquals(0, turistaAutenticato.getPreferiti().size());
 
-        turistaAutenticatoService.aggiungiPreferito(turistaAutenticato.getUsername(), puntoInteresse);
+        turistaAutenticatoService.aggiungiPreferito(turistaAutenticato.getUsername(), puntoInteresse.getId());
         assertEquals(1, turistaAutenticatoService.findPreferiti(turistaAutenticato.getUsername()).size());
     }
 
@@ -147,22 +148,22 @@ public class JUnitUtentiTest {
 
         assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag("Edicola").size());
 
-        assertEquals("Edicola", poiService.getTags(puntoInteresse).getFirst());
-        assertEquals("Tabaccheria", poiService.getTags(puntoInteresse).getLast());
+        assertEquals("Edicola", poiService.getTags(puntoInteresse.getId()).getFirst());
+        assertEquals("Tabaccheria", poiService.getTags(puntoInteresse.getId()).getLast());
 
 
         poiService.aggiungiTag(puntoInteresse.getId(), "Bar", contributor.getUsername());
 
         assertEquals(numeroTagEdicolaIniziale + 1, turistaService.findByTag("Edicola").size());
 
-        assertTrue(poiService.getTags(puntoInteresse).contains("Edicola"));
-        assertTrue(poiService.getTags(puntoInteresse).contains("Tabaccheria"));
-        assertTrue(poiService.getTags(puntoInteresse).contains("Bar"));
+        assertTrue(poiService.getTags(puntoInteresse.getId()).contains("Edicola"));
+        assertTrue(poiService.getTags(puntoInteresse.getId()).contains("Tabaccheria"));
+        assertTrue(poiService.getTags(puntoInteresse.getId()).contains("Bar"));
 
     }
 
     @Test
-    public void aggiungiFoto() throws ConnessioneFallitaException, FuoriComuneException {
+    public void aggiungiFoto() throws ConnessioneFallitaException, FuoriComuneException, ContestException {
         Comune comune = comuneService.creaComune("Milano", "admin");
 
         TuristaAutenticato turista = gestorePiattaformaService.registra(new ContributorDTO(comune, new TuristaAutenticatoDTO("mario", "rossi", LocalDate.of(2000, Calendar.MARCH, 17), "9Unico@", "user9")), RuoloRegistrazione.CONTRIBUTOR);
@@ -184,11 +185,11 @@ public class JUnitUtentiTest {
         assertEquals(0, poiService.getMaterialiPoi(puntoInteresse.getId()).size());
         MaterialeGenerico foto = materialeService.crea("/testFoto.jpg", TipologiaMateriale.FOTO, turistaAutenticato);
         foto.getBase64();
-        poiService.aggiungiMateriale(turistaAutenticato.getUsername(), puntoInteresse.getId(), foto);
+        turistaAutenticatoService.aggiungiMateriale(turistaAutenticato.getUsername(), puntoInteresse.getId(), foto);
         assertEquals(1, poiService.getMaterialiPoi(puntoInteresse.getId()).size());
-        assertNull(materialeService.getStato(foto).get().asBoolean());
+        assertNull(materialeService.getStato(foto.getId()).get().asBoolean());
         curatoreServiceImpl.valutaMateriale(curatore1.getUsername(), foto.getId(), Stato.APPROVATO.asBoolean());
-        assertEquals(Boolean.TRUE, materialeService.getStato(foto).get().asBoolean());
+        assertEquals(Boolean.TRUE, materialeService.getStato(foto.getId()).get().asBoolean());
     }
 
     @Test

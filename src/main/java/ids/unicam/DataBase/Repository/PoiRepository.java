@@ -1,7 +1,6 @@
 package ids.unicam.DataBase.Repository;
 
 import ids.unicam.models.contenuti.Stato;
-import ids.unicam.models.contenuti.Taggable;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import org.springframework.data.jpa.repository.JpaRepository;

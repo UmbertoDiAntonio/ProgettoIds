@@ -6,8 +6,10 @@ import ids.unicam.models.attori.ContributorAutorizzato;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 @Service
 public class ContributorAutorizzatoServiceImpl implements ContributorAutorizzatoService {
@@ -39,8 +41,12 @@ public class ContributorAutorizzatoServiceImpl implements ContributorAutorizzato
     }
 
     @Override
-    public List<ContributorAutorizzato> findByNomeComune(String nomeComune) {
-        return repository.findByComuneNome(nomeComune);
+    public List<ContributorAutorizzato> find(Predicate<ContributorAutorizzato> predicate) {
+        List<ContributorAutorizzato> list = new ArrayList<>();
+        for (ContributorAutorizzato contributorAutorizzato : getAll())
+            if (predicate.test(contributorAutorizzato))
+                list.add(contributorAutorizzato);
+        return list;
     }
 
 

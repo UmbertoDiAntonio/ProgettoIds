@@ -39,10 +39,11 @@ public class Itinerario {
         return Collections.unmodifiableList(percorso);
     }
 
-    public void aggiungiTappa(PuntoInteresse puntoInteresse){
+    public void aggiungiTappa(PuntoInteresse puntoInteresse) {
         percorso.add(puntoInteresse);
     }
-    public void rimuoviTappa(PuntoInteresse puntoInteresse){
+
+    public void rimuoviTappa(PuntoInteresse puntoInteresse) {
         percorso.remove(puntoInteresse);
     }
 }

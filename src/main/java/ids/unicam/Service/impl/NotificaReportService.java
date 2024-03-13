@@ -22,12 +22,18 @@ public class NotificaReportService {
         this.poiService = poiService;
     }
 
+    /**
+     * Crea una notifica per la segnalazione di un punto di interesse
+     *
+     * @param idPuntoInteresse l'id del punto di interesse
+     * @param messaggio        il messaggio della segnalazione
+     * @throws IllegalArgumentException se l'id del punto di interesse non è valido
+     */
     public void creaNotificaReport(int idPuntoInteresse, String messaggio) throws IllegalArgumentException {
         Optional<PuntoInteresse> oPuntoInteresse = poiService.getById(idPuntoInteresse);
         if (oPuntoInteresse.isPresent()) {
             PuntoInteresse puntoInteresse = oPuntoInteresse.get();
-            //TODO
-            comuneService.getCuratoriDelComune(puntoInteresse.getComune().getNome(),"admin").forEach(curatore ->
+            comuneService.getCuratoriDelComune(puntoInteresse.getComune().getNome(), "admin").forEach(curatore ->
                     notificaService.save(new NotificaBuilder().withTitolo("Segnalazione: " + puntoInteresse.getNome())
                             .withDescrizione(messaggio)
                             .withDestinatario(curatore).build()));

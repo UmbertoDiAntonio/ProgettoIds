@@ -1,6 +1,5 @@
 package ids.unicam.controller;
 
-import ids.unicam.Service.ComuneService;
 import ids.unicam.Service.ItinerarioService;
 import ids.unicam.exception.FuoriComuneException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,10 +12,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/Itinerario")
 public class ItinerarioController {
     private final ItinerarioService itinerarioService;
-    private final ComuneService comuneService;
-    public ItinerarioController(ItinerarioService itinerarioService, ComuneService comuneService) {
+
+    public ItinerarioController(ItinerarioService itinerarioService) {
         this.itinerarioService = itinerarioService;
-        this.comuneService = comuneService;
     }
 
     @GetMapping("/getAll")
@@ -33,12 +31,13 @@ public class ItinerarioController {
             @Parameter(description = "id dell'itinerario") @PathVariable Integer id) {
         return ResponseEntity.ok(itinerarioService.getById(id));
     }
+
     @GetMapping("/{nomeComune}/getItinerari")
     @Operation(summary = "Ottieni gli itinerari del Comune",
             description = "Ottieni tutti gli itinerari del Comune.")
     public ResponseEntity<?> getByComune(
             @Parameter(description = "nome del comune") @PathVariable String nomeComune) {
-        return ResponseEntity.ok(comuneService.getItinerariNelComune(nomeComune));
+        return ResponseEntity.ok(itinerarioService.find(itinerario -> itinerario.getComune().getNome().equals(nomeComune)));
     }
 
     @PostMapping("/crea")
@@ -71,11 +70,9 @@ public class ItinerarioController {
             @Parameter(description = "id dell'itinerario") @RequestParam Integer idItinerario,
             @Parameter(description = "id della tappa da aggiungere") @RequestParam Integer idTappa) {
         try {
-            if (itinerarioService.aggiungiTappa(usernameContributor, idItinerario, idTappa))
-                return ResponseEntity.ok("L'utente '" + usernameContributor + "' ha aggiunto il punto di interesse '" + idTappa + "' dall'itinerario '" + idItinerario + "'.");
-            else {
-                return ResponseEntity.ok("L'utente '" + usernameContributor + "' non ha aggiunto il punto di interesse '" + idTappa + "' dall'itinerario '" + idItinerario + "'.");
-            }
+            itinerarioService.aggiungiTappa(usernameContributor, idItinerario, idTappa);
+            return ResponseEntity.ok("L'utente '" + usernameContributor + "' ha aggiunto il punto di interesse '" + idTappa + "' dall'itinerario '" + idItinerario + "'.");
+
         } catch (IllegalArgumentException | FuoriComuneException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

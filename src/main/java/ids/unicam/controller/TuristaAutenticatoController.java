@@ -8,18 +8,15 @@ import ids.unicam.exception.ContestException;
 import ids.unicam.models.DTO.ContributorDTO;
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.contenuti.RuoloRegistrazione;
-import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/TuristaAutenticato")
-public class TuristaAutenticatoController  {
+public class TuristaAutenticatoController {
 
     private final TuristaAutenticatoService turistaAutenticatoService;
     private final GestorePiattaformaService gestorePiattaformaService;
@@ -32,14 +29,12 @@ public class TuristaAutenticatoController  {
     }
 
 
-
     @GetMapping("/getAll")
     @Operation(summary = "Ottieni tutti i Turisti",
             description = "Ottieni Tutti i turisti e superiori.")
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(turistaAutenticatoService.getAll());
     }
-
 
 
     @GetMapping("/{username}")
@@ -57,7 +52,7 @@ public class TuristaAutenticatoController  {
     public ResponseEntity<?> create(
             @RequestBody TuristaAutenticatoDTO turistaDTO) {
         try {
-            return ResponseEntity.ok(gestorePiattaformaService.registra(new ContributorDTO(null,turistaDTO), RuoloRegistrazione.TURISTA));
+            return ResponseEntity.ok(gestorePiattaformaService.registra(new ContributorDTO(null, turistaDTO), RuoloRegistrazione.TURISTA));
         } catch (IllegalArgumentException | ConnessioneFallitaException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         }
@@ -95,13 +90,8 @@ public class TuristaAutenticatoController  {
             @Parameter(description = "username del turista") @RequestParam String usernameTurista,
             @Parameter(description = "id del Punto di Interesse") @RequestParam Integer idPunto) {
         try {
-            Optional<PuntoInteresse> oPunto = poiService.getById(idPunto);
-            if (oPunto.isEmpty())
-                return new ResponseEntity<>("ID punto non valido", HttpStatus.BAD_REQUEST);
-
-            PuntoInteresse puntoInteresse = oPunto.get();
-            turistaAutenticatoService.aggiungiPreferito(usernameTurista, puntoInteresse);
-            return ResponseEntity.ok("L'utente con username '" + usernameTurista + "' ha aggiunto ai suoi preferiti il punto di interesse con id '" + puntoInteresse.getId() + "' .");
+            turistaAutenticatoService.aggiungiPreferito(usernameTurista, idPunto);
+            return ResponseEntity.ok("L'utente con username '" + usernameTurista + "' ha aggiunto ai suoi preferiti il punto di interesse con id '" + idPunto + "' .");
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         }

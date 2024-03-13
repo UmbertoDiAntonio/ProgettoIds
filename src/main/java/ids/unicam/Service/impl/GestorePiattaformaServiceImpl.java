@@ -40,9 +40,9 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
 
     @Transactional
     @Override
-    public TuristaAutenticato cambiaRuolo(String usernameGestore,String usernameContributor, @NotNull Ruolo ruolo) throws IllegalArgumentException, ConnessioneFallitaException, UnsupportedOperationException {
+    public TuristaAutenticato cambiaRuolo(String usernameGestore, String usernameContributor, @NotNull Ruolo ruolo) throws IllegalArgumentException, ConnessioneFallitaException, UnsupportedOperationException {
         Optional<GestorePiattaforma> oGestore = findByUsername(usernameGestore);
-        if(oGestore.isEmpty()){
+        if (oGestore.isEmpty()) {
             logger.error("Devi essere il gestore della Piattaforma per cambiare ruoli");
             throw new IllegalArgumentException("Devi essere il gestore della Piattaforma per cambiare ruoli");
         }
@@ -81,7 +81,11 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
         return modificato;
     }
 
-
+    /**
+     * Rimuove il vecchio ruolo all'utente
+     *
+     * @param contributor l'utente a cui rimuovere il vecchio ruolo
+     */
     private void rimuoviVecchioRuolo(@NotNull Contributor contributor) {
         switch (contributor) {
             case Curatore curatore -> curatoreService.deleteByUsername(curatore.getUsername());
@@ -92,6 +96,12 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
         }
     }
 
+    /**
+     * Verifica se i parametri per registrarsi sono validi
+     *
+     * @param turistaDTO il turista DTO
+     * @throws IllegalArgumentException se uno dei parametri non risulta corretto
+     */
     private void validaCredenziali(TuristaAutenticatoDTO turistaDTO) throws IllegalArgumentException {
         if (!turistaDTO.getPassword().matches("^(?=.*[A-Z])(?=.*[@#$%^&+=])(?=.*[0-9])(?=.*[a-zA-Z]).{6,}$")) {
             logger.error("Password non valida, deve essere lunga almeno 6 caratteri, di cui almeno 1 numero, 1 maiuscola e un carattere speciale");
@@ -108,9 +118,8 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
     }
 
 
-
     @Transactional
-    public TuristaAutenticato registra(ContributorDTO contributorDTO, RuoloRegistrazione ruolo) throws ConnessioneFallitaException, RuntimeException {
+    public TuristaAutenticato registra(ContributorDTO contributorDTO, RuoloRegistrazione ruolo) throws ConnessioneFallitaException, IllegalArgumentException {
         if (ruolo != RuoloRegistrazione.TURISTA && contributorDTO.getComune() == null) {
             logger.error("Il comune non puo' essere nullo, registrazione >= Contributor");
             throw new IllegalArgumentException("Il comune non puo' essere nullo, registrazione >= Contributor");
@@ -129,9 +138,10 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
         };
     }
 
+
     @Override
-    public void creaGestore(String username, String password){
-        GestorePiattaforma gestorePiattaforma=new GestorePiattaforma(username,password);
+    public void creaGestore(String username, String password) {
+        GestorePiattaforma gestorePiattaforma = new GestorePiattaforma(username, password);
         repository.save(gestorePiattaforma);
     }
 

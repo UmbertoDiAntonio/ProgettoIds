@@ -5,9 +5,6 @@ import ids.unicam.Service.*;
 import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.models.Comune;
 import ids.unicam.models.attori.*;
-import ids.unicam.models.contenuti.Contest;
-import ids.unicam.models.contenuti.Itinerario;
-import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,21 +23,15 @@ public class ComuneServiceImpl implements ComuneService {
     private final ContributorService contributorService;
     private final ContributorAutorizzatoService contributorAutorizzatoService;
     private final CuratoreService curatoreService;
-    private final PoiService poiService;
-    private final ItinerarioService itinerarioService;
-    private final ContestService contestService;
     private final GestorePiattaformaService gestorePiattaformaService;
 
     @Autowired
-    public ComuneServiceImpl(ComuneRepository repository, AnimatoreService animatoreService, ContributorService contributorService, ContributorAutorizzatoService contributorAutorizzatoService, CuratoreService curatoreService, PoiService poiService, ItinerarioService itinerarioService, ContestService contestService, GestorePiattaformaService gestorePiattaformaService) {
+    public ComuneServiceImpl(ComuneRepository repository, AnimatoreService animatoreService, ContributorService contributorService, ContributorAutorizzatoService contributorAutorizzatoService, CuratoreService curatoreService, GestorePiattaformaService gestorePiattaformaService) {
         this.repository = repository;
         this.animatoreService = animatoreService;
         this.contributorService = contributorService;
         this.contributorAutorizzatoService = contributorAutorizzatoService;
         this.curatoreService = curatoreService;
-        this.poiService = poiService;
-        this.itinerarioService = itinerarioService;
-        this.contestService = contestService;
         this.gestorePiattaformaService = gestorePiattaformaService;
     }
 
@@ -148,7 +139,7 @@ public class ComuneServiceImpl implements ComuneService {
             logger.error("Devi essere il gestore della Piattaforma per creare Comuni");
             throw new IllegalArgumentException("Devi essere il gestore della Piattaforma per creare Comuni");
         }
-        return Collections.unmodifiableList(contributorService.findByNomeComune(nomeComune));
+        return Collections.unmodifiableList(contributorService.find(contributor -> contributor.getComune().getNome().equals(nomeComune)));
     }
 
 
@@ -166,30 +157,9 @@ public class ComuneServiceImpl implements ComuneService {
             logger.error("Devi essere il gestore della Piattaforma per creare Comuni");
             throw new IllegalArgumentException("Devi essere il gestore della Piattaforma per creare Comuni");
         }
-        return Collections.unmodifiableList(contributorAutorizzatoService.findByNomeComune(nomeComune));
+        return Collections.unmodifiableList(contributorAutorizzatoService.find(contributorAutorizzato -> contributorAutorizzato.getComune().getNome().equals(nomeComune)));
     }
 
-    /**
-     * Trova tutti gli itinerari associati al comune indicato
-     *
-     * @param nomeComune il comune di cui si vogliono ottenere gli itinerari
-     * @return una lista contenente tutti gli itinerari trovati
-     *///TODO Predicate su getItinerari? in modo da prenderli tutti o solo nei comuni o altro a scelta
-    @Override
-    public List<Itinerario> getItinerariNelComune(String nomeComune) {
-        return Collections.unmodifiableList(itinerarioService.findByNomeComune(nomeComune));
-    }
-
-    /**
-     * Trova tutti i Contest associati al comune indicato
-     *
-     * @param nomeComune il comune di cui si vogliono ottenere i contest
-     * @return una lista contenente tutti i contest trovati
-     *///TODO Predicate su getItinerari? in modo da prenderli tutti o solo nei comuni o altro a scelta
-    @Override
-    public List<Contest> getContestsNelComune(String nomeComune) {
-        return Collections.unmodifiableList(contestService.getContestByComune(nomeComune));
-    }
 
     /**
      * Trova tutti i Curatori autorizzati associati al comune indicato
@@ -204,18 +174,8 @@ public class ComuneServiceImpl implements ComuneService {
             logger.error("Devi essere il gestore della Piattaforma per creare Comuni");
             throw new IllegalArgumentException("Devi essere il gestore della Piattaforma per creare Comuni");
         }
-        return Collections.unmodifiableList(curatoreService.findByNomeComune(nomeComune));
+        return Collections.unmodifiableList(curatoreService.find(curatore -> curatore.getComune().getNome().equals(nomeComune)));
     }
 
 
-    /**
-     * Trova tutti i punti di interesse validi associati al comune indicato
-     *
-     * @param nomeComune il comune di cui si vogliono ottenere i punti di interesse
-     * @return una lista contenente tutti i punti di interesse validi trovati
-     *///TODO Predicate su getItinerari? in modo da prenderli tutti o solo nei comuni o altro a scelta
-    @Override
-    public List<PuntoInteresse> getPuntiInteresseNelComune(String nomeComune) throws IllegalArgumentException {
-        return Collections.unmodifiableList(poiService.getPoiByComune(nomeComune));
-    }
 }

@@ -74,13 +74,10 @@ public class MaterialeController {
             TuristaAutenticato turistaAutenticato = oTurista.get();
             MaterialeGenerico materialeGenerico = materialeService.crea(materiale.getOriginalFilename(), tipologia, turistaAutenticato);
 
-            if (poiService.getById(idContenitore).isEmpty())
-                contestService.aggiungiMateriale(usernameTurista, idContenitore, materialeGenerico);
-            else
-                poiService.aggiungiMateriale(usernameTurista, idContenitore, materialeGenerico);
+            turistaAutenticatoService.aggiungiMateriale(usernameTurista, idContenitore, materialeGenerico);
 
             return new ResponseEntity<>("Il Materiale con id '" + materialeGenerico.getId() + "' e' stato caricato dall'utente con username '" + usernameTurista + "'", HttpStatus.OK);
-        } catch (FuoriComuneException| IllegalStateException | IllegalArgumentException | ContestException e) {
+        } catch (IllegalStateException | IllegalArgumentException | ContestException | FuoriComuneException e) {
             throw new RuntimeException(e);
         }
     }

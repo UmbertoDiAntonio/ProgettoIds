@@ -4,16 +4,16 @@ import ids.unicam.DataBase.Repository.PoiRepository;
 import ids.unicam.Service.ContributorService;
 import ids.unicam.Service.PoiService;
 import ids.unicam.Service.TagService;
-import ids.unicam.Service.TuristaAutenticatoService;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Punto;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.ContributorAutorizzato;
-import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Stato;
-import ids.unicam.models.contenuti.Taggable;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
-import ids.unicam.models.contenuti.puntiInteresse.*;
+import ids.unicam.models.contenuti.puntiInteresse.DayOfWeek;
+import ids.unicam.models.contenuti.puntiInteresse.Orario;
+import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
+import ids.unicam.models.contenuti.puntiInteresse.TipologiaPuntoInteresse;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,16 +30,13 @@ public class PoiServiceImpl implements PoiService {
     private final PoiRepository repository;
     private final TagService tagService;
     private final ContributorService contributorService;
-    private final TuristaAutenticatoService turistaAutenticatoService;
-    private final MaterialeServiceImpl materialeService;
+
 
     @Autowired
-    public PoiServiceImpl(PoiRepository repository, TagService tagService, ContributorService contributorService, TuristaAutenticatoService turistaAutenticatoService, MaterialeServiceImpl materialeService) {
+    public PoiServiceImpl(PoiRepository repository, TagService tagService, ContributorService contributorService) {
         this.repository = repository;
         this.tagService = tagService;
         this.contributorService = contributorService;
-        this.turistaAutenticatoService = turistaAutenticatoService;
-        this.materialeService = materialeService;
     }
 
 
@@ -47,6 +44,7 @@ public class PoiServiceImpl implements PoiService {
     public void deleteById(int id) {
         repository.deleteById(id);
     }
+
 
     @Transactional
     @Override
@@ -88,7 +86,7 @@ public class PoiServiceImpl implements PoiService {
 
     @Transactional
     @Override
-    public PuntoInteresse creaPuntoInteresse(String nomePOI, Punto punto,Orario orario,TipologiaPuntoInteresse tipologiaPuntoInteresse, String usernameCreatore ) throws FuoriComuneException,IllegalArgumentException {
+    public PuntoInteresse creaPuntoInteresse(String nomePOI, Punto punto, Orario orario, TipologiaPuntoInteresse tipologiaPuntoInteresse, String usernameCreatore) throws FuoriComuneException, IllegalArgumentException {
         Optional<Contributor> oContributor = contributorService.getByUsername(usernameCreatore);
         if (oContributor.isPresent()) {
             Contributor contributor = oContributor.get();
@@ -112,43 +110,12 @@ public class PoiServiceImpl implements PoiService {
     }
 
 
-
-
     @Override
     public LocalDate getScadenza(int idPunto) throws IllegalArgumentException {
         Optional<LocalDate> oScadenza = repository.getExpireDateById(idPunto);
         if (oScadenza.isEmpty())
             throw new IllegalArgumentException("id punto non valido");
         return oScadenza.get();
-    }
-
-    @Transactional
-    @Override
-    public void aggiungiMateriale(String usernameTurista, int idPuntoInteresse, MaterialeGenerico materialeGenerico) throws IllegalArgumentException,IllegalStateException {
-        Optional<TuristaAutenticato> oTurista = turistaAutenticatoService.getByUsername(usernameTurista);
-        if (oTurista.isEmpty()) {
-            throw new IllegalArgumentException("username non valido");
-        }
-        TuristaAutenticato turistaAutenticato = oTurista.get();
-
-        Optional<PuntoInteresse> oPunto = getById(idPuntoInteresse);
-        if (oPunto.isEmpty()) {
-            throw new IllegalArgumentException("id punto interesse non valido");
-        }
-        PuntoInteresse puntoInteresse = oPunto.get();
-
-        if (turistaAutenticato instanceof Contributor contributor) {
-            if (!contributor.getComune().equals(puntoInteresse.getComune())) {
-                logger.error("il contributor cerca di caricare il materiale fuori dal suo comune");
-                throw new IllegalStateException("il contributor cerca di caricare il materiale fuori dal suo comune");
-            }
-        }
-        if (Boolean.FALSE.equals(puntoInteresse.getStato().asBoolean())) {
-            logger.error("il contributor cerca di caricare il materiale su un punto di interesse non approvato");
-            throw new IllegalStateException("il contributor cerca di caricare il materiale su un punto di interesse non approvato");
-        }
-        materialeService.aggiungiMateriale(puntoInteresse, materialeGenerico);
-        save(puntoInteresse);
     }
 
 
@@ -175,7 +142,7 @@ public class PoiServiceImpl implements PoiService {
 
     @Transactional
     @Override
-    public void aggiungiTag(int idPuntoInteresse, String tag,String usernameContributor) throws FuoriComuneException,IllegalArgumentException,IllegalStateException {
+    public void aggiungiTag(int idPuntoInteresse, String tag, String usernameContributor) throws FuoriComuneException, IllegalArgumentException, IllegalStateException {
         Optional<Contributor> oContributor = contributorService.getByUsername(usernameContributor);
         if (oContributor.isEmpty()) {
             throw new IllegalArgumentException("username non valido");
@@ -189,13 +156,12 @@ public class PoiServiceImpl implements PoiService {
                 logger.warn("Tag già aggiunto");
                 return;
             }
-            if(contributor.getComune()!=puntoInteresse.getComune()){
-                throw new FuoriComuneException(contributor.getUsername()+" non può operare fuori dal suo comune");
+            if (contributor.getComune() != puntoInteresse.getComune()) {
+                throw new FuoriComuneException(contributor.getUsername() + " non può operare fuori dal suo comune");
             }
             if (!puntoInteresse.isExpired()) {
                 tagService.aggiungiTag(puntoInteresse, tag);
-            }
-            else {
+            } else {
                 logger.error("Il Punto di interesse è scaduto");
                 throw new IllegalStateException("Il Punto di interesse è scaduto");
             }
@@ -206,9 +172,10 @@ public class PoiServiceImpl implements PoiService {
         }
     }
 
+
     @Transactional
     @Override
-    public void rimuoviTag(int idPuntoInteresse, String tag,String usernameContributor) throws FuoriComuneException {
+    public void rimuoviTag(int idPuntoInteresse, String tag, String usernameContributor) throws FuoriComuneException, IllegalArgumentException {
         Optional<Contributor> oContributor = contributorService.getByUsername(usernameContributor);
         if (oContributor.isEmpty()) {
             throw new IllegalArgumentException("username non valido");
@@ -221,8 +188,8 @@ public class PoiServiceImpl implements PoiService {
             if (!tagService.haveTag(puntoInteresse, tag)) {
                 return;
             }
-            if(contributor.getComune()!=puntoInteresse.getComune()){
-                throw new FuoriComuneException(contributor.getUsername()+" non può operare fuori dal suo comune");
+            if (contributor.getComune() != puntoInteresse.getComune()) {
+                throw new FuoriComuneException(contributor.getUsername() + " non può operare fuori dal suo comune");
             }
             if (!puntoInteresse.isExpired())
                 tagService.rimuoviTag(puntoInteresse, tag);
@@ -235,24 +202,26 @@ public class PoiServiceImpl implements PoiService {
     }
 
     @Override
-    public List<Taggable> find(Predicate predicate) {
-        List<PuntoInteresse> list=new ArrayList<>();
-        for(PuntoInteresse puntoInteresse:findAll()){
-            if(predicate.test(puntoInteresse))
+    public List<PuntoInteresse> find(Predicate<PuntoInteresse> predicate) {
+        List<PuntoInteresse> list = new ArrayList<>();
+        for (PuntoInteresse puntoInteresse : findAll()) {
+            if (predicate.test(puntoInteresse))
                 list.add(puntoInteresse);
         }
         return Collections.unmodifiableList(list);
     }
 
+
     @Override
-    public List<String> getTags(PuntoInteresse puntoInteresse) {
-        return repository.getTags(puntoInteresse.getId());
+    public List<String> getTags(int idPunto) {
+        return repository.getTags(idPunto);
     }
 
     @Override
     public Optional<PuntoInteresse> getById(int id) {
         return repository.findById(id);
     }
+
 
     @Override
     public Set<MaterialeGenerico> getMaterialiPoi(int idPunto) throws IllegalArgumentException {
@@ -266,13 +235,13 @@ public class PoiServiceImpl implements PoiService {
         }
     }
 
+
     @Transactional
     @Override
     public List<String> getAsList() {
         List<PuntoInteresse> list = findActive();
         return getAsList(list);
     }
-
 
     @Override
     public List<String> getAsList(List<PuntoInteresse> preferiti) {
@@ -303,6 +272,7 @@ public class PoiServiceImpl implements PoiService {
         return repository.findAll();
     }
 
+
     @Transactional
     @Override
     public void setOrario(int idPunto, Orario.OrarioApertura orario, DayOfWeek day) throws IllegalArgumentException {
@@ -323,16 +293,6 @@ public class PoiServiceImpl implements PoiService {
         return repository.findPuntoInteresseByMaterialiContaining(materialeGenerico);
     }
 
-    @Override
-    public List<PuntoInteresse> getPoiByComune(String nomeComune) {
-        List<PuntoInteresse> list=new ArrayList<>();
-        for(PuntoInteresse poi : repository.findPoiByComuneNome(nomeComune)){
-            if(!poi.isExpired() && poi.getStato()==Stato.APPROVATO){
-                list.add(poi);
-            }
-        }
-        return Collections.unmodifiableList(list);
-    }
 
     @Override
     public void deleteIfIsExpired(PuntoInteresse puntoInteresse) {

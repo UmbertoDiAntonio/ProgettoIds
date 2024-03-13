@@ -110,7 +110,6 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
     }
 
 
-
     @Override
     public void addTag(String tag) {
         this.getTags().add(tag);
@@ -119,6 +118,11 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
     @Override
     public void rimuoviTag(String tag) {
         tags.remove(tag);
+    }
+
+    @Override
+    public boolean haveTag(String tag) {
+        return tags.contains(tag);
     }
 
     @Override

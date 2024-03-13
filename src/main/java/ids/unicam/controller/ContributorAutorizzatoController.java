@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/ContributorAutorizzato")
-public class ContributorAutorizzatoController  {
+public class ContributorAutorizzatoController {
 
     private final ContributorAutorizzatoService contributorAutorizzatoService;
 

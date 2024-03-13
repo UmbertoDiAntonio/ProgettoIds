@@ -79,8 +79,13 @@ public class Contest implements Contenitore, Taggable, Expirable {
     }
 
     @Override
-    public void rimuoviTag(String tag){
+    public void rimuoviTag(String tag) {
         tags.remove(tag);
+    }
+
+    @Override
+    public boolean haveTag(String tag) {
+        return tags.contains(tag);
     }
 
     @Override
@@ -104,10 +109,11 @@ public class Contest implements Contenitore, Taggable, Expirable {
         return Collections.unmodifiableList(partecipanti);
     }
 
-    public void aggiungiPartecipante(TuristaAutenticato partecipante){
+    public void aggiungiPartecipante(TuristaAutenticato partecipante) {
         partecipanti.add(partecipante);
     }
-    public void rimuoviPartecipante(TuristaAutenticato partecipante){
+
+    public void rimuoviPartecipante(TuristaAutenticato partecipante) {
         partecipanti.remove(partecipante);
     }
 }

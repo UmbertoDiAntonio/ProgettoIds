@@ -9,15 +9,16 @@ import ids.unicam.models.contenuti.Contest;
 import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
-import ids.unicam.models.contenuti.notifiche.Notifica;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import static ids.unicam.Main.logger;
 
@@ -58,8 +59,13 @@ public class CuratoreServiceImpl implements CuratoreService {
 
 
     @Override
-    public List<Curatore> findByNomeComune(String nomeComune) {
-        return repository.findCuratoreByComuneNome(nomeComune);
+    public List<Curatore> find(Predicate<Curatore> predicate) {
+        List<Curatore> list = new ArrayList<>();
+        for (Curatore curatore : getAll())
+            if (predicate.test(curatore))
+                list.add(curatore);
+
+        return list;
     }
 
     @Override
@@ -75,7 +81,7 @@ public class CuratoreServiceImpl implements CuratoreService {
 
     @Override
     @Transactional
-    public PuntoInteresse valutaPuntoInteresse(String usernameCuratore, int idPuntoInteresse, @Nullable Boolean bStato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException {
+    public void valutaPuntoInteresse(String usernameCuratore, int idPuntoInteresse, @Nullable Boolean bStato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException {
         Optional<Curatore> oCuratore = getByUsername(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
@@ -91,7 +97,7 @@ public class CuratoreServiceImpl implements CuratoreService {
                     throw new UnsupportedOperationException("non puoi impostare stato in attesa");
                 puntoInteresse.setStato(stato);
                 notificaService.creaNotificaApprovazione(curatore, puntoInteresse, stato);
-                return poiServiceImpl.save(puntoInteresse);
+                poiServiceImpl.save(puntoInteresse);
             } else {
                 logger.error("Id del punto di interesse non valido");
                 throw new IllegalArgumentException("Id del punto di interesse non valido");
@@ -104,7 +110,7 @@ public class CuratoreServiceImpl implements CuratoreService {
 
 
     @Override
-    public MaterialeGenerico valutaMateriale(String usernameCuratore, int idMaterialeGenerico, Boolean bStato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException {
+    public void valutaMateriale(String usernameCuratore, int idMaterialeGenerico, Boolean bStato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException {
         Optional<Curatore> oCuratore = getByUsername(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
@@ -136,7 +142,7 @@ public class CuratoreServiceImpl implements CuratoreService {
                 }
                 materialeGenerico.setStato(stato);
                 notificaService.creaNotificaApprovazione(curatore, materialeGenerico, stato);
-                return materialeServiceImpl.save(materialeGenerico);
+                materialeServiceImpl.save(materialeGenerico);
             } else {
                 logger.error("Id del materiale non valido");
                 throw new IllegalArgumentException("Id del materiale non valido");
@@ -266,20 +272,5 @@ public class CuratoreServiceImpl implements CuratoreService {
             throw new IllegalArgumentException("username curatore non valido");
         }
     }
-
-
-    @Override
-    public List<Notifica> getNotifiche(String usernameCuratore) throws IllegalArgumentException {
-        Optional<Curatore> oCuratore = getByUsername(usernameCuratore);
-        if (oCuratore.isPresent()) {
-            Curatore curatore = oCuratore.get();
-            return notificaService.getNotifiche(curatore);
-        } else {
-            logger.error("username del curatore non valido");
-            throw new IllegalArgumentException("username del curatore non valido");
-        }
-    }
-
-
 }
 

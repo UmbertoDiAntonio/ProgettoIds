@@ -86,7 +86,7 @@ public class PuntoInteresseController {
             @Parameter(description = "Tipologia del punto di interesse", schema = @Schema(implementation = TipologiaPuntoInteresse.class)) @RequestParam TipologiaPuntoInteresse tipologiaPuntoInteresse) {
         try {
             return ResponseEntity.ok(poiService.creaPuntoInteresse(nomePOI, new Punto(latitudine, longitudine), new Orario(), tipologiaPuntoInteresse, usernameCreatore));
-        } catch (FuoriComuneException |IllegalArgumentException e) {
+        } catch (FuoriComuneException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -101,7 +101,7 @@ public class PuntoInteresseController {
         try {
             poiService.aggiungiTag(idPuntoInteresse, nomeTag, usernameContributor);
             return ResponseEntity.ok("Aggiunto tag '" + nomeTag + "' al punto di interesse: '" + idPuntoInteresse + "' .");
-        } catch (FuoriComuneException |IllegalArgumentException |IllegalStateException e) {
+        } catch (FuoriComuneException | IllegalArgumentException | IllegalStateException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -159,7 +159,7 @@ public class PuntoInteresseController {
             description = "Ottieni tutti gli Punti di Interesse del Comune.")
     public ResponseEntity<?> getPoi(
             @Parameter(description = "nome del comune") @PathVariable String nomeComune) {
-        return ResponseEntity.ok(comuneService.getPuntiInteresseNelComune(nomeComune));
+        return ResponseEntity.ok(poiService.find(puntoInteresse -> puntoInteresse.getComune().getNome().equals(nomeComune)));
     }
 
 }

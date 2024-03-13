@@ -11,18 +11,21 @@ import java.util.Set;
 public interface Contenitore {
     /**
      * Restituisce l'elenco dei materiali del contenitore sotto forma di un Set<MaterialeGenerico>
+     *
      * @return l'elenco dei materiali del contenitore
      */
     Set<MaterialeGenerico> getMateriali();
 
     /**
      * Aggiungi un oggetto che estende MaterialeGenerico di qualunque tipo ai materiali del contenitore
+     *
      * @param materialeGenerico il materiale da aggiungere
      */
     void aggiungiMateriale(MaterialeGenerico materialeGenerico);
 
     /**
      * Rimuovi un MaterialeGenerico di qualunque tipo ai materiali del contenitore
+     *
      * @param materialeGenerico il materiale da rimuovere
      */
     void rimuoviMateriale(MaterialeGenerico materialeGenerico);

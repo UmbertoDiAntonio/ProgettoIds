@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +26,7 @@ public class InvitoServiceImpl implements InvitoService {
         this.contestService = contestService;
     }
 
+    @Override
     public void deleteById(int id) {
         repository.deleteById(id);
     }
@@ -36,31 +38,34 @@ public class InvitoServiceImpl implements InvitoService {
     }
 
 
+    @Override
     public Optional<Invito> findById(int id) {
         return repository.findById(id);
     }
 
 
+    @Override
     public List<Invito> findAll() {
-        return repository.findAll();
+        return Collections.unmodifiableList(repository.findAll());
     }
 
 
     @Transactional
     @Override
-    public void accettaInvito(TuristaAutenticato turistaAutenticato, Invito invito) throws IllegalArgumentException, ContestException {
+    public void accettaInvito(TuristaAutenticato turistaAutenticato, Invito invito) throws ContestException {
         if (isValid(invito)) {
             if (invito.getInvitato().getUsername().equals(turistaAutenticato.getUsername())) {
                 contestService.aggiungiPartecipante(invito.getContest(), turistaAutenticato);
             } else {
                 logger.error("Non sei Invitato");
-                throw new IllegalArgumentException("Non sei Invitato");
+                throw new ContestException("Non sei Invitato");
             }
         } else {
             logger.warn("Invito non valido");
-            throw new IllegalArgumentException("Invito non valido");
+            throw new ContestException("Invito non valido");
         }
     }
+
 
     @Override
     public boolean isValid(Invito invito) {
@@ -68,6 +73,7 @@ public class InvitoServiceImpl implements InvitoService {
                 && !contestService.getPartecipanti(invito.getContest()).contains(invito.getInvitato())
                 && invito.isValido();
     }
+
 
     @Override
     public List<Invito> getInvitiRicevuti(String usernameTurista) {

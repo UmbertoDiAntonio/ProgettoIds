@@ -2,7 +2,6 @@ package ids.unicam.controller;
 
 
 import ids.unicam.Service.AnimatoreService;
-import ids.unicam.Service.ComuneService;
 import ids.unicam.Service.ContestService;
 import ids.unicam.models.attori.Animatore;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,12 +16,10 @@ import java.util.Optional;
 @RequestMapping("/contest")
 public class ContestController {
     private final ContestService contestService;
-    private final ComuneService comuneService;
     private final AnimatoreService animatoreService;
 
-    public ContestController(ContestService contestService, ComuneService comuneService, AnimatoreService animatoreService) {
+    public ContestController(ContestService contestService, AnimatoreService animatoreService) {
         this.contestService = contestService;
-        this.comuneService = comuneService;
         this.animatoreService = animatoreService;
     }
 
@@ -72,6 +69,6 @@ public class ContestController {
             description = "Ottieni tutti i Contest del Comune.")
     public ResponseEntity<?> getContests(
             @Parameter(description = "nome del comune") @PathVariable String nomeComune) {
-        return ResponseEntity.ok(comuneService.getContestsNelComune(nomeComune));
+        return ResponseEntity.ok(contestService.getContest(contest -> contest.getComune().getNome().equals(nomeComune)));
     }
 }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/Curatore")
-public class CuratoreController{
+public class CuratoreController {
 
     private final CuratoreService curatoreService;
 
@@ -34,7 +34,6 @@ public class CuratoreController{
             @Parameter(description = "username del curatore") @PathVariable String username) {
         return ResponseEntity.ok(curatoreService.getByUsername(username));
     }
-
 
 
     @DeleteMapping("/eliminaItinerario")
@@ -101,7 +100,8 @@ public class CuratoreController{
             @Parameter(description = "id del punto di interesse da valutare") @RequestParam Integer idPunto,
             @Parameter(description = "approvazione o non del punto di interesse") @RequestParam Stato stato) {
         try {
-            return ResponseEntity.ok(curatoreService.valutaPuntoInteresse(usernameCuratore, idPunto, stato.asBoolean()));
+            curatoreService.valutaPuntoInteresse(usernameCuratore, idPunto, stato.asBoolean());
+            return ResponseEntity.ok("Stato del punto di interesse con id " + idPunto + " cambiato in " + stato);
         } catch (FuoriComuneException | IllegalArgumentException | UnsupportedOperationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -115,21 +115,9 @@ public class CuratoreController{
             @Parameter(description = "id del materiale da valutare") @RequestParam Integer idMateriale,
             @Parameter(description = "approvazione o non del materiale") @RequestParam Stato stato) {
         try {
-            return ResponseEntity.ok(curatoreService.valutaMateriale(usernameCuratore, idMateriale, stato.asBoolean()));
+            curatoreService.valutaMateriale(usernameCuratore, idMateriale, stato.asBoolean());
+            return ResponseEntity.ok("Lo stato del materiale con id " + idMateriale + " è stato cambiato in " + stato);
         } catch (FuoriComuneException | IllegalArgumentException | UnsupportedOperationException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
-
-
-    @GetMapping("/getNotifiche/{usernameCuratore}")
-    @Operation(summary = "Elenco delle notifiche di un utente Curatore",
-            description = "Elenco delle notifiche di un utente Curatore dall'identificatore username univoco.")
-    public ResponseEntity<?> getNotifiche(
-            @Parameter(description = "username del curatore") @PathVariable String usernameCuratore) {
-        try {
-            return ResponseEntity.ok(curatoreService.getNotifiche(usernameCuratore));
-        } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }

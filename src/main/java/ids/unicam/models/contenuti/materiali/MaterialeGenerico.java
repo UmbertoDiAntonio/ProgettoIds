@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 
-
 @Getter
 @Entity
 @Table(name = "Materiali")

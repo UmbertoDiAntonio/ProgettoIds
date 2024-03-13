@@ -16,58 +16,98 @@ import java.util.function.Predicate;
 public interface ContestService {
     /**
      * Aggiungi un materiale al contest
-     * @param usernameTurista l'utente che vuole cambiare il materiale
-     * @param idContest l'id del contest in cui caricare il materiale
+     *
+     * @param usernameTurista   l'utente che vuole cambiare il materiale
+     * @param idContest         l'id del contest in cui caricare il materiale
      * @param materialeGenerico il materiale da caricare
-     * @throws ContestException se non sei inscritto al contest o il contest è terminato
+     * @throws ContestException         se non sei inscritto al contest o il contest è terminato
      * @throws IllegalArgumentException se i parametri non sono validi
      */
     void aggiungiMateriale(String usernameTurista, int idContest, MaterialeGenerico materialeGenerico) throws ContestException, FuoriComuneException;
+
     /**
      * Ottieni la lista dei partecipanti del contest
+     *
      * @param contest il contest di cui si vogliono ottenere i partecipanti
      * @return la lista dei partecipanti del contest
      */
     List<TuristaAutenticato> getPartecipanti(Contest contest);
+
     /**
      * Crea un nuovo contest
+     *
      * @param nomeContest il nome da dare al contest
-     * @param obiettivo l'obiettivo del contest
-     * @param creatore il creatore del contest
-     * @param open la modalità di ingresso al contest, aperto o su invito
+     * @param obiettivo   l'obiettivo del contest
+     * @param creatore    il creatore del contest
+     * @param open        la modalità di ingresso al contest, aperto o su invito
      * @return il cotest appena creato
      */
     Contest creaContest(String nomeContest, String obiettivo, Animatore creatore, boolean open);
 
     /**
      * Trova tutti i Contest che rispettano la condizione
+     *
      * @param predicate la condizione da rispettare
      * @return i contest trovati
      */
     List<Taggable> find(Predicate<Contest> predicate);
+
     /**
      * Ottieni tutti i materiali del contest
+     *
      * @param contest il contest di cui si vogliono ottenere i materiali
      * @return la lista dei materiali del contest
      */
     List<MaterialeGenerico> getMaterialiContest(Contest contest);
 
-    void setVincitoreContest(Contest contest, MaterialeGenerico materialeGenerico) throws ContestException;
-
+    /**
+     * Termina un Contest, successivamente l'animatore dovrà decretare il vincitore
+     *
+     * @param contest il contest da terminare
+     */
     void terminaContest(Contest contest);
 
+    /**
+     * Ottieni tutti i Contest presenti nella piattaforma
+     *
+     * @return la lista dei contest presenti sulla piattaforma
+     */
     List<Contest> findAll();
 
-    Contest save(Contest contest);
+    /**
+     * Ottieni il contest che ha come id l'id indicato
+     *
+     * @param id l'id del contest che stiamo cercando
+     * @return se esiste ritorna il contest cercato
+     */
 
     Optional<Contest> findById(int id);
 
     void deleteById(int id);
 
+    Contest save(Contest contest);
+
+    /**
+     * Se esiste ritorna il contest che contiene il materiale
+     *
+     * @param materialeGenerico il materiale di cui volgiamo cercare il contenitore
+     * @return ritorna il contest che contiene il materiale altrimenti Optional.Empty
+     */
     Optional<Contest> getContestContainingMaterial(MaterialeGenerico materialeGenerico);
 
+    /**
+     * Controlla se la validità del contest è terminata e nel caso lo termina
+     *
+     * @param contest il contest che si sta controllando
+     */
     @Transactional
     void checkIfIsExpired(Contest contest);
 
-    List<Contest> getContestByComune(String nomeComune);
+    /**
+     * Trova tutti i contest nella piattaforma che rispettano la condizione
+     *
+     * @param predicate un espressione da valutare sui Contest
+     * @return la lista di contest che rispettano la condizione
+     */
+    List<Contest> getContest(Predicate<Contest> predicate);
 }

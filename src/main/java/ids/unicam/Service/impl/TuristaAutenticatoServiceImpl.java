@@ -2,12 +2,17 @@ package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.TuristaAutenticatoRepository;
 import ids.unicam.Service.InvitoService;
+import ids.unicam.Service.PoiService;
 import ids.unicam.Service.TuristaAutenticatoService;
 import ids.unicam.exception.ContestException;
+import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Invito;
 import ids.unicam.models.Observer;
+import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.TuristaAutenticato;
+import ids.unicam.models.contenuti.Contenitore;
 import ids.unicam.models.contenuti.Contest;
+import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.notifiche.Notifica;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.transaction.Transactional;
@@ -25,13 +30,17 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
     private final ContestServiceImpl contestService;
     private final InvitoService invitoService;
     private final NotificaService notificaService;
+    private final PoiService poiService;
+    private final MaterialeServiceImpl materialeService;
 
     @Autowired
-    public TuristaAutenticatoServiceImpl(TuristaAutenticatoRepository repository, ContestServiceImpl contestService, InvitoService invitoService, NotificaService notificaService) {
+    public TuristaAutenticatoServiceImpl(TuristaAutenticatoRepository repository, ContestServiceImpl contestService, InvitoService invitoService, NotificaService notificaService, PoiService poiService, MaterialeServiceImpl materialeService) {
         this.repository = repository;
         this.contestService = contestService;
         this.invitoService = invitoService;
         this.notificaService = notificaService;
+        this.poiService = poiService;
+        this.materialeService = materialeService;
     }
 
 
@@ -47,31 +56,33 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
         return turistaAutenticato;
     }
 
+
     @Transactional
     @Override
     public void accettaInvitoContest(String usernameUtente, int idInvito) throws IllegalArgumentException, ContestException {
         Optional<TuristaAutenticato> oTurista = getByUsername(usernameUtente);
         if (oTurista.isEmpty()) {
             logger.error("username Utente non valido");
-            throw  new IllegalArgumentException("username Utente non valido");
+            throw new IllegalArgumentException("username Utente non valido");
         }
         TuristaAutenticato turistaAutenticato = oTurista.get();
         Optional<Invito> oInvito = invitoService.findById(idInvito);
         if (oInvito.isEmpty()) {
             logger.error("id Invito non valido");
-            throw  new IllegalArgumentException("id Invito non valido");
+            throw new IllegalArgumentException("id Invito non valido");
         }
         Invito invito = oInvito.get();
         invitoService.accettaInvito(turistaAutenticato, invito);
     }
 
+
     @Transactional
     @Override
-    public void rimuoviPreferito(String usernameTurista, int id) throws IllegalArgumentException {
+    public void rimuoviPreferito(String usernameTurista, int idPunto) throws IllegalArgumentException {
         Optional<TuristaAutenticato> oTurista = getByUsername(usernameTurista);
         if (oTurista.isPresent()) {
             TuristaAutenticato turistaAutenticato = oTurista.get();
-            turistaAutenticato.removeIfPreferito(puntoInteresse -> puntoInteresse.getId() == id);
+            turistaAutenticato.removeIfPreferito(puntoInteresse -> puntoInteresse.getId() == idPunto);
             save(turistaAutenticato);
         } else {
             logger.error("username del turista non valido");
@@ -79,9 +90,80 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
         }
     }
 
+
     @Transactional
     @Override
-    public void aggiungiPreferito(String usernameTurista, PuntoInteresse puntoInteresse) throws IllegalArgumentException {
+    public void aggiungiMateriale(String usernameTurista, int idContenitore, MaterialeGenerico materialeGenerico) throws IllegalArgumentException, IllegalStateException, ContestException, FuoriComuneException {
+        if (poiService.getById(idContenitore).isPresent()) {
+            Optional<TuristaAutenticato> oTurista = getByUsername(usernameTurista);
+            if (oTurista.isEmpty()) {
+                throw new IllegalArgumentException("username non valido");
+            }
+            TuristaAutenticato turistaAutenticato = oTurista.get();
+
+            Optional<PuntoInteresse> oPunto = poiService.getById(idContenitore);
+            if (oPunto.isEmpty()) {
+                throw new IllegalArgumentException("id punto interesse non valido");
+            }
+            PuntoInteresse puntoInteresse = oPunto.get();
+
+            if (turistaAutenticato instanceof Contributor contributor) {
+                if (!contributor.getComune().equals(puntoInteresse.getComune())) {
+                    logger.error("il contributor cerca di caricare il materiale fuori dal suo comune");
+                    throw new FuoriComuneException("il contributor cerca di caricare il materiale fuori dal suo comune");
+                }
+            }
+            if (Boolean.FALSE.equals(puntoInteresse.getStato().asBoolean())) {
+                logger.error("il contributor cerca di caricare il materiale su un punto di interesse non approvato");
+                throw new IllegalStateException("il contributor cerca di caricare il materiale su un punto di interesse non approvato");
+            }
+            aggiungiMateriale(puntoInteresse, materialeGenerico);
+            poiService.save(puntoInteresse);
+        } else {
+            TuristaAutenticato turistaAutenticato = null;
+            Optional<Contest> oContest = contestService.findById(idContenitore);
+            if (oContest.isEmpty()) {
+                throw new IllegalArgumentException("id contest non valido");
+            }
+
+            Contest contest = oContest.get();
+            if (contest.isExpired()) {
+                throw new ContestException("il Contest e' Terminato");
+            }
+
+            if (contest.isOpen()) {
+                contestService.aggiungiPartecipante(contest, materialeGenerico.getCreatore());
+            }
+            if (!contest.isOpen())
+                for (TuristaAutenticato turistaAutenticato1 : contest.getPartecipanti()) {
+                    if (turistaAutenticato1.getUsername().equals(usernameTurista)) {
+                        turistaAutenticato = turistaAutenticato1;
+                    }
+                }
+            if (turistaAutenticato == null && !contest.isOpen()) {
+                throw new ContestException("Devi essere iscritto al contest per caricare materiale su di esso");
+            }
+
+            aggiungiMateriale(contest, materialeGenerico);
+            contestService.save(contest);
+        }
+    }
+
+    private void aggiungiMateriale(Contenitore contenitore, MaterialeGenerico materialeGenerico) {
+        contenitore.aggiungiMateriale(materialeGenerico);
+        materialeService.save(materialeGenerico);
+    }
+
+
+    @Transactional
+    @Override
+    public void aggiungiPreferito(String usernameTurista, int idPunto) throws IllegalArgumentException {
+        Optional<PuntoInteresse> oPunto = poiService.getById(idPunto);
+        if (oPunto.isEmpty()) {
+            logger.error("id punto non valido");
+            throw new IllegalArgumentException("id punto non valido");
+        }
+        PuntoInteresse puntoInteresse = oPunto.get();
         if (Boolean.TRUE.equals(puntoInteresse.getStato().asBoolean())) {
             Optional<TuristaAutenticato> oTurista = getByUsername(usernameTurista);
             if (oTurista.isPresent()) {
@@ -98,6 +180,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
         }
 
     }
+
 
     @Override
     public List<PuntoInteresse> findPreferiti(String usernameTurista) throws IllegalArgumentException {
@@ -133,6 +216,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
             throw new IllegalArgumentException("id del contest non valido");
         }
     }
+
 
     @Transactional
     @Override
@@ -186,10 +270,12 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
         throw new IllegalArgumentException("username del turista non valido");
     }
 
+
     @Override
     public List<Invito> getInviti(String usernameTurista) {
         return invitoService.getInvitiRicevuti(usernameTurista);
     }
+
 
     @Override
     @Transactional

@@ -5,7 +5,6 @@ import ids.unicam.Service.MaterialeService;
 import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.attori.ContributorAutorizzato;
 import ids.unicam.models.attori.TuristaAutenticato;
-import ids.unicam.models.contenuti.Contenitore;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,7 @@ public class MaterialeServiceImpl implements MaterialeService {
 
 
     @Override
-    public MaterialeGenerico crea(String fileMateriale, TipologiaMateriale tipologiaMateriale, TuristaAutenticato creatore) throws IllegalArgumentException {
+    public MaterialeGenerico crea(String fileMateriale, TipologiaMateriale tipologiaMateriale, TuristaAutenticato creatore) {
         TuristaAutenticatoDTO creatoreDTO = new TuristaAutenticatoDTO(creatore.getNome(), creatore.getCognome(), creatore.getDataNascita(), creatore.getPassword(), creatore.getUsername());
         MaterialeGenerico materialeGenerico = switch (tipologiaMateriale) {
             case FOTO -> new Foto(fileMateriale, creatoreDTO);
@@ -61,14 +60,10 @@ public class MaterialeServiceImpl implements MaterialeService {
         return oMateriale.get().getBase64();
     }
 
-    protected void aggiungiMateriale(Contenitore contenitore, MaterialeGenerico materialeGenerico) {
-        contenitore.aggiungiMateriale(materialeGenerico);
-        save(materialeGenerico);
-    }
 
     @Override
-    public Optional<Stato> getStato(MaterialeGenerico foto) {
-        return repository.getStatoById(foto.getId());
+    public Optional<Stato> getStato(int idMateriale) {
+        return repository.getStatoById(idMateriale);
     }
 
     @Override
@@ -92,10 +87,4 @@ public class MaterialeServiceImpl implements MaterialeService {
         return repository.save(materialeGenerico);
     }
 
-
-    @Override
-    public void approvaMateriale(MaterialeGenerico materialeGenerico, Stato stato) {
-        materialeGenerico.setStato(stato);
-        save(materialeGenerico);
-    }
 }

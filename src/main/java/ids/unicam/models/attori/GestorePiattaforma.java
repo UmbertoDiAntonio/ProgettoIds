@@ -17,7 +17,7 @@ public class GestorePiattaforma extends TuristaAutenticato {
 
 
     public GestorePiattaforma(String username, String password) {
-        super(new TuristaAutenticatoDTO("GESTORE","GESTORE",null,password,username));
+        super(new TuristaAutenticatoDTO("GESTORE", "GESTORE", null, password, username));
     }
 
     @Override

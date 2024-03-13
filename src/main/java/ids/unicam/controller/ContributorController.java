@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/Contributor")
-public class ContributorController{
+public class ContributorController {
 
     private final ContributorService contributorService;
     private final GestorePiattaformaService gestorePiattaformaService;
@@ -33,7 +33,6 @@ public class ContributorController{
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(contributorService.getAll());
     }
-
 
 
     @GetMapping("/{username}")

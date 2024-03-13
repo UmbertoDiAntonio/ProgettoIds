@@ -47,6 +47,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
     public void deleteByUsername(String username) {
         repository.deleteById(username);
     }
+
     @Override
     public Animatore save(Animatore animatore) {
         animatore = repository.save(animatore);
@@ -86,7 +87,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
 
 
     @Override
-    public void setVincitoreContest(String usernameAnimatore, int idContest, int idMateriale) throws ContestException,UnsupportedOperationException,IllegalArgumentException {
+    public void setVincitoreContest(String usernameAnimatore, int idContest, int idMateriale) throws ContestException, UnsupportedOperationException, IllegalArgumentException {
         Optional<Animatore> oAnimatore = getByUsername(usernameAnimatore);
         if (oAnimatore.isPresent()) {
             Animatore animatore = oAnimatore.get();
@@ -96,9 +97,21 @@ public class AnimatoreServiceImpl implements AnimatoreService {
                 Optional<MaterialeGenerico> oMateriale = materialeService.getById(idMateriale);
                 if (oMateriale.isPresent()) {
                     MaterialeGenerico materiale = oMateriale.get();
-                    if (animatore.equals(contest.getCreatore()))
-                        contestService.setVincitoreContest(contest, materiale);
-                    else {
+                    if (animatore.equals(contest.getCreatore())) {
+                        if (!contest.getMateriali().contains(materiale)) {
+                            throw new ContestException("il materiale non risulta tra i materiali del contest");
+                        }
+                        if (!contest.isExpired()) {
+                            throw new ContestException("Il Contest deve essere terminato per decretare un vincitore");
+                        }
+                        if (!contest.getPartecipanti().contains(materiale.getCreatore())) {
+                            throw new ContestException("Vincitore non valido, l'utente ha lasciato il Contest");
+                        } else {
+                            contest.setMaterialeVincitore(materiale);
+                            notificaService.creaNotificaVittoriaContest(contest.getCreatore(), contest, contest.getMaterialeVincitore());
+                            contestService.save(contest);
+                        }
+                    } else {
                         logger.error("L'animatore deve essere il creatore del contest");
                         throw new UnsupportedOperationException("L'animatore deve essere il creatore del contest");
                     }
@@ -212,7 +225,8 @@ public class AnimatoreServiceImpl implements AnimatoreService {
                         throw new UnsupportedOperationException("non puoi settare stato in attesa");
                     }
                     if (contestService.getMaterialiContest(contest).contains(materialeGenerico)) {
-                        materialeService.approvaMateriale(materialeGenerico, Stato.toStatus(stato));
+                        materialeGenerico.setStato(Stato.toStatus(stato));
+                        materialeService.save(materialeGenerico);
                     } else {
                         logger.error("Materiale non è nel Contest selezionato");
                         throw new UnsupportedOperationException("Materiale non è nel Contest selezionato");
@@ -260,7 +274,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
 
     @Transactional
     @Override
-    public void aggiungiTagContest(int idContest, String tag, String usernameAnimatore) throws ContestException,IllegalArgumentException,UnsupportedOperationException {
+    public void aggiungiTagContest(int idContest, String tag, String usernameAnimatore) throws ContestException, IllegalArgumentException, UnsupportedOperationException {
         Optional<Animatore> oAnimatore = getByUsername(usernameAnimatore);
         if (oAnimatore.isEmpty()) {
             throw new IllegalArgumentException("username non valido");
@@ -280,7 +294,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
             if (!contest.isExpired()) {
                 tagService.aggiungiTag(contest, tag);
                 contestService.save(contest);
-            }else {
+            } else {
                 logger.warn("Il Contest è terminato");
                 throw new ContestException("Il Contest è terminato");
             }
@@ -291,10 +305,9 @@ public class AnimatoreServiceImpl implements AnimatoreService {
     }
 
 
-
     @Transactional
     @Override
-    public void rimuoviTagContest(int idContest, String tag, String usernameAnimatore) throws ContestException,IllegalArgumentException,UnsupportedOperationException {
+    public void rimuoviTagContest(int idContest, String tag, String usernameAnimatore) throws ContestException, IllegalArgumentException, UnsupportedOperationException {
         Optional<Animatore> oAnimatore = getByUsername(usernameAnimatore);
         if (oAnimatore.isEmpty()) {
             throw new IllegalArgumentException("username non valido");
@@ -313,8 +326,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
             if (!contest.isExpired()) {
                 tagService.rimuoviTag(contest, tag);
                 contestService.save(contest);
-            }
-            else {
+            } else {
                 logger.warn("Il Contest è terminato");
                 throw new ContestException("Il Contest è terminato");
             }

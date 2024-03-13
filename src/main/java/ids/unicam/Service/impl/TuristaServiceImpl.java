@@ -24,14 +24,22 @@ public class TuristaServiceImpl implements TuristaService {
         this.contestService = contestService;
     }
 
+
     @Override
     public List<Taggable> findByTag(String tag) {
-        List<Taggable> temp=new ArrayList<>();
-        temp.addAll(contestService.find(contest -> contest.getTags().contains(tag)));
-        temp.addAll(poiService.find(puntoInteresse -> puntoInteresse.getTags().contains(tag)));
+        List<Taggable> temp = new ArrayList<>();
+        temp.addAll(contestService.find(contest -> contest.haveTag(tag)));
+        temp.addAll(poiService.find(puntoInteresse -> puntoInteresse.haveTag(tag)));
         return temp;
     }
 
+    /**
+     * Segnala un punto di interesse ai curatori del comune in cui è localizzato
+     *
+     * @param idPuntoInteresse l'id del punto di interesse
+     * @param messaggio        il motivo della segnalazione
+     * @throws IllegalArgumentException se l'id del punto ti interesse non è valido
+     */
     @Override
     public void report(int idPuntoInteresse, String messaggio) throws IllegalArgumentException {
         notificaReportService.creaNotificaReport(idPuntoInteresse, messaggio);
