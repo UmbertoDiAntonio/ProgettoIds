@@ -44,18 +44,29 @@ public class TuristaAutenticato {
         this.username = turistaDTO.getUsername();
     }
 
+    /**
+     * Metodo per ottenere la lista dei punti preferiti di un utente.
+     *
+     * @return la lista dei punti di interesse preferiti
+     */
     public List<PuntoInteresse> getPreferiti() {
         return Collections.unmodifiableList(preferiti);
     }
 
-    public boolean addPreferito(PuntoInteresse preferito) {
-        return preferiti.add(preferito);
+    /**
+     * Metodo per aggiungere un punto di interesse ai propri preferiti
+     *
+     * @param preferito il punto di interesse da aggiungere ai preferiti
+     */
+    public void addPreferito(PuntoInteresse preferito) {
+        preferiti.add(preferito);
     }
 
-    public void removePreferito(PuntoInteresse preferito) {
-        preferiti.remove(preferito);
-    }
-
+    /**
+     * Metodo per rimuovere punto di interesse dalla propria lista dei preferiti, se presente
+     *
+     * @param predicate la condizione da rispettare
+     */
     public void removeIfPreferito(Predicate<PuntoInteresse> predicate) {
         preferiti.removeIf(predicate);
     }

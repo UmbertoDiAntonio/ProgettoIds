@@ -25,6 +25,7 @@ public class Invito {
     @Getter
     @OneToOne
     private TuristaAutenticato invitato = null;
+
     @Getter
     @Setter
     private boolean valido = true;

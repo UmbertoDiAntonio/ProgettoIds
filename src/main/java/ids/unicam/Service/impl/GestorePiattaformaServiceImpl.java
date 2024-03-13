@@ -141,7 +141,7 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
 
     @Override
     public void creaGestore(String username, String password) {
-        GestorePiattaforma gestorePiattaforma = new GestorePiattaforma(username, password);
+        GestorePiattaforma gestorePiattaforma = GestorePiattaforma.getInstance(username, password);
         repository.save(gestorePiattaforma);
     }
 

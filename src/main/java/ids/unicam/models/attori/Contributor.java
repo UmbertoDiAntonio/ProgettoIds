@@ -24,7 +24,6 @@ public class Contributor extends TuristaAutenticato {
 
     }
 
-
     public Contributor(ContributorDTO contributorDTO) throws ConnessioneFallitaException, RuntimeException {
         super(contributorDTO.getTuristaDTO());
         this.comune = new Comune(contributorDTO.getComune().getNome());

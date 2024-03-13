@@ -1,6 +1,5 @@
 package ids.unicam.controller;
 
-import ids.unicam.Service.ComuneService;
 import ids.unicam.Service.PoiService;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.Punto;
