@@ -1,16 +1,12 @@
 package ids.unicam.Service;
 
 import ids.unicam.models.contenuti.Taggable;
-import ids.unicam.models.contenuti.puntiInteresse.Tag;
-import jakarta.transaction.Transactional;
 
 public interface TagService {
 
-    Tag save(Tag tag);
+    void aggiungiTag(Taggable taggableObject, String tag);
 
-    void aggiungiTag(Taggable taggableObject, Tag tag);
+    void rimuoviTag(Taggable taggableObject, String tag);
 
-    void rimuoviTag(Taggable taggableObject, Tag tag);
-
-    boolean haveTag(Taggable taggableObject, Tag tag);
+    boolean haveTag(Taggable taggableObject, String tag);
 }

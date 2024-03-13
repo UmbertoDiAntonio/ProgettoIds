@@ -4,7 +4,6 @@ import ids.unicam.Service.ContestService;
 import ids.unicam.Service.PoiService;
 import ids.unicam.Service.TuristaService;
 import ids.unicam.models.contenuti.Taggable;
-import ids.unicam.models.contenuti.puntiInteresse.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,9 +26,9 @@ public class TuristaServiceImpl implements TuristaService {
 
     @Override
     public List<Taggable> findByTag(String tag) {
-        List< Taggable> temp=new ArrayList<>();
-        temp.addAll(contestService.findByTag(tag));
-        temp.addAll(poiService.findByTag(tag));
+        List<Taggable> temp=new ArrayList<>();
+        temp.addAll(contestService.find(contest -> contest.getTags().contains(tag)));
+        temp.addAll(poiService.find(puntoInteresse -> puntoInteresse.getTags().contains(tag)));
         return temp;
     }
 

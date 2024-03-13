@@ -1,7 +1,6 @@
 package ids.unicam.models.contenuti;
 
-import ids.unicam.models.contenuti.puntiInteresse.Tag;
-
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -11,12 +10,12 @@ public interface Taggable {
     /**
      * @return tutti i tag dell'oggetto
      */
-    Set<Tag> getTags();
+    List<String> getTags();
 
     /**
      * @param tag Tag da aggiungere all'oggetto
      */
-    void addTag(Tag tag);
+    void addTag(String tag);
 
-    void rimuoviTag(Tag tag);
+    void rimuoviTag(String tag);
 }

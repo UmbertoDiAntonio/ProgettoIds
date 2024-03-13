@@ -2,10 +2,9 @@ package ids.unicam.controller;
 
 
 import ids.unicam.Service.AnimatoreService;
+import ids.unicam.Service.ComuneService;
 import ids.unicam.Service.ContestService;
-import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.attori.Animatore;
-import ids.unicam.models.contenuti.puntiInteresse.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.http.HttpStatus;
@@ -18,10 +17,12 @@ import java.util.Optional;
 @RequestMapping("/contest")
 public class ContestController {
     private final ContestService contestService;
+    private final ComuneService comuneService;
     private final AnimatoreService animatoreService;
 
-    public ContestController(ContestService contestService, AnimatoreService animatoreService) {
+    public ContestController(ContestService contestService, ComuneService comuneService, AnimatoreService animatoreService) {
         this.contestService = contestService;
+        this.comuneService = comuneService;
         this.animatoreService = animatoreService;
     }
 
@@ -64,5 +65,13 @@ public class ContestController {
             @Parameter(description = "id del contest") @PathVariable Integer idContest) {
         contestService.deleteById(idContest);
         return ResponseEntity.ok("Il contest con id '" + idContest + "' e' stato eliminato.");
+    }
+
+    @GetMapping("/{nomeComune}/getContests")
+    @Operation(summary = "Ottieni i Contest del Comune",
+            description = "Ottieni tutti i Contest del Comune.")
+    public ResponseEntity<?> getContests(
+            @Parameter(description = "nome del comune") @PathVariable String nomeComune) {
+        return ResponseEntity.ok(comuneService.getContestsNelComune(nomeComune));
     }
 }

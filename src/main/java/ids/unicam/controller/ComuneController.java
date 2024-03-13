@@ -120,21 +120,8 @@ public class ComuneController {
         return ResponseEntity.ok(comuneService.getAnimatoriDelComune(nomeComune, usernameGestore));
     }
 
-    @GetMapping("/{nomeComune}/getPuntiInteresse")//TODO sposta, aggiungi controllo se sono validi
-    @Operation(summary = "Ottieni Punti Interesse del Comune",
-            description = "Ottieni tutti gli Punti di Interesse del Comune.")
-    public ResponseEntity<?> getPoi(
-            @Parameter(description = "nome del comune") @PathVariable String nomeComune) {
-        return ResponseEntity.ok(comuneService.getPuntiInteresseNelComune(nomeComune));
-    }
 
   
 
-    @GetMapping("/{nomeComune}/getContests")//TODO sposta
-    @Operation(summary = "Ottieni i Contest del Comune",
-            description = "Ottieni tutti i Contest del Comune.")
-    public ResponseEntity<?> getContests(
-            @Parameter(description = "nome del comune") @PathVariable String nomeComune) {
-        return ResponseEntity.ok(comuneService.getContestsNelComune(nomeComune));
-    }
+
 }

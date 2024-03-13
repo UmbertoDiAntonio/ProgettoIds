@@ -27,7 +27,7 @@ public class NotificaReportService {
         Optional<PuntoInteresse> oPuntoInteresse = poiService.getById(idPuntoInteresse);
         if (oPuntoInteresse.isPresent()) {
             PuntoInteresse puntoInteresse = oPuntoInteresse.get();
-            comuneService.getCuratoriDelComune(puntoInteresse.getComune().getNome()).forEach(curatore ->
+            comuneService.getCuratoriDelComune(puntoInteresse.getComune().getNome(),"admin").forEach(curatore ->
                     notificaService.save(new NotificaBuilder().withTitolo("Segnalazione: " + puntoInteresse.getNome())
                             .withDescrizione(messaggio)
                             .withDestinatario(curatore).build()));

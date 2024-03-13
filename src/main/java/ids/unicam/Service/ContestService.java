@@ -12,15 +12,35 @@ import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public interface ContestService {
+    /**
+     * Aggiungi un materiale al contest
+     * @param usernameTurista l'utente che vuole cambiare il materiale
+     * @param idContest l'id del contest in cui caricare il materiale
+     * @param materialeGenerico il materiale da caricare
+     * @throws ContestException se non sei inscritto al contest o il contest è terminato
+     * @throws IllegalArgumentException se i parametri non sono validi
+     */
     void aggiungiMateriale(String usernameTurista, int idContest, MaterialeGenerico materialeGenerico) throws ContestException, FuoriComuneException;
-
+    /**
+     * Ottieni la lista dei partecipanti del contest
+     * @param contest il contest di cui si vogliono ottenere i partecipanti
+     * @return la lista dei partecipanti del contest
+     */
     List<TuristaAutenticato> getPartecipanti(Contest contest);
-
+    /**
+     * Crea un nuovo contest
+     * @param nomeContest il nome da dare al contest
+     * @param obiettivo l'obiettivo del contest
+     * @param creatore il creatore del contest
+     * @param open la modalità di ingresso al contest, aperto o su invito
+     * @return il cotest appena creato
+     */
     Contest creaContest(String nomeContest, String obiettivo, Animatore creatore, boolean open);
 
-    List<Taggable> findByTag(String tag);
+    List<Taggable> find(Predicate<Contest> predicate);
 
     List<Contest> getContestByCreatore(Animatore animatore);
 
@@ -32,7 +52,7 @@ public interface ContestService {
 
     void setVincitoreContest(Contest contest, MaterialeGenerico materialeGenerico) throws ContestException;
 
-    void terminaContest(Contest contest) throws ContestException;
+    void terminaContest(Contest contest);
 
     List<Contest> findAll();
 

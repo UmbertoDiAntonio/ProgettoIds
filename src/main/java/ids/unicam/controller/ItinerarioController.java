@@ -81,7 +81,7 @@ public class ItinerarioController {
         }
     }
 
-    @PutMapping("/rimuoviTappa")//TODo spostato
+    @PutMapping("/rimuoviTappa")
     @Operation(summary = "Rimuovi tappa ad un itinerario",
             description = "Rimossa di una tappa ad un itinerario esistente.")
     public ResponseEntity<?> rimuoviTappaItinerario(

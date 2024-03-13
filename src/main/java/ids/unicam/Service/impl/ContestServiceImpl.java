@@ -14,8 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 @Service
 public class ContestServiceImpl implements ContestService {
@@ -29,7 +32,6 @@ public class ContestServiceImpl implements ContestService {
         this.materialeService = materialeService;
         this.notificaService = notificaService;
     }
-
 
     public void deleteById(int id) {
         repository.deleteById(id);
@@ -54,10 +56,19 @@ public class ContestServiceImpl implements ContestService {
         return save(new Contest(nomeContest, obiettivo, creatore, open));
     }
 
-    @Override
+//TODO
     public List<Taggable> findByTag(String tag) {
-        return repository.findByTagsValoreContaining(tag);
+        return null;
     }
+    @Override
+    public List<Taggable> find(Predicate<Contest> predicate) {
+        List<Taggable> list =new ArrayList<>();
+        for(Contest contest : findAll())
+            if(predicate.test(contest))
+                list.add(contest);
+        return Collections.unmodifiableList(list);
+    }
+
 
     @Override
     public List<Contest> getContestByCreatore(Animatore animatore) {
@@ -67,11 +78,11 @@ public class ContestServiceImpl implements ContestService {
 
     @Transactional
     @Override
-    public void aggiungiMateriale(String usernameTurista, int idContest, MaterialeGenerico materialeGenerico) throws ContestException, FuoriComuneException {
+    public void aggiungiMateriale(String usernameTurista, int idContest, MaterialeGenerico materialeGenerico) throws ContestException, IllegalArgumentException {
         TuristaAutenticato turistaAutenticato = null;
         Optional<Contest> oContest = findById(idContest);
         if (oContest.isEmpty()) {
-            throw new FuoriComuneException("id contest non valido");
+            throw new IllegalArgumentException("id contest non valido");
         }
 
         Contest contest = oContest.get();
@@ -99,7 +110,7 @@ public class ContestServiceImpl implements ContestService {
 
     @Override
     public List<TuristaAutenticato> getPartecipanti(Contest contest) {
-        return repository.findPartecipantiByContest(contest.getId());
+        return Collections.unmodifiableList(repository.findPartecipantiByContest(contest.getId()));
     }
 
     @Override
@@ -158,7 +169,6 @@ public class ContestServiceImpl implements ContestService {
     @Override
     public List<MaterialeGenerico> getMaterialiContest(Contest contenutoGenerico) {
         return repository.getMateriali(contenutoGenerico.getId());
-
     }
 
     @Override

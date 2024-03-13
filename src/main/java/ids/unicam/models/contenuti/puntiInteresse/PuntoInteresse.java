@@ -16,10 +16,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import static ids.unicam.Main.logger;
 
@@ -30,8 +27,8 @@ import static ids.unicam.Main.logger;
 @Table(name = "Punti_di_Interesse")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class PuntoInteresse implements Contenitore, Taggable, Expirable {
-    @OneToMany(fetch = FetchType.EAGER)
-    private final Set<Tag> tags = new HashSet<>();
+    @ElementCollection(fetch = FetchType.EAGER)
+    private final List<String> tags = new ArrayList<>();
     @OneToMany(fetch = FetchType.EAGER)
     private final Set<MaterialeGenerico> materiali = new HashSet<>();
     @Id
@@ -78,7 +75,7 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
     }
 
     @Override
-    public Set<Tag> getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
@@ -115,12 +112,12 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
 
 
     @Override
-    public void addTag(Tag tag) {
+    public void addTag(String tag) {
         this.getTags().add(tag);
     }
 
     @Override
-    public void rimuoviTag(Tag tag) {
+    public void rimuoviTag(String tag) {
         tags.remove(tag);
     }
 

@@ -33,7 +33,6 @@ public class CreazioneTabelleDatabase {
         creaTabellaItinerariPercorso(connection);
         creaTabellaOrariPuntoInteresse(connection);
         creaTabellaInvito(connection);
-        creaTabellaTag(connection);
         creaTabellaTagPuntoInteresse(connection);
         creaTabellaTagItinerario(connection);
         creaTabellaPreferiti(connection);
@@ -53,7 +52,7 @@ public class CreazioneTabelleDatabase {
         String[] tableNames = {
                 "NOTIFICA", "CONTEST_MATERIALI", "PUNTI_DI_INTERESSE_MATERIALI",
                 "CURATORI_OSSERVATORI", "CONTEST_TAGS", "TURISTI_PREFERITI", "ITINERARIO_TAGS",
-                "PUNTI_DI_INTERESSE_TAGS", "TAG", "INVITO", "PUNTO_INTERESSE_HOURS_MAP",
+                "PUNTO_INTERESSE_TAGS", "INVITO", "PUNTO_INTERESSE_HOURS_MAP",
                 "ITINERARI_PERCORSO", "CONTEST_PARTECIPANTI", "COMUNI", "MATERIALI",
                 "CONTEST", "ITINERARI", "PUNTI_DI_INTERESSE",
                 "CURATORI", "ANIMATORI", "CONTRIBUTOR_AUTORIZZATI",
@@ -132,27 +131,13 @@ public class CreazioneTabelleDatabase {
         }
     }
 
-    private void creaTabellaTag(@NotNull Connection connection) {
-        String createTableSQL =
-                "CREATE TABLE IF NOT EXISTS TAG(" +
-                        "id INT AUTO_INCREMENT," +
-                        "VALORE VARCHAR(50)," +
-                        "PRIMARY KEY (id))";
-        try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella Tag Punto Interesse", e);
-        }
-    }
 
     private void creaTabellaTagPuntoInteresse(@NotNull Connection connection) {
         String createTableSQL =
-                "CREATE TABLE IF NOT EXISTS PUNTI_DI_INTERESSE_TAGS(" +
-                        "id INT AUTO_INCREMENT," +
+                "CREATE TABLE IF NOT EXISTS PUNTO_INTERESSE_TAGS(" +
                         "punto_interesse_id INT," +
-                        "tags_id INT," +
-                        "PRIMARY KEY (id,punto_interesse_id, tags_id)," +
-                        "FOREIGN KEY (tags_id) REFERENCES TAG(id)," +
+                        "tags VARCHAR(100)," +
+                        "PRIMARY KEY (punto_interesse_id, tags)," +
                         "FOREIGN KEY (punto_interesse_id) REFERENCES PUNTI_DI_INTERESSE(id))";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
@@ -165,7 +150,7 @@ public class CreazioneTabelleDatabase {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS ITINERARIO_TAGS(" +
                         "itinerario_id INT," +
-                        "tags VARCHAR(50)," +
+                        "tags VARCHAR(100)," +
                         "PRIMARY KEY (itinerario_id, tags)," +
                         "FOREIGN KEY (itinerario_id) REFERENCES ITINERARI(id))";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
@@ -208,8 +193,7 @@ public class CreazioneTabelleDatabase {
         String createTableSQL =
                 "CREATE TABLE IF NOT EXISTS CONTEST_TAGS(" +
                         "contest_id INT," +
-                        "tags VARCHAR(50)," +
-                        "tags_id INT," +
+                        "tags VARCHAR(100)," +
                         "PRIMARY KEY (contest_id, tags)," +
                         "FOREIGN KEY (contest_id) REFERENCES contest(id))";
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {

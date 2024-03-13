@@ -1,13 +1,14 @@
 package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.PoiRepository;
-import ids.unicam.Service.*;
+import ids.unicam.Service.ContributorService;
+import ids.unicam.Service.PoiService;
+import ids.unicam.Service.TagService;
+import ids.unicam.Service.TuristaAutenticatoService;
 import ids.unicam.exception.FuoriComuneException;
-import ids.unicam.models.Comune;
 import ids.unicam.models.Punto;
 import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.attori.ContributorAutorizzato;
-import ids.unicam.models.attori.Curatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.Taggable;
@@ -18,10 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static ids.unicam.Main.logger;
@@ -33,16 +32,14 @@ public class PoiServiceImpl implements PoiService {
     private final ContributorService contributorService;
     private final TuristaAutenticatoService turistaAutenticatoService;
     private final MaterialeServiceImpl materialeService;
-    private final NotificaService notificaService;
 
     @Autowired
-    public PoiServiceImpl(PoiRepository repository, TagService tagService, ContributorService contributorService, TuristaAutenticatoService turistaAutenticatoService, MaterialeServiceImpl materialeService, NotificaService notificaService) {
+    public PoiServiceImpl(PoiRepository repository, TagService tagService, ContributorService contributorService, TuristaAutenticatoService turistaAutenticatoService, MaterialeServiceImpl materialeService) {
         this.repository = repository;
         this.tagService = tagService;
         this.contributorService = contributorService;
         this.turistaAutenticatoService = turistaAutenticatoService;
         this.materialeService = materialeService;
-        this.notificaService = notificaService;
     }
 
 
@@ -178,7 +175,7 @@ public class PoiServiceImpl implements PoiService {
 
     @Transactional
     @Override
-    public void aggiungiTag(int idPuntoInteresse, Tag tag,String usernameContributor) throws FuoriComuneException,IllegalArgumentException,IllegalStateException {
+    public void aggiungiTag(int idPuntoInteresse, String tag,String usernameContributor) throws FuoriComuneException,IllegalArgumentException,IllegalStateException {
         Optional<Contributor> oContributor = contributorService.getByUsername(usernameContributor);
         if (oContributor.isEmpty()) {
             throw new IllegalArgumentException("username non valido");
@@ -211,7 +208,7 @@ public class PoiServiceImpl implements PoiService {
 
     @Transactional
     @Override
-    public void rimuoviTag(int idPuntoInteresse, Tag tag,String usernameContributor) throws FuoriComuneException {
+    public void rimuoviTag(int idPuntoInteresse, String tag,String usernameContributor) throws FuoriComuneException {
         Optional<Contributor> oContributor = contributorService.getByUsername(usernameContributor);
         if (oContributor.isEmpty()) {
             throw new IllegalArgumentException("username non valido");
@@ -238,12 +235,17 @@ public class PoiServiceImpl implements PoiService {
     }
 
     @Override
-    public List<Taggable> findByTag(String tag) {
-        return repository.findByTagsValoreContaining(tag);
+    public List<Taggable> find(Predicate predicate) {
+        List<PuntoInteresse> list=new ArrayList<>();
+        for(PuntoInteresse puntoInteresse:findAll()){
+            if(predicate.test(puntoInteresse))
+                list.add(puntoInteresse);
+        }
+        return Collections.unmodifiableList(list);
     }
 
     @Override
-    public List<Tag> getTags(PuntoInteresse puntoInteresse) {
+    public List<String> getTags(PuntoInteresse puntoInteresse) {
         return repository.getTags(puntoInteresse.getId());
     }
 
@@ -322,8 +324,14 @@ public class PoiServiceImpl implements PoiService {
     }
 
     @Override
-    public List<PuntoInteresse> getPoiByComune(Comune comune) {
-        return repository.findPoiByComune(comune);
+    public List<PuntoInteresse> getPoiByComune(String nomeComune) {
+        List<PuntoInteresse> list=new ArrayList<>();
+        for(PuntoInteresse poi : repository.findPoiByComuneNome(nomeComune)){
+            if(!poi.isExpired() && poi.getStato()==Stato.APPROVATO){
+                list.add(poi);
+            }
+        }
+        return Collections.unmodifiableList(list);
     }
 
     @Override

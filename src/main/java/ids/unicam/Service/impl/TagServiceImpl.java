@@ -1,42 +1,28 @@
 package ids.unicam.Service.impl;
 
-import ids.unicam.DataBase.Repository.TagRepository;
 import ids.unicam.Service.TagService;
 import ids.unicam.models.contenuti.Taggable;
-import ids.unicam.models.contenuti.puntiInteresse.Tag;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
 public class TagServiceImpl implements TagService {
-    private final TagRepository repository;
 
-    public TagServiceImpl(TagRepository repository) {
-        this.repository = repository;
-    }
 
     @Transactional
     @Override
-    public Tag save(Tag tag) {
-        return repository.save(tag);
-    }
-
-    @Transactional
-    @Override
-    public void aggiungiTag(Taggable taggableObject, Tag tag) {
+    public void aggiungiTag(Taggable taggableObject, String tag) {
         taggableObject.addTag(tag);
-        save(tag);
     }
 
     @Transactional
     @Override
-    public void rimuoviTag(Taggable taggableObject, Tag tag) {
+    public void rimuoviTag(Taggable taggableObject, String tag) {
         taggableObject.rimuoviTag(tag);
-        save(tag);
     }
 
     @Override
-    public boolean haveTag(Taggable taggableObject, Tag tag) {
+    public boolean haveTag(Taggable taggableObject, String tag) {
         return taggableObject.getTags().contains(tag);
     }
 }

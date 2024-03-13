@@ -5,7 +5,6 @@ import ids.unicam.models.Expirable;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
-import ids.unicam.models.contenuti.puntiInteresse.Tag;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,8 +19,8 @@ import java.util.*;
 public class Contest implements Contenitore, Taggable, Expirable {
     @OneToMany(fetch = FetchType.EAGER)
     private final List<TuristaAutenticato> partecipanti = new ArrayList<>();
-    @OneToMany(fetch = FetchType.EAGER)
-    private final Set<Tag> tags = new HashSet<>();
+    @ElementCollection(fetch = FetchType.EAGER)
+    private final List<String> tags = new ArrayList<>();
     @OneToMany(fetch = FetchType.EAGER)
     private final Set<MaterialeGenerico> materiali = new HashSet<>();
     @Id
@@ -70,17 +69,17 @@ public class Contest implements Contenitore, Taggable, Expirable {
     }
 
     @Override
-    public Set<Tag> getTags() {
-        return Collections.unmodifiableSet(tags);
+    public List<String> getTags() {
+        return Collections.unmodifiableList(tags);
     }
 
     @Override
-    public void addTag(Tag tag) {
+    public void addTag(String tag) {
         tags.add(tag);
     }
 
     @Override
-    public void rimuoviTag(Tag tag){
+    public void rimuoviTag(String tag){
         tags.remove(tag);
     }
 

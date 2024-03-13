@@ -1,14 +1,7 @@
 package ids.unicam.controller;
 
 import ids.unicam.Service.AnimatoreService;
-import ids.unicam.Service.GestorePiattaformaService;
-import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.exception.ContestException;
-import ids.unicam.models.DTO.ContributorDTO;
-import ids.unicam.models.attori.Ruolo;
-import ids.unicam.models.attori.TuristaAutenticato;
-import ids.unicam.models.contenuti.RuoloRegistrazione;
-import ids.unicam.models.contenuti.puntiInteresse.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -55,7 +48,8 @@ public class AnimatoreController {
             @Parameter(description = "id del materiale da approvare") @PathVariable Integer idMateriale,
             @Parameter(description = "scelta di approvare o non il materiale") @RequestBody boolean stato) {
         try {
-            return ResponseEntity.ok(animatoreService.approvaMateriale(usernameAnimatore, idContest, idMateriale, stato));
+            animatoreService.approvaMateriale(usernameAnimatore, idContest, idMateriale, stato);
+            return ResponseEntity.ok("stato materiale "+idMateriale+" cambiato in "+stato);
         } catch (UnsupportedOperationException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -141,7 +135,7 @@ public class AnimatoreController {
             @Parameter(description = "ID del contest") @RequestParam Integer idContest,
             @Parameter(description = "username dell' Animatore") @RequestParam String usernameAnimatore) {
         try {
-            animatoreService.aggiungiTagContest(idContest, new Tag(nomeTag), usernameAnimatore);
+            animatoreService.aggiungiTagContest(idContest, nomeTag, usernameAnimatore);
             return ResponseEntity.ok("Aggiunto tag '" + nomeTag + "' al punto di interesse: '" + idContest + "' .");
         } catch (ContestException | IllegalArgumentException | IllegalStateException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -156,7 +150,7 @@ public class AnimatoreController {
             @Parameter(description = "ID del contest") @RequestParam Integer idContest,
             @Parameter(description = "username dell' Animatore") @RequestParam String usernameAnimatore) {
         try {
-            animatoreService.rimuoviTagContest(idContest, new Tag(nomeTag), usernameAnimatore);
+            animatoreService.rimuoviTagContest(idContest, nomeTag, usernameAnimatore);
             return ResponseEntity.ok("Rimosso tag '" + nomeTag + "' dal punto di interesse: '" + idContest + "' .");
         } catch (ContestException | IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

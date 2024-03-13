@@ -30,5 +30,4 @@ public interface ContestRepository extends JpaRepository<Contest, Integer> {
     @Query("select i from Contest i where i.comune.nome =:nomeComune")
     List<Contest> findContestByComune(String nomeComune);
 
-    List<Taggable> findByTagsValoreContaining(String tag);
 }

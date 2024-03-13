@@ -1,7 +1,6 @@
 package ids.unicam.Service;
 
 import ids.unicam.exception.FuoriComuneException;
-import ids.unicam.models.Comune;
 import ids.unicam.models.Punto;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.Taggable;
@@ -13,6 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 
 public interface PoiService {
 
@@ -29,14 +29,14 @@ public interface PoiService {
 
     List<PuntoInteresse> findActive();
 
-    void aggiungiTag(int idPuntoInteresse, Tag tag,String usernameContributor) throws FuoriComuneException,IllegalArgumentException,IllegalStateException;
+    void aggiungiTag(int idPuntoInteresse, String tag,String usernameContributor) throws FuoriComuneException,IllegalArgumentException,IllegalStateException;
 
     @Transactional
-    void rimuoviTag(int idPuntoInteresse, Tag tag, String usernameContributor) throws FuoriComuneException;
+    void rimuoviTag(int idPuntoInteresse, String tag, String usernameContributor) throws FuoriComuneException;
 
-    List<Taggable> findByTag(String tag);
+    List<Taggable> find(Predicate<PuntoInteresse> predicate);
 
-    List<Tag> getTags(PuntoInteresse puntoInteresse);
+    List<String> getTags(PuntoInteresse puntoInteresse);
 
     Optional<PuntoInteresse> getById(int id);
 
@@ -61,7 +61,9 @@ public interface PoiService {
 
     Optional<PuntoInteresse> getPoiContainingMaterial(MaterialeGenerico materialeGenerico);
 
-    List<PuntoInteresse> getPoiByComune(Comune comune);
+    List<PuntoInteresse> getPoiByComune(String nomeComune);
 
     void deleteIfIsExpired(PuntoInteresse puntoInteresse);
+
+
 }

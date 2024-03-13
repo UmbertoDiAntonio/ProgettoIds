@@ -12,9 +12,12 @@ import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public interface ComuneService {
-    
+
+
+    List<Comune> find(Predicate<Comune> predicate);
 
     List<Animatore> getAnimatoriDelComune(String nomeComune, String usernameGestore);
 

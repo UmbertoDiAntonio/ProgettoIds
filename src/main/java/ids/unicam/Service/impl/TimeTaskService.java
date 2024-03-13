@@ -35,7 +35,7 @@ public class TimeTaskService extends TimerTask {
             for (Comune comune : comuneService.findAll()) {
                 for (Contest contest : contestService.getContestByComune(comune.getNome()))
                     contestService.checkIfIsExpired(contest);
-                for (PuntoInteresse puntoInteresse : poiService.getPoiByComune(comune)) {
+                for (PuntoInteresse puntoInteresse : poiService.getPoiByComune(comune.getNome())) {
                     poiService.deleteIfIsExpired(puntoInteresse);
                 }
             }
