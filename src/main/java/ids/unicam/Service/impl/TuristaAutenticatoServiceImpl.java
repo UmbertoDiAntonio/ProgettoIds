@@ -1,7 +1,6 @@
 package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.TuristaAutenticatoRepository;
-import ids.unicam.Service.ContestService;
 import ids.unicam.Service.InvitoService;
 import ids.unicam.Service.TuristaAutenticatoService;
 import ids.unicam.exception.ContestException;
@@ -23,12 +22,12 @@ import static ids.unicam.Main.logger;
 @Service
 public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService, Observer {
     private final TuristaAutenticatoRepository repository;
-    private final ContestService contestService;
+    private final ContestServiceImpl contestService;
     private final InvitoService invitoService;
     private final NotificaService notificaService;
 
     @Autowired
-    public TuristaAutenticatoServiceImpl(TuristaAutenticatoRepository repository, ContestService contestService, InvitoService invitoService, NotificaService notificaService) {
+    public TuristaAutenticatoServiceImpl(TuristaAutenticatoRepository repository, ContestServiceImpl contestService, InvitoService invitoService, NotificaService notificaService) {
         this.repository = repository;
         this.contestService = contestService;
         this.invitoService = invitoService;
@@ -147,7 +146,8 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
                 if (!contest.getPartecipanti().contains(turistaAutenticato)) {
                     logger.warn("Non sei un membro del contest");
                 } else {
-                    contestService.rimuoviPartecipante(contest, turistaAutenticato);
+                    contest.rimuoviPartecipante(turistaAutenticato);
+                    contestService.save(contest);
                 }
             } else {
                 logger.error("username del turista non valido");

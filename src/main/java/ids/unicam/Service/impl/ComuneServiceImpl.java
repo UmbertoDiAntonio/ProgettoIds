@@ -124,7 +124,7 @@ public class ComuneServiceImpl implements ComuneService {
      * @return una lista contenente tutti gli animatori trovati
      *///TODO Predicate su getAnimatori? in modo da prenderli tutti o solo nei comuni o altro a scelta
     @Override
-    public List<Animatore> getAnimatoriDelComune(String nomeComune, String usernameGestore) {
+    public List<Animatore> getAnimatoriDelComune(String nomeComune, String usernameGestore) throws IllegalArgumentException {
         Optional<GestorePiattaforma> oGestore = gestorePiattaformaService.findByUsername(usernameGestore);
         if (oGestore.isEmpty()) {
             logger.error("Devi essere il gestore della Piattaforma per creare Comuni");

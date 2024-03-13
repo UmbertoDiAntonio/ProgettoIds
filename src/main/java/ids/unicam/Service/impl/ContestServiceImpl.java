@@ -3,7 +3,6 @@ package ids.unicam.Service.impl;
 import ids.unicam.DataBase.Repository.ContestRepository;
 import ids.unicam.Service.ContestService;
 import ids.unicam.exception.ContestException;
-import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;
@@ -56,10 +55,7 @@ public class ContestServiceImpl implements ContestService {
         return save(new Contest(nomeContest, obiettivo, creatore, open));
     }
 
-//TODO
-    public List<Taggable> findByTag(String tag) {
-        return null;
-    }
+
     @Override
     public List<Taggable> find(Predicate<Contest> predicate) {
         List<Taggable> list =new ArrayList<>();
@@ -70,10 +66,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
 
-    @Override
-    public List<Contest> getContestByCreatore(Animatore animatore) {
-        return repository.findContestByCreatore(animatore);
-    }
+
 
 
     @Transactional
@@ -113,21 +106,19 @@ public class ContestServiceImpl implements ContestService {
         return Collections.unmodifiableList(repository.findPartecipantiByContest(contest.getId()));
     }
 
-    @Override
+    /**
+     * Aggiungi un partecipante a un contest
+     * @param contest il contest in cui si vuole aggiungere il partecipante
+     * @param turistaAutenticato il partecipante che si vuole aggiungere
+     * @throws ContestException se il contest è terminato
+     */
     @Transactional
-    public void aggiungiPartecipante(Contest contest, TuristaAutenticato turistaAutenticato) throws ContestException {
+    void aggiungiPartecipante(Contest contest, TuristaAutenticato turistaAutenticato) throws ContestException {
         if (contest.isExpired()) {
             throw new ContestException("il Contest e' Terminato");
         }
         contest.aggiungiPartecipante(turistaAutenticato);
         notificaService.creaNotificaIngressoContest(contest, turistaAutenticato);
-        save(contest);
-    }
-
-    @Override
-    @Transactional
-    public void rimuoviPartecipante(Contest contest, TuristaAutenticato turistaAutenticato) throws IllegalArgumentException {
-        contest.rimuoviPartecipante(turistaAutenticato);
         save(contest);
     }
 
@@ -167,8 +158,8 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public List<MaterialeGenerico> getMaterialiContest(Contest contenutoGenerico) {
-        return repository.getMateriali(contenutoGenerico.getId());
+    public List<MaterialeGenerico> getMaterialiContest(Contest contest) {
+        return repository.getMateriali(contest.getId());
     }
 
     @Override

@@ -39,15 +39,18 @@ public interface ContestService {
      */
     Contest creaContest(String nomeContest, String obiettivo, Animatore creatore, boolean open);
 
+    /**
+     * Trova tutti i Contest che rispettano la condizione
+     * @param predicate la condizione da rispettare
+     * @return i contest trovati
+     */
     List<Taggable> find(Predicate<Contest> predicate);
-
-    List<Contest> getContestByCreatore(Animatore animatore);
-
+    /**
+     * Ottieni tutti i materiali del contest
+     * @param contest il contest di cui si vogliono ottenere i materiali
+     * @return la lista dei materiali del contest
+     */
     List<MaterialeGenerico> getMaterialiContest(Contest contest);
-
-    void aggiungiPartecipante(Contest contest, TuristaAutenticato turistaAutenticato) throws ContestException;
-
-    void rimuoviPartecipante(Contest contest, TuristaAutenticato turistaAutenticato);
 
     void setVincitoreContest(Contest contest, MaterialeGenerico materialeGenerico) throws ContestException;
 

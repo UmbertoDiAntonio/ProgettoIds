@@ -1,7 +1,6 @@
 package ids.unicam.Service.impl;
 
 import ids.unicam.DataBase.Repository.InvitoRepository;
-import ids.unicam.Service.ContestService;
 import ids.unicam.Service.InvitoService;
 import ids.unicam.exception.ContestException;
 import ids.unicam.models.Invito;
@@ -18,10 +17,10 @@ import static ids.unicam.Main.logger;
 @Service
 public class InvitoServiceImpl implements InvitoService {
     private final InvitoRepository repository;
-    private final ContestService contestService;
+    private final ContestServiceImpl contestService;
 
     @Autowired
-    public InvitoServiceImpl(InvitoRepository repository, ContestService contestService) {
+    public InvitoServiceImpl(InvitoRepository repository, ContestServiceImpl contestService) {
         this.repository = repository;
         this.contestService = contestService;
     }

@@ -90,7 +90,11 @@ public class ComuneController {
     public ResponseEntity<?> getContributor(
             @Parameter(description = "nome del comune") @PathVariable String nomeComune,
             @Parameter(description = "username Gestore") @RequestParam String usernameGestore) {
-        return ResponseEntity.ok(comuneService.getContributorDelComune(nomeComune, usernameGestore));
+        try {
+            return ResponseEntity.ok(comuneService.getContributorDelComune(nomeComune, usernameGestore));
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/{nomeComune}/getContributorAutorizzati")
@@ -99,7 +103,11 @@ public class ComuneController {
     public ResponseEntity<?> getContributorAutorizzati(
             @Parameter(description = "nome del comune") @PathVariable String nomeComune,
             @Parameter(description = "username Gestore") @RequestParam String usernameGestore) {
-        return ResponseEntity.ok(comuneService.getContributorAutorizzatiDelComune(nomeComune,usernameGestore));
+        try {
+            return ResponseEntity.ok(comuneService.getContributorAutorizzatiDelComune(nomeComune, usernameGestore));
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/{nomeComune}/getCuratori")
@@ -108,7 +116,11 @@ public class ComuneController {
     public ResponseEntity<?> getCuratori(
             @Parameter(description = "nome del comune") @PathVariable String nomeComune,
             @Parameter(description = "username Gestore") @RequestParam String usernameGestore) {
-        return ResponseEntity.ok(comuneService.getCuratoriDelComune(nomeComune,usernameGestore));
+        try {
+            return ResponseEntity.ok(comuneService.getCuratoriDelComune(nomeComune, usernameGestore));
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/{nomeComune}/getAnimatori")
@@ -117,11 +129,12 @@ public class ComuneController {
     public ResponseEntity<?> getAnimatori(
             @Parameter(description = "nome del comune") @PathVariable String nomeComune,
             @Parameter(description = "username Gestore") @RequestParam String usernameGestore) {
-        return ResponseEntity.ok(comuneService.getAnimatoriDelComune(nomeComune, usernameGestore));
+        try {
+            return ResponseEntity.ok(comuneService.getAnimatoriDelComune(nomeComune, usernameGestore));
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
-
-
-  
 
 
 }
