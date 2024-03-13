@@ -53,13 +53,13 @@ public class Main implements ApplicationRunner {
         try {
             if (os.contains("win")) {
                 // Windows
-                command[0] = "rundll32 url.dll,FileProtocolHandler " + url;
+                command = ("rundll32 url.dll,FileProtocolHandler " + url).split(" ");
             } else if (os.contains("mac")) {
                 // Mac
-                command[0] = "open " + url;
+                command = ("open " + url).split(" ");
             } else if (os.contains("nix") || os.contains("nux")) {
                 // Linux o Unix
-                command[0] = "xdg-open " + url;
+                command = ("xdg-open " + url).split(" ");
             }
 
             rt.exec(command);
