@@ -182,7 +182,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
     }
 
     @Override
-    public @NotNull Optional<Itinerario> getByNome(String nome) {
+    public @NotNull Optional<Itinerario> getByNome(@NotNull String nome) {
         return repository.findByNome(nome);
     }
 

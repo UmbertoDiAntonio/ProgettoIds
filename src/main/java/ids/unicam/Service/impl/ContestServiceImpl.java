@@ -126,7 +126,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public List<Contest> getContest(@Nullable Predicate<Contest> predicate) {
+    public @NotNull List<Contest> getContest(@Nullable Predicate<Contest> predicate) {
         if (predicate == null)
             return findAll();
         List<Contest> list = new ArrayList<>();

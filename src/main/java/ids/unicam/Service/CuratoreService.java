@@ -3,27 +3,29 @@ package ids.unicam.Service;
 import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.attori.Curatore;
 import ids.unicam.models.contenuti.Stato;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
 public interface CuratoreService {
-    Curatore save(Curatore curatore);
+    @NotNull Curatore save(@NotNull Curatore curatore);
 
     /**
      * Ottieni tutti i Curatori presenti nella piattaforma
      *
      * @return la lista dei Curatori presenti
      */
-    List<Curatore> getAll();
+    @NotNull List<Curatore> getAll();
 
     /**
      * Elimina il Curatore con l'username indicato
      *
      * @param username l'username del Curatore da eliminare
      */
-    void deleteByUsername(String username);
+    void deleteByUsername(@NotNull String username);
 
     /**
      * Ottieni se esiste il Curatore con l'username indicato
@@ -31,7 +33,7 @@ public interface CuratoreService {
      * @param username l'username da cercare
      * @return il Curatore con l'username cercato, Optional.Empty se non esiste
      */
-    Optional<Curatore> getByUsername(String username);
+    @NotNull Optional<Curatore> getByUsername(@NotNull String username);
 
     /**
      * Trova tutti i Curatori nella piattaforma che rispettano la condizione
@@ -39,7 +41,7 @@ public interface CuratoreService {
      * @param predicate un espressione da valutare sui Contributor
      * @return la lista di Curatori che rispettano la condizione
      */
-    List<Curatore> find(Predicate<Curatore> predicate);
+    @NotNull List<Curatore> find(@Nullable Predicate<Curatore> predicate);
 
     /**
      * Cambia lo stato di un Punto di Interesse
@@ -52,7 +54,7 @@ public interface CuratoreService {
      * @throws FuoriComuneException          se il punto di interesse si trova in un comune diverso da quello in cui il contributor può operare
      * @see Stato
      */
-    void valutaPuntoInteresse(String usernameCuratore, int idPuntoInteresse, Boolean stato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException;
+    void valutaPuntoInteresse(@NotNull String usernameCuratore, int idPuntoInteresse, @Nullable Boolean stato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException;
 
     /**
      * Cambia lo stato di un materiale
@@ -64,7 +66,7 @@ public interface CuratoreService {
      * @throws UnsupportedOperationException se il materiale ha già uno stato impostato
      * @throws FuoriComuneException          se il materiale è caricato su un contenitore che si trova fuori dal territorio in cui può operare il curatore
      */
-    void valutaMateriale(String usernameCuratore, int idMaterialeGenerico, Boolean stato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException;
+    void valutaMateriale(String usernameCuratore, int idMaterialeGenerico, @Nullable Boolean stato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException;
 
     /**
      * Elimina un punto di interesse dalla piattaforma
@@ -74,7 +76,7 @@ public interface CuratoreService {
      * @throws IllegalArgumentException se uno dei parametri non è corretto
      * @throws FuoriComuneException     se il punto di interesse si trova fuori dal territorio in cui può operare il curatore
      */
-    void eliminaPuntoInteresse(String usernameCuratore, int idPuntoInteresse) throws IllegalArgumentException, FuoriComuneException;
+    void eliminaPuntoInteresse(@NotNull String usernameCuratore, int idPuntoInteresse) throws IllegalArgumentException, FuoriComuneException;
 
     /**
      * Elimina un itinerario dalla piattaforma
@@ -84,7 +86,7 @@ public interface CuratoreService {
      * @throws IllegalArgumentException se uno dei parametri non è corretto
      * @throws FuoriComuneException     se l'itinerario si trova fuori dal territorio in cui può operare il curatore
      */
-    void eliminaItinerario(String usernameCuratore, int idItinerario) throws IllegalArgumentException, FuoriComuneException;
+    void eliminaItinerario(@NotNull String usernameCuratore, int idItinerario) throws IllegalArgumentException, FuoriComuneException;
 
     /**
      * Elimina un contest dalla piattaforma
@@ -94,7 +96,7 @@ public interface CuratoreService {
      * @throws IllegalArgumentException se uno dei parametri non è corretto
      * @throws FuoriComuneException     se il contest si trova fuori dal territorio in cui può operare il curatore
      */
-    void eliminaContest(String usernameCuratore, int idContest) throws IllegalArgumentException, FuoriComuneException;
+    void eliminaContest(@NotNull String usernameCuratore, int idContest) throws IllegalArgumentException, FuoriComuneException;
 
     /**
      * Elimina un materiale dalla piattaforma
@@ -104,5 +106,5 @@ public interface CuratoreService {
      * @throws IllegalArgumentException se uno dei parametri non è corretto
      * @throws FuoriComuneException     se il materiale si trova fuori dal territorio in cui può operare il curatore
      */
-    void eliminaMateriale(String usernameCuratore, int idMateriale) throws IllegalArgumentException, FuoriComuneException;
+    void eliminaMateriale(@NotNull String usernameCuratore, int idMateriale) throws IllegalArgumentException, FuoriComuneException;
 }

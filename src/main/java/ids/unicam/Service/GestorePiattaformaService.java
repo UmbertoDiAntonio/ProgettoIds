@@ -24,7 +24,7 @@ public interface GestorePiattaformaService {
      * @throws UnsupportedOperationException se il ruolo selezionato è Turista
      */
     @Transactional
-    TuristaAutenticato cambiaRuolo(String usernameGestore, String usernameContributor, @NotNull Ruolo ruolo) throws IllegalArgumentException, ConnessioneFallitaException, UnsupportedOperationException;
+    @NotNull TuristaAutenticato cambiaRuolo(@NotNull String usernameGestore, @NotNull String usernameContributor, @NotNull Ruolo ruolo) throws IllegalArgumentException, ConnessioneFallitaException, UnsupportedOperationException;
 
     /**
      * Registra un nuovo utente contributor alla piattaforma
@@ -35,7 +35,7 @@ public interface GestorePiattaformaService {
      * @throws ConnessioneFallitaException se non è stato possibile stabilire una connessione con il sistema OSM
      * @throws IllegalArgumentException    se i parametri non sono validi
      */
-    TuristaAutenticato registra(ContributorDTO contributorDTO, RuoloRegistrazione ruolo) throws IllegalArgumentException, ConnessioneFallitaException;
+    @NotNull TuristaAutenticato registra(@NotNull ContributorDTO contributorDTO, @NotNull RuoloRegistrazione ruolo) throws IllegalArgumentException, ConnessioneFallitaException;
 
     /**
      * Crea un nuovo gestore della piattaforma
@@ -43,7 +43,7 @@ public interface GestorePiattaformaService {
      * @param username username da dare al gestore
      * @param password password del gestore
      *///TODO singleton?
-    void creaGestore(String username, String password);
+    void creaGestore(@NotNull String username, @NotNull String password);
 
     /**
      * Ottieni il gestore con l'username cercato, se esiste
@@ -51,5 +51,5 @@ public interface GestorePiattaformaService {
      * @param username l'username da cercare
      * @return il gestore con l'username cercato se esiste, altrimenti Optional.Empty
      */
-    Optional<GestorePiattaforma> findByUsername(String username);
+    @NotNull Optional<GestorePiattaforma> findByUsername(@NotNull String username);
 }

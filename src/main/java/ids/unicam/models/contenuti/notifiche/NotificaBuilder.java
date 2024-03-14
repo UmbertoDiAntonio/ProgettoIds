@@ -15,41 +15,40 @@ public class NotificaBuilder {
     public NotificaBuilder() {
     }
 
+    /**
+     * Imposta il titolo della notifica.
+     *
+     * @param titolo Il titolo della notifica.
+     * @return Restituisce l'istanza corrente del NotificaBuilder.
+     */
     public @NotNull NotificaBuilder withTitolo(@NotNull String titolo) {
-        /**
-         * Imposta il titolo della notifica.
-         *
-         * @param titolo Il titolo della notifica.
-         * @return Restituisce l'istanza corrente del NotificaBuilder.
-         */
-        public NotificaBuilder withTitolo (String titolo){
-            this.titolo = titolo;
-            return this;
-        }
+        this.titolo = titolo;
+        return this;
+    }
 
-        public @NotNull NotificaBuilder withDescrizione (@NotNull String descrizione){
-            /**
-             * Imposta la descrizione della notifica.
-             *
-             * @param descrizione La descrizione della notifica.
-             * @return Restituisce l'istanza corrente del NotificaBuilder.
-             */
-            public NotificaBuilder withDescrizione (String descrizione){
-                this.descrizione = descrizione;
-                return this;
-            }
 
-            public @NotNull NotificaBuilder withDestinatario (@NotNull TuristaAutenticato destinatario){
-                /**
-                 * Imposta il destinatario della notifica.
-                 *
-                 * @param destinatario Il destinatario della notifica.
-                 * @return Restituisce l'istanza corrente del NotificaBuilder.
-                 */
-                public NotificaBuilder withDestinatario (TuristaAutenticato destinatario){
-                    this.usernameDestinatario = destinatario.getUsername();
-                    return this;
-                }
+    /**
+     * Imposta la descrizione della notifica.
+     *
+     * @param descrizione La descrizione della notifica.
+     * @return Restituisce l'istanza corrente del NotificaBuilder.
+     */
+    public @NotNull NotificaBuilder withDescrizione(@NotNull String descrizione) {
+        this.descrizione = descrizione;
+        return this;
+    }
+
+
+    /**
+     * Imposta il destinatario della notifica.
+     *
+     * @param destinatario Il destinatario della notifica.
+     * @return Restituisce l'istanza corrente del NotificaBuilder.
+     */
+    public @NotNull NotificaBuilder withDestinatario(@NotNull TuristaAutenticato destinatario) {
+        this.usernameDestinatario = destinatario.getUsername();
+        return this;
+    }
 
                 /**
                  * Valida i dati inseriti e restituisce un'istanza della classe Notifica.
