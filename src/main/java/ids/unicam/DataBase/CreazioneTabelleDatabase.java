@@ -64,7 +64,7 @@ public class CreazioneTabelleDatabase {
             try (PreparedStatement statement = connection.prepareStatement(dropTableSQL)) {
                 statement.executeUpdate();
             } catch (SQLException e) {
-                logger.error("Impossibile eseguire la QuerySQL elimina tabelle " + table, e);
+                logger.warn("Impossibile eseguire la QuerySQL elimina tabelle " + table, e);
             }
         }
 
@@ -81,7 +81,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella Lista Materiali Punto Interesse", e);
+            logger.warn("Impossibile eseguire la QuerySQL creazione tabella Lista Materiali Punto Interesse", e);
         }
     }
 
@@ -97,7 +97,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella Lista Materiali Punto Interesse", e);
+            logger.warn("Impossibile eseguire la QuerySQL creazione tabella Lista Materiali Punto Interesse", e);
         }
     }
 
@@ -112,7 +112,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella Osservatori", e);
+            logger.warn("Impossibile eseguire la QuerySQL creazione tabella Osservatori", e);
         }
     }
 
@@ -127,7 +127,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella Invito", e);
+            logger.warn("Impossibile eseguire la QuerySQL creazione tabella Invito", e);
         }
     }
 
@@ -142,7 +142,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella Tag Punto Interesse", e);
+            logger.warn("Impossibile eseguire la QuerySQL creazione tabella Tag Punto Interesse", e);
         }
     }
 
@@ -156,7 +156,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella Tag Itinerario", e);
+            logger.warn("Impossibile eseguire la QuerySQL creazione tabella Tag Itinerario", e);
         }
     }
 
@@ -169,7 +169,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella Turisti Preferiti", e);
+            logger.warn("Impossibile eseguire la QuerySQL creazione tabella Turisti Preferiti", e);
         }
     }
 
@@ -185,7 +185,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella Turista", e);
+            logger.warn("Impossibile eseguire la QuerySQL creazione tabella Turista", e);
         }
     }
 
@@ -199,7 +199,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella Tag Contest", e);
+            logger.warn("Impossibile eseguire la QuerySQL creazione tabella Tag Contest", e);
         }
     }
 
@@ -214,7 +214,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella Contributor", e);
+            logger.warn("Impossibile eseguire la QuerySQL creazione tabella Contributor", e);
         }
 
     }
@@ -231,7 +231,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella ContributorAutorizzati", e);
+            logger.warn("Impossibile eseguire la QuerySQL creazione tabella ContributorAutorizzati", e);
         }
     }
 
@@ -246,7 +246,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella Notifica", e);
+            logger.warn("Impossibile eseguire la QuerySQL creazione tabella Notifica", e);
         }
     }
 
@@ -263,7 +263,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella Animatori", e);
+            logger.warn("Impossibile eseguire la QuerySQL creazione tabella Animatori", e);
         }
     }
 
@@ -279,7 +279,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella Curatori", e);
+            logger.warn("Impossibile eseguire la QuerySQL creazione tabella Curatori", e);
         }
     }
 
@@ -293,7 +293,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella Contest Partecipanti", e);
+            logger.warn("Impossibile eseguire la QuerySQL creazione tabella Contest Partecipanti", e);
         }
     }
 
@@ -309,7 +309,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella Itinerari Percorso", e);
+            logger.warn("Impossibile eseguire la QuerySQL creazione tabella Itinerari Percorso", e);
         }
     }
 
@@ -326,7 +326,7 @@ public class CreazioneTabelleDatabase {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella Orari Punto Interesse", e);
+            logger.warn("Impossibile eseguire la QuerySQL creazione tabella Orari Punto Interesse", e);
         }
     }
 
@@ -346,7 +346,7 @@ public class CreazioneTabelleDatabase {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella POI", e);
+            logger.warn("Impossibile eseguire la QuerySQL creazione tabella POI", e);
         }
     }
 
@@ -361,7 +361,7 @@ public class CreazioneTabelleDatabase {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella Itinerari", e);
+            logger.warn("Impossibile eseguire la QuerySQL creazione tabella Itinerari", e);
         }
     }
 
@@ -381,7 +381,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella Contest", e);
+            logger.warn("Impossibile eseguire la QuerySQL creazione tabella Contest", e);
         }
     }
 
@@ -396,7 +396,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella Materiali", e);
+            logger.warn("Impossibile eseguire la QuerySQL creazione tabella Materiali", e);
         }
     }
 
@@ -409,7 +409,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella Comuni", e);
+            logger.warn("Impossibile eseguire la QuerySQL creazione tabella Comuni", e);
         }
     }
 
@@ -425,7 +425,7 @@ public class CreazioneTabelleDatabase {
         try (PreparedStatement statement = connection.prepareStatement(createTableSQL)) {
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("Impossibile eseguire la QuerySQL creazione tabella Gestore", e);
+            logger.warn("Impossibile eseguire la QuerySQL creazione tabella Gestore", e);
         }
     }
 }

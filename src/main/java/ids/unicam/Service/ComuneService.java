@@ -22,6 +22,7 @@ public interface ComuneService {
 
     @NotNull List<Contributor> getContributorDelComune(@NotNull String nomeComune, @NotNull String usernameGestore);
 
+
     @NotNull List<Curatore> getCuratoriDelComune(@NotNull String nomeComune, @NotNull String usernameGestore);
 
     @NotNull List<Comune> findAll();
@@ -33,4 +34,5 @@ public interface ComuneService {
     void deleteByNome(@NotNull String nomeComune, @NotNull String usernameGestore);
 
     @NotNull List<ContributorAutorizzato> getContributorAutorizzatiDelComune(@NotNull String nomeComune, @NotNull String usernameGestore);
+
 }

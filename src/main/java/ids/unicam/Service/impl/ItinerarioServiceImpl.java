@@ -79,26 +79,25 @@ public class ItinerarioServiceImpl implements ItinerarioService {
                                 itinerario.aggiungiTappa(puntoInteresse);
                                 save(itinerario);
                             } else {
-                                logger.error("il punto di interesse e' gia' una tappa dell'itinerario");
+                                logger.warn("il punto di interesse e' gia' una tappa dell'itinerario");
                                 throw new IllegalArgumentException("il punto di interesse e' gia' una tappa dell'itinerario");
                             }
                         } else {
-                            logger.error("La tappa non fa parte del comune dell'itinerario");
                             throw new FuoriComuneException("La tappa non fa parte del comune dell'itinerario");
                         }
                     } else {
                         throw new FuoriComuneException("il contributor non fa parte del comune dell'itinerario");
                     }
                 } else {
-                    logger.error("id Itinerario non valido");
+                    logger.warn("id Itinerario non valido");
                     throw new IllegalArgumentException("id itinerario non valido");
                 }
             } else {
-                logger.error("id Punto Interesse non valido");
+                logger.warn("id Punto Interesse non valido");
                 throw new IllegalArgumentException("id Punto Interesse non valido");
             }
         } else {
-            logger.error("username non e' non valido");
+            logger.warn("username non e' non valido");
             throw new IllegalArgumentException("username non e' non valido");
         }
     }
@@ -131,18 +130,18 @@ public class ItinerarioServiceImpl implements ItinerarioService {
                         itinerario.rimuoviTappa(puntoInteresse);
                         save(itinerario);
                     } else {
-                        logger.error("id Punto Interesse non valido");
+                        logger.warn("id Punto Interesse non valido");
                         throw new IllegalArgumentException("id Punto Interesse non valido");
                     }
                 } else {
                     throw new FuoriComuneException(contributor + " non può rimuovere tappe da itinerari esterni al suo comune");
                 }
             } else {
-                logger.error("id Itinerario non valido");
+                logger.warn("id Itinerario non valido");
                 throw new IllegalArgumentException("id itinerario non valido");
             }
         } else {
-            logger.error("username Contributor non valido");
+            logger.warn("username Contributor non valido");
             throw new IllegalArgumentException("username Contributor non valido");
         }
     }
@@ -163,7 +162,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
             }
             return save(new Itinerario(nomeItinerario, comune));
         } else {
-            logger.error("Il contributor non e' valido");
+            logger.warn("Il contributor non e' valido");
             throw new IllegalArgumentException("Il contributor non e' valido");
         }
     }
@@ -176,7 +175,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
             Itinerario itinerario = oItinerario.get();
             return Collections.unmodifiableList(itinerario.getPercorso());
         }
-        logger.error("id itinerario non valido");
+        logger.warn("id itinerario non valido");
         throw new IllegalArgumentException("id itinerario non valido");
 
     }

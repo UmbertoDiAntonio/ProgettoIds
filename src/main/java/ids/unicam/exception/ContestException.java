@@ -9,7 +9,7 @@ public class ContestException extends Exception {
 
     public ContestException(String message) {
         super(message);
-        logger.error(message);
+        logger.warn(message);
     }
 
     public ContestException(String message, Throwable cause) {
