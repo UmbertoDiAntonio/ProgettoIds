@@ -45,8 +45,14 @@ public class ComuneServiceImpl implements ComuneService {
      * @param nomeComune il nome del comune
      */
     @Override
-    public void deleteByNome(@NotNull String nomeComune) {
-        repository.deleteById(nomeComune);
+    public void deleteByNome(@NotNull String nomeComune, @NotNull String usernameGestore) {
+        Optional<GestorePiattaforma> oGestore = gestorePiattaformaService.findByUsername(usernameGestore);
+        if (oGestore.isPresent()) {
+            repository.deleteById(nomeComune);
+        } else {
+            logger.error("username del gestore non valido");
+            throw new IllegalArgumentException("username del gestore non valido");
+        }
     }
 
 
@@ -57,14 +63,14 @@ public class ComuneServiceImpl implements ComuneService {
     /**
      * Crea un nuovo comune all'interno della piattaforma
      *
-     * @param nomeComune       il nome del comune da creare
-     * @param usernameCreatore l'username di chi sta creando il comune (il gestore della piattaforma)
+     * @param nomeComune      il nome del comune da creare
+     * @param usernameGestore l'username di chi sta creando il comune (il gestore della piattaforma)
      * @return il comune creato
      * @throws ConnessioneFallitaException se non è possibile connettersi al sistema OSM
      */
     @Override
-    public @NotNull Comune creaComune(@NotNull String nomeComune, @NotNull String usernameCreatore) throws ConnessioneFallitaException {
-        Optional<GestorePiattaforma> oGestore = gestorePiattaformaService.findByUsername(usernameCreatore);
+    public @NotNull Comune creaComune(@NotNull String nomeComune, @NotNull String usernameGestore) throws ConnessioneFallitaException {
+        Optional<GestorePiattaforma> oGestore = gestorePiattaformaService.findByUsername(usernameGestore);
         if (oGestore.isPresent()) {
             return save(new Comune(nomeComune));
         } else {

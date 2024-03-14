@@ -42,7 +42,7 @@ public interface GestorePiattaformaService {
      *
      * @param username username da dare al gestore
      * @param password password del gestore
-     *///TODO singleton?
+     */
     void creaGestore(@NotNull String username, @NotNull String password);
 
     /**

@@ -50,19 +50,19 @@ public class NotificaBuilder {
         return this;
     }
 
-                /**
-                 * Valida i dati inseriti e restituisce un'istanza della classe Notifica.
-                 *
-                 * @return La notifica generata.
-                 * @throws IllegalArgumentException se titolo o descrizione sono vuoti, o se il destinatario non è valido.
-                 */
-                public @NotNull Notifica build () {
-                    if (titolo == null || titolo.isBlank() || descrizione == null || descrizione.isBlank()) {
-                        throw new IllegalArgumentException("Titolo o descrizione sono vuoti");
-                    }
-                    if (usernameDestinatario == null || usernameDestinatario.isBlank()) {
-                        throw new IllegalArgumentException("E' necessario impostare un destinatario valido");
-                    }
-                    return new Notifica(titolo, descrizione, usernameDestinatario);
-                }
-            }
+    /**
+     * Valida i dati inseriti e restituisce un'istanza della classe Notifica.
+     *
+     * @return La notifica generata.
+     * @throws IllegalArgumentException se titolo o descrizione sono vuoti, o se il destinatario non è valido.
+     */
+    public @NotNull Notifica build() {
+        if (titolo == null || titolo.isBlank() || descrizione == null || descrizione.isBlank()) {
+            throw new IllegalArgumentException("Titolo o descrizione sono vuoti");
+        }
+        if (usernameDestinatario == null || usernameDestinatario.isBlank()) {
+            throw new IllegalArgumentException("E' necessario impostare un destinatario valido");
+        }
+        return new Notifica(titolo, descrizione, usernameDestinatario);
+    }
+}

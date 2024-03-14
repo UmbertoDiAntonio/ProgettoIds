@@ -5,6 +5,7 @@ import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.materiali.TipologiaMateriale;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +33,7 @@ public interface MaterialeService {
      *
      * @param id l'id del materiale da eliminare
      */
-    void deleteById(int id);
+    void deleteById(int id, @NotNull String usernameUtente);
 
     /**
      * Crea un nuovo materiale
@@ -42,7 +43,7 @@ public interface MaterialeService {
      * @param creatore           l'utente che ha creato il materiale
      * @return il materiale appena creato
      */
-    @NotNull MaterialeGenerico crea(@NotNull String fileMateriale, @NotNull TipologiaMateriale tipologiaMateriale, @NotNull TuristaAutenticato creatore);
+    @NotNull MaterialeGenerico crea(@Nullable String fileMateriale, @NotNull TipologiaMateriale tipologiaMateriale, @NotNull TuristaAutenticato creatore) throws IllegalArgumentException;
 
     /**
      * Ottieni la codifica in base 64 del materiale con l'id selezionato

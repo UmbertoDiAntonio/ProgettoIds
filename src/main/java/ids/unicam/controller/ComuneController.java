@@ -65,9 +65,10 @@ public class ComuneController {
     @Operation(summary = "Elimina comune",
             description = "Eliminazione di un comune dal nome univoco.")
     public ResponseEntity<?> delete(
-            @Parameter(description = "nome del comune") @PathVariable @NotNull String nomeComune) {
-        comuneService.deleteByNome(nomeComune);
-        return ResponseEntity.ok("Il comune '" + nomeComune + "' e' stato eliminato.");
+            @Parameter(description = "nome del comune") @PathVariable @NotNull String nomeComune,
+            @Parameter(description = "username del gestore della piattaforma") @RequestParam @NotNull String usernameGestore) {
+        comuneService.deleteByNome(nomeComune, usernameGestore);
+        return ResponseEntity.ok("Il comune '" + nomeComune + "' e' stato eliminato dal gestore con username '" + usernameGestore + "'.");
     }
 
     @PutMapping("/cambioRuolo/{username}/{ruolo}")

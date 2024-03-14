@@ -72,7 +72,7 @@ public interface ContestService {
 
     @NotNull Optional<Contest> findById(int id);
 
-    void deleteById(int id);
+    void deleteById(int id, @NotNull String usernameUtente);
 
     @NotNull Contest save(@NotNull Contest contest);
 

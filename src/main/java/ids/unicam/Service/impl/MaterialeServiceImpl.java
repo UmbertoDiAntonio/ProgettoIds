@@ -8,6 +8,7 @@ import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.*;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +38,11 @@ public class MaterialeServiceImpl implements MaterialeService {
 
 
     @Override
-    public @NotNull MaterialeGenerico crea(@NotNull String fileMateriale, @NotNull TipologiaMateriale tipologiaMateriale, @NotNull TuristaAutenticato creatore) {
+    public @NotNull MaterialeGenerico crea(@Nullable String fileMateriale, @NotNull TipologiaMateriale tipologiaMateriale, @NotNull TuristaAutenticato creatore) throws IllegalArgumentException {
+        if (fileMateriale == null) {
+            logger.error("Percorso del materiale non trovato");
+            throw new IllegalArgumentException("Percorso del materiale non trovato");
+        }
         TuristaAutenticatoDTO creatoreDTO = new TuristaAutenticatoDTO(creatore.getNome(), creatore.getCognome(), creatore.getDataNascita(), creatore.getPassword(), creatore.getUsername());
         MaterialeGenerico materialeGenerico = switch (tipologiaMateriale) {
             case FOTO -> new Foto(fileMateriale, creatoreDTO);

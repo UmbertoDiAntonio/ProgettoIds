@@ -55,14 +55,15 @@ public class MaterialeController {
             @Parameter(description = "scelta del file") @RequestParam("materiale") @NotNull MultipartFile materiale,
             @Parameter(description = "username utente") @RequestParam @NotNull String usernameTurista,
             @Parameter(description = "id dell'oggetto che dovrà contenere il materiale") @RequestParam @Min(0) int idContenitore,
-            @Parameter(description = "scelta del tipo di materiale da caricare") @RequestParam @NotNull TipologiaMateriale tipologia) throws IOException {
+            @Parameter(description = "scelta del tipo di materiale da caricare") @RequestParam @NotNull TipologiaMateriale tipologia) {
         File newFile = new File("src/main/resources/materials/" + materiale.getOriginalFilename());
-        if (!newFile.createNewFile())
-            return new ResponseEntity<>("Materiale già caricato", HttpStatus.BAD_REQUEST);
-        FileOutputStream fileOutputStream = new FileOutputStream(newFile);
-        fileOutputStream.write(materiale.getBytes());
-        fileOutputStream.close();
         try {
+            if (!newFile.createNewFile())
+                return new ResponseEntity<>("Materiale già caricato", HttpStatus.BAD_REQUEST);
+            FileOutputStream fileOutputStream = new FileOutputStream(newFile);
+            fileOutputStream.write(materiale.getBytes());
+            fileOutputStream.close();
+
             Optional<TuristaAutenticato> oTurista = turistaAutenticatoService.getByUsername(usernameTurista);
             if (oTurista.isEmpty()) {
                 return new ResponseEntity<>("Username non valido", HttpStatus.BAD_REQUEST);
@@ -73,7 +74,8 @@ public class MaterialeController {
             turistaAutenticatoService.aggiungiMateriale(usernameTurista, idContenitore, materialeGenerico);
 
             return new ResponseEntity<>("Il Materiale con id '" + materialeGenerico.getId() + "' e' stato caricato dall'utente con username '" + usernameTurista + "'", HttpStatus.OK);
-        } catch (IllegalStateException | IllegalArgumentException | ContestException | FuoriComuneException e) {
+        } catch (IllegalStateException | IllegalArgumentException | ContestException | FuoriComuneException |
+                 IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -82,9 +84,10 @@ public class MaterialeController {
     @Operation(summary = "Elimina materiale",
             description = "Eliminazione di un materiale dall'identificatore univoco id.")
     public ResponseEntity<?> delete(
-            @Parameter(description = "id del materiale da eliminare") @PathVariable @Min(0) int id) {
-        materialeService.deleteById(id);
-        return ResponseEntity.ok("Il materiale con id '" + id + "' e' stato eliminato.");
+            @Parameter(description = "id del materiale da eliminare") @PathVariable @Min(0) int id,
+            @Parameter(description = "username dell'utente") @RequestParam @NotNull String usernameUtente) {
+        materialeService.deleteById(id, usernameUtente);
+        return ResponseEntity.ok("Il materiale con id '" + id + "' e' stato eliminato dal'utente con username '" + usernameUtente + "'.");
     }
 
     @GetMapping("/getBase64/{id}")

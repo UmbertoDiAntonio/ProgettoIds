@@ -30,7 +30,7 @@ public interface ComuneService {
 
     @NotNull Optional<Comune> getByNome(@NotNull String id);
 
-    void deleteByNome(@NotNull String nomeComune);
+    void deleteByNome(@NotNull String nomeComune, @NotNull String usernameGestore);
 
     @NotNull List<ContributorAutorizzato> getContributorAutorizzatiDelComune(@NotNull String nomeComune, @NotNull String usernameGestore);
 }

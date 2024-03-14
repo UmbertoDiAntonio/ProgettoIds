@@ -48,11 +48,6 @@
             <td>Compagnucci</td>
             <td>118708</td>
         </tr>
-        <tr>
-            <td>Riccardo</td>
-            <td>Marini</td>
-            <td>345678</td>
-        </tr>
     </tbody>
 </table>
 </body>
