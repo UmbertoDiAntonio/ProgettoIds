@@ -5,6 +5,7 @@ import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,7 +50,7 @@ public class Itinerario {
      *
      * @param puntoInteresse la nuova tappa
      */
-    public void aggiungiTappa(PuntoInteresse puntoInteresse) {
+    public void aggiungiTappa(@NotNull PuntoInteresse puntoInteresse) {
         percorso.add(puntoInteresse);
     }
 
@@ -58,7 +59,7 @@ public class Itinerario {
      *
      * @param puntoInteresse la tappa da rimuovere
      */
-    public void rimuoviTappa(PuntoInteresse puntoInteresse) {
+    public void rimuoviTappa(@NotNull PuntoInteresse puntoInteresse) {
         percorso.remove(puntoInteresse);
     }
 }

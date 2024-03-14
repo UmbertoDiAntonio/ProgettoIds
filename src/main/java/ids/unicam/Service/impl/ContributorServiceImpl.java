@@ -3,6 +3,8 @@ package ids.unicam.Service.impl;
 import ids.unicam.DataBase.Repository.ContributorRepository;
 import ids.unicam.Service.ContributorService;
 import ids.unicam.models.attori.Contributor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +24,9 @@ public class ContributorServiceImpl implements ContributorService {
     }
 
     @Override
-    public List<Contributor> find(Predicate<Contributor> predicate) {
+    public @NotNull List<Contributor> find(@Nullable Predicate<Contributor> predicate) {
+        if(predicate==null)
+            return getAll();
         List<Contributor> list = new ArrayList<>();
         for (Contributor contributor : getAll())
             if (predicate.test(contributor))
@@ -31,22 +35,22 @@ public class ContributorServiceImpl implements ContributorService {
     }
 
     @Override
-    public void deleteByUsername(String id) {
+    public void deleteByUsername(@NotNull String id) {
         repository.deleteById(id);
     }
 
     @Override
-    public Optional<Contributor> getByUsername(String username) {
+    public @NotNull Optional<Contributor> getByUsername(@NotNull String username) {
         return repository.findById(username);
     }
 
     @Override
-    public Contributor save(Contributor contributor) {
+    public @NotNull Contributor save(@NotNull Contributor contributor) {
         return repository.save(contributor);
     }
 
     @Override
-    public List<Contributor> getAll() {
+    public @NotNull List<Contributor> getAll() {
         return repository.findAll();
     }
 

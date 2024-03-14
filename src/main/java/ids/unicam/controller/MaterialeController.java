@@ -9,6 +9,8 @@ import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.materiali.TipologiaMateriale;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.constraints.Min;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +44,7 @@ public class MaterialeController {
     @Operation(summary = "Materiale dall'identificatore univoco id",
             description = "Materiale dall'identificatore univoco id salvato nel database.")
     public ResponseEntity<?> getById(
-            @Parameter(description = "id del materiale") @PathVariable Integer id) {
+            @Parameter(description = "id del materiale") @PathVariable @Min(0) int id) {
         return ResponseEntity.ok(materialeService.getById(id));
     }
 
@@ -50,10 +52,10 @@ public class MaterialeController {
     @Operation(summary = "Carica un materiale",
             description = "Caricamento di un materiale.")
     public ResponseEntity<?> fileUpload(
-            @Parameter(description = "scelta del file") @RequestParam("materiale") MultipartFile materiale,
-            @Parameter(description = "username utente") @RequestParam String usernameTurista,
-            @Parameter(description = "id dell'oggetto che dovrà contenere il materiale") @RequestParam Integer idContenitore,
-            @Parameter(description = "scelta del tipo di materiale da caricare") @RequestParam TipologiaMateriale tipologia) throws IOException {
+            @Parameter(description = "scelta del file") @RequestParam("materiale") @NotNull MultipartFile materiale,
+            @Parameter(description = "username utente") @RequestParam @NotNull String usernameTurista,
+            @Parameter(description = "id dell'oggetto che dovrà contenere il materiale") @RequestParam @Min(0) int idContenitore,
+            @Parameter(description = "scelta del tipo di materiale da caricare") @RequestParam @NotNull TipologiaMateriale tipologia) throws IOException {
         File newFile = new File("src/main/resources/materials/" + materiale.getOriginalFilename());
         if (!newFile.createNewFile())
             return new ResponseEntity<>("Materiale già caricato", HttpStatus.BAD_REQUEST);
@@ -80,7 +82,7 @@ public class MaterialeController {
     @Operation(summary = "Elimina materiale",
             description = "Eliminazione di un materiale dall'identificatore univoco id.")
     public ResponseEntity<?> delete(
-            @Parameter(description = "id del materiale da eliminare") @PathVariable Integer id) {
+            @Parameter(description = "id del materiale da eliminare") @PathVariable @Min(0) int id) {
         materialeService.deleteById(id);
         return ResponseEntity.ok("Il materiale con id '" + id + "' e' stato eliminato.");
     }
@@ -89,7 +91,7 @@ public class MaterialeController {
     @Operation(summary = "Ottieni codifica del materiale in base64",
             description = "Ottenere la codifica del materiale caricato in base64.")
     public ResponseEntity<?> getBase64(
-            @Parameter(description = "id del materiale") @PathVariable Integer id) {
+            @Parameter(description = "id del materiale") @PathVariable @Min(0) int id) {
         return ResponseEntity.ok(materialeService.getBase64ById(id));
     }
 

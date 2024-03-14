@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -74,17 +75,17 @@ public class Contest implements Contenitore, Taggable, Expirable {
     }
 
     @Override
-    public void addTag(String tag) {
+    public void addTag( @NotNull String tag) {
         tags.add(tag);
     }
 
     @Override
-    public void rimuoviTag(String tag) {
+    public void rimuoviTag( @NotNull String tag) {
         tags.remove(tag);
     }
 
     @Override
-    public boolean haveTag(String tag) {
+    public boolean haveTag( @NotNull String tag) {
         return tags.contains(tag);
     }
 
@@ -94,14 +95,14 @@ public class Contest implements Contenitore, Taggable, Expirable {
     }
 
     @Override
-    public void aggiungiMateriale(MaterialeGenerico materialeGenerico) {
+    public void aggiungiMateriale( @NotNull MaterialeGenerico materialeGenerico) {
         if (materialeGenerico != null) {
             materiali.add(materialeGenerico);
         }
     }
 
     @Override
-    public void rimuoviMateriale(MaterialeGenerico materialeGenerico) {
+    public void rimuoviMateriale( @NotNull MaterialeGenerico materialeGenerico) {
         materiali.remove(materialeGenerico);
     }
 
@@ -119,7 +120,7 @@ public class Contest implements Contenitore, Taggable, Expirable {
      *
      * @param partecipante il nuovo partecipante
      */
-    public void aggiungiPartecipante(TuristaAutenticato partecipante) {
+    public void aggiungiPartecipante( @NotNull TuristaAutenticato partecipante) {
         partecipanti.add(partecipante);
     }
 
@@ -128,7 +129,7 @@ public class Contest implements Contenitore, Taggable, Expirable {
      *
      * @param partecipante il partecipante da rimuovere
      */
-    public void rimuoviPartecipante(TuristaAutenticato partecipante) {
+    public void rimuoviPartecipante( @NotNull TuristaAutenticato partecipante) {
         partecipanti.remove(partecipante);
     }
 }

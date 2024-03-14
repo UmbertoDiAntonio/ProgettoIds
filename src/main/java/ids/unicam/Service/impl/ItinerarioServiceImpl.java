@@ -10,6 +10,8 @@ import ids.unicam.models.attori.Contributor;
 import ids.unicam.models.contenuti.Itinerario;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.transaction.Transactional;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +44,9 @@ public class ItinerarioServiceImpl implements ItinerarioService {
     }
 
     @Override
-    public List<Itinerario> find(Predicate<Itinerario> predicate) {
+    public @NotNull List<Itinerario> find(@Nullable Predicate<Itinerario> predicate) {
+        if(predicate==null)
+            return getAll();
         List<Itinerario> list = new ArrayList<>();
         for (Itinerario itinerario : getAll())
             if (predicate.test(itinerario))
@@ -51,14 +55,14 @@ public class ItinerarioServiceImpl implements ItinerarioService {
     }
 
     @Override
-    public Itinerario save(Itinerario itinerario) {
+    public @NotNull Itinerario save(@NotNull Itinerario itinerario) {
         return repository.save(itinerario);
     }
 
 
     @Override
     @Transactional
-    public void aggiungiTappa(String usernameContributor, int idItinerario, int idPuntoInteresse) throws IllegalArgumentException, FuoriComuneException {
+    public void aggiungiTappa(@NotNull String usernameContributor, int idItinerario, int idPuntoInteresse) throws IllegalArgumentException, FuoriComuneException {
         Optional<Contributor> oContributor = contributorService.getByUsername(usernameContributor);
         if (oContributor.isPresent()) {
             Contributor contributor = oContributor.get();
@@ -100,7 +104,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
     }
 
     @Override
-    public void aggiungiTappa(String usernameContributor, int idItinerario, int... idPuntiInteresse) throws IllegalArgumentException, FuoriComuneException {
+    public void aggiungiTappa(@NotNull String usernameContributor, int idItinerario, int... idPuntiInteresse) throws IllegalArgumentException, FuoriComuneException {
         Optional<Itinerario> oItinerario = getById(idItinerario);
         if (oItinerario.isPresent()) {
             Itinerario itinerario = oItinerario.get();
@@ -112,7 +116,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
 
 
     @Override
-    public void rimuoviTappa(String usernameContributor, int idItinerario, int idPuntoInteresse) throws
+    public void rimuoviTappa(@NotNull String usernameContributor, int idItinerario, int idPuntoInteresse) throws
             IllegalArgumentException, FuoriComuneException {
         Optional<Contributor> oContributor = contributorService.getByUsername(usernameContributor);
         if (oContributor.isPresent()) {
@@ -145,7 +149,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
 
 
     @Override
-    public Itinerario creaItinerario(String usernameCreatore, String nomeItinerario) throws IllegalArgumentException {
+    public @NotNull Itinerario creaItinerario(@NotNull String usernameCreatore,@NotNull  String nomeItinerario) throws IllegalArgumentException {
         Optional<Itinerario> oItinerario = getByNome(nomeItinerario);
         Optional<Contributor> oContributor = contributorService.getByUsername(usernameCreatore);
         if (oContributor.isPresent()) {
@@ -166,7 +170,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
 
 
     @Override
-    public List<PuntoInteresse> getTappe(int idItinerario) throws IllegalArgumentException {
+    public @NotNull List<PuntoInteresse> getTappe(int idItinerario) throws IllegalArgumentException {
         Optional<Itinerario> oItinerario = getById(idItinerario);
         if (oItinerario.isPresent()) {
             Itinerario itinerario = oItinerario.get();
@@ -178,17 +182,17 @@ public class ItinerarioServiceImpl implements ItinerarioService {
     }
 
     @Override
-    public Optional<Itinerario> getByNome(String nome) {
+    public @NotNull Optional<Itinerario> getByNome(String nome) {
         return repository.findByNome(nome);
     }
 
     @Override
-    public Optional<Itinerario> getById(int id) {
+    public @NotNull Optional<Itinerario> getById(int id) {
         return repository.findById(id);
     }
 
     @Override
-    public List<Itinerario> getAll() {
+    public @NotNull List<Itinerario> getAll() {
         return repository.findAll();
     }
 

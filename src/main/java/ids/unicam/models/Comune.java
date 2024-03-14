@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -43,7 +44,7 @@ public class Comune {
     }
 
     @Contract("-> new")
-    public Punto getPosizione() {
+    public @NotNull Punto getPosizione() {
         return posizione.asClone();
     }
 

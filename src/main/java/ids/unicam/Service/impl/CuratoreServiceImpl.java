@@ -11,6 +11,7 @@ import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.transaction.Transactional;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,23 +44,25 @@ public class CuratoreServiceImpl implements CuratoreService {
 
 
     @Override
-    public void deleteByUsername(String id) {
+    public void deleteByUsername(@NotNull String id) {
         repository.deleteById(id);
     }
 
     @Override
-    public Optional<Curatore> getByUsername(String username) {
+    public @NotNull Optional<Curatore> getByUsername(@NotNull String username) {
         return repository.findById(username);
     }
 
     @Override
-    public Curatore save(Curatore curatore) {
+    public @NotNull Curatore save(@NotNull Curatore curatore) {
         return repository.save(curatore);
     }
 
 
     @Override
-    public List<Curatore> find(Predicate<Curatore> predicate) {
+    public @NotNull List<Curatore> find(@Nullable Predicate<Curatore> predicate) {
+        if(predicate==null)
+            return getAll();
         List<Curatore> list = new ArrayList<>();
         for (Curatore curatore : getAll())
             if (predicate.test(curatore))
@@ -69,19 +72,19 @@ public class CuratoreServiceImpl implements CuratoreService {
     }
 
     @Override
-    public List<Curatore> getAll() {
+    public @NotNull List<Curatore> getAll() {
         return repository.findAll();
     }
 
 
-    private boolean controllaSeInComune(Curatore curatore, Comune comune) {
+    private boolean controllaSeInComune(@NotNull Curatore curatore,@NotNull  Comune comune) {
         return comune.equals(curatore.getComune());
     }
 
 
     @Override
     @Transactional
-    public void valutaPuntoInteresse(String usernameCuratore, int idPuntoInteresse, @Nullable Boolean bStato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException {
+    public void valutaPuntoInteresse(@NotNull String usernameCuratore, int idPuntoInteresse, @Nullable Boolean bStato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException {
         Optional<Curatore> oCuratore = getByUsername(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
@@ -110,7 +113,7 @@ public class CuratoreServiceImpl implements CuratoreService {
 
 
     @Override
-    public void valutaMateriale(String usernameCuratore, int idMaterialeGenerico, Boolean bStato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException {
+    public void valutaMateriale(@NotNull String usernameCuratore, int idMaterialeGenerico, @Nullable Boolean bStato) throws IllegalArgumentException, UnsupportedOperationException, FuoriComuneException {
         Optional<Curatore> oCuratore = getByUsername(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
@@ -156,7 +159,7 @@ public class CuratoreServiceImpl implements CuratoreService {
 
     @Transactional
     @Override
-    public void eliminaPuntoInteresse(String usernameCuratore, int idPuntoInteresse) throws IllegalArgumentException, FuoriComuneException {
+    public void eliminaPuntoInteresse(@NotNull String usernameCuratore, int idPuntoInteresse) throws IllegalArgumentException, FuoriComuneException {
         Optional<Curatore> oCuratore = getByUsername(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
@@ -182,7 +185,7 @@ public class CuratoreServiceImpl implements CuratoreService {
     }
 
     @Override
-    public void eliminaItinerario(String usernameCuratore, int idItinerario) throws IllegalArgumentException, FuoriComuneException {
+    public void eliminaItinerario(@NotNull String usernameCuratore, int idItinerario) throws IllegalArgumentException, FuoriComuneException {
         Optional<Curatore> oCuratore = getByUsername(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
@@ -206,7 +209,7 @@ public class CuratoreServiceImpl implements CuratoreService {
 
     @Transactional
     @Override
-    public void eliminaContest(String usernameCuratore, int idContest) throws IllegalArgumentException, FuoriComuneException {
+    public void eliminaContest(@NotNull String usernameCuratore, int idContest) throws IllegalArgumentException, FuoriComuneException {
         Optional<Curatore> oCuratore = getByUsername(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();
@@ -233,7 +236,7 @@ public class CuratoreServiceImpl implements CuratoreService {
 
     @Override
     @Transactional
-    public void eliminaMateriale(String usernameCuratore, int idMateriale) throws IllegalArgumentException, FuoriComuneException {
+    public void eliminaMateriale(@NotNull String usernameCuratore, int idMateriale) throws IllegalArgumentException, FuoriComuneException {
         Optional<Curatore> oCuratore = getByUsername(usernameCuratore);
         if (oCuratore.isPresent()) {
             Curatore curatore = oCuratore.get();

@@ -2,6 +2,7 @@ package ids.unicam.DataBase.Repository;
 
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -14,8 +15,8 @@ public interface MaterialeRepository extends JpaRepository<MaterialeGenerico, In
 
 
     @Query("select m.stato from MaterialeGenerico m where m.id=:id")
-    Optional<Stato> getStatoById(int id);
+    @NotNull Optional<Stato> getStatoById(int id);
 
-    List<MaterialeGenerico> findAllByFileIn(List<String> file);
+    @NotNull List<MaterialeGenerico> findAllByFileIn(@NotNull List<String> file);
 
 }

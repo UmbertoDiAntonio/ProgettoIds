@@ -13,11 +13,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
 import java.util.*;
 
+import static ids.unicam.Main.debug;
 import static ids.unicam.Main.logger;
 
 
@@ -64,7 +66,9 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
         this.orario = orario;
         this.tipo = tipologiaPuntoInteresse;
         this.creatore = autore;
-        logger.debug("Creato POI " + nome + " in " + pt);
+
+        if (debug)
+            logger.debug("Creato POI " + nome + " in " + pt);
     }
 
     @Override
@@ -117,17 +121,17 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
 
 
     @Override
-    public void addTag(String tag) {
+    public void addTag(@NotNull String tag) {
         this.getTags().add(tag);
     }
 
     @Override
-    public void rimuoviTag(String tag) {
+    public void rimuoviTag(@NotNull String tag) {
         tags.remove(tag);
     }
 
     @Override
-    public boolean haveTag(String tag) {
+    public boolean haveTag(@NotNull String tag) {
         return tags.contains(tag);
     }
 
@@ -137,13 +141,12 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
     }
 
     @Override
-    public void aggiungiMateriale(MaterialeGenerico materialeGenerico) {
-        if (materialeGenerico != null)
-            materiali.add(materialeGenerico);
+    public void aggiungiMateriale(@NotNull MaterialeGenerico materialeGenerico) {
+        materiali.add(materialeGenerico);
     }
 
     @Override
-    public void rimuoviMateriale(MaterialeGenerico materialeGenerico) {
+    public void rimuoviMateriale( @NotNull MaterialeGenerico materialeGenerico) {
         materiali.remove(materialeGenerico);
     }
 

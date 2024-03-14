@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,12 +54,12 @@ public class PuntoInteresseController {
     @Operation(summary = "Impostazione dell'orario di apertura e chiusura",
             description = "Imposta l'orario di apertura e chiusura per un giorno specifico di un punto di interesse.")
     public ResponseEntity<?> setOrario(
-            @Parameter(description = "ID del punto di interesse") @RequestParam Integer idPunto,
+            @Parameter(description = "ID del punto di interesse") @RequestParam @Min(0) int idPunto,
             @Parameter(description = "Ora di apertura (0-24)") @RequestParam @Min(0) @Max(24) int oraApertura,
             @Parameter(description = "Minuti di apertura (0-60)") @RequestParam @Min(0) @Max(60) int minutiApertura,
             @Parameter(description = "Ora di chiusura (0-24) ") @RequestParam @Min(0) @Max(24) int oraChiusura,
             @Parameter(description = "Minuti di chiusura (0-60)") @RequestParam @Min(0) @Max(60) int minutiChiusura,
-            @Parameter(description = "Giorno della settimana") @RequestParam DayOfWeek giorno) {
+            @Parameter(description = "Giorno della settimana") @RequestParam @NotNull DayOfWeek giorno) {
         poiService.setOrario(idPunto, new Orario.OrarioApertura(LocalTime.of(oraApertura, minutiApertura), LocalTime.of(oraChiusura, minutiChiusura)), giorno);
         return ResponseEntity.ok("");
     }
@@ -68,7 +69,7 @@ public class PuntoInteresseController {
     @Operation(summary = "Punto di interesse dall'identificatore univoco id",
             description = "Punto di interesse dall'identificatore univoco id salvato nel database.")
     public ResponseEntity<?> getById(
-            @Parameter(description = "Id del punto di interesse") @PathVariable Integer id) {
+            @Parameter(description = "Id del punto di interesse") @PathVariable @Min(0) int id) {
         return ResponseEntity.ok(poiService.getById(id));
     }
 
@@ -76,11 +77,11 @@ public class PuntoInteresseController {
     @Operation(summary = "Creazione di un nuovo punto di interesse",
             description = "Crea un nuovo punto di interesse.")
     public ResponseEntity<?> create(
-            @Parameter(description = "Nome del punto di interesse") @RequestParam String nomePOI,
+            @Parameter(description = "Nome del punto di interesse") @RequestParam @NotNull String nomePOI,
             @Parameter(description = "Latitudine del punto di interesse") @RequestParam double latitudine,
             @Parameter(description = "Longitudine del punto di interesse") @RequestParam double longitudine,
-            @Parameter(description = "Username del creatore del punto di interesse") @RequestParam String usernameCreatore,
-            @Parameter(description = "Tipologia del punto di interesse", schema = @Schema(implementation = TipologiaPuntoInteresse.class)) @RequestParam TipologiaPuntoInteresse tipologiaPuntoInteresse) {
+            @Parameter(description = "Username del creatore del punto di interesse") @RequestParam @NotNull String usernameCreatore,
+            @Parameter(description = "Tipologia del punto di interesse", schema = @Schema(implementation = TipologiaPuntoInteresse.class)) @RequestParam @NotNull TipologiaPuntoInteresse tipologiaPuntoInteresse) {
         try {
             return ResponseEntity.ok(poiService.creaPuntoInteresse(nomePOI, new Punto(latitudine, longitudine), new Orario(), tipologiaPuntoInteresse, usernameCreatore));
         } catch (FuoriComuneException | IllegalArgumentException e) {
@@ -92,9 +93,9 @@ public class PuntoInteresseController {
     @Operation(summary = "Aggiunta di un tag",
             description = "Aggiunge un nuovo tag a un punto di interesse.")
     public ResponseEntity<?> aggiungiTag(
-            @Parameter(description = "Nome del tag") @RequestParam String nomeTag,
-            @Parameter(description = "ID del punto di interesse") @RequestParam Integer idPuntoInteresse,
-            @Parameter(description = "username del Contributor") @RequestParam String usernameContributor) {
+            @Parameter(description = "Nome del tag") @RequestParam @NotNull String nomeTag,
+            @Parameter(description = "ID del punto di interesse") @RequestParam @Min(0) int idPuntoInteresse,
+            @Parameter(description = "username del Contributor") @RequestParam @NotNull String usernameContributor) {
         try {
             poiService.aggiungiTag(idPuntoInteresse, nomeTag, usernameContributor);
             return ResponseEntity.ok("Aggiunto tag '" + nomeTag + "' al punto di interesse: '" + idPuntoInteresse + "' .");
@@ -107,9 +108,9 @@ public class PuntoInteresseController {
     @Operation(summary = "Rimozione di un tag",
             description = "Rimozione un tag da un punto di interesse.")
     public ResponseEntity<?> rimuoviTag(
-            @Parameter(description = "Nome del tag") @RequestParam String nomeTag,
-            @Parameter(description = "ID del punto di interesse") @RequestParam Integer idPuntoInteresse,
-            @Parameter(description = "username del Contributor") @RequestParam String usernameContributor) {
+            @Parameter(description = "Nome del tag") @RequestParam @NotNull String nomeTag,
+            @Parameter(description = "ID del punto di interesse") @RequestParam @Min(0) int idPuntoInteresse,
+            @Parameter(description = "username del Contributor") @RequestParam @NotNull String usernameContributor) {
         try {
             poiService.rimuoviTag(idPuntoInteresse, nomeTag, usernameContributor);
             return ResponseEntity.ok("Rimosso tag '" + nomeTag + "' dal punto di interesse: '" + idPuntoInteresse + "' .");
@@ -123,7 +124,7 @@ public class PuntoInteresseController {
     @Operation(summary = "Elimina punto di interesse",
             description = "Elimina un punto di interesse.")
     public ResponseEntity<?> delete(
-            @Parameter(description = "id del Punto di Interesse") @PathVariable Integer id) {
+            @Parameter(description = "id del Punto di Interesse") @PathVariable @Min(0) int id) {
         poiService.deleteById(id);
         return ResponseEntity.ok("Punto Interesse: '" + id + "' eliminato");
     }
@@ -132,9 +133,9 @@ public class PuntoInteresseController {
     @Operation(summary = "Modifica della scadenza",
             description = "Modifica la scadenza di un punto di interesse.")
     public ResponseEntity<?> modificaScadenza(
-            @Parameter(description = "Username del contributor") @RequestParam String usernameContributor,
-            @Parameter(description = "ID del punto di interesse") @RequestParam Integer idPuntoInteresse,
-            @Parameter(description = "Data di scadenza nel formato YYYY-MM-DD") @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate scadenza) {
+            @Parameter(description = "Username del contributor") @RequestParam @NotNull String usernameContributor,
+            @Parameter(description = "ID del punto di interesse") @RequestParam @Min(0) int idPuntoInteresse,
+            @Parameter(description = "Data di scadenza nel formato YYYY-MM-DD") @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @NotNull LocalDate scadenza) {
         try {
             poiService.modificaScadenza(usernameContributor, idPuntoInteresse, scadenza);
             return ResponseEntity.ok("Il contributor con id '" + usernameContributor + "' ha aggiornato la scadenza a '" + scadenza + "' del punto di interesse con id '" + idPuntoInteresse + "' .");
@@ -147,7 +148,7 @@ public class PuntoInteresseController {
     @Operation(summary = "Elenco dei materiali di un punto di interesse",
             description = "Un elenco dei materiali presenti in un punto di interesse.")
     public ResponseEntity<?> getMateriali(
-            @Parameter(description = "id del punto di interesse") @PathVariable Integer idPunto) {
+            @Parameter(description = "id del punto di interesse") @PathVariable @Min(0) int idPunto) {
         return ResponseEntity.ok(poiService.getMaterialiPoi(idPunto));
     }
 
@@ -155,7 +156,7 @@ public class PuntoInteresseController {
     @Operation(summary = "Ottieni Punti Interesse del Comune",
             description = "Ottieni tutti gli Punti di Interesse del Comune.")
     public ResponseEntity<?> getPoi(
-            @Parameter(description = "nome del comune") @PathVariable String nomeComune) {
+            @Parameter(description = "nome del comune") @PathVariable @NotNull String nomeComune) {
         return ResponseEntity.ok(poiService.find(puntoInteresse -> puntoInteresse.getComune().getNome().equals(nomeComune)));
     }
 

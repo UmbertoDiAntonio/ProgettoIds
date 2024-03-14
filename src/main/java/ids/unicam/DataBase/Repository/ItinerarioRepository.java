@@ -2,6 +2,7 @@ package ids.unicam.DataBase.Repository;
 
 import ids.unicam.models.Comune;
 import ids.unicam.models.contenuti.Itinerario;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,13 +13,6 @@ import java.util.Optional;
 
 @Repository
 public interface ItinerarioRepository extends JpaRepository<Itinerario, Integer> {
-    List<Itinerario> findAllByComune(Comune comune);
+    @NotNull Optional<Itinerario> findByNome(@NotNull String nome);
 
-    @Query("SELECT Count(i) FROM Itinerario i JOIN  i.percorso Where i.id = :id")
-    Integer countNumeroTappeItinerario(@Param("id") int id);
-
-    Optional<Itinerario> findByNome(String nome);
-
-    @Query("select i from Itinerario i where i.comune.nome =:nomeComune")
-    List<Itinerario> findByNomeComune(String nomeComune);
 }

@@ -8,6 +8,8 @@ import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.RuoloRegistrazione;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.constraints.Min;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +41,7 @@ public class ContributorController {
     @Operation(summary = "Contributor dall'identificatore univoco 'username'",
             description = "Contributor dall'identificatore univoco 'username' salvato nel database.")
     public ResponseEntity<?> getByUsername(
-            @Parameter(description = "username del contributor") @PathVariable String username) {
+            @Parameter(description = "username del contributor") @PathVariable @NotNull String username) {
         return ResponseEntity.ok(contributorService.getByUsername(username));
     }
 
@@ -47,7 +49,7 @@ public class ContributorController {
     @PostMapping("/crea")
     @Operation(summary = "Creazione di un nuovo utente contributor",
             description = "Crea un nuovo utente con ruolo di contributor.")
-    public ResponseEntity<?> create(@RequestBody ContributorDTO contributorDTO) {
+    public ResponseEntity<?> create(@RequestBody @NotNull ContributorDTO contributorDTO) {
         try {
             TuristaAutenticato contributor = gestorePiattaformaService.registra(contributorDTO, RuoloRegistrazione.CONTRIBUTOR);
             return new ResponseEntity<>(contributor, HttpStatus.OK);
@@ -61,7 +63,7 @@ public class ContributorController {
     @Operation(summary = "Elimina contributor",
             description = "Elimina di un utente contributor dall'username.")
     public ResponseEntity<?> delete(
-            @Parameter(description = "username del contributor") @PathVariable String username) {
+            @Parameter(description = "username del contributor") @PathVariable @NotNull String username) {
         contributorService.deleteByUsername(username);
         return ResponseEntity.ok("Utente: '" + username + "' eliminato");
     }
@@ -71,8 +73,8 @@ public class ContributorController {
     @Operation(summary = "Accetta invito per partecipare ad un contest",
             description = "Accetta invito per partecipare ad un contest da parte di un utente animatore.")
     public ResponseEntity<?> accettaInvito(
-            @Parameter(description = "username dell'invitato") @RequestParam String usernameInvitato,
-            @Parameter(description = "id del contest a cui partecipare") @RequestParam Integer idInvito) {
+            @Parameter(description = "username dell'invitato") @RequestParam @NotNull String usernameInvitato,
+            @Parameter(description = "id del contest a cui partecipare") @RequestParam @Min(0) int idInvito) {
         return turistaAutenticatoController.accettaInvito(usernameInvitato, idInvito);
     }
 

@@ -10,6 +10,8 @@ import ids.unicam.models.DTO.TuristaAutenticatoDTO;
 import ids.unicam.models.contenuti.RuoloRegistrazione;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.constraints.Min;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +43,7 @@ public class TuristaAutenticatoController {
     @Operation(summary = "Ottieni Turista",
             description = "Ottieni un Turista dal suo Username.")
     public ResponseEntity<?> getByUsername(
-            @Parameter(description = "username del turista") @PathVariable String username) {
+            @Parameter(description = "username del turista") @PathVariable @NotNull String username) {
         return ResponseEntity.ok(turistaAutenticatoService.getByUsername(username));
     }
 
@@ -73,8 +75,8 @@ public class TuristaAutenticatoController {
     @Operation(summary = "Accetta Invito a Contest",
             description = "Accetta l'invito a partecipare a un contest da parte di un Animatore.")
     public ResponseEntity<?> accettaInvito(
-            @Parameter(description = "username del turista") @RequestParam String usernameTurista,
-            @Parameter(description = "id dell'invito") @RequestParam Integer idInvito) {
+            @Parameter(description = "username del turista") @RequestParam @NotNull String usernameTurista,
+            @Parameter(description = "id dell'invito") @RequestParam @Min(0) int idInvito) {
         try {
             turistaAutenticatoService.accettaInvitoContest(usernameTurista, idInvito);
             return ResponseEntity.ok("Il turista con id '" + usernameTurista + "' ha accettato l'invito con id '" + idInvito + "' .");
@@ -87,8 +89,8 @@ public class TuristaAutenticatoController {
     @Operation(summary = "Aggiungi Preferito",
             description = "Aggiungi un Punto di Interesse alla tua lista dei preferiti, se esiste.")
     public ResponseEntity<?> aggiungiPreferito(
-            @Parameter(description = "username del turista") @RequestParam String usernameTurista,
-            @Parameter(description = "id del Punto di Interesse") @RequestParam Integer idPunto) {
+            @Parameter(description = "username del turista") @RequestParam @NotNull String usernameTurista,
+            @Parameter(description = "id del Punto di Interesse") @RequestParam @Min(0) int idPunto) {
         try {
             turistaAutenticatoService.aggiungiPreferito(usernameTurista, idPunto);
             return ResponseEntity.ok("L'utente con username '" + usernameTurista + "' ha aggiunto ai suoi preferiti il punto di interesse con id '" + idPunto + "' .");
@@ -101,7 +103,7 @@ public class TuristaAutenticatoController {
     @Operation(summary = "Ottieni Preferiti",
             description = "Ottieni la lista di Punti di Interesse preferiti.")
     public ResponseEntity<?> getPreferiti(
-            @Parameter(description = "username del turista") @PathVariable String usernameTurista) {
+            @Parameter(description = "username del turista") @PathVariable @NotNull String usernameTurista) {
         try {
             return ResponseEntity.ok(poiService.getAsList(turistaAutenticatoService.findPreferiti(usernameTurista)));
         } catch (IllegalArgumentException e) {
@@ -113,8 +115,8 @@ public class TuristaAutenticatoController {
     @Operation(summary = "Rimuovi Preferito",
             description = "Rimuovi un Punto di Interesse dalla tua lista dei preferiti, se presente.")
     public ResponseEntity<?> rimuoviPreferito(
-            @Parameter(description = "username del turista") @RequestParam String usernameTurista,
-            @Parameter(description = "id del Punto di Interesse") @RequestParam Integer idPunto) {
+            @Parameter(description = "username del turista") @RequestParam @NotNull String usernameTurista,
+            @Parameter(description = "id del Punto di Interesse") @RequestParam @Min(0) int idPunto) {
         try {
             turistaAutenticatoService.rimuoviPreferito(usernameTurista, idPunto);
             return ResponseEntity.ok("L'utente con username '" + usernameTurista + "' ha eliminato dai suoi preferiti il punto di interesse con id '" + idPunto + "' .");
@@ -127,7 +129,7 @@ public class TuristaAutenticatoController {
     @Operation(summary = "Elimina Notifiche",
             description = "Elimina tutte le notifiche ricevute, se presenti.")
     public ResponseEntity<?> eliminaNotifiche(
-            @Parameter(description = "username del turista") @RequestParam String usernameTurista) {
+            @Parameter(description = "username del turista") @RequestParam @NotNull String usernameTurista) {
         try {
             turistaAutenticatoService.deleteNotificheByUsername(usernameTurista);
             return ResponseEntity.ok("Notifiche rimosse dall'utente con username '" + usernameTurista + "' .");
@@ -140,8 +142,8 @@ public class TuristaAutenticatoController {
     @Operation(summary = "Partecipa a un Contest",
             description = "Partecipa a un Contest se Aperto.")
     public ResponseEntity<?> partecipaAlContest(
-            @Parameter(description = "id del Contest") @RequestParam Integer idContest,
-            @Parameter(description = "Username del Turista") @RequestParam String usernameTurista) {
+            @Parameter(description = "id del Contest") @RequestParam @Min(0) int idContest,
+            @Parameter(description = "Username del Turista") @RequestParam @NotNull String usernameTurista) {
         try {
             turistaAutenticatoService.partecipaAlContest(idContest, usernameTurista);
             return ResponseEntity.ok("L'utente con username '" + usernameTurista + "' ha iniziato a partecipare al contest con id '" + idContest + "' .");
@@ -154,8 +156,8 @@ public class TuristaAutenticatoController {
     @Operation(summary = "Annulla iscrizione a un Contest",
             description = "Annulla iscrizione a un Contest.")
     public ResponseEntity<?> cancellaIscrizioneContest(
-            @Parameter(description = "id del Contest") @RequestParam Integer idContest,
-            @Parameter(description = "Username del Turista") @RequestParam String usernameTurista) {
+            @Parameter(description = "id del Contest") @RequestParam @Min(0) int idContest,
+            @Parameter(description = "Username del Turista") @RequestParam @NotNull String usernameTurista) {
         try {
             turistaAutenticatoService.cancellaPartecipazioneContest(idContest, usernameTurista);
             return ResponseEntity.ok("L'utente con username '" + usernameTurista + "' ha smesso di partecipare al contest con id '" + idContest + "' .");
@@ -168,7 +170,7 @@ public class TuristaAutenticatoController {
     @Operation(summary = "Ottieni i tuoi inviti ai contest",
             description = "Ottieni i tuoi inviti ai contest.")
     public ResponseEntity<?> getInviti(
-            @Parameter(description = "Username del turista") @PathVariable String usernameTurista) {
+            @Parameter(description = "Username del turista") @PathVariable @NotNull String usernameTurista) {
         try {
             return ResponseEntity.ok(turistaAutenticatoService.getInviti(usernameTurista));
         } catch (IllegalArgumentException e) {
@@ -180,7 +182,7 @@ public class TuristaAutenticatoController {
     @Operation(summary = "Ottieni tutte le Notifiche",
             description = "Ottieni tutte le tue Notifiche .")
     public ResponseEntity<?> getNotifiche(
-            @Parameter(description = "Username del turista") @PathVariable String username) {
+            @Parameter(description = "Username del turista") @PathVariable @NotNull String username) {
         try {
             return ResponseEntity.ok(turistaAutenticatoService.visualizzaNotifiche(username));
         } catch (IllegalArgumentException e) {

@@ -5,6 +5,8 @@ import ids.unicam.Service.*;
 import ids.unicam.exception.ConnessioneFallitaException;
 import ids.unicam.models.Comune;
 import ids.unicam.models.attori.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,12 +45,12 @@ public class ComuneServiceImpl implements ComuneService {
      * @param nomeComune il nome del comune
      */
     @Override
-    public void deleteByNome(String nomeComune) {
+    public void deleteByNome( @NotNull String nomeComune) {
         repository.deleteById(nomeComune);
     }
 
 
-    public Comune save(Comune comune) {
+    public  @NotNull Comune save( @NotNull Comune comune) {
         return repository.save(comune);
     }
 
@@ -61,7 +63,7 @@ public class ComuneServiceImpl implements ComuneService {
      * @throws ConnessioneFallitaException se non è possibile connettersi al sistema OSM
      */
     @Override
-    public Comune creaComune(String nomeComune, String usernameCreatore) throws ConnessioneFallitaException {
+    public  @NotNull Comune creaComune( @NotNull String nomeComune,  @NotNull String usernameCreatore) throws ConnessioneFallitaException {
         Optional<GestorePiattaforma> oGestore = gestorePiattaformaService.findByUsername(usernameCreatore);
         if (oGestore.isPresent()) {
             return save(new Comune(nomeComune));
@@ -78,7 +80,7 @@ public class ComuneServiceImpl implements ComuneService {
      * @return il comune con il nome inserito
      */
     @Override
-    public Optional<Comune> getByNome(String nomeComune) {
+    public  @NotNull Optional<Comune> getByNome( @NotNull String nomeComune) {
         return repository.findById(nomeComune);
     }
 
@@ -88,7 +90,7 @@ public class ComuneServiceImpl implements ComuneService {
      * @return una lista contenente tutti i comuni della piattaforma
      */
     @Override
-    public List<Comune> findAll() {
+    public  @NotNull List<Comune> findAll() {
         return Collections.unmodifiableList(repository.findAll());
     }
 
@@ -99,12 +101,15 @@ public class ComuneServiceImpl implements ComuneService {
      * @return la lista di comuni che rispettano la condizione
      */
     @Override
-    public List<Comune> find(Predicate<Comune> predicate) {
-        List<Comune> list = new ArrayList<>();
-        for (Comune comune : findAll())
-            if (predicate.test(comune))
-                list.add(comune);
-        return Collections.unmodifiableList(list);
+    public  @NotNull List<Comune> find( @Nullable Predicate<Comune> predicate) {
+        if(predicate!=null) {
+            List<Comune> list = new ArrayList<>();
+            for (Comune comune : findAll())
+                if (predicate.test(comune))
+                    list.add(comune);
+            return Collections.unmodifiableList(list);
+        }
+        return findAll();
     }
 
     /**
@@ -115,7 +120,7 @@ public class ComuneServiceImpl implements ComuneService {
      * @return una lista contenente tutti gli animatori trovati
      */
     @Override
-    public List<Animatore> getAnimatoriDelComune(String nomeComune, String usernameGestore) throws IllegalArgumentException {
+    public @NotNull List<Animatore> getAnimatoriDelComune( @NotNull String nomeComune, @NotNull  String usernameGestore) throws IllegalArgumentException {
         if (!controllaGestore(usernameGestore)) {
             logger.error("Devi essere il gestore della Piattaforma per creare Comuni");
             throw new IllegalArgumentException("Devi essere il gestore della Piattaforma per creare Comuni");
@@ -132,7 +137,7 @@ public class ComuneServiceImpl implements ComuneService {
      * @return una lista contenente tutti i contributor trovati
      */
     @Override
-    public List<Contributor> getContributorDelComune(String nomeComune, String usernameGestore) {
+    public  @NotNull List<Contributor> getContributorDelComune( @NotNull String nomeComune,  @NotNull String usernameGestore) {
         if (controllaGestore(usernameGestore)) {
             return Collections.unmodifiableList(contributorService.find(contributor -> contributor.getComune().getNome().equals(nomeComune)));
         }
@@ -149,7 +154,7 @@ public class ComuneServiceImpl implements ComuneService {
      * @return una lista contenente tutti i contributor autorizzati trovati
      */
     @Override
-    public List<ContributorAutorizzato> getContributorAutorizzatiDelComune(String nomeComune, String usernameGestore) {
+    public  @NotNull List<ContributorAutorizzato> getContributorAutorizzatiDelComune( @NotNull String nomeComune,  @NotNull String usernameGestore) {
         if (!controllaGestore(usernameGestore)) {
             logger.error("Devi essere il gestore della Piattaforma per creare Comuni");
             throw new IllegalArgumentException("Devi essere il gestore della Piattaforma per creare Comuni");
@@ -165,7 +170,7 @@ public class ComuneServiceImpl implements ComuneService {
      * @return una lista contenente tutti i Curatori trovati
      */
     @Override
-    public List<Curatore> getCuratoriDelComune(String nomeComune, String usernameGestore) {
+    public  @NotNull List<Curatore> getCuratoriDelComune( @NotNull String nomeComune,  @NotNull String usernameGestore) {
         if (!controllaGestore(usernameGestore)) {
             logger.error("Devi essere il gestore della Piattaforma per creare Comuni");
             throw new IllegalArgumentException("Devi essere il gestore della Piattaforma per creare Comuni");
@@ -173,7 +178,7 @@ public class ComuneServiceImpl implements ComuneService {
         return Collections.unmodifiableList(curatoreService.find(curatore -> curatore.getComune().getNome().equals(nomeComune)));
     }
 
-    private boolean controllaGestore(String usernameGestore) {
+    private boolean controllaGestore( @NotNull String usernameGestore) {
         Optional<GestorePiattaforma> oGestore = gestorePiattaformaService.findByUsername(usernameGestore);
         return oGestore.isPresent();
     }

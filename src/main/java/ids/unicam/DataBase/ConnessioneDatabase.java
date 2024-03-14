@@ -12,7 +12,6 @@ import java.util.Objects;
 
 @Component
 public class ConnessioneDatabase {
-
     private final Environment env;
 
     @Autowired

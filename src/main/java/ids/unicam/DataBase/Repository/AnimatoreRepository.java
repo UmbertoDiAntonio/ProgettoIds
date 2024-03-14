@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface AnimatoreRepository extends JpaRepository<Animatore, String> {
-    List<Animatore> findByComuneNome(String nome_comune);
+
 }

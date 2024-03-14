@@ -39,12 +39,12 @@ public class Punto {
     }
 
     @Contract("-> new")
-    public Punto asClone() {
+    public @NotNull Punto asClone() {
         return new Punto(latitudine, longitudine);
     }
 
     @Override
-    public String toString() {
+    public  @NotNull String toString() {
         return "(" + latitudine + "," + longitudine + ")";
     }
 

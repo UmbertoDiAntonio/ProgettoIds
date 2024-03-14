@@ -7,6 +7,7 @@ import ids.unicam.models.attori.ContributorAutorizzato;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Stato;
 import ids.unicam.models.contenuti.materiali.*;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +37,7 @@ public class MaterialeServiceImpl implements MaterialeService {
 
 
     @Override
-    public MaterialeGenerico crea(String fileMateriale, TipologiaMateriale tipologiaMateriale, TuristaAutenticato creatore) {
+    public MaterialeGenerico crea(@NotNull String fileMateriale, @NotNull TipologiaMateriale tipologiaMateriale, @NotNull TuristaAutenticato creatore) {
         TuristaAutenticatoDTO creatoreDTO = new TuristaAutenticatoDTO(creatore.getNome(), creatore.getCognome(), creatore.getDataNascita(), creatore.getPassword(), creatore.getUsername());
         MaterialeGenerico materialeGenerico = switch (tipologiaMateriale) {
             case FOTO -> new Foto(fileMateriale, creatoreDTO);
@@ -51,7 +52,7 @@ public class MaterialeServiceImpl implements MaterialeService {
     }
 
     @Override
-    public String getBase64ById(int id) {
+    public @NotNull String getBase64ById(int id) {
         Optional<MaterialeGenerico> oMateriale = getById(id);
         if (oMateriale.isEmpty()) {
             logger.error("L'id del materiale non e' valido");
@@ -62,17 +63,17 @@ public class MaterialeServiceImpl implements MaterialeService {
 
 
     @Override
-    public Optional<Stato> getStato(int idMateriale) {
+    public @NotNull Optional<Stato> getStato(int idMateriale) {
         return repository.getStatoById(idMateriale);
     }
 
     @Override
-    public Optional<MaterialeGenerico> getById(int id) {
+    public @NotNull Optional<MaterialeGenerico> getById(int id) {
         return repository.findById(id);
     }
 
     @Override
-    public List<MaterialeGenerico> getAll() {
+    public @NotNull List<MaterialeGenerico> getAll() {
         List<String> file = new ArrayList<>();
         File folder = new File("src/main/resources/materials");
         for (File fileMateriale : Objects.requireNonNull(folder.listFiles())) {
@@ -83,7 +84,7 @@ public class MaterialeServiceImpl implements MaterialeService {
 
 
     @Override
-    public MaterialeGenerico save(MaterialeGenerico materialeGenerico) {
+    public @NotNull MaterialeGenerico save(@NotNull MaterialeGenerico materialeGenerico) {
         return repository.save(materialeGenerico);
     }
 

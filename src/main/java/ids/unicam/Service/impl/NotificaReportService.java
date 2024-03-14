@@ -4,6 +4,7 @@ import ids.unicam.Service.ComuneService;
 import ids.unicam.Service.PoiService;
 import ids.unicam.models.contenuti.notifiche.NotificaBuilder;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -29,7 +30,7 @@ public class NotificaReportService {
      * @param messaggio        il messaggio della segnalazione
      * @throws IllegalArgumentException se l'id del punto di interesse non è valido
      */
-    public void creaNotificaReport(int idPuntoInteresse, String messaggio) throws IllegalArgumentException {
+    public void creaNotificaReport(int idPuntoInteresse, @NotNull String messaggio) throws IllegalArgumentException {
         Optional<PuntoInteresse> oPuntoInteresse = poiService.getById(idPuntoInteresse);
         if (oPuntoInteresse.isPresent()) {
             PuntoInteresse puntoInteresse = oPuntoInteresse.get();

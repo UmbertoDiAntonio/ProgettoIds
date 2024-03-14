@@ -16,6 +16,7 @@ import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.notifiche.Notifica;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.transaction.Transactional;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,13 +46,13 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
 
 
     @Override
-    public void deleteByUsername(String id) {
+    public void deleteByUsername(@NotNull String id) {
         repository.deleteById(id);
     }
 
 
     @Override
-    public TuristaAutenticato save(TuristaAutenticato turistaAutenticato) {
+    public @NotNull TuristaAutenticato save(@NotNull TuristaAutenticato turistaAutenticato) {
         turistaAutenticato = repository.save(turistaAutenticato);
         return turistaAutenticato;
     }
@@ -59,7 +60,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
 
     @Transactional
     @Override
-    public void accettaInvitoContest(String usernameUtente, int idInvito) throws IllegalArgumentException, ContestException {
+    public void accettaInvitoContest(@NotNull String usernameUtente, int idInvito) throws IllegalArgumentException, ContestException {
         Optional<TuristaAutenticato> oTurista = getByUsername(usernameUtente);
         if (oTurista.isEmpty()) {
             logger.error("username Utente non valido");
@@ -78,7 +79,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
 
     @Transactional
     @Override
-    public void rimuoviPreferito(String usernameTurista, int idPunto) throws IllegalArgumentException {
+    public void rimuoviPreferito(@NotNull String usernameTurista, int idPunto) throws IllegalArgumentException {
         Optional<TuristaAutenticato> oTurista = getByUsername(usernameTurista);
         if (oTurista.isPresent()) {
             TuristaAutenticato turistaAutenticato = oTurista.get();
@@ -93,7 +94,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
 
     @Transactional
     @Override
-    public void aggiungiMateriale(String usernameTurista, int idContenitore, MaterialeGenerico materialeGenerico) throws IllegalArgumentException, IllegalStateException, ContestException, FuoriComuneException {
+    public void aggiungiMateriale(@NotNull String usernameTurista, int idContenitore,@NotNull  MaterialeGenerico materialeGenerico) throws IllegalArgumentException, IllegalStateException, ContestException, FuoriComuneException {
         if (poiService.getById(idContenitore).isPresent()) {
             Optional<TuristaAutenticato> oTurista = getByUsername(usernameTurista);
             if (oTurista.isEmpty()) {
@@ -149,7 +150,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
         }
     }
 
-    private void aggiungiMateriale(Contenitore contenitore, MaterialeGenerico materialeGenerico) {
+    private void aggiungiMateriale(@NotNull Contenitore contenitore, @NotNull MaterialeGenerico materialeGenerico) {
         contenitore.aggiungiMateriale(materialeGenerico);
         materialeService.save(materialeGenerico);
     }
@@ -157,7 +158,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
 
     @Transactional
     @Override
-    public void aggiungiPreferito(String usernameTurista, int idPunto) throws IllegalArgumentException {
+    public void aggiungiPreferito(@NotNull String usernameTurista, int idPunto) throws IllegalArgumentException {
         Optional<PuntoInteresse> oPunto = poiService.getById(idPunto);
         if (oPunto.isEmpty()) {
             logger.error("id punto non valido");
@@ -183,7 +184,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
 
 
     @Override
-    public List<PuntoInteresse> findPreferiti(String usernameTurista) throws IllegalArgumentException {
+    public @NotNull List<PuntoInteresse> findPreferiti(@NotNull String usernameTurista) throws IllegalArgumentException {
         Optional<TuristaAutenticato> oTurista = getByUsername(usernameTurista);
         if (oTurista.isPresent()) {
             TuristaAutenticato turistaAutenticato = oTurista.get();
@@ -196,7 +197,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
 
     @Transactional
     @Override
-    public void partecipaAlContest(int idContest, String usernameTurista) throws IllegalArgumentException, ContestException {
+    public void partecipaAlContest(int idContest, @NotNull String usernameTurista) throws IllegalArgumentException, ContestException {
         Optional<Contest> oContest = contestService.findById(idContest);
         if (oContest.isPresent()) {
             Contest contest = oContest.get();
@@ -220,7 +221,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
 
     @Transactional
     @Override
-    public void cancellaPartecipazioneContest(int idContest, String usernameTurista) throws IllegalArgumentException {
+    public void cancellaPartecipazioneContest(int idContest, @NotNull String usernameTurista) throws IllegalArgumentException {
         Optional<Contest> oContest = contestService.findById(idContest);
         if (oContest.isPresent()) {
             Contest contest = oContest.get();
@@ -244,23 +245,23 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
     }
 
     @Override
-    public boolean isUsernameUnique(String username) {
+    public boolean isUsernameUnique(@NotNull String username) {
         return repository.countUsername(username) == 0;
     }
 
     @Override
-    public List<TuristaAutenticato> getAll() {
+    public @NotNull List<TuristaAutenticato> getAll() {
         return repository.findAll();
     }
 
     @Override
-    public Optional<TuristaAutenticato> getByUsername(String username) {
+    public @NotNull Optional<TuristaAutenticato> getByUsername(@NotNull String username) {
         return repository.findById(username);
     }
 
 
     @Override
-    public List<Notifica> visualizzaNotifiche(String usernameTurista) throws IllegalArgumentException {
+    public @NotNull List<Notifica> visualizzaNotifiche(@NotNull String usernameTurista) throws IllegalArgumentException {
         Optional<TuristaAutenticato> oTurista = getByUsername(usernameTurista);
         if (oTurista.isPresent()) {
             TuristaAutenticato turistaAutenticato = oTurista.get();
@@ -272,14 +273,14 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
 
 
     @Override
-    public List<Invito> getInviti(String usernameTurista) {
+    public @NotNull List<Invito> getInviti(@NotNull String usernameTurista) {
         return invitoService.getInvitiRicevuti(usernameTurista);
     }
 
 
     @Override
     @Transactional
-    public void deleteNotificheByUsername(String usernameTurista) {
+    public void deleteNotificheByUsername(@NotNull String usernameTurista) {
         notificaService.rimuoviNotificheByUsername(usernameTurista);
     }
 }

@@ -1,5 +1,6 @@
 package ids.unicam.models.contenuti;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public enum Stato {
@@ -14,7 +15,7 @@ public enum Stato {
      * @return lo stato corrispondente
      * @see Boolean
      */
-    public static Stato toStatus(Boolean value) {
+    public static @NotNull Stato toStatus(@Nullable Boolean value) {
         return value == null ? IN_ATTESA : value ? APPROVATO : NON_APPROVATO;
     }
 

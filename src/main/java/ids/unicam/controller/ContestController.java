@@ -6,6 +6,8 @@ import ids.unicam.Service.ContestService;
 import ids.unicam.models.attori.Animatore;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.constraints.Min;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +37,7 @@ public class ContestController {
     @Operation(summary = "Contest dall'identificatore univoco id",
             description = "Contest dall'identificatore univoco id salvato nel database.")
     public ResponseEntity<?> getById(
-            @Parameter(description = "id del contest") @PathVariable Integer idContest) {
+            @Parameter(description = "id del contest") @PathVariable int idContest) {
         return ResponseEntity.ok(contestService.findById(idContest));
     }
 
@@ -43,9 +45,9 @@ public class ContestController {
     @Operation(summary = "Creazione di un nuovo contest",
             description = "Crea un nuovo contest.")
     public ResponseEntity<?> create(
-            @Parameter(description = "nome del Contest") @RequestParam String nomeContest,
-            @Parameter(description = "obiettivo del contest") @RequestParam String obiettivo,
-            @Parameter(description = "username del creatore del contest") @RequestParam String usernameCreatore,
+            @Parameter(description = "nome del Contest") @RequestParam @NotNull String nomeContest,
+            @Parameter(description = "obiettivo del contest") @RequestParam @NotNull String obiettivo,
+            @Parameter(description = "username del creatore del contest") @RequestParam @NotNull String usernameCreatore,
             @Parameter(description = "accessibilità del contest") @RequestParam boolean open) {
         Optional<Animatore> oAnimatore = animatoreService.getByUsername(usernameCreatore);
         if (oAnimatore.isEmpty())
@@ -59,7 +61,7 @@ public class ContestController {
     @Operation(summary = "Elimina contest",
             description = "Elimina di un contest dall'id.")
     public ResponseEntity<?> delete(
-            @Parameter(description = "id del contest") @PathVariable Integer idContest) {
+            @Parameter(description = "id del contest") @PathVariable @Min(0) int idContest) {
         contestService.deleteById(idContest);
         return ResponseEntity.ok("Il contest con id '" + idContest + "' e' stato eliminato.");
     }
@@ -68,7 +70,7 @@ public class ContestController {
     @Operation(summary = "Ottieni i Contest del Comune",
             description = "Ottieni tutti i Contest del Comune.")
     public ResponseEntity<?> getContests(
-            @Parameter(description = "nome del comune") @PathVariable String nomeComune) {
+            @Parameter(description = "nome del comune") @PathVariable @NotNull String nomeComune) {
         return ResponseEntity.ok(contestService.getContest(contest -> contest.getComune().getNome().equals(nomeComune)));
     }
 }

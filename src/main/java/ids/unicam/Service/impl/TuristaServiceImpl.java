@@ -4,6 +4,7 @@ import ids.unicam.Service.ContestService;
 import ids.unicam.Service.PoiService;
 import ids.unicam.Service.TuristaService;
 import ids.unicam.models.contenuti.Taggable;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class TuristaServiceImpl implements TuristaService {
 
 
     @Override
-    public List<Taggable> findByTag(String tag) {
+    public @NotNull List<Taggable> findByTag(@NotNull String tag) {
         List<Taggable> temp = new ArrayList<>();
         temp.addAll(contestService.find(contest -> contest.haveTag(tag)));
         temp.addAll(poiService.find(puntoInteresse -> puntoInteresse.haveTag(tag)));
@@ -41,7 +42,7 @@ public class TuristaServiceImpl implements TuristaService {
      * @throws IllegalArgumentException se l'id del punto ti interesse non è valido
      */
     @Override
-    public void report(int idPuntoInteresse, String messaggio) throws IllegalArgumentException {
+    public void report(int idPuntoInteresse, @NotNull String messaggio) throws IllegalArgumentException {
         notificaReportService.creaNotificaReport(idPuntoInteresse, messaggio);
     }
 

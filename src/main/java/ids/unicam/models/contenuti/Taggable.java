@@ -1,5 +1,7 @@
 package ids.unicam.models.contenuti;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 /**
@@ -14,12 +16,12 @@ public interface Taggable {
     /**
      * @param tag Tag da aggiungere all'oggetto
      */
-    void addTag(String tag);
+    void addTag( @NotNull String tag);
 
     /**
      * @param tag tag da rimuovere all'oggetto
      */
-    void rimuoviTag(String tag);
+    void rimuoviTag( @NotNull String tag);
 
     /**
      * Controlla se l'oggetto ha il tag indicato
@@ -27,5 +29,5 @@ public interface Taggable {
      * @param tag il tag da controllare
      * @return true se l'oggetto contiene il tag, false altrimenti
      */
-    boolean haveTag(String tag);
+    boolean haveTag( @NotNull String tag);
 }

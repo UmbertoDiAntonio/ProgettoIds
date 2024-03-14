@@ -2,6 +2,7 @@ package ids.unicam.DataBase.Repository;
 
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,8 +13,8 @@ import java.util.List;
 @Repository
 public interface TuristaAutenticatoRepository extends JpaRepository<TuristaAutenticato, String> {
     @Query("SELECT t.preferiti FROM TuristaAutenticato t WHERE t.username = :usernameTurista")
-    List<PuntoInteresse> findPreferitiByTurista(@Param("usernameTurista") String usernameTurista);
+    @NotNull List<PuntoInteresse> findPreferitiByTurista(@Param("usernameTurista") String usernameTurista);
 
     @Query("SELECT COUNT(*) FROM TuristaAutenticato t WHERE t.username=:username ")
-    Integer countUsername(String username);
+    int countUsername(@NotNull String username);
 }

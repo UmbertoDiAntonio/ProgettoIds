@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface ContributorRepository extends JpaRepository<Contributor, String> {
-    List<Contributor> findByComuneNome(String nome_comune);
 
 }

@@ -15,17 +15,6 @@ import java.util.function.Predicate;
 
 public interface ContestService {
     /**
-     * Aggiungi un materiale al contest
-     *
-     * @param usernameTurista   l'utente che vuole cambiare il materiale
-     * @param idContest         l'id del contest in cui caricare il materiale
-     * @param materialeGenerico il materiale da caricare
-     * @throws ContestException         se non sei inscritto al contest o il contest è terminato
-     * @throws IllegalArgumentException se i parametri non sono validi
-     */
-    void aggiungiMateriale(String usernameTurista, int idContest, MaterialeGenerico materialeGenerico) throws ContestException, FuoriComuneException;
-
-    /**
      * Ottieni la lista dei partecipanti del contest
      *
      * @param contest il contest di cui si vogliono ottenere i partecipanti

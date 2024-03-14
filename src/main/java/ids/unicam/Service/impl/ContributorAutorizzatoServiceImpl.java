@@ -3,6 +3,8 @@ package ids.unicam.Service.impl;
 import ids.unicam.DataBase.Repository.ContributorAutorizzatoRepository;
 import ids.unicam.Service.ContributorAutorizzatoService;
 import ids.unicam.models.attori.ContributorAutorizzato;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,27 +23,29 @@ public class ContributorAutorizzatoServiceImpl implements ContributorAutorizzato
     }
 
     @Override
-    public void deleteByUsername(String id) {
+    public void deleteByUsername(@NotNull String id) {
         repository.deleteById(id);
     }
 
     @Override
-    public Optional<ContributorAutorizzato> getByUsername(String username) {
+    public @NotNull Optional<ContributorAutorizzato> getByUsername(@NotNull String username) {
         return repository.findById(username);
     }
 
     @Override
-    public ContributorAutorizzato save(ContributorAutorizzato contributorAutorizzato) {
+    public @NotNull ContributorAutorizzato save(@NotNull ContributorAutorizzato contributorAutorizzato) {
         return repository.save(contributorAutorizzato);
     }
 
     @Override
-    public List<ContributorAutorizzato> getAll() {
+    public @NotNull List<ContributorAutorizzato> getAll() {
         return repository.findAll();
     }
 
     @Override
-    public List<ContributorAutorizzato> find(Predicate<ContributorAutorizzato> predicate) {
+    public @NotNull List<ContributorAutorizzato> find( @Nullable Predicate<ContributorAutorizzato> predicate) {
+        if(predicate==null)
+            return getAll();
         List<ContributorAutorizzato> list = new ArrayList<>();
         for (ContributorAutorizzato contributorAutorizzato : getAll())
             if (predicate.test(contributorAutorizzato))

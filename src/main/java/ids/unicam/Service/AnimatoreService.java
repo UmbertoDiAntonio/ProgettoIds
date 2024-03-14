@@ -4,6 +4,8 @@ import ids.unicam.exception.ContestException;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.Animatore;
 import jakarta.transaction.Transactional;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,14 +15,14 @@ import java.util.function.Predicate;
 public interface AnimatoreService {
 
 
-    Animatore save(Animatore animatore);
+    @NotNull Animatore save(@NotNull Animatore animatore);
 
     /**
      * Elimina l'animatore con l'username indicato
      *
      * @param username l'username dell'animatore da eliminare
      *///TODO rimovere?
-    void deleteByUsername(String username);
+    void deleteByUsername(@NotNull String username);
 
     /**
      * Ottieni l'animatore con l'username selezionato
@@ -28,7 +30,7 @@ public interface AnimatoreService {
      * @param username l'username dell'animatore da cercare
      * @return se esiste ritorna l'animatore con l'username indicato
      */
-    Optional<Animatore> getByUsername(String username);
+    @NotNull Optional<Animatore> getByUsername(@NotNull String username);
 
     /**
      * Dichiara un Contest come terminato
@@ -38,7 +40,7 @@ public interface AnimatoreService {
      * @throws UnsupportedOperationException se non si ha il permesso di terminare il contest
      * @throws IllegalArgumentException      se i parametri idContest o usernameAnimatore non sono validi
      */
-    void terminaContest(String usernameAnimatore, int idContest) throws UnsupportedOperationException, IllegalArgumentException, ContestException;
+    void terminaContest(@NotNull String usernameAnimatore, int idContest) throws UnsupportedOperationException, IllegalArgumentException, ContestException;
 
     /**
      * Dichiara il vincitore di un contest terminato
@@ -50,7 +52,7 @@ public interface AnimatoreService {
      * @throws UnsupportedOperationException se non si ha il permesso di terminare il contest
      * @throws IllegalArgumentException      se i parametri idContest, idMateriale o usernameAnimatore non sono validi
      */
-    void setVincitoreContest(String usernameAnimatore, int idContest, int idMateriale) throws ContestException, IllegalArgumentException, UnsupportedOperationException;
+    void setVincitoreContest(@NotNull String usernameAnimatore, int idContest, int idMateriale) throws ContestException, IllegalArgumentException, UnsupportedOperationException;
 
     /**
      * Annulla un invito a partecipare a un tuo contest
@@ -60,7 +62,7 @@ public interface AnimatoreService {
      * @throws IllegalArgumentException      se l'id dell'invito non è corretto o se l'username dell'animatore non esiste
      * @throws UnsupportedOperationException se non hai i permessi per annullare l'invito
      */
-    void annullaInvito(String usernameAnimatore, int idInvito) throws ContestException, IllegalArgumentException;
+    void annullaInvito(@NotNull String usernameAnimatore, int idInvito) throws ContestException, IllegalArgumentException;
 
     /**
      * Ottieni tutti gli animatori presenti nella piattaforma
@@ -75,7 +77,7 @@ public interface AnimatoreService {
      * @param predicate la condizione da rispettare
      * @return gli Animatori trovati
      */
-    List<Animatore> find(Predicate<Animatore> predicate);
+    @NotNull List<Animatore> find(@Nullable Predicate<Animatore> predicate);
 
     /**
      * Crea un invito a partecipare a un tuo contest per un utente
@@ -88,7 +90,7 @@ public interface AnimatoreService {
      * @throws IllegalStateException    se non hai i permessi per invitare nel contest
      * @throws IllegalArgumentException se uno dei parametri non è corretto
      */
-    Invito invitaContest(String usernameAnimatore, int idContest, String invitato) throws ContestException, IllegalStateException, IllegalArgumentException;
+    @NotNull Invito invitaContest(@NotNull String usernameAnimatore, int idContest, @NotNull String invitato) throws ContestException, IllegalStateException, IllegalArgumentException;
 
     /**
      * Cambia lo stato di un materiale caricato nel contest, deve essere in "in attesa"
@@ -100,7 +102,7 @@ public interface AnimatoreService {
      * @throws UnsupportedOperationException se non è possibile effettuare l'operazione
      * @throws IllegalArgumentException      se uno dei parametri non è corretto
      */
-    void approvaMateriale(String usernameAnimatore, int idContest, int idMaterialeGenerico, boolean stato) throws UnsupportedOperationException, IllegalArgumentException;
+    void approvaMateriale(@NotNull String usernameAnimatore, int idContest, int idMaterialeGenerico, boolean stato) throws UnsupportedOperationException, IllegalArgumentException;
 
     /**
      * Imposta una data per la fine automatica del contest
@@ -111,7 +113,7 @@ public interface AnimatoreService {
      * @throws UnsupportedOperationException se l'animatore non ha i permessi per eseguire l'operazione
      * @throws IllegalArgumentException      se uno dei parametri non è valido
      */
-    void setFineContest(int idContest, LocalDate dataFine, String usernameAnimatore) throws UnsupportedOperationException, IllegalArgumentException;
+    void setFineContest(int idContest, @NotNull LocalDate dataFine, @NotNull String usernameAnimatore) throws UnsupportedOperationException, IllegalArgumentException;
 
     /**
      * Aggiungi un Tag a un contest
@@ -124,7 +126,7 @@ public interface AnimatoreService {
      * @throws UnsupportedOperationException se l'animatore non ha i permessi per eseguire questa operazione
      */
     @Transactional
-    void aggiungiTagContest(int idContest, String tag, String usernameAnimatore) throws ContestException, IllegalArgumentException, IllegalStateException;
+    void aggiungiTagContest(int idContest, @NotNull String tag, @NotNull String usernameAnimatore) throws ContestException, IllegalArgumentException, IllegalStateException;
 
     /**
      * Rimuovi un tag da un contest
@@ -137,5 +139,5 @@ public interface AnimatoreService {
      * @throws UnsupportedOperationException se l'animatore non può eseguire l'operazione
      */
     @Transactional
-    void rimuoviTagContest(int idContest, String tag, String usernameAnimatore) throws ContestException, IllegalArgumentException;
+    void rimuoviTagContest(int idContest, @NotNull String tag, @NotNull String usernameAnimatore) throws ContestException, IllegalArgumentException;
 }

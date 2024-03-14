@@ -1,6 +1,7 @@
 package ids.unicam.models.contenuti;
 
 import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
@@ -21,12 +22,12 @@ public interface Contenitore {
      *
      * @param materialeGenerico il materiale da aggiungere
      */
-    void aggiungiMateriale(MaterialeGenerico materialeGenerico);
+    void aggiungiMateriale( @NotNull MaterialeGenerico materialeGenerico);
 
     /**
      * Rimuovi un MaterialeGenerico di qualunque tipo ai materiali del contenitore
      *
      * @param materialeGenerico il materiale da rimuovere
      */
-    void rimuoviMateriale(MaterialeGenerico materialeGenerico);
+    void rimuoviMateriale( @NotNull MaterialeGenerico materialeGenerico);
 }

@@ -6,6 +6,7 @@ import ids.unicam.exception.ContestException;
 import ids.unicam.models.Invito;
 import ids.unicam.models.attori.TuristaAutenticato;
 import jakarta.transaction.Transactional;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,26 +34,26 @@ public class InvitoServiceImpl implements InvitoService {
 
 
     @Override
-    public Invito save(Invito invito) {
+    public @NotNull Invito save(@NotNull Invito invito) {
         return repository.save(invito);
     }
 
 
     @Override
-    public Optional<Invito> findById(int id) {
+    public @NotNull Optional<Invito> findById(int id) {
         return repository.findById(id);
     }
 
 
     @Override
-    public List<Invito> findAll() {
+    public @NotNull List<Invito> findAll() {
         return Collections.unmodifiableList(repository.findAll());
     }
 
 
     @Transactional
     @Override
-    public void accettaInvito(TuristaAutenticato turistaAutenticato, Invito invito) throws ContestException {
+    public void accettaInvito(@NotNull TuristaAutenticato turistaAutenticato,@NotNull  Invito invito) throws ContestException {
         if (isValid(invito)) {
             if (invito.getInvitato().getUsername().equals(turistaAutenticato.getUsername())) {
                 contestService.aggiungiPartecipante(invito.getContest(), turistaAutenticato);
@@ -68,7 +69,7 @@ public class InvitoServiceImpl implements InvitoService {
 
 
     @Override
-    public boolean isValid(Invito invito) {
+    public boolean isValid(@NotNull Invito invito) {
         return !invito.getContest().isOpen()
                 && !contestService.getPartecipanti(invito.getContest()).contains(invito.getInvitato())
                 && invito.isValido();
@@ -76,7 +77,7 @@ public class InvitoServiceImpl implements InvitoService {
 
 
     @Override
-    public List<Invito> getInvitiRicevuti(String usernameTurista) {
+    public @NotNull List<Invito> getInvitiRicevuti(@NotNull String usernameTurista) {
         return repository.findInvitiByTurista(usernameTurista);
     }
 }

@@ -1,6 +1,7 @@
 package ids.unicam.models.contenuti.notifiche;
 
 import ids.unicam.models.attori.TuristaAutenticato;
+import org.jetbrains.annotations.NotNull;
 
 public class NotificaBuilder {
     private String titolo;
@@ -10,17 +11,17 @@ public class NotificaBuilder {
     public NotificaBuilder() {
     }
 
-    public NotificaBuilder withTitolo(String titolo) {
+    public  @NotNull NotificaBuilder withTitolo( @NotNull String titolo) {
         this.titolo = titolo;
         return this;
     }
 
-    public NotificaBuilder withDescrizione(String descrizione) {
+    public  @NotNull NotificaBuilder withDescrizione( @NotNull String descrizione) {
         this.descrizione = descrizione;
         return this;
     }
 
-    public NotificaBuilder withDestinatario(TuristaAutenticato destinatario) {
+    public @NotNull NotificaBuilder withDestinatario( @NotNull TuristaAutenticato destinatario) {
         this.usernameDestinatario = destinatario.getUsername();
         return this;
     }
@@ -30,7 +31,7 @@ public class NotificaBuilder {
      *
      * @return la notifica generata
      */
-    public Notifica build() {
+    public @NotNull Notifica build() {
         if (titolo == null || titolo.isBlank() || descrizione == null || descrizione.isBlank()) {
             throw new IllegalArgumentException("Titolo o descrizione sono vuoti");
         }

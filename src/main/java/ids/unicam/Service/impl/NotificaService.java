@@ -32,7 +32,7 @@ public class NotificaService {
      * @param puntoInteresse il punto di interesse
      * @param stato          lo stato impostato
      */
-    public void creaNotificaApprovazione(@NotNull Curatore curatore, PuntoInteresse puntoInteresse, @NotNull Stato stato) {
+    public void creaNotificaApprovazione(@NotNull Curatore curatore, @NotNull PuntoInteresse puntoInteresse, @NotNull Stato stato) {
         repository.save(new NotificaBuilder().withTitolo("Valutazione: " + puntoInteresse.getNome())
                 .withDescrizione(curatore.getUsername() + " " + (Boolean.TRUE.equals(stato.asBoolean()) ? "ha approvato " : "non ha approvato ") +
                         "\"" + puntoInteresse.getNome() + "\"")
@@ -46,7 +46,7 @@ public class NotificaService {
      * @param materialeGenerico il materiale
      * @param stato             lo stato impostato
      */
-    public void creaNotificaApprovazione(Curatore curatore, MaterialeGenerico materialeGenerico, Stato stato) {
+    public void creaNotificaApprovazione(@NotNull Curatore curatore, @NotNull MaterialeGenerico materialeGenerico, @NotNull Stato stato) {
         repository.save(
                 new NotificaBuilder()
                         .withTitolo("Valutazione del materiale creato da: " + materialeGenerico.getCreatore().getUsername())
@@ -62,7 +62,7 @@ public class NotificaService {
      * @param contest   il contest vinto
      * @param vincitore il materiale che ha vinto
      */
-    public void creaNotificaVittoriaContest(Animatore animatore, Contest contest, MaterialeGenerico vincitore) {
+    public void creaNotificaVittoriaContest(@NotNull Animatore animatore,@NotNull  Contest contest,@NotNull  MaterialeGenerico vincitore) {
         repository.save(
                 new NotificaBuilder()
                         .withTitolo("Vittoria Contest: " + vincitore.getCreatore().getUsername())
@@ -76,7 +76,7 @@ public class NotificaService {
      * @param contest      il contest
      * @param destinatario il partecipante
      */
-    public void creaNotificaTermineContest(Contest contest, TuristaAutenticato destinatario) {
+    public void creaNotificaTermineContest(@NotNull Contest contest, @NotNull TuristaAutenticato destinatario) {
         repository.save(
                 new NotificaBuilder()
                         .withTitolo("Info Contest: " + contest.getNomeContest())
@@ -91,7 +91,7 @@ public class NotificaService {
      * @param contest      il contest
      * @param destinatario l'invitato
      */
-    public void creaNotificaInvitoContest(Animatore animatore, Contest contest, TuristaAutenticato destinatario) {
+    public void creaNotificaInvitoContest(@NotNull Animatore animatore, @NotNull Contest contest, @NotNull TuristaAutenticato destinatario) {
         repository.save(
                 new NotificaBuilder()
                         .withTitolo("Info Contest: " + contest.getNomeContest())
@@ -105,7 +105,7 @@ public class NotificaService {
      * @param contest il contest
      * @param turista il nuovo partecipante
      */
-    public void creaNotificaIngressoContest(Contest contest, TuristaAutenticato turista) {
+    public void creaNotificaIngressoContest(@NotNull Contest contest, @NotNull TuristaAutenticato turista) {
         repository.save(
                 new NotificaBuilder()
                         .withTitolo("Info Contest: " + contest.getNomeContest())
@@ -119,12 +119,12 @@ public class NotificaService {
      * @param turistaAutenticato l'utente che esegue l'operazione
      * @return la lista delle notifiche presenti
      */
-    public List<Notifica> getNotifiche(TuristaAutenticato turistaAutenticato) {
+    public @NotNull List<Notifica> getNotifiche(@NotNull TuristaAutenticato turistaAutenticato) {
         return repository.findByUsernameDestinatario(turistaAutenticato.getUsername());
     }
 
 
-    public Notifica save(Notifica build) {
+    public @NotNull  Notifica save(@NotNull Notifica build) {
         return repository.save(build);
     }
 
@@ -134,12 +134,12 @@ public class NotificaService {
      * @param usernameTurista l'utente che esegue l'operazione
      */
     @Transactional
-    public void rimuoviNotificheByUsername(String usernameTurista) {
+    public void rimuoviNotificheByUsername(@NotNull String usernameTurista) {
         repository.deleteByUsernameDestinatario(usernameTurista);
     }
 
     //TODO
-    public void creaNotificaCreazionePoi(PuntoInteresse puntoInteresse, TuristaAutenticato destinatario) {//TODO vedi se riesci
+    public void creaNotificaCreazionePoi(@NotNull PuntoInteresse puntoInteresse, @NotNull TuristaAutenticato destinatario) {//TODO vedi se riesci
         repository.save(
                 new NotificaBuilder()
                         .withTitolo("Info Punti Interesse: " + puntoInteresse.getNome())

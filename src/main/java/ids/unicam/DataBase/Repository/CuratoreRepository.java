@@ -8,7 +8,5 @@ import java.util.List;
 
 @Repository
 public interface CuratoreRepository extends JpaRepository<Curatore, String> {
-    List<Curatore> findCuratoreByComuneNome(String nome_comune);
-
 
 }
