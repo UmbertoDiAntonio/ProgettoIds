@@ -120,16 +120,6 @@ public class PuntoInteresseController {
     }
 
 
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Elimina punto di interesse",
-            description = "Elimina un punto di interesse.")
-    public ResponseEntity<?> delete(
-            @Parameter(description = "id del Punto di Interesse") @PathVariable @Min(0) int id,
-            @Parameter(description = "username dell'utente") @RequestParam @NotNull String usernameUtente) {
-        poiService.deleteById(id, usernameUtente);
-        return ResponseEntity.ok("Punto Interesse: '" + id + "' eliminato dall'utente con username '" + usernameUtente + "'.");
-    }
-
     @PutMapping("/setScadenza")
     @Operation(summary = "Modifica della scadenza",
             description = "Modifica la scadenza di un punto di interesse.")

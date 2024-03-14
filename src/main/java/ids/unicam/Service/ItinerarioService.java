@@ -50,7 +50,7 @@ public interface ItinerarioService {
      *
      * @param id l'id dell'itinerario da eliminare
      */
-    void deleteById(int id, @NotNull String usernameUtente);
+    void deleteById(int id);
 
     /**
      * Trova tutti gli Itinerari che rispettano la condizione

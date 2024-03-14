@@ -21,7 +21,7 @@ public interface AnimatoreService {
      * Elimina l'animatore con l'username indicato
      *
      * @param username l'username dell'animatore da eliminare
-     *///TODO rimovere?
+     */
     void deleteByUsername(@NotNull String username);
 
     /**

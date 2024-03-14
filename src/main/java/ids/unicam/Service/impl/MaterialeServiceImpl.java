@@ -32,7 +32,7 @@ public class MaterialeServiceImpl implements MaterialeService {
     }
 
     @Override
-    public void deleteById(int id, @NotNull String usernameGestore) {
+    public void deleteById(int id) {
         repository.deleteById(id);
     }
 

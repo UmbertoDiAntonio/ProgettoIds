@@ -80,16 +80,6 @@ public class MaterialeController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Elimina materiale",
-            description = "Eliminazione di un materiale dall'identificatore univoco id.")
-    public ResponseEntity<?> delete(
-            @Parameter(description = "id del materiale da eliminare") @PathVariable @Min(0) int id,
-            @Parameter(description = "username dell'utente") @RequestParam @NotNull String usernameUtente) {
-        materialeService.deleteById(id, usernameUtente);
-        return ResponseEntity.ok("Il materiale con id '" + id + "' e' stato eliminato dal'utente con username '" + usernameUtente + "'.");
-    }
-
     @GetMapping("/getBase64/{id}")
     @Operation(summary = "Ottieni codifica del materiale in base64",
             description = "Ottenere la codifica del materiale caricato in base64.")

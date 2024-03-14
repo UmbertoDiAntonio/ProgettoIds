@@ -29,7 +29,7 @@ public interface ContestService {
      * @param obiettivo   l'obiettivo del contest
      * @param creatore    il creatore del contest
      * @param open        la modalità di ingresso al contest, aperto o su invito
-     * @return il cotest appena creato
+     * @return il contest appena creato
      */
     @NotNull Contest creaContest(@NotNull String nomeContest, @NotNull String obiettivo, @NotNull Animatore creatore, boolean open);
 
@@ -72,7 +72,8 @@ public interface ContestService {
 
     @NotNull Optional<Contest> findById(int id);
 
-    void deleteById(int id, @NotNull String usernameUtente);
+
+    void deleteById(int id);
 
     @NotNull Contest save(@NotNull Contest contest);
 

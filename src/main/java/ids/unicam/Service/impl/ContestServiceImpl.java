@@ -42,7 +42,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
 
-    public @NotNull Optional<Contest> findById(@NotNull int id) {
+    public @NotNull Optional<Contest> findById( int id) {
         return repository.findById(id);
     }
 

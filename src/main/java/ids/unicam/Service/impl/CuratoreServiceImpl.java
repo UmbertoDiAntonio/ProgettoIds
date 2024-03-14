@@ -170,7 +170,7 @@ public class CuratoreServiceImpl implements CuratoreService {
                     for (MaterialeGenerico materiale : poiServiceImpl.getMaterialiPoi(idPuntoInteresse)) {
                         eliminaMateriale(usernameCuratore, materiale.getId());
                     }
-                    poiServiceImpl.deleteById(idPuntoInteresse, usernameCuratore);
+                    poiServiceImpl.deleteById(idPuntoInteresse);
                 } else {
                     throw new FuoriComuneException("Il punto di interesse e' fuori dal comune del curatore");
                 }
@@ -193,7 +193,7 @@ public class CuratoreServiceImpl implements CuratoreService {
             if (oItinerario.isPresent()) {
                 Itinerario itinerario = oItinerario.get();
                 if (controllaSeInComune(curatore, itinerario.getComune())) {
-                    itinerarioServiceImpl.deleteById(itinerario.getId(), usernameCuratore);
+                    itinerarioServiceImpl.deleteById(itinerario.getId());
                 } else {
                     throw new FuoriComuneException("L'itinerario e' fuori dal comune del curatore");
                 }
@@ -220,7 +220,7 @@ public class CuratoreServiceImpl implements CuratoreService {
                     for (MaterialeGenerico materiale : contestServiceImpl.getMaterialiContest(contest)) {
                         eliminaMateriale(usernameCuratore, materiale.getId());
                     }
-                    contestServiceImpl.deleteById(contest.getId(), usernameCuratore);
+                    contestServiceImpl.deleteById(contest.getId());
                 } else {
                     throw new FuoriComuneException("Il contest e' fuori dal comune del curatore");
                 }
@@ -265,7 +265,7 @@ public class CuratoreServiceImpl implements CuratoreService {
                         logger.warn("Il Materiale non è associato a nessun Punto di Interesse o Contest");
                     }
                 }
-                materialeServiceImpl.deleteById(materialeGenerico.getId(), usernameCuratore);
+                materialeServiceImpl.deleteById(materialeGenerico.getId());
             } else {
                 logger.warn("Id del materiale non valido");
                 throw new IllegalArgumentException("Id del materiale non valido");

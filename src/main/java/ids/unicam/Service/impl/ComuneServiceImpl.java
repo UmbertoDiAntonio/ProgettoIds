@@ -39,7 +39,6 @@ public class ComuneServiceImpl implements ComuneService {
 
 
     /**
-     * TODO forse si può cancellare
      * Cancella il comune con il nome indicato
      *
      * @param nomeComune il nome del comune

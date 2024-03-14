@@ -33,7 +33,7 @@ public interface MaterialeService {
      *
      * @param id l'id del materiale da eliminare
      */
-    void deleteById(int id, @NotNull String usernameUtente);
+    void deleteById(int id);
 
     /**
      * Crea un nuovo materiale

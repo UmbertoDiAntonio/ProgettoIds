@@ -296,7 +296,7 @@ public class PoiServiceImpl implements PoiService {
     public void deleteIfIsExpired(@NotNull PuntoInteresse puntoInteresse) {
         if (puntoInteresse.isExpired()) {
             puntoInteresse.getMateriali().clear();
-            deleteById(puntoInteresse.getId());
+            repository.deleteById(puntoInteresse.getId());
         }
     }
 }

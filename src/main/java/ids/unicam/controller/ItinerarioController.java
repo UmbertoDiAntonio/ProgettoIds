@@ -55,15 +55,6 @@ public class ItinerarioController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Elimina itinerario",
-            description = "Eliminazione di un itinerario dall'identificatore univoco id.")
-    public ResponseEntity<?> delete(
-            @Parameter(description = "id dell'itinerario") @PathVariable @Min(0) int id,
-            @Parameter(description = "username utente") @RequestParam @NotNull String usernameUtente) {
-        itinerarioService.deleteById(id, usernameUtente);
-        return ResponseEntity.ok("L'itinerario '" + id + "' e' stato eliminato dall'utente con username '" + usernameUtente + "'.");
-    }
 
     @PutMapping("/aggiungiTappa")
     @Operation(summary = "Aggiungi tappa ad un itinerario",

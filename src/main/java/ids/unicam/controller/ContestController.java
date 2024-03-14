@@ -56,17 +56,6 @@ public class ContestController {
         return ResponseEntity.ok(contestService.creaContest(nomeContest, obiettivo, creatore, open));
     }
 
-
-    @DeleteMapping("/{idContest}")
-    @Operation(summary = "Elimina contest",
-            description = "Elimina di un contest dall'id.")
-    public ResponseEntity<?> delete(
-            @Parameter(description = "id del contest") @PathVariable @Min(0) int idContest,
-            @Parameter(description = "username dell'utente") @RequestParam @NotNull String usernameUtente) {
-        contestService.deleteById(idContest, usernameUtente);
-        return ResponseEntity.ok("Il contest con id '" + idContest + "' e' stato eliminato dall'utente con username '" + usernameUtente + "'.");
-    }
-
     @GetMapping("/{nomeComune}/getContests")
     @Operation(summary = "Ottieni i Contest del Comune",
             description = "Ottieni tutti i Contest del Comune.")

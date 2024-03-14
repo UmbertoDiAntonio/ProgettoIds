@@ -113,7 +113,7 @@ public interface PoiService {
      *
      * @param id l'id del punto di interesse da eliminare
      */
-    void deleteById(int id, @NotNull String usernameUtente);
+    void deleteById(int id);
 
     /**
      * Modifica la data di fine validità di un punto di interesse
