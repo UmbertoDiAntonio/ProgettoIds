@@ -32,7 +32,7 @@ public class Comune {
     public Comune(String nomeComune) throws ConnessioneFallitaException {
         this.posizione = RichiestaOSM.getCoordinateDaComune(nomeComune);
         if (posizione == null) {
-            logger.error("Coordinate comune nulle");
+            logger.warn("Coordinate comune nulle");
         }
         this.nome = RichiestaOSM.getComuneDaCoordinate(posizione);
 

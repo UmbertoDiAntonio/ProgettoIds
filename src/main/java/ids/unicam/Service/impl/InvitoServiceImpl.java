@@ -58,7 +58,7 @@ public class InvitoServiceImpl implements InvitoService {
             if (invito.getInvitato().getUsername().equals(turistaAutenticato.getUsername())) {
                 contestService.aggiungiPartecipante(invito.getContest(), turistaAutenticato);
             } else {
-                logger.error("Non sei Invitato");
+                logger.warn("Non sei Invitato");
                 throw new ContestException("Non sei Invitato");
             }
         } else {

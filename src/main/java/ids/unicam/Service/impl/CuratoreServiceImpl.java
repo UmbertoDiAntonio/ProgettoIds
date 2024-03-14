@@ -102,11 +102,11 @@ public class CuratoreServiceImpl implements CuratoreService {
                 notificaService.creaNotificaApprovazione(curatore, puntoInteresse, stato);
                 poiServiceImpl.save(puntoInteresse);
             } else {
-                logger.error("Id del punto di interesse non valido");
+                logger.warn("Id del punto di interesse non valido");
                 throw new IllegalArgumentException("Id del punto di interesse non valido");
             }
         } else {
-            logger.error("username curatore non valido");
+            logger.warn("username curatore non valido");
             throw new IllegalArgumentException("username curatore non valido");
         }
     }
@@ -135,23 +135,23 @@ public class CuratoreServiceImpl implements CuratoreService {
                         throw new FuoriComuneException("curatore non puo' operare fuori dal suo comune");
                 }
                 if (materialeGenerico.getStato() != Stato.IN_ATTESA) {
-                    logger.error("stato del materiale già settato");
+                    logger.warn("stato del materiale già settato");
                     throw new UnsupportedOperationException("stato del materiale già settato");
                 }
                 Stato stato = Stato.toStatus(bStato);
                 if (stato == Stato.IN_ATTESA) {
-                    logger.error("non puoi impostare stato in attesa");
+                    logger.warn("non puoi impostare stato in attesa");
                     throw new UnsupportedOperationException("non puoi impostare stato in attesa");
                 }
                 materialeGenerico.setStato(stato);
                 notificaService.creaNotificaApprovazione(curatore, materialeGenerico, stato);
                 materialeServiceImpl.save(materialeGenerico);
             } else {
-                logger.error("Id del materiale non valido");
+                logger.warn("Id del materiale non valido");
                 throw new IllegalArgumentException("Id del materiale non valido");
             }
         } else {
-            logger.error("username curatore non valido");
+            logger.warn("username curatore non valido");
             throw new IllegalArgumentException("username curatore non valido");
         }
     }
@@ -175,11 +175,11 @@ public class CuratoreServiceImpl implements CuratoreService {
                     throw new FuoriComuneException("Il punto di interesse e' fuori dal comune del curatore");
                 }
             } else {
-                logger.error("Id del punto di interesse non valido");
+                logger.warn("Id del punto di interesse non valido");
                 throw new IllegalArgumentException("Id del punto di interesse non valido");
             }
         } else {
-            logger.error("username curatore non valido");
+            logger.warn("username curatore non valido");
             throw new IllegalArgumentException("username curatore non valido");
         }
     }
@@ -198,11 +198,11 @@ public class CuratoreServiceImpl implements CuratoreService {
                     throw new FuoriComuneException("L'itinerario e' fuori dal comune del curatore");
                 }
             } else {
-                logger.error("Id dell'itinerario non valido");
+                logger.warn("Id dell'itinerario non valido");
                 throw new IllegalArgumentException("Id dell'itinerario non valido");
             }
         } else {
-            logger.error("username curatore non valido");
+            logger.warn("username curatore non valido");
             throw new IllegalArgumentException("username curatore non valido");
         }
     }
@@ -225,11 +225,11 @@ public class CuratoreServiceImpl implements CuratoreService {
                     throw new FuoriComuneException("Il contest e' fuori dal comune del curatore");
                 }
             } else {
-                logger.error("Id del contest non valido");
+                logger.warn("Id del contest non valido");
                 throw new IllegalArgumentException("Id del contest non valido");
             }
         } else {
-            logger.error("username curatore non valido");
+            logger.warn("username curatore non valido");
             throw new IllegalArgumentException("username curatore non valido");
         }
     }
@@ -267,11 +267,11 @@ public class CuratoreServiceImpl implements CuratoreService {
                 }
                 materialeServiceImpl.deleteById(materialeGenerico.getId(), usernameCuratore);
             } else {
-                logger.error("Id del materiale non valido");
+                logger.warn("Id del materiale non valido");
                 throw new IllegalArgumentException("Id del materiale non valido");
             }
         } else {
-            logger.error("username curatore non valido");
+            logger.warn("username curatore non valido");
             throw new IllegalArgumentException("username curatore non valido");
         }
     }

@@ -20,10 +20,8 @@ import java.io.IOException;
 @ComponentScan(basePackages = {"ids.unicam.DataBase", "ids.unicam.models.attori", "ids.unicam.Service", "ids.unicam.DataBase.Repository", "ids.unicam.controller"})
 public class Main implements ApplicationRunner {
     public static final Logger logger = LoggerFactory.getLogger(Main.class);
-
-    private static Environment environment;
     public static boolean debug = false;
-
+    private static Environment environment;
     private final GestoreDatabase gestoreDatabase;
     private final GestorePiattaformaService gestorePiattaformaService;
 
@@ -68,7 +66,7 @@ public class Main implements ApplicationRunner {
             rt.exec(command);
 
         } catch (IOException e) {
-            logger.error("Impossibile Eseguire il comando di apertura delle pagine web", e);
+            logger.warn("Impossibile Eseguire il comando di apertura delle pagine web", e);
         }
     }
 

@@ -48,7 +48,7 @@ public class GestorePiattaformaServiceImpl implements GestorePiattaformaService 
         }
         Optional<Contributor> oContributor = contributorService.getByUsername(usernameContributor);
         if (oContributor.isEmpty()) {
-            logger.error("username non valido");
+            logger.warn("username non valido");
             throw new IllegalArgumentException("username non valido");
         }
         Contributor contributor = oContributor.get();

@@ -138,12 +138,4 @@ public class NotificaService {
         repository.deleteByUsernameDestinatario(usernameTurista);
     }
 
-    //TODO
-    public void creaNotificaCreazionePoi(@NotNull PuntoInteresse puntoInteresse, @NotNull TuristaAutenticato destinatario) {//TODO vedi se riesci
-        repository.save(
-                new NotificaBuilder()
-                        .withTitolo("Info Punti Interesse: " + puntoInteresse.getNome())
-                        .withDescrizione("il punto di interesse " + puntoInteresse.getNome() + " è stato creato, da " + puntoInteresse.getCreatore().getUsername() + ", è " + (puntoInteresse.getStato() == Stato.IN_ATTESA ? " In Attesa di Valutazione " : " Approvato "))
-                        .withDestinatario(destinatario).build());
-    }
 }

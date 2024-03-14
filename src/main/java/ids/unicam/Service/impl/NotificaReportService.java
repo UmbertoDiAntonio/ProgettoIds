@@ -39,7 +39,7 @@ public class NotificaReportService {
                             .withDescrizione(messaggio)
                             .withDestinatario(curatore).build()));
         } else {
-            logger.error("L'ID punto di interesse non e' valido");
+            logger.warn("L'ID punto di interesse non e' valido");
             throw new IllegalArgumentException("L'ID punto di interesse non e' valido");
         }
     }

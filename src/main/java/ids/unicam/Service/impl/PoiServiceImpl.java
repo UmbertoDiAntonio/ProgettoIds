@@ -59,21 +59,21 @@ public class PoiServiceImpl implements PoiService {
                 PuntoInteresse puntoInteresse = oPoi.get();
                 if (contributor.getComune().equals(puntoInteresse.getComune())) {
                     if (!expireDate.isAfter(LocalDate.now())) {
-                        logger.error("La scadenza deve essere una data futura");
+                        logger.warn("La scadenza deve essere una data futura");
                         throw new IllegalArgumentException("La scadenza deve essere una data futura");
                     }
                     puntoInteresse.setExpireDate(expireDate);
                     save(puntoInteresse);
                 } else {
-                    logger.error("punto di interesse fuori dal comune di appartenenza del contributor");
+                    logger.warn("punto di interesse fuori dal comune di appartenenza del contributor");
                     throw new IllegalArgumentException("punto di interesse fuori dal comune di appartenenza del contributor");
                 }
             } else {
-                logger.error("id del punto di interesse non esiste");
+                logger.warn("id del punto di interesse non esiste");
                 throw new IllegalArgumentException("id del punto di interesse non esiste");
             }
         } else {
-            logger.error("username del contributor non esiste");
+            logger.warn("username del contributor non esiste");
             throw new IllegalArgumentException("username del contributor non esiste");
         }
     }
@@ -98,15 +98,9 @@ public class PoiServiceImpl implements PoiService {
             PuntoInteresse puntoInteresse = new PuntoInteresse(nomePOI, punto, orario, tipologiaPuntoInteresse, contributor);
             puntoInteresse.setStato(contributor instanceof ContributorAutorizzato ? Stato.APPROVATO : Stato.IN_ATTESA);
 
-         /*
-         for(Curatore curatore:comuneService.getCuratoriDelComune(puntoInteresse.getComune().getNome()))//TODO Diagramma
-                notificaService.creaNotificaCreazionePoi(puntoInteresse,curatore);
-
-
-          */
             return save(puntoInteresse);
         } else {
-            logger.error("username non valido");
+            logger.warn("username non valido");
             throw new IllegalArgumentException("username non valido");
         }
     }
@@ -164,12 +158,12 @@ public class PoiServiceImpl implements PoiService {
             if (!puntoInteresse.isExpired()) {
                 tagService.aggiungiTag(puntoInteresse, tag);
             } else {
-                logger.error("Il Punto di interesse è scaduto");
+                logger.warn("Il Punto di interesse è scaduto");
                 throw new IllegalStateException("Il Punto di interesse è scaduto");
             }
             save(puntoInteresse);
         } else {
-            logger.error("L'id del punto di interesse non e' valido");
+            logger.warn("L'id del punto di interesse non e' valido");
             throw new IllegalArgumentException("L'id del punto di interesse non e' valido");
         }
     }
@@ -198,7 +192,7 @@ public class PoiServiceImpl implements PoiService {
 
             save(puntoInteresse);
         } else {
-            logger.error("L'id del punto di interesse non e' valido");
+            logger.warn("L'id del punto di interesse non e' valido");
             throw new IllegalArgumentException("L'id del punto di interesse non e' valido");
         }
     }
@@ -234,7 +228,7 @@ public class PoiServiceImpl implements PoiService {
             PuntoInteresse puntoInteresse = oPuntoInteresse.get();
             return puntoInteresse.getMateriali();
         } else {
-            logger.error("L'id del punto di interesse non e' valido");
+            logger.warn("L'id del punto di interesse non e' valido");
             throw new IllegalArgumentException("L'id del punto di interesse non e' valido");
         }
     }
@@ -286,7 +280,7 @@ public class PoiServiceImpl implements PoiService {
             puntoInteresse.getOrario().setOrarioApertura(day, orario);
             save(puntoInteresse);
         } else {
-            logger.error("L'id del punto di interesse non e' valido");
+            logger.warn("L'id del punto di interesse non e' valido");
             throw new IllegalArgumentException("L'id del punto di interesse non e' valido");
         }
     }

@@ -72,15 +72,15 @@ public class AnimatoreServiceImpl implements AnimatoreService {
                 if (animatore.equals(contest.getCreatore()))
                     contestService.terminaContest(contest);
                 else {
-                    logger.error("L'animatore deve essere il creatore del contest");
+                    logger.warn("L'animatore deve essere il creatore del contest");
                     throw new UnsupportedOperationException("L'animatore deve essere il creatore del contest");
                 }
             } else {
-                logger.error("id Contest non valido");
+                logger.warn("id Contest non valido");
                 throw new IllegalArgumentException("id Contest non valido");
             }
         } else {
-            logger.error("Username Animatore non valido");
+            logger.warn("Username Animatore non valido");
             throw new IllegalArgumentException("Username Animatore non valido");
         }
     }
@@ -112,19 +112,19 @@ public class AnimatoreServiceImpl implements AnimatoreService {
                             contestService.save(contest);
                         }
                     } else {
-                        logger.error("L'animatore deve essere il creatore del contest");
+                        logger.warn("L'animatore deve essere il creatore del contest");
                         throw new UnsupportedOperationException("L'animatore deve essere il creatore del contest");
                     }
                 } else {
-                    logger.error("id Materiale non valido");
+                    logger.warn("id Materiale non valido");
                     throw new IllegalArgumentException("id Materiale non valido");
                 }
             } else {
-                logger.error("id Contest non valido");
+                logger.warn("id Contest non valido");
                 throw new IllegalArgumentException("id Contest non valido");
             }
         } else {
-            logger.error("Username Animatore non valido");
+            logger.warn("Username Animatore non valido");
             throw new IllegalArgumentException("Username Animatore non valido");
         }
     }
@@ -142,14 +142,15 @@ public class AnimatoreServiceImpl implements AnimatoreService {
                     invito.setValido(false);
                     invitoService.save(invito);
                 } else {
+                    logger.warn("Devi essere il creatore del contest");
                     throw new UnsupportedOperationException("Devi essere il creatore del contest");
                 }
             } else {
-                logger.error("id Invito non valido");
+                logger.warn("id Invito non valido");
                 throw new IllegalArgumentException("id Invito non valido");
             }
         } else {
-            logger.error("Username Animatore non valido");
+            logger.warn("Username Animatore non valido");
             throw new IllegalArgumentException("Username Animatore non valido");
         }
     }
@@ -178,28 +179,29 @@ public class AnimatoreServiceImpl implements AnimatoreService {
             if (oContest.isPresent()) {
                 Contest contest = oContest.get();
                 if (!contest.getCreatore().equals(animatore)) {
-                    logger.error("L'animatore non e' il creatore del contest.");
+                    logger.warn("L'animatore non e' il creatore del contest.");
                     throw new IllegalStateException("L'animatore non e' il creatore del contest.");
                 }
                 Optional<TuristaAutenticato> oTurista = turistaAutenticatoService.getByUsername(invitato);
                 if (oTurista.isPresent()) {
                     TuristaAutenticato turistaAutenticato = oTurista.get();
                     if (contestService.getPartecipanti(contest).contains(turistaAutenticato)) {
-                        throw new ContestException("L'invitato fa gia' parte del contest");
+                        logger.warn("L'invitato fa già parte del contest");
+                        throw new ContestException("L'invitato fa già' parte del contest");
                     } else {
                         notificaService.creaNotificaInvitoContest(animatore, contest, turistaAutenticato);
                         return invitoService.save(new Invito(contest, turistaAutenticato));
                     }
                 } else {
-                    logger.error("username invitato non valido");
+                    logger.warn("username invitato non valido");
                     throw new IllegalArgumentException("username invitato non valido");
                 }
             } else {
-                logger.error("id del contest non valido");
+                logger.warn("id del contest non valido");
                 throw new IllegalArgumentException("id del contest non valido");
             }
         } else {
-            logger.error("username dell'animatore non valido");
+            logger.warn("username dell'animatore non valido");
             throw new IllegalArgumentException("username dell'animatore non valido");
         }
     }
@@ -221,30 +223,30 @@ public class AnimatoreServiceImpl implements AnimatoreService {
                 if (oMateriale.isPresent()) {
                     MaterialeGenerico materialeGenerico = oMateriale.get();
                     if (materialeGenerico.getStato() != Stato.IN_ATTESA) {
-                        logger.error("lo stato del materiale è già settato");
+                        logger.warn("lo stato del materiale è già settato");
                         throw new UnsupportedOperationException("lo stato del materiale è già settato");
                     }
                     if (Stato.toStatus(stato) == Stato.IN_ATTESA) {
-                        logger.error("non puoi settare stato in attesa");
+                        logger.warn("non puoi settare stato in attesa");
                         throw new UnsupportedOperationException("non puoi settare stato in attesa");
                     }
                     if (contestService.getMaterialiContest(contest).contains(materialeGenerico)) {
                         materialeGenerico.setStato(Stato.toStatus(stato));
                         materialeService.save(materialeGenerico);
                     } else {
-                        logger.error("Materiale non è nel Contest selezionato");
+                        logger.warn("Materiale non è nel Contest selezionato");
                         throw new UnsupportedOperationException("Materiale non è nel Contest selezionato");
                     }
                 } else {
-                    logger.error("id Materiale non valido");
+                    logger.warn("id Materiale non valido");
                     throw new IllegalArgumentException("id Materiale non valido");
                 }
             } else {
-                logger.error("id Contest non valido");
+                logger.warn("id Contest non valido");
                 throw new IllegalArgumentException("id Contest non valido");
             }
         } else {
-            logger.error("username Animatore non valido");
+            logger.warn("username Animatore non valido");
             throw new IllegalArgumentException("username Animatore non valido");
         }
     }
@@ -254,10 +256,12 @@ public class AnimatoreServiceImpl implements AnimatoreService {
     public void setFineContest(int idContest, @NotNull LocalDate dataFine, @NotNull String usernameAnimatore) throws UnsupportedOperationException, IllegalArgumentException {
         Optional<Animatore> oAnimatore = getByUsername(usernameAnimatore);
         if (oAnimatore.isEmpty()) {
+            logger.warn("username animatore non valido");
             throw new IllegalArgumentException("username animatore non valido");
         }
         Optional<Contest> oContest = contestService.findById(idContest);
         if (oContest.isEmpty()) {
+            logger.warn("id contest non valido");
             throw new IllegalArgumentException("id contest non valido");
         }
         Contest contest = oContest.get();
@@ -266,11 +270,11 @@ public class AnimatoreServiceImpl implements AnimatoreService {
                 contest.setExpireDate(dataFine);
                 contestService.save(contest);
             } else {
-                logger.error("La scadenza deve essere una data futura");
+                logger.warn("La scadenza deve essere una data futura");
                 throw new IllegalArgumentException("La scadenza deve essere una data futura");
             }
         } else {
-            logger.error("l'animatore non può impostare la data di fine contest per contest di cui non è creatore");
+            logger.warn("l'animatore non può impostare la data di fine contest per contest di cui non è creatore");
             throw new UnsupportedOperationException("l'animatore non può impostare la data di fine contest per contest di cui non è creatore");
         }
     }
@@ -303,7 +307,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
                 throw new ContestException("Il Contest è terminato");
             }
         } else {
-            logger.error("L'id del contest non e' valido");
+            logger.warn("L'id del contest non e' valido");
             throw new IllegalArgumentException("L'id del contest non e' valido");
         }
     }
@@ -335,7 +339,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
                 throw new ContestException("Il Contest è terminato");
             }
         } else {
-            logger.error("L'id del contest non e' valido");
+            logger.warn("L'id del contest non e' valido");
             throw new IllegalArgumentException("L'id del contest non e' valido");
         }
     }
