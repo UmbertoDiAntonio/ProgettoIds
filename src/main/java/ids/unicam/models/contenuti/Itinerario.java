@@ -18,14 +18,17 @@ import java.util.List;
 public class Itinerario {
     @ManyToMany(fetch = FetchType.EAGER)
     private final List<PuntoInteresse> percorso = new ArrayList<>();
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "itinerari_gen")
     @SequenceGenerator(name = "itinerari_gen", sequenceName = "ITINERARI_SEQ", allocationSize = 1)
     @Column(name = "id", nullable = false)
     @Getter
     private int id;
+
     @Getter
     private String nome = "";
+
     @OneToOne
     @JoinColumn(name = "nome_comune")
     @Getter

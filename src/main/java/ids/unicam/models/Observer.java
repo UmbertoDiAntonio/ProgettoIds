@@ -8,5 +8,4 @@ import java.util.List;
 public interface Observer {
     List<Notifica> visualizzaNotifiche(String usernameTurista) throws IllegalArgumentException;
 
-
 }
