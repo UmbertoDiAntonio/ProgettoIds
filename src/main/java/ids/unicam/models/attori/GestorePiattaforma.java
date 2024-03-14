@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 /**
  * Classe che rappresenta il gestore della piattaforma. Il gestore è colui che gestisce l'intera piattaforma ed
  * ha la possibilità di creare un nuovo comune e soprattutto di gestire il cambio ruolo degli utenti registrati.
- *
  */
 @Getter
 @Entity
@@ -26,6 +25,7 @@ public class GestorePiattaforma extends TuristaAutenticato {
 
     /**
      * Metodo statico per ottenere l'istanza singleton del gestore della piattaforma.
+     *
      * @param username Il nome utente del gestore.
      * @param password La password del gestore.
      * @return L'istanza singleton del gestore della piattaforma.

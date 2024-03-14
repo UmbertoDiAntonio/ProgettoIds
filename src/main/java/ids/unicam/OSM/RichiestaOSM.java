@@ -45,7 +45,7 @@ public class RichiestaOSM {
      * @param nome il nome del comune di cui stiamo cercando il centro
      * @return la latitudine e longitudine del centro del comune
      */
-    public static @Nullable Punto getCoordinateDaComune( @NotNull String nome) throws ConnessioneFallitaException {
+    public static @Nullable Punto getCoordinateDaComune(@NotNull String nome) throws ConnessioneFallitaException {
         String apiUrl = buildSearchApiUrl(nome);
         try {
             String jsonResponse = richiestaHttp(apiUrl);
@@ -69,18 +69,18 @@ public class RichiestaOSM {
         }
     }
 
-    private static String buildReverseApiUrl( @NotNull Punto punto) {
+    private static String buildReverseApiUrl(@NotNull Punto punto) {
         return "https://nominatim.openstreetmap.org/reverse?lat=" +
                 punto.getLatitudine() + "&lon=" + punto.getLongitudine() +
                 "&zoom=10&format=jsonv2";
     }
 
-    private static String buildSearchApiUrl( @NotNull String nome) {
+    private static String buildSearchApiUrl(@NotNull String nome) {
         return "https://nominatim.openstreetmap.org/search?q=" +
                 nome + "&format=jsonv2";
     }
 
-    private static @Nullable String richiestaHttp( @NotNull String apiUrl) throws IOException {
+    private static @Nullable String richiestaHttp(@NotNull String apiUrl) throws IOException {
         try (BufferedReader reader = getApiResponseReader(apiUrl)) {
             StringBuilder response = new StringBuilder();
             String line;
@@ -95,7 +95,7 @@ public class RichiestaOSM {
         }
     }
 
-    private static BufferedReader getApiResponseReader( @NotNull String apiUrl) throws IOException {
+    private static BufferedReader getApiResponseReader(@NotNull String apiUrl) throws IOException {
         URL url = URI.create(apiUrl).toURL();
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");

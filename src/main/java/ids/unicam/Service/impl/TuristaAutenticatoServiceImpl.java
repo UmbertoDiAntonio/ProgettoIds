@@ -94,7 +94,7 @@ public class TuristaAutenticatoServiceImpl implements TuristaAutenticatoService,
 
     @Transactional
     @Override
-    public void aggiungiMateriale(@NotNull String usernameTurista, int idContenitore,@NotNull  MaterialeGenerico materialeGenerico) throws IllegalArgumentException, IllegalStateException, ContestException, FuoriComuneException {
+    public void aggiungiMateriale(@NotNull String usernameTurista, int idContenitore, @NotNull MaterialeGenerico materialeGenerico) throws IllegalArgumentException, IllegalStateException, ContestException, FuoriComuneException {
         if (poiService.getById(idContenitore).isPresent()) {
             Optional<TuristaAutenticato> oTurista = getByUsername(usernameTurista);
             if (oTurista.isEmpty()) {

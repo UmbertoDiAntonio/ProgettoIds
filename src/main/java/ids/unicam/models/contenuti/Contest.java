@@ -75,17 +75,17 @@ public class Contest implements Contenitore, Taggable, Expirable {
     }
 
     @Override
-    public void addTag( @NotNull String tag) {
+    public void addTag(@NotNull String tag) {
         tags.add(tag);
     }
 
     @Override
-    public void rimuoviTag( @NotNull String tag) {
+    public void rimuoviTag(@NotNull String tag) {
         tags.remove(tag);
     }
 
     @Override
-    public boolean haveTag( @NotNull String tag) {
+    public boolean haveTag(@NotNull String tag) {
         return tags.contains(tag);
     }
 
@@ -95,14 +95,14 @@ public class Contest implements Contenitore, Taggable, Expirable {
     }
 
     @Override
-    public void aggiungiMateriale( @NotNull MaterialeGenerico materialeGenerico) {
+    public void aggiungiMateriale(@NotNull MaterialeGenerico materialeGenerico) {
         if (materialeGenerico != null) {
             materiali.add(materialeGenerico);
         }
     }
 
     @Override
-    public void rimuoviMateriale( @NotNull MaterialeGenerico materialeGenerico) {
+    public void rimuoviMateriale(@NotNull MaterialeGenerico materialeGenerico) {
         materiali.remove(materialeGenerico);
     }
 
@@ -120,7 +120,7 @@ public class Contest implements Contenitore, Taggable, Expirable {
      *
      * @param partecipante il nuovo partecipante
      */
-    public void aggiungiPartecipante( @NotNull TuristaAutenticato partecipante) {
+    public void aggiungiPartecipante(@NotNull TuristaAutenticato partecipante) {
         partecipanti.add(partecipante);
     }
 
@@ -129,7 +129,7 @@ public class Contest implements Contenitore, Taggable, Expirable {
      *
      * @param partecipante il partecipante da rimuovere
      */
-    public void rimuoviPartecipante( @NotNull TuristaAutenticato partecipante) {
+    public void rimuoviPartecipante(@NotNull TuristaAutenticato partecipante) {
         partecipanti.remove(partecipante);
     }
 }

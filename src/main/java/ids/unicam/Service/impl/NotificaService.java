@@ -62,7 +62,7 @@ public class NotificaService {
      * @param contest   il contest vinto
      * @param vincitore il materiale che ha vinto
      */
-    public void creaNotificaVittoriaContest(@NotNull Animatore animatore,@NotNull  Contest contest,@NotNull  MaterialeGenerico vincitore) {
+    public void creaNotificaVittoriaContest(@NotNull Animatore animatore, @NotNull Contest contest, @NotNull MaterialeGenerico vincitore) {
         repository.save(
                 new NotificaBuilder()
                         .withTitolo("Vittoria Contest: " + vincitore.getCreatore().getUsername())
@@ -124,7 +124,7 @@ public class NotificaService {
     }
 
 
-    public @NotNull  Notifica save(@NotNull Notifica build) {
+    public @NotNull Notifica save(@NotNull Notifica build) {
         return repository.save(build);
     }
 

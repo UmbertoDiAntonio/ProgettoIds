@@ -45,7 +45,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
 
     @Override
     public @NotNull List<Itinerario> find(@Nullable Predicate<Itinerario> predicate) {
-        if(predicate==null)
+        if (predicate == null)
             return getAll();
         List<Itinerario> list = new ArrayList<>();
         for (Itinerario itinerario : getAll())
@@ -149,7 +149,7 @@ public class ItinerarioServiceImpl implements ItinerarioService {
 
 
     @Override
-    public @NotNull Itinerario creaItinerario(@NotNull String usernameCreatore,@NotNull  String nomeItinerario) throws IllegalArgumentException {
+    public @NotNull Itinerario creaItinerario(@NotNull String usernameCreatore, @NotNull String nomeItinerario) throws IllegalArgumentException {
         Optional<Itinerario> oItinerario = getByNome(nomeItinerario);
         Optional<Contributor> oContributor = contributorService.getByUsername(usernameCreatore);
         if (oContributor.isPresent()) {

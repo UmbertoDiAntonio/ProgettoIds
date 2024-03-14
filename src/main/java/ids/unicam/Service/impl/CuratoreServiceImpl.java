@@ -61,7 +61,7 @@ public class CuratoreServiceImpl implements CuratoreService {
 
     @Override
     public @NotNull List<Curatore> find(@Nullable Predicate<Curatore> predicate) {
-        if(predicate==null)
+        if (predicate == null)
             return getAll();
         List<Curatore> list = new ArrayList<>();
         for (Curatore curatore : getAll())
@@ -77,7 +77,7 @@ public class CuratoreServiceImpl implements CuratoreService {
     }
 
 
-    private boolean controllaSeInComune(@NotNull Curatore curatore,@NotNull  Comune comune) {
+    private boolean controllaSeInComune(@NotNull Curatore curatore, @NotNull Comune comune) {
         return comune.equals(curatore.getComune());
     }
 

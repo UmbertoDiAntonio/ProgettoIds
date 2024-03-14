@@ -8,13 +8,14 @@ import ids.unicam.models.contenuti.materiali.MaterialeGenerico;
 import ids.unicam.models.contenuti.notifiche.Notifica;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import jakarta.transaction.Transactional;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface TuristaAutenticatoService {
 
-    TuristaAutenticato save(TuristaAutenticato turistaAutenticato);
+    @NotNull TuristaAutenticato save(@NotNull TuristaAutenticato turistaAutenticato);
 
     /**
      * Accetta un invito a partecipare a un contest
@@ -25,7 +26,7 @@ public interface TuristaAutenticatoService {
      * @throws ContestException         se non è possibile accettare l'invito
      */
     @Transactional
-    void accettaInvitoContest(String usernameUtente, int idInvito) throws IllegalArgumentException, ContestException;
+    void accettaInvitoContest(@NotNull String usernameUtente, int idInvito) throws IllegalArgumentException, ContestException;
 
     /**
      * Rimuovi un punto di interesse dalla lista dei preferiti
@@ -34,7 +35,7 @@ public interface TuristaAutenticatoService {
      * @param idPunto         l'id del punto di interesse
      * @throws IllegalArgumentException se i parametri non sono corretti
      */
-    void rimuoviPreferito(String usernameTurista, int idPunto) throws IllegalArgumentException;
+    void rimuoviPreferito(@NotNull String usernameTurista, int idPunto) throws IllegalArgumentException;
 
     /**
      * Carica un materiale in un Contenitore
@@ -48,7 +49,7 @@ public interface TuristaAutenticatoService {
      * @throws FuoriComuneException     se il contenitore si trova fuori dal territorio in cui può operare l'utente
      */
     @Transactional
-    void aggiungiMateriale(String usernameTurista, int idContenitore, MaterialeGenerico materialeGenerico) throws IllegalArgumentException, IllegalStateException, ContestException, FuoriComuneException;
+    void aggiungiMateriale(@NotNull String usernameTurista, int idContenitore, @NotNull MaterialeGenerico materialeGenerico) throws IllegalArgumentException, IllegalStateException, ContestException, FuoriComuneException;
 
     /**
      * Aggiungi un punto di interesse ai preferiti
@@ -57,7 +58,7 @@ public interface TuristaAutenticatoService {
      * @param idPuntoInteresse l'id del punto di interesse
      * @throws IllegalArgumentException se i parametri non sono validi
      */
-    void aggiungiPreferito(String usernameTurista, int idPuntoInteresse) throws IllegalArgumentException;
+    void aggiungiPreferito(@NotNull String usernameTurista, int idPuntoInteresse) throws IllegalArgumentException;
 
     /**
      * Ottieni la lista dei punti di interesse preferiti di un utente
@@ -66,7 +67,7 @@ public interface TuristaAutenticatoService {
      * @return la lista dei punti di interesse preferiti dell'utente
      * @throws IllegalArgumentException se l'username dell'utente non viene trovato
      */
-    List<PuntoInteresse> findPreferiti(String usernameTurista) throws IllegalArgumentException;
+    @NotNull List<PuntoInteresse> findPreferiti(@NotNull String usernameTurista) throws IllegalArgumentException;
 
     /**
      * Partecipa a un contest
@@ -76,7 +77,7 @@ public interface TuristaAutenticatoService {
      * @throws IllegalArgumentException se i parametri non sono corretti
      * @throws ContestException         se il contest richiede invito
      */
-    void partecipaAlContest(int idContest, String usernameTurista) throws UnsupportedOperationException, IllegalArgumentException, ContestException;
+    void partecipaAlContest(int idContest, @NotNull String usernameTurista) throws UnsupportedOperationException, IllegalArgumentException, ContestException;
 
     /**
      * Smetti di partecipare a un contest
@@ -86,7 +87,7 @@ public interface TuristaAutenticatoService {
      * @throws IllegalArgumentException se i parametri non sono corretti
      */
     @Transactional
-    void cancellaPartecipazioneContest(int idContest, String usernameTurista) throws IllegalArgumentException;
+    void cancellaPartecipazioneContest(int idContest, @NotNull String usernameTurista) throws IllegalArgumentException;
 
     /**
      * Verifica se un username è unico
@@ -94,14 +95,14 @@ public interface TuristaAutenticatoService {
      * @param username l'username da controllare
      * @return true se è unico, false altrimenti
      */
-    boolean isUsernameUnique(String username);
+    boolean isUsernameUnique(@NotNull String username);
 
     /**
      * Ottieni la lista di tutti i Turisti Autenticati presenti nella piattaforma
      *
      * @return la lista dei Turisti Autenticati
      */
-    List<TuristaAutenticato> getAll();
+    @NotNull List<TuristaAutenticato> getAll();
 
     /**
      * Ottieni, se esiste, il turista autenticato con l'username indicato
@@ -109,14 +110,14 @@ public interface TuristaAutenticatoService {
      * @param username l'username cercato
      * @return il turista con l'username cercato, se esiste, Optional.Empty altrimenti
      */
-    Optional<TuristaAutenticato> getByUsername(String username);
+    @NotNull Optional<TuristaAutenticato> getByUsername(@NotNull String username);
 
     /**
      * Elimina il Turista Autenticato con l'username indicato
      *
      * @param username l'username cercato
      */
-    void deleteByUsername(String username);
+    void deleteByUsername(@NotNull String username);
 
     /**
      * Ottieni la lista delle notifiche ricevute dall'utente
@@ -125,7 +126,7 @@ public interface TuristaAutenticatoService {
      * @return la lista delle notifiche
      * @throws IllegalArgumentException se l'username non è corretto
      */
-    List<Notifica> visualizzaNotifiche(String usernameTurista) throws IllegalArgumentException;
+    @NotNull List<Notifica> visualizzaNotifiche(@NotNull String usernameTurista) throws IllegalArgumentException;
 
     /**
      * Ottieni la lista degli inviti ricevi da un utente
@@ -133,12 +134,12 @@ public interface TuristaAutenticatoService {
      * @param usernameTurista l'utente che sta eseguendo l'operazione
      * @return la lista degli inviti trovati
      */
-    List<Invito> getInviti(String usernameTurista);
+    @NotNull List<Invito> getInviti(@NotNull String usernameTurista);
 
     /**
      * Elimina tutte le notifiche dell'utente
      *
      * @param usernameTurista l'utente che esegue l'operazione
      */
-    void deleteNotificheByUsername(String usernameTurista);
+    void deleteNotificheByUsername(@NotNull String usernameTurista);
 }

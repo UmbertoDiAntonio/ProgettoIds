@@ -9,6 +9,8 @@ import ids.unicam.models.contenuti.puntiInteresse.Orario;
 import ids.unicam.models.contenuti.puntiInteresse.PuntoInteresse;
 import ids.unicam.models.contenuti.puntiInteresse.TipologiaPuntoInteresse;
 import jakarta.transaction.Transactional;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,7 +31,7 @@ public interface PoiService {
      * @throws FuoriComuneException     se la posizione selezionata è fuori dal territorio in cui può operare il contributor
      * @throws IllegalArgumentException se l'username del contributor non è valido
      */
-    PuntoInteresse creaPuntoInteresse(String nomePOI, Punto punto, Orario orario, TipologiaPuntoInteresse tipologiaPuntoInteresse, String usernameCreatore) throws FuoriComuneException, IllegalArgumentException;
+    @NotNull PuntoInteresse creaPuntoInteresse(@NotNull String nomePOI, @NotNull Punto punto, @NotNull Orario orario, @NotNull TipologiaPuntoInteresse tipologiaPuntoInteresse, @NotNull String usernameCreatore) throws FuoriComuneException, IllegalArgumentException;
 
     /**
      * Ottieni la data di fine validità di un punto di interesse
@@ -38,10 +40,10 @@ public interface PoiService {
      * @return la data di fine validità
      * @throws IllegalArgumentException se non è stato trovato un punto con l'id indicato
      */
-    LocalDate getScadenza(int idPunto) throws IllegalArgumentException;
+    @NotNull LocalDate getScadenza(int idPunto) throws IllegalArgumentException;
 
     @Transactional
-    PuntoInteresse save(PuntoInteresse puntoInteresse);
+    @NotNull PuntoInteresse save(@NotNull PuntoInteresse puntoInteresse);
 
     /**
      * Ottieni il punto di interesse con l'id selezionato, se esiste
@@ -49,14 +51,14 @@ public interface PoiService {
      * @param id l'id del punto di interesse da cercare
      * @return il punto di interesse, se trovato, Optional.Empty altrimenti
      */
-    Optional<PuntoInteresse> findById(int id);
+    @NotNull Optional<PuntoInteresse> findById(int id);
 
     /**
      * Ottieni i punti di interesse validi presenti nella piattaforma
      *
      * @return la lista dei punti di interesse trovati
      */
-    List<PuntoInteresse> findActive();
+    @NotNull List<PuntoInteresse> findActive();
 
     /**
      * Aggiungi un tag al punto di interesse
@@ -68,7 +70,7 @@ public interface PoiService {
      * @throws IllegalArgumentException se i parametri non sono corretti
      * @throws IllegalStateException    se il punto di interesse non è valido
      */
-    void aggiungiTag(int idPuntoInteresse, String tag, String usernameContributor) throws FuoriComuneException, IllegalArgumentException, IllegalStateException;
+    void aggiungiTag(int idPuntoInteresse, @NotNull String tag, @NotNull String usernameContributor) throws FuoriComuneException, IllegalArgumentException, IllegalStateException;
 
     /**
      * Rimuovi un tag da un punto di interesse
@@ -80,7 +82,7 @@ public interface PoiService {
      * @throws IllegalArgumentException se i parametri non sono corretti
      */
     @Transactional
-    void rimuoviTag(int idPuntoInteresse, String tag, String usernameContributor) throws FuoriComuneException;
+    void rimuoviTag(int idPuntoInteresse, @NotNull String tag, @NotNull String usernameContributor) throws FuoriComuneException;
 
     /**
      * Trova tutti i Punti di intesse che rispettano la condizione
@@ -88,7 +90,7 @@ public interface PoiService {
      * @param predicate la condizione da rispettare
      * @return i punti di interesse trovati
      */
-    List<PuntoInteresse> find(Predicate<PuntoInteresse> predicate);
+    @NotNull List<PuntoInteresse> find(@Nullable Predicate<PuntoInteresse> predicate);
 
     /**
      * Ottieni la lista dei tag di un punto di interesse
@@ -96,7 +98,7 @@ public interface PoiService {
      * @param idPunto l'id del punto di interesse
      * @return i tag del punto di interesse
      */
-    List<String> getTags(int idPunto);
+    @NotNull List<String> getTags(int idPunto);
 
     /**
      * Ottieni, se esiste, il punto di interesse con l'id indicato
@@ -104,7 +106,7 @@ public interface PoiService {
      * @param id l'id del punto di interesse da cercare
      * @return il punto di interesse, se trovato, Optional.Empty altrimenti
      */
-    Optional<PuntoInteresse> getById(int id);
+    @NotNull Optional<PuntoInteresse> getById(int id);
 
     /**
      * Elimina il punto di interesse con l'id indicato
@@ -121,7 +123,7 @@ public interface PoiService {
      * @param expireDate          la nuova data di fine validità
      * @throws IllegalArgumentException se i parametri non sono validi
      */
-    void modificaScadenza(String usernameContributor, int idPuntoInteresse, LocalDate expireDate) throws IllegalArgumentException;
+    void modificaScadenza(@NotNull String usernameContributor, int idPuntoInteresse, @NotNull LocalDate expireDate) throws IllegalArgumentException;
 
     /**
      * Ottieni lo stato del punto di interesse
@@ -129,7 +131,7 @@ public interface PoiService {
      * @param idPuntoInteresse l'id del punto di interesse
      * @return lo stato come APPROVATO,NON APPROVATO, IN ATTESA
      */
-    Stato getStato(int idPuntoInteresse);
+    @NotNull Stato getStato(int idPuntoInteresse);
 
     /**
      * Ottieni i materiali associati al punto di interesse
@@ -138,21 +140,21 @@ public interface PoiService {
      * @return i materiali associati al punto di interesse
      * @throws IllegalArgumentException se l'id del punto di interesse non è valido
      */
-    Set<MaterialeGenerico> getMaterialiPoi(int idPunto) throws IllegalArgumentException;
+    @NotNull Set<MaterialeGenerico> getMaterialiPoi(int idPunto) throws IllegalArgumentException;
 
     /**
      * Ottieni una lista contenente le informazioni generiche di tutti i punti di interesse della piattaforma validi
      *
      * @return la lista di informazioni sui punti di interesse
      */
-    List<String> getAsList();
+    @NotNull List<String> getAsList();
 
     /**
      * Ottieni una lista contenente le informazioni generiche dei punti di interesse forniti
      *
      * @return la lista di informazioni sui punti di interesse
      */
-    List<String> getAsList(List<PuntoInteresse> preferiti);
+    @NotNull List<String> getAsList(@NotNull List<PuntoInteresse> preferiti);
 
     /**
      * Ottieni una lista contenente le informazioni dettagliate dei punti di interesse della piattaforma validi
@@ -160,14 +162,14 @@ public interface PoiService {
      * @return la lista di informazioni sui punti di interesse
      */
     @Transactional
-    List<String> getAsListDetailed();
+    @NotNull List<String> getAsListDetailed();
 
     /**
      * Ottieni tutti i punti di interesse della piattaforma
      *
      * @return i punti di interesse della piattaforma
      */
-    List<PuntoInteresse> findAll();
+    @NotNull List<PuntoInteresse> findAll();
 
     /**
      * Imposta l'orario di apertura di un punto di interesse
@@ -177,7 +179,7 @@ public interface PoiService {
      * @param day     il giorno in cui impostarlo
      * @throws IllegalArgumentException se l'id del punto di interesse non è valido
      */
-    void setOrario(int idPunto, Orario.OrarioApertura orario, DayOfWeek day);
+    void setOrario(int idPunto, @NotNull Orario.OrarioApertura orario, @NotNull DayOfWeek day);
 
     /**
      * Se esiste ritorna il punto di interesse che contiene il materiale
@@ -185,13 +187,13 @@ public interface PoiService {
      * @param materialeGenerico il materiale di cui volgiamo cercare il contenitore
      * @return ritorna il punto di interesse che contiene il materiale altrimenti Optional.Empty
      */
-    Optional<PuntoInteresse> getPoiContainingMaterial(MaterialeGenerico materialeGenerico);
+    @NotNull Optional<PuntoInteresse> getPoiContainingMaterial(@NotNull MaterialeGenerico materialeGenerico);
 
     /**
      * Elimina il punto di interesse se non è più valido
      *
      * @param puntoInteresse il punto di interesse su cui stiamo eseguendo l'operazione
      */
-    void deleteIfIsExpired(PuntoInteresse puntoInteresse);
+    void deleteIfIsExpired(@NotNull PuntoInteresse puntoInteresse);
 
 }

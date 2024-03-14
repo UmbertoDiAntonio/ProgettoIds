@@ -50,7 +50,7 @@ public class PoiServiceImpl implements PoiService {
 
     @Transactional
     @Override
-    public void modificaScadenza(@NotNull String usernameContributor, int idPuntoInteresse,@NotNull  LocalDate expireDate) throws IllegalArgumentException {
+    public void modificaScadenza(@NotNull String usernameContributor, int idPuntoInteresse, @NotNull LocalDate expireDate) throws IllegalArgumentException {
         Optional<Contributor> oContributor = contributorService.getByUsername(usernameContributor);
         if (oContributor.isPresent()) {
             Contributor contributor = oContributor.get();
@@ -88,7 +88,7 @@ public class PoiServiceImpl implements PoiService {
 
     @Transactional
     @Override
-    public @NotNull PuntoInteresse creaPuntoInteresse(@NotNull String nomePOI, @NotNull Punto punto, @NotNull Orario orario,@NotNull  TipologiaPuntoInteresse tipologiaPuntoInteresse, @NotNull String usernameCreatore) throws FuoriComuneException, IllegalArgumentException {
+    public @NotNull PuntoInteresse creaPuntoInteresse(@NotNull String nomePOI, @NotNull Punto punto, @NotNull Orario orario, @NotNull TipologiaPuntoInteresse tipologiaPuntoInteresse, @NotNull String usernameCreatore) throws FuoriComuneException, IllegalArgumentException {
         Optional<Contributor> oContributor = contributorService.getByUsername(usernameCreatore);
         if (oContributor.isPresent()) {
             Contributor contributor = oContributor.get();
@@ -205,7 +205,7 @@ public class PoiServiceImpl implements PoiService {
 
     @Override
     public @NotNull List<PuntoInteresse> find(@Nullable Predicate<PuntoInteresse> predicate) {
-        if(predicate==null)
+        if (predicate == null)
             return findAll();
         List<PuntoInteresse> list = new ArrayList<>();
         for (PuntoInteresse puntoInteresse : findAll()) {
@@ -279,7 +279,7 @@ public class PoiServiceImpl implements PoiService {
 
     @Transactional
     @Override
-    public void setOrario(int idPunto, @NotNull Orario.OrarioApertura orario,@NotNull  DayOfWeek day) throws IllegalArgumentException {
+    public void setOrario(int idPunto, @NotNull Orario.OrarioApertura orario, @NotNull DayOfWeek day) throws IllegalArgumentException {
         Optional<PuntoInteresse> oPuntoInteresse = getById(idPunto);
         if (oPuntoInteresse.isPresent()) {
             PuntoInteresse puntoInteresse = oPuntoInteresse.get();

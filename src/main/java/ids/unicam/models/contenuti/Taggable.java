@@ -16,12 +16,12 @@ public interface Taggable {
     /**
      * @param tag Tag da aggiungere all'oggetto
      */
-    void addTag( @NotNull String tag);
+    void addTag(@NotNull String tag);
 
     /**
      * @param tag tag da rimuovere all'oggetto
      */
-    void rimuoviTag( @NotNull String tag);
+    void rimuoviTag(@NotNull String tag);
 
     /**
      * Controlla se l'oggetto ha il tag indicato
@@ -29,5 +29,5 @@ public interface Taggable {
      * @param tag il tag da controllare
      * @return true se l'oggetto contiene il tag, false altrimenti
      */
-    boolean haveTag( @NotNull String tag);
+    boolean haveTag(@NotNull String tag);
 }

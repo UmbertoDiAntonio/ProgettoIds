@@ -31,7 +31,7 @@ public class Orario {
      * @param day    il giorno
      * @param orario l'orario
      */
-    public void setOrarioApertura(@NotNull DayOfWeek day,  @NotNull OrarioApertura orario) {
+    public void setOrarioApertura(@NotNull DayOfWeek day, @NotNull OrarioApertura orario) {
         hoursMap.put(day, orario);
     }
 
@@ -42,7 +42,7 @@ public class Orario {
      * @param openingTime l'orario di apertura
      * @param closingTime l'orario di chiusura
      */
-    public void setOrarioApertura( @NotNull DayOfWeek day, @NotNull  LocalTime openingTime,  @NotNull LocalTime closingTime) {
+    public void setOrarioApertura(@NotNull DayOfWeek day, @NotNull LocalTime openingTime, @NotNull LocalTime closingTime) {
         OrarioApertura hours = new OrarioApertura(openingTime, closingTime);
         hoursMap.put(day, hours);
     }
@@ -53,7 +53,7 @@ public class Orario {
      * @param day il giorno
      * @return l'orario
      */
-    public OrarioApertura getOrarioApertura( @NotNull DayOfWeek day) {
+    public OrarioApertura getOrarioApertura(@NotNull DayOfWeek day) {
         return hoursMap.get(day);
     }
 

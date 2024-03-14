@@ -53,7 +53,7 @@ public class InvitoServiceImpl implements InvitoService {
 
     @Transactional
     @Override
-    public void accettaInvito(@NotNull TuristaAutenticato turistaAutenticato,@NotNull  Invito invito) throws ContestException {
+    public void accettaInvito(@NotNull TuristaAutenticato turistaAutenticato, @NotNull Invito invito) throws ContestException {
         if (isValid(invito)) {
             if (invito.getInvitato().getUsername().equals(turistaAutenticato.getUsername())) {
                 contestService.aggiungiPartecipante(invito.getContest(), turistaAutenticato);

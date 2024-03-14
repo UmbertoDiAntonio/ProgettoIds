@@ -22,7 +22,7 @@ public interface ComuneService {
 
     @NotNull List<Contributor> getContributorDelComune(@NotNull String nomeComune, @NotNull String usernameGestore);
 
-    @NotNull List<Curatore> getCuratoriDelComune(@NotNull String nomeComune,@NotNull  String usernameGestore);
+    @NotNull List<Curatore> getCuratoriDelComune(@NotNull String nomeComune, @NotNull String usernameGestore);
 
     @NotNull List<Comune> findAll();
 

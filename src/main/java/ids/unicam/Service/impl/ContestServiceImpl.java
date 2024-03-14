@@ -75,7 +75,7 @@ public class ContestServiceImpl implements ContestService {
 
 
     @Override
-    public @NotNull List<TuristaAutenticato> getPartecipanti( @NotNull Contest contest) {
+    public @NotNull List<TuristaAutenticato> getPartecipanti(@NotNull Contest contest) {
         return Collections.unmodifiableList(repository.findPartecipantiByContest(contest.getId()));
     }
 
@@ -107,7 +107,7 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public @NotNull List<MaterialeGenerico> getMaterialiContest( @NotNull Contest contest) {
+    public @NotNull List<MaterialeGenerico> getMaterialiContest(@NotNull Contest contest) {
         return repository.getMateriali(contest.getId());
     }
 
@@ -126,8 +126,8 @@ public class ContestServiceImpl implements ContestService {
     }
 
     @Override
-    public List<Contest> getContest( @Nullable Predicate<Contest> predicate) {
-        if(predicate==null)
+    public List<Contest> getContest(@Nullable Predicate<Contest> predicate) {
+        if (predicate == null)
             return findAll();
         List<Contest> list = new ArrayList<>();
         for (Contest contest : findAll())

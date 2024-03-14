@@ -1,6 +1,7 @@
 package ids.unicam.Service;
 
 import ids.unicam.models.contenuti.Taggable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -11,8 +12,8 @@ public interface TuristaService {
      * @param tag il tag da cercare
      * @return la lista dei contenuti trovati
      */
-    List<Taggable> findByTag(String tag);
+    @NotNull List<Taggable> findByTag(@NotNull String tag);
 
-    void report(int idPuntoInteresse, String msg);
+    void report(int idPuntoInteresse, @NotNull String msg);
 
 }

@@ -43,8 +43,8 @@ public class ContributorAutorizzatoServiceImpl implements ContributorAutorizzato
     }
 
     @Override
-    public @NotNull List<ContributorAutorizzato> find( @Nullable Predicate<ContributorAutorizzato> predicate) {
-        if(predicate==null)
+    public @NotNull List<ContributorAutorizzato> find(@Nullable Predicate<ContributorAutorizzato> predicate) {
+        if (predicate == null)
             return getAll();
         List<ContributorAutorizzato> list = new ArrayList<>();
         for (ContributorAutorizzato contributorAutorizzato : getAll())

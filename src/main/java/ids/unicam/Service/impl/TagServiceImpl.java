@@ -11,7 +11,7 @@ public class TagServiceImpl implements TagService {
 
     @Transactional
     @Override
-    public void aggiungiTag(@NotNull Taggable taggableObject,@NotNull  String tag) {
+    public void aggiungiTag(@NotNull Taggable taggableObject, @NotNull String tag) {
         taggableObject.addTag(tag);
     }
 
@@ -22,7 +22,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public boolean haveTag(@NotNull Taggable taggableObject,@NotNull  String tag) {
+    public boolean haveTag(@NotNull Taggable taggableObject, @NotNull String tag) {
         return taggableObject.getTags().contains(tag);
     }
 }

@@ -22,12 +22,12 @@ public interface Contenitore {
      *
      * @param materialeGenerico il materiale da aggiungere
      */
-    void aggiungiMateriale( @NotNull MaterialeGenerico materialeGenerico);
+    void aggiungiMateriale(@NotNull MaterialeGenerico materialeGenerico);
 
     /**
      * Rimuovi un MaterialeGenerico di qualunque tipo ai materiali del contenitore
      *
      * @param materialeGenerico il materiale da rimuovere
      */
-    void rimuoviMateriale( @NotNull MaterialeGenerico materialeGenerico);
+    void rimuoviMateriale(@NotNull MaterialeGenerico materialeGenerico);
 }

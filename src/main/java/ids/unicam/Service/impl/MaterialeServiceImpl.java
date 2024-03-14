@@ -37,7 +37,7 @@ public class MaterialeServiceImpl implements MaterialeService {
 
 
     @Override
-    public MaterialeGenerico crea(@NotNull String fileMateriale, @NotNull TipologiaMateriale tipologiaMateriale, @NotNull TuristaAutenticato creatore) {
+    public @NotNull MaterialeGenerico crea(@NotNull String fileMateriale, @NotNull TipologiaMateriale tipologiaMateriale, @NotNull TuristaAutenticato creatore) {
         TuristaAutenticatoDTO creatoreDTO = new TuristaAutenticatoDTO(creatore.getNome(), creatore.getCognome(), creatore.getDataNascita(), creatore.getPassword(), creatore.getUsername());
         MaterialeGenerico materialeGenerico = switch (tipologiaMateriale) {
             case FOTO -> new Foto(fileMateriale, creatoreDTO);

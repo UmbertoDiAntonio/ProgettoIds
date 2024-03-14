@@ -25,7 +25,7 @@ public class ContributorServiceImpl implements ContributorService {
 
     @Override
     public @NotNull List<Contributor> find(@Nullable Predicate<Contributor> predicate) {
-        if(predicate==null)
+        if (predicate == null)
             return getAll();
         List<Contributor> list = new ArrayList<>();
         for (Contributor contributor : getAll())

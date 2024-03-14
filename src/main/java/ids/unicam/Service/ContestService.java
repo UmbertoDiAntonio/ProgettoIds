@@ -1,7 +1,5 @@
 package ids.unicam.Service;
 
-import ids.unicam.exception.ContestException;
-import ids.unicam.exception.FuoriComuneException;
 import ids.unicam.models.attori.Animatore;
 import ids.unicam.models.attori.TuristaAutenticato;
 import ids.unicam.models.contenuti.Contest;

@@ -44,12 +44,12 @@ public class AnimatoreServiceImpl implements AnimatoreService {
 
 
     @Override
-    public void deleteByUsername( @NotNull String username) {
+    public void deleteByUsername(@NotNull String username) {
         repository.deleteById(username);
     }
 
     @Override
-    public  @NotNull Animatore save( @NotNull Animatore animatore) {
+    public @NotNull Animatore save(@NotNull Animatore animatore) {
         animatore = repository.save(animatore);
         return animatore;
     }
@@ -62,7 +62,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
 
 
     @Override
-    public void terminaContest( @NotNull String usernameAnimatore, int idContest) throws UnsupportedOperationException, IllegalArgumentException {
+    public void terminaContest(@NotNull String usernameAnimatore, int idContest) throws UnsupportedOperationException, IllegalArgumentException {
         Optional<Animatore> oAnimatore = getByUsername(usernameAnimatore);
         if (oAnimatore.isPresent()) {
             Animatore animatore = oAnimatore.get();
@@ -87,7 +87,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
 
 
     @Override
-    public void setVincitoreContest( @NotNull String usernameAnimatore, int idContest, int idMateriale) throws ContestException, UnsupportedOperationException, IllegalArgumentException {
+    public void setVincitoreContest(@NotNull String usernameAnimatore, int idContest, int idMateriale) throws ContestException, UnsupportedOperationException, IllegalArgumentException {
         Optional<Animatore> oAnimatore = getByUsername(usernameAnimatore);
         if (oAnimatore.isPresent()) {
             Animatore animatore = oAnimatore.get();
@@ -131,7 +131,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
 
 
     @Override
-    public void annullaInvito( @NotNull String usernameAnimatore, int idInvito) throws IllegalArgumentException, UnsupportedOperationException {
+    public void annullaInvito(@NotNull String usernameAnimatore, int idInvito) throws IllegalArgumentException, UnsupportedOperationException {
         Optional<Animatore> oAnimatore = getByUsername(usernameAnimatore);
         if (oAnimatore.isPresent()) {
             Animatore animatore = oAnimatore.get();
@@ -156,7 +156,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
 
 
     @Override
-    public  @NotNull List<Animatore> getAll() {
+    public @NotNull List<Animatore> getAll() {
         return repository.findAll();
     }
 
@@ -170,7 +170,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
     }
 
     @Override
-    public  @NotNull Invito invitaContest( @NotNull String usernameAnimatore, int idContest,  @NotNull String invitato) throws ContestException, IllegalStateException, IllegalArgumentException {
+    public @NotNull Invito invitaContest(@NotNull String usernameAnimatore, int idContest, @NotNull String invitato) throws ContestException, IllegalStateException, IllegalArgumentException {
         Optional<Animatore> oAnimatore = getByUsername(usernameAnimatore);
         if (oAnimatore.isPresent()) {
             Animatore animatore = oAnimatore.get();
@@ -206,7 +206,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
 
 
     @Override
-    public void approvaMateriale( @NotNull String usernameAnimatore, int idContest, int idMaterialeGenerico, boolean stato) throws UnsupportedOperationException, IllegalArgumentException {
+    public void approvaMateriale(@NotNull String usernameAnimatore, int idContest, int idMaterialeGenerico, boolean stato) throws UnsupportedOperationException, IllegalArgumentException {
         Optional<Animatore> oAnimatore = getByUsername(usernameAnimatore);
         if (oAnimatore.isPresent()) {
             Animatore animatore = oAnimatore.get();
@@ -251,7 +251,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
 
 
     @Override
-    public void setFineContest(int idContest,  @NotNull LocalDate dataFine, @NotNull  String usernameAnimatore) throws UnsupportedOperationException, IllegalArgumentException {
+    public void setFineContest(int idContest, @NotNull LocalDate dataFine, @NotNull String usernameAnimatore) throws UnsupportedOperationException, IllegalArgumentException {
         Optional<Animatore> oAnimatore = getByUsername(usernameAnimatore);
         if (oAnimatore.isEmpty()) {
             throw new IllegalArgumentException("username animatore non valido");
@@ -278,7 +278,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
 
     @Transactional
     @Override
-    public void aggiungiTagContest(int idContest,  @NotNull String tag, @NotNull  String usernameAnimatore) throws ContestException, IllegalArgumentException, UnsupportedOperationException {
+    public void aggiungiTagContest(int idContest, @NotNull String tag, @NotNull String usernameAnimatore) throws ContestException, IllegalArgumentException, UnsupportedOperationException {
         Optional<Animatore> oAnimatore = getByUsername(usernameAnimatore);
         if (oAnimatore.isEmpty()) {
             throw new IllegalArgumentException("username non valido");
@@ -311,7 +311,7 @@ public class AnimatoreServiceImpl implements AnimatoreService {
 
     @Transactional
     @Override
-    public void rimuoviTagContest(int idContest,  @NotNull String tag, @NotNull  String usernameAnimatore) throws ContestException, IllegalArgumentException, UnsupportedOperationException {
+    public void rimuoviTagContest(int idContest, @NotNull String tag, @NotNull String usernameAnimatore) throws ContestException, IllegalArgumentException, UnsupportedOperationException {
         Optional<Animatore> oAnimatore = getByUsername(usernameAnimatore);
         if (oAnimatore.isEmpty()) {
             throw new IllegalArgumentException("username non valido");

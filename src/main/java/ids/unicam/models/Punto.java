@@ -44,7 +44,7 @@ public class Punto {
     }
 
     @Override
-    public  @NotNull String toString() {
+    public @NotNull String toString() {
         return "(" + latitudine + "," + longitudine + ")";
     }
 

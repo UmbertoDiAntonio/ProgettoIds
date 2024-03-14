@@ -146,7 +146,7 @@ public class PuntoInteresse implements Contenitore, Taggable, Expirable {
     }
 
     @Override
-    public void rimuoviMateriale( @NotNull MaterialeGenerico materialeGenerico) {
+    public void rimuoviMateriale(@NotNull MaterialeGenerico materialeGenerico) {
         materiali.remove(materialeGenerico);
     }
 

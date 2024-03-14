@@ -106,7 +106,7 @@ public class JUnitContenutiTests {
             orario.setOrarioApertura(DayOfWeek.MONDAY, LocalTime.of(8, 30), LocalTime.of(18, 0));
             PuntoInteresse punto1 = poiService.creaPuntoInteresse("bar", new Punto(comune.getPosizione().getLatitudine() + 0.01, comune.getPosizione().getLongitudine() + 0.01), orario, TipologiaPuntoInteresse.ATTIVITA_COMMERCIALE, contributor.getUsername());
 
-            assertEquals(puntiInteresseComuneIniziali, poiService.find(puntoInteresse -> puntoInteresse.getComune().equals(comune) && !puntoInteresse.isExpired() && Stato.APPROVATO==puntoInteresse.getStato()).size());
+            assertEquals(puntiInteresseComuneIniziali, poiService.find(puntoInteresse -> puntoInteresse.getComune().equals(comune) && !puntoInteresse.isExpired() && Stato.APPROVATO == puntoInteresse.getStato()).size());
             assertNull(punto1.getStato().asBoolean());
 
         }
@@ -373,10 +373,10 @@ public class JUnitContenutiTests {
         PuntoInteresse puntoInteresse = poiService.creaPuntoInteresse("parcheggio centrale", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), new Orario(), TipologiaPuntoInteresse.PARCHEGGIO, contributor.getUsername());
         PuntoInteresse puntoInt2 = poiService.creaPuntoInteresse("parcheggio centrale sotto", new Punto(comune.getPosizione().getLatitudine() + 0.03, comune.getPosizione().getLongitudine() + 0.03), new Orario(), TipologiaPuntoInteresse.PARCHEGGIO, contributor.getUsername());
 
-        assertEquals(numeroPuntiInteresse, poiService.find(puntoInteresse2 -> puntoInteresse2.getComune().equals(comune) && !puntoInteresse2.isExpired() && Stato.APPROVATO==puntoInteresse2.getStato()).size());
+        assertEquals(numeroPuntiInteresse, poiService.find(puntoInteresse2 -> puntoInteresse2.getComune().equals(comune) && !puntoInteresse2.isExpired() && Stato.APPROVATO == puntoInteresse2.getStato()).size());
         curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInteresse.getId(), Stato.APPROVATO.asBoolean());
         curatoreServiceImpl.valutaPuntoInteresse(curatore.getUsername(), puntoInt2.getId(), Stato.APPROVATO.asBoolean());
-        assertEquals(numeroPuntiInteresse + 2, poiService.find(puntoInteresse2 -> puntoInteresse2.getComune().equals(comune) && !puntoInteresse2.isExpired() && Stato.APPROVATO==puntoInteresse2.getStato()).size());
+        assertEquals(numeroPuntiInteresse + 2, poiService.find(puntoInteresse2 -> puntoInteresse2.getComune().equals(comune) && !puntoInteresse2.isExpired() && Stato.APPROVATO == puntoInteresse2.getStato()).size());
 
         turistaAutenticatoService.aggiungiPreferito(turista.getUsername(), puntoInteresse.getId());
         turistaAutenticatoService.aggiungiPreferito(turista.getUsername(), puntoInt2.getId());

@@ -22,7 +22,7 @@ public class Main implements ApplicationRunner {
     public static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     private static Environment environment;
-    public static boolean debug=false;
+    public static boolean debug = false;
 
     private final GestoreDatabase gestoreDatabase;
     private final GestorePiattaformaService gestorePiattaformaService;
@@ -44,7 +44,7 @@ public class Main implements ApplicationRunner {
         openUrl(urlToOpen);
         openUrl(urlToDB);
 
-        debug=Boolean.parseBoolean(environment.getProperty("debug"));
+        debug = Boolean.parseBoolean(environment.getProperty("debug"));
 
     }
 
