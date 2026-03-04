@@ -28,26 +28,6 @@
     </ul>
     <p>L'username sarà necessario per richiamare i metodi del gestore della piattaforma. Non sono messi a disposizione metodi per la modifica delle credenziali del gestore della piattaforma.</p>
     <h2>Studenti per lo sviluppo del progetto</h2>
-   <table>
-    <thead>
-        <tr>
-            <th>Nome</th>
-            <th>Cognome</th>
-            <th>Matricola</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Umberto</td>
-            <td>Di Antonio</td>
-            <td>120024</td>
-        </tr>
-        <tr>
-            <td>Leonardo</td>
-            <td>Compagnucci</td>
-            <td>118708</td>
-        </tr>
-    </tbody>
-</table>
+  Umberto Di Antonio, Leonardo Compagnucci
 </body>
 </html>
