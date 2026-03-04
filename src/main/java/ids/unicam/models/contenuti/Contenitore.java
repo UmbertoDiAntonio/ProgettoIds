@@ -11,7 +11,7 @@ import java.util.Set;
  */
 public interface Contenitore {
     /**
-     * Restituisce l'elenco dei materiali del contenitore sotto forma di un Set<MaterialeGenerico>
+     * Restituisce l'elenco dei materiali del contenitore sotto forma di un Set
      *
      * @return l'elenco dei materiali del contenitore
      */
